@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1848EFAD-3F70-4E52-8BD8-E952DC127F4D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LeaRun.Repository</RootNamespace>
+    <AssemblyName>LeaRun.Repository</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.2.0.0\lib\net40\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataFactory.cs" />
+    <Compile Include="IRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository.cs" />
+    <Compile Include="RepositoryFactory.cs" />
+    <Compile Include="SteelMember.BLL\CompanyBLL.cs" />
+    <Compile Include="SteelMember.BLL\FactoryWarehouseBLL.cs" />
+    <Compile Include="SteelMember.BLL\FileBLL.cs" />
+    <Compile Include="SteelMember.BLL\MemberUnitBLL.cs" />
+    <Compile Include="SteelMember.BLL\OrderManagementBLL.cs" />
+    <Compile Include="SteelMember.BLL\ProcessManagementBLL.cs" />
+    <Compile Include="SteelMember.BLL\ProjectInfoBLL.cs" />
+    <Compile Include="SteelMember.BLL\ProjectManagementBLL.cs" />
+    <Compile Include="SteelMember.BLL\ProjectWarehouseBLL.cs" />
+    <Compile Include="SteelMember.BLL\RawMaterialBLL.cs" />
+    <Compile Include="SteelMember.BLL\ShipManagementBLL.cs" />
+    <Compile Include="SteelMember.BLL\TreeBLL.cs" />
+    <Compile Include="SteelMember.DAL\BaseDAL.cs" />
+    <Compile Include="SteelMember.DAL\ComanyDAL.cs" />
+    <Compile Include="SteelMember.DAL\FactoryWarehouseDAL.cs" />
+    <Compile Include="SteelMember.DAL\FileDAL.cs" />
+    <Compile Include="SteelMember.DAL\MemberUnitDAL.cs" />
+    <Compile Include="SteelMember.DAL\OrderManagementDAL.cs" />
+    <Compile Include="SteelMember.DAL\ProcessManagementDAL.cs" />
+    <Compile Include="SteelMember.DAL\ProjectInfoDAL.cs" />
+    <Compile Include="SteelMember.DAL\ProjectManagementDAL.cs" />
+    <Compile Include="SteelMember.DAL\ProjectWarehouseDAL.cs" />
+    <Compile Include="SteelMember.DAL\RawMaterialDAL.cs" />
+    <Compile Include="SteelMember.DAL\ShipManagementDAL.cs" />
+    <Compile Include="SteelMember.DAL\TreeDAL.cs" />
+    <Compile Include="SteelMember.IBLL\BaseIBLL.cs" />
+    <Compile Include="SteelMember.IBLL\CompanyIBLL.cs" />
+    <Compile Include="SteelMember.IBLL\FactoryWarehouseIBLL.cs" />
+    <Compile Include="SteelMember.IBLL\FileIBLL.cs" />
+    <Compile Include="SteelMember.IBLL\MemberUnitIBLL.cs" />
+    <Compile Include="SteelMember.IBLL\OrderManagementIBLL.cs" />
+    <Compile Include="SteelMember.IBLL\ProcessManagementIBLL.cs" />
+    <Compile Include="SteelMember.IBLL\ProjectManagementIBLL.cs" />
+    <Compile Include="SteelMember.IBLL\ProjectWarehouseIBLL.cs" />
+    <Compile Include="SteelMember.IBLL\RawMaterialIBLL.cs" />
+    <Compile Include="SteelMember.IBLL\ShipManagementIBLL.cs" />
+    <Compile Include="SteelMember.IBLL\ProjectInfoIBLL.cs" />
+    <Compile Include="SteelMember.IBLL\TreeIBLL.cs" />
+    <Compile Include="SteelMember.IDAL\BaseIDAL.cs" />
+    <Compile Include="SteelMember.IDAL\CompanyIDAL.cs" />
+    <Compile Include="SteelMember.IDAL\FactoryWarehouseIDAL.cs" />
+    <Compile Include="SteelMember.IDAL\FileIDAL.cs" />
+    <Compile Include="SteelMember.IDAL\MemberUnitIDAL.cs" />
+    <Compile Include="SteelMember.IDAL\OrderManagementIDAL.cs" />
+    <Compile Include="SteelMember.IDAL\ProcessManagementIDAL.cs" />
+    <Compile Include="SteelMember.IDAL\ProjectManagementIDAL.cs" />
+    <Compile Include="SteelMember.IDAL\ProjectWarehouseIDAL.cs" />
+    <Compile Include="SteelMember.IDAL\RawMaterialIDAL.cs" />
+    <Compile Include="SteelMember.IDAL\ShipManagementIDAL.cs" />
+    <Compile Include="SteelMember.IDAL\ProjectInfoIDAL.cs" />
+    <Compile Include="SteelMember.IDAL\TreeIDAL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LeaRun.DataAccess\LeaRun.DataAccess.csproj">
+      <Project>{7d1a96cf-9b89-443f-ab95-12343f52a1ac}</Project>
+      <Name>LeaRun.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LeaRun.Entity\LeaRun.Entity.csproj">
+      <Project>{FE90ED79-3221-4C96-9361-9019A17BE9F7}</Project>
+      <Name>LeaRun.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LeaRun.Utilities\LeaRun.Utilities.csproj">
+      <Project>{7a9e54b1-d54d-4af2-99e9-06e9baff4846}</Project>
+      <Name>LeaRun.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

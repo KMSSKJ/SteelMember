@@ -1,0 +1,155 @@
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.WebService.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.WebService.pdb
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\obj\Debug\LeaRun.WebService.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\obj\Debug\LeaRun.WebService.pdb
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.DataAccess.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Utilities.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\log4net.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\Oracle.DataAccess.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\MySql.Data.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\System.Data.SQLite.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\SharpZipLib.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\Newtonsoft.Json.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.DataAccess.pdb
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Utilities.pdb
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\obj\Debug\LeaRun.WebService.csprojResolveAssemblyReference.cache
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Business.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Entity.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Repository.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\EntityFramework.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Business.pdb
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Entity.pdb
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Repository.pdb
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Cache.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Cache.pdb
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.WebService.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.WebService.pdb
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Business.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.DataAccess.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Entity.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Repository.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Utilities.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Cache.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\log4net.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\Oracle.DataAccess.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\MySql.Data.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\System.Data.SQLite.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\EntityFramework.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\SharpZipLib.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\Newtonsoft.Json.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Business.pdb
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.DataAccess.pdb
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Entity.pdb
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Repository.pdb
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Utilities.pdb
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Cache.pdb
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\obj\Debug\ResolveAssemblyReference.cache
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\obj\Debug\LeaRun.WebService.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\obj\Debug\LeaRun.WebService.pdb
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.WebService.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.WebService.pdb
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Business.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.DataAccess.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Entity.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Repository.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Utilities.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Cache.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\log4net.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\Oracle.DataAccess.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\MySql.Data.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\System.Data.SQLite.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\EntityFramework.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\SharpZipLib.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\Newtonsoft.Json.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Business.pdb
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.DataAccess.pdb
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Entity.pdb
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Repository.pdb
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Utilities.pdb
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Cache.pdb
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\obj\Debug\LeaRun.WebService.csprojResolveAssemblyReference.cache
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\obj\Debug\LeaRun.WebService.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\obj\Debug\LeaRun.WebService.pdb
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.WebService.dll.config
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.WebService.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.WebService.pdb
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Business.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.DataAccess.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Entity.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Repository.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Utilities.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Cache.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\log4net.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\Oracle.DataAccess.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\MySql.Data.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\System.Data.SQLite.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\EntityFramework.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\SharpZipLib.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\Newtonsoft.Json.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Business.pdb
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.DataAccess.pdb
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Entity.pdb
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Repository.pdb
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Utilities.pdb
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\bin\LeaRun.Cache.pdb
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\obj\Debug\LeaRun.WebService.csprojResolveAssemblyReference.cache
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\obj\Debug\LeaRun.WebService.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.WebService\obj\Debug\LeaRun.WebService.pdb
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.WebService.dll.config
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.WebService.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.WebService.pdb
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.Business.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.DataAccess.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.Entity.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.Repository.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.Utilities.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.Cache.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\log4net.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\Oracle.DataAccess.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\MySql.Data.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\System.Data.SQLite.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\EntityFramework.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\Ninject.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\SharpZipLib.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\Newtonsoft.Json.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.Business.pdb
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.DataAccess.pdb
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.Entity.pdb
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.Repository.pdb
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.Utilities.pdb
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\LeaRun.Cache.pdb
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\EntityFramework.xml
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\Ninject.xml
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\bin\zh-Hans\EntityFramework.resources.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\obj\Debug\LeaRun.WebService.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\obj\Debug\LeaRun.WebService.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.WebService\obj\Debug\LeaRun.WebService.pdb
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.WebService.dll.config
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.WebService.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.WebService.pdb
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.Business.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.DataAccess.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.Entity.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.Repository.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.Utilities.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.Cache.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\log4net.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\Oracle.DataAccess.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\MySql.Data.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\System.Data.SQLite.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\EntityFramework.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\Ninject.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\SharpZipLib.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\Newtonsoft.Json.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.Business.pdb
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.DataAccess.pdb
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.Entity.pdb
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.Repository.pdb
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.Utilities.pdb
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\LeaRun.Cache.pdb
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\EntityFramework.xml
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\Ninject.xml
+D:\project\GangGouJian\GGJ\LeaRun.WebService\bin\zh-Hans\EntityFramework.resources.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\obj\Debug\LeaRun.WebService.csprojResolveAssemblyReference.cache
+D:\project\GangGouJian\GGJ\LeaRun.WebService\obj\Debug\LeaRun.WebService.dll
+D:\project\GangGouJian\GGJ\LeaRun.WebService\obj\Debug\LeaRun.WebService.pdb

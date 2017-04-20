@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="kskfModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="RMC_ProjectInfo">
+    <Key>
+      <PropertyRef Name="ProjectId" />
+    </Key>
+    <Property Name="ProjectId" Type="Int32" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="TreeID" Type="Int32" />
+    <Property Name="ProjectName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="Int32" />
+    <Property Name="ProjectAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ConstructionPermitId" Type="Int32" />
+    <Property Name="ConstructionUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DesignUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SupervisionUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="GeneralContractor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfessionalContractor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeleteFlag" Type="Int32" />
+    <Property Name="ModifiedTime" Type="DateTime" Precision="3" />
+    <Property Name="ProjectLogo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ProjectBackground" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="RMC_Tree">
+    <Key>
+      <PropertyRef Name="TreeID" />
+    </Key>
+    <Property Name="TreeID" Type="Int32" Nullable="false" />
+    <Property Name="ParentID" Type="Int32" />
+    <Property Name="ItemID" Type="Int32" />
+    <Property Name="IsItem" Type="Int32" />
+    <Property Name="TreeName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Url" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="Icon" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IsMenu" Type="Int32" />
+    <Property Name="State" Type="Int32" />
+    <Property Name="DeleteFlag" Type="Int32" />
+    <Property Name="Enabled" Type="Int32" />
+    <Property Name="Oderby" Type="Int32" />
+    <Property Name="UploadTime" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedTime" Type="DateTime" Precision="3" />
+    <Property Name="OverdueTime" Type="DateTime" Precision="3" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="IsReview" Type="Int32" />
+    <Property Name="FileType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="kskfEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="RMC_ProjectInfo" EntityType="Self.RMC_ProjectInfo" />
+    <EntitySet Name="RMC_Tree" EntityType="Self.RMC_Tree" />
+  </EntityContainer>
+</Schema>

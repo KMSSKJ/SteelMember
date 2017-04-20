@@ -1,0 +1,279 @@
+﻿@{
+    ViewBag.Title = "项目信息管理";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        GetTree();
+        GetGrid();
+        SwitchListAndView();
+    });
+
+    //加载左边树
+    //注意 FolderId 默认等于1 这样就可以加载一级目录下的子节点文件夹
+    var ItemId = 2;
+    var TreeId = "13";//13
+    //ItemId = GetQuery("ItemID"), IsPublic = "1";
+    function GetTree() {
+        var itemtree = {
+            onnodeclick: function (node) {
+                TreeId = node.id;
+                TreeName = node.text;
+                GridFolderEvent(TreeId);
+            },
+            url: "@Url.Content("/SteelMember/ProjectInfo/TreeJson")?ItemId=" + ItemId
+        };
+        $("#ItemsTree").treeview(itemtree);
+    };
+
+    //表格文件夹点击事件
+    function GridFolderEvent(TreeId) {
+        TreeID = TreeId;
+        $("#gridTable").jqGrid('setGridParam', {
+            url: "@Url.Content("/SteelMember/ProjectInfo/GridListJson")?TreeID=" + TreeID, page: 1
+        }).trigger('reloadGrid');
+    }
+
+    //加载表格
+    function GetGrid() {
+        var SelectRowIndx;
+        $("#gridTable").jqGrid({
+            url: "@Url.Content("/SteelMember/ProjectInfo/GridListJson")?TreeID=" + TreeId,
+            datatype: "json",
+            height: $(window).height() - 154,
+            autowidth: true,
+            colModel: [
+                    { label: '主键', name: "ProjectId", hidden: true },
+                    { label: 'TreeId', name: 'TreeId', hidden: true },
+                    //{ label: "项目标题", name: "ProjectSysTitle", index: "ProjectSysTitle", hidden: true },
+                    {
+                        label: '项目Logo', name: "ProjectLogo", index: "ProjectLogo",
+                        formatter: function (cellvalue, options, rowObject) {
+                            var a = cellvalue;
+                            var filename = a.substring(0, a.lastIndexOf('.'));//获取文件名称，去除后缀名
+                            //return "<div style='padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;with:20%;height:20%' src='../../Content/Images/Icon16/file_extension_" + cellvalue + "' />" + cellvalue + "</div>";
+                            return "<div style='padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;with:580px;height:480px' src='../../Resource/Document/NetworkDisk/System/Project/" + filename + "/" + a + "' /></div>";
+                        }
+                        },
+                    {
+                        label: '项目背景图', name: "ProjectBackground", index: "ProjectBackground",
+                        formatter: function (cellvalue, options, rowObject) {
+                            var b = cellvalue;
+                            var filename1 = b.substring(0, b.lastIndexOf('.'));//获取文件名称，去除后缀名
+                            //return "<div style='padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;with:20%;height20%' src='../../Content/Images/Icon16/file_extension_" + cellvalue + "' />" + cellvalue + "</div>";
+                            return "<div style='padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;with:580px;height:480px' src='../../Resource/Document/NetworkDisk/System/Project/" + filename1 + "/" + b + "' /></div>";
+                        }
+                    },
+                    { label: '备注', name: 'Description', index: 'Description', width:20},
+            ],
+            rowNum: 30,
+            sortname: 'SortCode',
+            sortorder: 'Desc',//降序 asc升序
+            pager: "#gridPager",
+            //jsonReader: {
+            //    repeatitems: false,
+            //    id: "ProjectId"
+            //},
+            viewrecords: true,
+            rownumbers: true,
+            gridview: true,
+            rowList: [15, 30, 50, 100, 500, 1000],
+            ondblClickRow: function (TreeId) {
+                var rowData = $("#gridTable").getRowData(TreeId);  //根据ID拿到一行的数据
+                if (rowData.Icon == '-1') {
+                    GridFolderEvent(rowData.TreeId);
+                    var treeid = "ItemsTree_" + rowData.TreeId.replace(/-/g, '_');
+                    $('#' + treeid + ' img').trigger("click");
+                }
+            },
+            onSelectRow: function () {
+                SelectRowIndx = GetJqGridRowIndx("#" + this.id);
+            },
+            gridComplete: function () {
+                var ids = $("#gridTable").getDataIDs();
+                for (var i = 0; i < ids.length; i++) {
+                    var rowData = $("#gridTable").getRowData(ids[i]);
+                    if (rowData.Enabled == "无效") {//如果无效，则背景色置于红色
+                        $('#' + ids[i]).find("td").addClass("SelectBG");
+                    }
+                }
+                $("#" + this.id).jqGrid('setSelection', SelectRowIndx);
+            }
+        });
+        columnModelData("#gridTable");
+        //自应高度
+        $(window).resize(function () {
+            $("#gridTable").setGridHeight($(window).height() - 200);
+        });
+    }
+
+    //刷新表格 树
+    function btn_reload() {
+        GetTree();
+        $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
+
+    //新建树
+    function btn_addfolder() {
+        //var FolderId = GetJqGridRowValue("#gridTable", "TreeID");
+        var ItemID = GetQuery("ItemID");
+        var IsItem = 0;
+        if (IsChecked(KeyValue)) {
+            AjaxJson("/SteelMember/Tree/IsItem", { TreeId: TreeId }, function (Data) {
+                IsItem = Data.IsItem;
+            })
+            if (IsItem == 1) {
+                tipDialog('该节点已是项目', 4, 'warning');
+            } else {
+                var url = "/SteelMember/Tree/FolderForm?KeyValue=" + KeyValue + '&ItemID=' + ItemID + '&IsItem=' + IsItem;
+                openDialog(url, "Form", "新增信息", 500, 400, function (iframe) {
+                    top.frames[iframe].AcceptClick()
+                });
+                $("#gridTable").trigger("reloadGrid"); //重新载入
+            }
+        }
+    }
+
+    //编辑树节点(得到实体)
+    function btn_editfolder() {
+        var KeyValue = TreeId;
+        if (IsChecked(KeyValue)) {
+            var url = "/SteelMember/Tree/FolderForm?KeyValue= " + KeyValue;
+            openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
+        }
+
+        $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
+
+    //标记删除树节点
+    function btn_markfolder() {
+        var KeyValue = TreeId;
+        var Prompt = "您确实要删除此文件吗？";
+        if (IsDelData(KeyValue)) {
+            delConfirm('/SteelMember/Tree/MarkTree', { KeyValue: KeyValue }, Prompt);
+        }
+        $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
+
+    //删除树节点
+    function btn_deletefolder() {
+        var Prompt = "您确实要删除此文件吗？";
+        if (IsDelData(TreeId)) {
+            delConfirm('/SteelMember/Tree/DeleteTree', { KeyValue: TreeId }, Prompt);
+        }
+        $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
+
+    //新增信息
+    function btn_add() {
+        //var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
+        if (IsChecked(TreeId)) {
+            var url = "/SteelMember/ProjectInfo/Form?TreeId= " + TreeId;
+            openDialog(url, "Form", "新增信息", 380, 300, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
+        }
+        $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
+
+    //编辑信息(得到实体)
+    function btn_edit() {
+        var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
+        if (IsChecked(KeyValue)) {
+            var url = "/SteelMember/ProjectInfo/Form?KeyValue= " + KeyValue;
+            openDialog(url, "Form", "编辑信息", 380, 300, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
+        }
+        $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
+
+    //删除信息
+    function btn_delete() {
+        var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
+        var Prompt = "您确实要删除此文件吗？";
+        if (IsDelData(KeyValue)) {
+            delConfirm('/SteelMember/ProjectInfo/DeleteProjectInfo', { KeyValue: KeyValue }, Prompt);
+            $("#gridTable").trigger("reloadGrid"); //重新载入
+        }
+
+    }
+
+    //查看项目信息
+    function btn_project_info() {
+        var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
+        var Info = 1;
+        if (IsChecked(KeyValue)) {
+            var url = "/SteelMember/ProjectInfo/Form?KeyValue= " + KeyValue+"&Info="+Info;
+            openDialog(url, "Form", "编辑信息", 380, 360, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
+        }
+        $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
+    /*视图begin=========================================================================*/
+    //切换到列表/视图
+    function SwitchListAndView() {
+        $('#grid_View').height($(window).height() - 78)
+        $('.switch-btns li').click(function () {
+            $('.switch-btns li').removeClass('selected');
+            $(this).addClass('selected');
+            if ($(this).attr('id') == 'li-switch-list') {
+                $(this).find('div').addClass('icon-btn-switch-list-select');
+                $("#li-switch-view").find('div').addClass('icon-btn-switch-view');
+                $("#li-switch-view").find('div').removeClass('icon-btn-switch-view-select');
+                $('#grid_List').show();
+                $('#grid_View').hide();
+            }
+            //显示视图
+            if ($(this).attr('id') == 'li-switch-view') {
+                $(this).find('div').addClass('icon-btn-switch-view-select');
+                $("#li-switch-list").find('div').addClass('icon-btn-switch-list');
+                $("#li-switch-list").find('div').removeClass('icon-btn-switch-list-select');
+                $('#grid_List').hide();
+                $('#grid_View').show();
+                var data = $("#gridTable").jqGrid("getRowData");
+                var html = "";
+                for (var i = 0; i < data.length; i++) {
+                    var icon = data[i].icon;
+                    if (icon == "-1") {
+                        icon = "Folder";
+                    }
+                    html += '<div class="filelist-item">';
+                    html += '<div><img src="~/Content/Images/fileType/' + icon + '_72.png" /></div>';
+                    html += '<div title="' + data[i].fullname + '" class="filelist-text">' + data[i].fullname + '</div>';
+                    html += '</div>';
+                }
+                $("#grid_View").html(html);
+            }
+        })
+    }
+</script>
+<div id="layout" class="layout">
+    <!--左边-->
+    <div class="layoutPanel layout-west">
+        <div class="btnbartitle">
+            <div>
+               目录信息
+            </div>
+        </div>
+        <div class="ScrollBar" id="ItemsTree"></div>
+    </div>
+    <!--中间-->
+    <div class="layoutPanel layout-center">
+        <div class="btnbartitle">
+            <div>
+               项目信息<span id="CenterTitle"></span>
+            </div>
+        </div>
+        <div class="tools_bar" style="border-top: none; margin-bottom: 0px;">
+            <div class="PartialButton">
+                @Html.Partial("_PartialButton")
+            </div>
+        </div>
+        <table id="gridTable"></table>
+    </div>
+</div>

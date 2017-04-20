@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="kskfModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“kskf.dbo.RMC_ProjectInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="RMC_ProjectInfo">
+    <Key>
+      <PropertyRef Name="ProjectId" />
+    </Key>
+    <Property Name="ProjectId" Type="int" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="TreeID" Type="int" />
+    <Property Name="ProjectName" Type="nvarchar" MaxLength="100" />
+    <Property Name="State" Type="int" />
+    <Property Name="ProjectAddress" Type="nvarchar" MaxLength="200" />
+    <Property Name="ConstructionPermitId" Type="int" />
+    <Property Name="ConstructionUnit" Type="nvarchar" MaxLength="50" />
+    <Property Name="DesignUnit" Type="nvarchar" MaxLength="50" />
+    <Property Name="SupervisionUnit" Type="nvarchar" MaxLength="50" />
+    <Property Name="GeneralContractor" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalContractor" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeleteFlag" Type="int" />
+    <Property Name="ModifiedTime" Type="datetime" />
+    <Property Name="ProjectLogo" Type="nvarchar" MaxLength="200" />
+    <Property Name="ProjectBackground" Type="nvarchar" MaxLength="200" />
+    <Property Name="Description" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“kskf.dbo.RMC_Tree”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="RMC_Tree">
+    <Key>
+      <PropertyRef Name="TreeID" />
+    </Key>
+    <Property Name="TreeID" Type="int" Nullable="false" />
+    <Property Name="ParentID" Type="int" />
+    <Property Name="ItemID" Type="int" />
+    <Property Name="IsItem" Type="int" />
+    <Property Name="TreeName" Type="nvarchar" MaxLength="20" />
+    <Property Name="Url" Type="nvarchar" MaxLength="25" />
+    <Property Name="Icon" Type="nvarchar" MaxLength="10" />
+    <Property Name="IsMenu" Type="int" />
+    <Property Name="State" Type="int" />
+    <Property Name="DeleteFlag" Type="int" />
+    <Property Name="Enabled" Type="int" />
+    <Property Name="Oderby" Type="int" />
+    <Property Name="UploadTime" Type="datetime" />
+    <Property Name="ModifiedTime" Type="datetime" />
+    <Property Name="OverdueTime" Type="datetime" />
+    <Property Name="Description" Type="nvarchar" MaxLength="500" />
+    <Property Name="IsReview" Type="int" />
+    <Property Name="FileType" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityContainer Name="kskfModelStoreContainer">
+    <EntitySet Name="RMC_ProjectInfo" EntityType="Self.RMC_ProjectInfo" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [RMC_ProjectInfo].[ProjectId] AS [ProjectId], 
+    [RMC_ProjectInfo].[ParentId] AS [ParentId], 
+    [RMC_ProjectInfo].[TreeID] AS [TreeID], 
+    [RMC_ProjectInfo].[ProjectName] AS [ProjectName], 
+    [RMC_ProjectInfo].[State] AS [State], 
+    [RMC_ProjectInfo].[ProjectAddress] AS [ProjectAddress], 
+    [RMC_ProjectInfo].[ConstructionPermitId] AS [ConstructionPermitId], 
+    [RMC_ProjectInfo].[ConstructionUnit] AS [ConstructionUnit], 
+    [RMC_ProjectInfo].[DesignUnit] AS [DesignUnit], 
+    [RMC_ProjectInfo].[SupervisionUnit] AS [SupervisionUnit], 
+    [RMC_ProjectInfo].[GeneralContractor] AS [GeneralContractor], 
+    [RMC_ProjectInfo].[ProfessionalContractor] AS [ProfessionalContractor], 
+    [RMC_ProjectInfo].[DeleteFlag] AS [DeleteFlag], 
+    [RMC_ProjectInfo].[ModifiedTime] AS [ModifiedTime], 
+    [RMC_ProjectInfo].[ProjectLogo] AS [ProjectLogo], 
+    [RMC_ProjectInfo].[ProjectBackground] AS [ProjectBackground], 
+    [RMC_ProjectInfo].[Description] AS [Description]
+    FROM [dbo].[RMC_ProjectInfo] AS [RMC_ProjectInfo]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="RMC_Tree" EntityType="Self.RMC_Tree" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [RMC_Tree].[TreeID] AS [TreeID], 
+    [RMC_Tree].[ParentID] AS [ParentID], 
+    [RMC_Tree].[ItemID] AS [ItemID], 
+    [RMC_Tree].[IsItem] AS [IsItem], 
+    [RMC_Tree].[TreeName] AS [TreeName], 
+    [RMC_Tree].[Url] AS [Url], 
+    [RMC_Tree].[Icon] AS [Icon], 
+    [RMC_Tree].[IsMenu] AS [IsMenu], 
+    [RMC_Tree].[State] AS [State], 
+    [RMC_Tree].[DeleteFlag] AS [DeleteFlag], 
+    [RMC_Tree].[Enabled] AS [Enabled], 
+    [RMC_Tree].[Oderby] AS [Oderby], 
+    [RMC_Tree].[UploadTime] AS [UploadTime], 
+    [RMC_Tree].[ModifiedTime] AS [ModifiedTime], 
+    [RMC_Tree].[OverdueTime] AS [OverdueTime], 
+    [RMC_Tree].[Description] AS [Description], 
+    [RMC_Tree].[IsReview] AS [IsReview], 
+    [RMC_Tree].[FileType] AS [FileType]
+    FROM [dbo].[RMC_Tree] AS [RMC_Tree]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

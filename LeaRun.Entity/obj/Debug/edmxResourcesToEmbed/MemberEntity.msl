@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="kskfModelStoreContainer" CdmEntityContainer="kskfEntities">
+    <EntitySetMapping Name="RMC_ProjectInfo">
+      <EntityTypeMapping TypeName="kskfModel.RMC_ProjectInfo">
+        <MappingFragment StoreEntitySet="RMC_ProjectInfo">
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="TreeID" ColumnName="TreeID" />
+          <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="ProjectAddress" ColumnName="ProjectAddress" />
+          <ScalarProperty Name="ConstructionPermitId" ColumnName="ConstructionPermitId" />
+          <ScalarProperty Name="ConstructionUnit" ColumnName="ConstructionUnit" />
+          <ScalarProperty Name="DesignUnit" ColumnName="DesignUnit" />
+          <ScalarProperty Name="SupervisionUnit" ColumnName="SupervisionUnit" />
+          <ScalarProperty Name="GeneralContractor" ColumnName="GeneralContractor" />
+          <ScalarProperty Name="ProfessionalContractor" ColumnName="ProfessionalContractor" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
+          <ScalarProperty Name="ProjectLogo" ColumnName="ProjectLogo" />
+          <ScalarProperty Name="ProjectBackground" ColumnName="ProjectBackground" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RMC_Tree">
+      <EntityTypeMapping TypeName="kskfModel.RMC_Tree">
+        <MappingFragment StoreEntitySet="RMC_Tree">
+          <ScalarProperty Name="TreeID" ColumnName="TreeID" />
+          <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+          <ScalarProperty Name="IsItem" ColumnName="IsItem" />
+          <ScalarProperty Name="TreeName" ColumnName="TreeName" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="Icon" ColumnName="Icon" />
+          <ScalarProperty Name="IsMenu" ColumnName="IsMenu" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+          <ScalarProperty Name="Oderby" ColumnName="Oderby" />
+          <ScalarProperty Name="UploadTime" ColumnName="UploadTime" />
+          <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
+          <ScalarProperty Name="OverdueTime" ColumnName="OverdueTime" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IsReview" ColumnName="IsReview" />
+          <ScalarProperty Name="FileType" ColumnName="FileType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

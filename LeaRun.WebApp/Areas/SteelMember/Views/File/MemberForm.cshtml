@@ -1,0 +1,313 @@
+﻿@{
+    ViewBag.Title = "构件库管理》表单页面";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+<script type="text/javascript">
+    //var KeyValue = GetQuery('KeyValue');
+    $(function () { 
+        InitControl();
+    })
+    //得到一个对象实体
+    function InitControl() {
+        if (!!GetQuery('KeyValue')) {
+            getAjax("/SteelMember/File/SetMemberForm", { KeyValue: GetQuery('KeyValue') }, function (data) {
+                var data = eval("(" + data + ")");
+                SetWebControls(data);
+            });
+        }
+        //else {
+        //    //显示顺序
+        //    AjaxJson("/SysManagement/Module/SortCode", {}, function (Data) {
+        //        $("#SortCode").val(Data);
+        //    })
+        //    //$("#ParentId").val(GetQuery('ModuleId'));
+        //    //$("#ParentName").val(GetQuery('ModuleName'));
+        //}
+    }
+    //保存事件
+    function AcceptClick() {
+        if (!CheckDataValid('#form1')) {
+            return false;
+        }
+        Loading(true, "正在提交数据...");
+        window.setTimeout(function () {
+            var postData = GetWebControls("#form1");
+            AjaxJson("/SteelMember/File/SubmitMember?KeyValue=" + GetQuery('KeyValue') + '&TreeId=' + GetQuery('TreeId'), postData, function (data) {
+                tipDialog(data.Message, 3, data.Code);
+                top.frames[tabiframeId()].btn_reload();
+                //top.frames[tabiframeId()].windowload();
+                closeDialog();
+            });
+        }, 200);
+    }
+
+    //上传模型图
+    function btn_uploadModelDrawing(KeyValue) {
+        var CAD = "";
+        var Model = "Model";
+        var url = "/SteelMember/File/UpLoadFile?KeyValue=" + GetQuery('KeyValue') + "&CAD=" + CAD + "&Model=" + Model;
+        Dialog(url, "UpLoadFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
+            top.frames[iframe].AcceptClick()
+            $("#gridTable").trigger("reloadGrid"); //重新载入
+        });
+    }
+
+    //上传CAD图纸
+    function btn_uploadCADDrawing(KeyValue) {
+        var CAD = "CAD";
+        var Model = "";
+        var url = "/SteelMember/File/UpLoadFile?KeyValue=" + GetQuery('KeyValue') + "&CAD=" + CAD + "&Model=" + Model;
+        Dialog(url, "UpLoadFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
+            top.frames[iframe].AcceptClick()
+            $("#gridTable").trigger("reloadGrid"); //重新载入
+        });
+    }
+
+</script>
+<form id="form1" style="margin: 1px">
+    @ViewData["qq"]
+    <div id="message" style="display: none"></div>
+    <table class="form">
+        <tr>
+            <th class="formTitle">
+                型号：
+            </th>
+            <td class="formValue">
+                <input id="MemberModel" type="text" class="txt required" datacol="yes" err="文件名" checkexpession="NotNull" />
+            </td>
+            <th class="formTitle">
+                截面面积：
+            </th>
+            <td class="formValue">
+                <input id="SectionalArea" type="text" class="txt" />
+            </td>
+
+        </tr>
+        <tr>
+            <th class="formTitle">
+                外表面积：
+            </th>
+            <td class="formValue">
+                <input id="SurfaceArea" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                理论重量：
+            </th>
+            <td class="formValue">
+                <input id="TheoreticalWeight" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                h：
+            </th>
+            <td class="formValue">
+                <input id="SectionalSize_h" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                B：
+            </th>
+            <td class="formValue">
+                <input id="SectionalSizeB" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                b：
+            </th>
+            <td class="formValue">
+                <input id="SectionalSize_b" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                D：
+            </th>
+            <td class="formValue">
+                <input id="SectionalSizeD" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                d：
+            </th>
+            <td class="formValue">
+                <input id="SectionalSize_d" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                t：
+            </th>
+            <td class="formValue">
+                <input id="SectionalSize_t" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                r：
+            </th>
+            <td class="formValue">
+                <input id="SectionalSize_r" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                r1：
+            </th>
+            <td class="formValue">
+                <input id="SectionalSize_r1" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                Ix：
+            </th>
+            <td class="formValue">
+                <input id="InertiaDistance_x" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                Iy：
+            </th>
+            <td class="formValue">
+                <input id="InertiaDistance_y" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                Ix0：
+            </th>
+            <td class="formValue">
+                <input id="InertiaDistance_x0" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                Iy0：
+            </th>
+            <td class="formValue">
+                <input id="InertiaDistance_y0" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                Ix1：
+            </th>
+            <td class="formValue">
+                <input id="InertiaDistance_x1" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                Iy1：
+            </th>
+            <td class="formValue">
+                <input id="InertiaDistance_y1" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                Iu：
+            </th>
+            <td class="formValue">
+                <input id="InertiaDistance_u" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                ix：
+            </th>
+            <td class="formValue">
+                <input id="InertiaRadius_x" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                ix0：
+            </th>
+            <td class="formValue">
+                <input id="InertiaRadius_x0" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                iy：
+            </th>
+            <td class="formValue">
+                <input id="InertiaRadius_y" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                iy0：
+            </th>
+            <td class="formValue">
+                <input id="InertiaRadius_y0" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                iu：
+            </th>
+            <td class="formValue">
+                <input id="InertiaRadius_u" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                Wx：
+            </th>
+            <td class="formValue">
+                <input id="SectionalModulus_x" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                Wy：
+            </th>
+            <td class="formValue">
+                <input id="SectionalModulus_y" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                Wx0：
+            </th>
+            <td class="formValue">
+                <input id="SectionalModulus_x0" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                Wy0：
+            </th>
+            <td class="formValue">
+                <input id="SectionalModulus_y0" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                Wu：
+            </th>
+            <td class="formValue">
+                <input id="SectionalModulus_u" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                Z0：
+            </th>
+            <td class="formValue">
+                <input id="GravityCenterDistance_0" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                X0：
+            </th>
+            <td class="formValue">
+                <input id="GravityCenterDistance_x0" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                Y0：
+            </th>
+            <td class="formValue">
+                <input id="GravityCenterDistance_y0" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                图纸：
+            </th>
+            <td class="formValue">
+                <input id="CAD_Drawing" type="text" class="txt" />
+                <input type="button" onclick="btn_uploadCADDrawing()" value="修改/上传" style="margin-left:120px" />
+            </td>
+            <th class="formTitle">
+                模型：
+            </th>
+            <td class="formValue">
+                <input id="Model_Drawing" type="text" class="txt" />
+                <input type="button" onclick="btn_uploadModelDrawing()" value="修改/上传" style="margin-left:120px" />
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,94 @@
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.pdb
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\log4net.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\Newtonsoft.Json.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\SharpZipLib.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\Oracle.DataAccess.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\MySql.Data.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\System.Data.SQLite.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.pdb
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.csprojResolveAssemblyReference.cache
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.dll
+D:\工作项目\LeaRun.快速信息化系统开发框架V4.1\LeaRun.快速信息化系统开发框架V4.1\project\LeaRun.Framework V4.1\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.pdb
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.pdb
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\log4net.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\Newtonsoft.Json.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\SharpZipLib.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\Oracle.DataAccess.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\MySql.Data.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\System.Data.SQLite.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.pdb
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\obj\Debug\ResolveAssemblyReference.cache
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.dll
+F:\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.pdb
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.pdb
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\log4net.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\Newtonsoft.Json.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\SharpZipLib.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\Oracle.DataAccess.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\MySql.Data.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\System.Data.SQLite.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.pdb
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.csprojResolveAssemblyReference.cache
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.dll
+E:\软件开发项目\20150203\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.pdb
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.pdb
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\log4net.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\Newtonsoft.Json.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\SharpZipLib.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\Oracle.DataAccess.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\MySql.Data.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\System.Data.SQLite.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.pdb
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.csprojResolveAssemblyReference.cache
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.dll
+D:\项目资料\快速信息化系统开发框架V4.1\code\LeaRun.Framework V4.1\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.pdb
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.dll.config
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.pdb
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\bin\Debug\log4net.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\bin\Debug\SharpZipLib.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\bin\Debug\Oracle.DataAccess.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\bin\Debug\MySql.Data.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\bin\Debug\System.Data.SQLite.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.pdb
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.dll
+C:\Users\Administrator\Desktop\SteelMember\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.pdb
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.dll.config
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.dll
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.pdb
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.dll
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\bin\Debug\log4net.dll
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\bin\Debug\Newtonsoft.Json.dll
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\bin\Debug\SharpZipLib.dll
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\bin\Debug\Oracle.DataAccess.dll
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\bin\Debug\MySql.Data.dll
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\bin\Debug\System.Data.SQLite.dll
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.pdb
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.csprojResolveAssemblyReference.cache
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.dll
+D:\project\GangGouJian\GGJ\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.pdb
+D:\SSKJProject\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.dll.config
+D:\SSKJProject\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.dll
+D:\SSKJProject\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.pdb
+D:\SSKJProject\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.dll
+D:\SSKJProject\LeaRun.Utilities\bin\Debug\log4net.dll
+D:\SSKJProject\LeaRun.Utilities\bin\Debug\Newtonsoft.Json.dll
+D:\SSKJProject\LeaRun.Utilities\bin\Debug\SharpZipLib.dll
+D:\SSKJProject\LeaRun.Utilities\bin\Debug\Oracle.DataAccess.dll
+D:\SSKJProject\LeaRun.Utilities\bin\Debug\MySql.Data.dll
+D:\SSKJProject\LeaRun.Utilities\bin\Debug\System.Data.SQLite.dll
+D:\SSKJProject\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.pdb
+D:\SSKJProject\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.csprojResolveAssemblyReference.cache
+D:\SSKJProject\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.dll
+D:\SSKJProject\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.pdb
