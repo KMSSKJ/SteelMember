@@ -1667,10 +1667,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     ht.Model_Drawing = "1.png";
                 }
                 var filename = ht.CAD_Drawing.Substring(0, ht.CAD_Drawing.LastIndexOf('.'));//获取文件名称，去除后缀名
-                string virtualPath = "~/Resource/Document/NetworkDisk/System/Member/" + filename + "/";
+                string virtualPath = "../../Resource/Document/NetworkDisk/System/Member/" + filename + "/";
 
                 var filename1 = ht.Model_Drawing.Substring(0, ht.Model_Drawing.LastIndexOf('.'));//获取文件名称，去除后缀名
-                string virtualPath1 = "~/Resource/Document/NetworkDisk/System/Member/" + filename1 + "/";
+                string virtualPath1 = "../../Resource/Document/NetworkDisk/System/Member/" + filename1 + "/";
                 //string fullFileName = this.Server.MapPath(virtualPath);
                 var file = virtualPath + ht.CAD_Drawing;
                 var file1 = virtualPath1 + ht.Model_Drawing;
