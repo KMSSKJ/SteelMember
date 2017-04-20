@@ -17,11 +17,16 @@ namespace SteelMember.Models
         public Nullable<int> ProjectDemandId { get; set; }
         public string Description { get; set; }
         public Nullable<int> DeleteFlag { get; set; }
+        public Nullable<int> IsSubmit { get; set; }
+        public string SubmitMan { get; set; }
+        public string SubmitTime { get; set; }
         public Nullable<int> ConfirmOrder { get; set; }
+        public string ConfirmMan { get; set; }
         public Nullable<int> RawMaterialId { get; set; }
         public string RawMaterialUnitPrice { get; set; }
         public string RawMaterialConsumption { get; set; }
         public Nullable<decimal> OrderBudget { get; set; }
         public Nullable<System.DateTime> ModifiedTime { get; set; }
+       
     }
 }

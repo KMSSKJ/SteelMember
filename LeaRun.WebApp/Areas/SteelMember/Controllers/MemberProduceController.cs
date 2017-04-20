@@ -153,9 +153,11 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     produceorder.OrderNumbering = order.OrderNumbering;
                     produceorder.MemberName = member.MemberName;
                     produceorder.MemberModel = member.MemberModel;
-                    produceorder.RawMaterialConsumption = item.RawMaterialConsumption;
-                    produceorder.OrderBudget = item.OrderBudget;
+                    produceorder.IsSubmit = item.IsSubmit;
+                    produceorder.SubmitMan = item.SubmitMan;
+                    produceorder.SubmitTime = item.SubmitTime.ToString();
                     produceorder.ConfirmOrder = item.ConfirmOrder;
+                    produceorder.ConfirmMan = item.ConfirmMan;
                     produceorder.Description = item.Description;
                     produceorderlist.Add(produceorder);
                 }
@@ -1571,7 +1573,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             image.Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg);
             fs.Close();
             image.Dispose();
-            return Content("~/Resource/Document/NetworkDisk/QRCode/" + filename);
+            return Content("../../Resource/Document/NetworkDisk/QRCode/" + filename);
         }
 
         /// <summary>

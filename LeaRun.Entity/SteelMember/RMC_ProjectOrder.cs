@@ -23,7 +23,10 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<int> IsReview { get; set; }
         public string ReviewMan { get; set; }
         public Nullable<int> IsSubmit { get; set; }
+        public string SubmitMan { get; set; }
+        public Nullable<System.DateTime> SubmitTime { get; set; }
         public Nullable<int> ConfirmOrder { get; set; }
+        public string ConfirmMan { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateMan { get; set; }
         public Nullable<int> RawMaterialId { get; set; }

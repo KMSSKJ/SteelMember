@@ -1252,7 +1252,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 oldentity1 = ProjectInfoCurrent.Find(f => f.ProjectId == key_value).SingleOrDefault();
                 if (CAD != null)
                 {
-                    string virtualPath = this.Server.MapPath(string.Format("~~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
+                    string virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
                     string fullFileName = virtualPath + "/" + Filedata.FileName;
 
                     if (oldentity.CAD_Drawing == null || oldentity.CAD_Drawing == "")
@@ -1274,7 +1274,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
                 else if (Model != null)
                 {
-                    string virtualPath = this.Server.MapPath(string.Format("~~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
+                    string virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
                     string fullFileName = virtualPath + "/" + Filedata.FileName;
 
                     if (oldentity.Model_Drawing == null || oldentity.Model_Drawing == "")
@@ -1296,7 +1296,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
                 else if (Logo != null)
                 {
-                    string virtualPath = this.Server.MapPath(string.Format("~~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Project", filename));// UserId,
+                    string virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Project", filename));// UserId,
                     string fullFileName = virtualPath + "/" + Filedata.FileName;
 
                     if (oldentity1.ProjectLogo == null || oldentity1.ProjectLogo == "")
@@ -1318,7 +1318,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
                 else if (Background != null)
                 {
-                    string virtualPath = this.Server.MapPath(string.Format("~~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Project", filename));// UserId,
+                    string virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Project", filename));// UserId,
                     string fullFileName = virtualPath + "/" + Filedata.FileName;
 
                     if (oldentity1.ProjectBackground == null || oldentity1.ProjectBackground == "")
