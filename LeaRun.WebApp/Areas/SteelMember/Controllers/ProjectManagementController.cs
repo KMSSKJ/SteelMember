@@ -388,9 +388,9 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 int memberid = Convert.ToInt32(KeyValue);
                 var Entity = MemberLibraryCurrent.Find(f => f.MemberID == memberid).SingleOrDefault();
                 var filename = Entity.CAD_Drawing.Substring(0, Entity.CAD_Drawing.LastIndexOf('.'));//获取文件名称，去除后缀名
-                string virtualPath = "~/Resource/Document/NetworkDisk/System/Member/" + filename + "/";
+                string virtualPath = "../../Resource/Document/NetworkDisk/System/Member/" + filename + "/";
                 var filename1 = Entity.Model_Drawing.Substring(0, Entity.Model_Drawing.LastIndexOf('.'));//获取文件名称，去除后缀名
-                string virtualPath1 = "~/Resource/Document/NetworkDisk/System/Member/" + filename1 + "/";
+                string virtualPath1 = "../../Resource/Document/NetworkDisk/System/Member/" + filename1 + "/";
 
                 projectdemand.CADDrawing = virtualPath + Entity.CAD_Drawing;
                 projectdemand.ModelDrawing = virtualPath1 + Entity.Model_Drawing;
