@@ -180,7 +180,7 @@
         if (IsChecked(KeyValue)) {
             var CAD_Drawing1 = CAD_Drawing.replace(/"/, "'").replace(/"/, "'");
             var Model_Drawing1 = Model_Drawing.replace(/"/, "'").replace(/"/, "'");
-            if (CAD_Drawing1 == "<img src='~/Content/Images/checkokmark.gif'>" || Model_Drawing1 == "<img src='~/Content/Images/checkokmark.gif'>") {
+            if (CAD_Drawing1 == "<img src='../../Content/Images/checkokmark.gif'>" || Model_Drawing1 == "<img src='../../Content/Images/checkokmark.gif'>") {
                 if (Sort == "1") {
                     var url = '/SteelMember/File/DrawingManagement?KeyValue=' + KeyValue;
                     Dialog(url, "DrawingManagement", "文件管理", 900, 890, function (iframe) {

@@ -1,0 +1,5 @@
+D:\SSKJProject\LeaRun.Cache\bin\Debug\LeaRun.Cache.dll
+D:\SSKJProject\LeaRun.Cache\bin\Debug\LeaRun.Cache.pdb
+D:\SSKJProject\LeaRun.Cache\obj\Debug\LeaRun.Cache.csprojResolveAssemblyReference.cache
+D:\SSKJProject\LeaRun.Cache\obj\Debug\LeaRun.Cache.dll
+D:\SSKJProject\LeaRun.Cache\obj\Debug\LeaRun.Cache.pdb
