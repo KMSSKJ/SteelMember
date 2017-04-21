@@ -8692,7 +8692,6 @@
     <Content Include="Areas\SteelMember\Views\MemberProduce\Form.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\Index.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\OrderForm.cshtml" />
-    <Content Include="Areas\SteelMember\Views\MemberProduce\OrderIndex.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\PrintPage.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\ProcessForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\ProcessIndex.cshtml" />
