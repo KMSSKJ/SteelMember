@@ -493,9 +493,6 @@ D:\project\GangGouJian\GGJ\LeaRun.WebApp\obj\Debug\RdlCompile.cache
 D:\project\GangGouJian\GGJ\LeaRun.WebApp\obj\Debug\RdlCompile.compiled
 D:\project\GangGouJian\GGJ\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.dll
 D:\project\GangGouJian\GGJ\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.pdb
-D:\SSKJProject\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.csprojResolveAssemblyReference.cache
-D:\SSKJProject\LeaRun.WebApp\obj\Debug\RdlCompile.cache
-D:\SSKJProject\LeaRun.WebApp\obj\Debug\RdlCompile.compiled
 D:\SSKJProject\LeaRun.WebApp\bin\LeaRun.WebApp.dll.config
 D:\SSKJProject\LeaRun.WebApp\bin\LeaRun.WebApp.dll
 D:\SSKJProject\LeaRun.WebApp\bin\LeaRun.WebApp.pdb
@@ -561,7 +558,6 @@ D:\SSKJProject\LeaRun.WebApp\bin\pt\Microsoft.SqlServer.Types.resources.dll
 D:\SSKJProject\LeaRun.WebApp\bin\ru\Microsoft.SqlServer.Types.resources.dll
 D:\SSKJProject\LeaRun.WebApp\bin\zh-Hans\Microsoft.SqlServer.Types.resources.dll
 D:\SSKJProject\LeaRun.WebApp\bin\zh-Hant\Microsoft.SqlServer.Types.resources.dll
-D:\SSKJProject\LeaRun.WebApp\bin\zh-Hans\System.Web.Mvc.resources.dll
 D:\SSKJProject\LeaRun.WebApp\bin\zh-Hans\System.Net.Http.resources.dll
 D:\SSKJProject\LeaRun.WebApp\bin\zh-Hans\System.Net.Http.Formatting.resources.dll
 D:\SSKJProject\LeaRun.WebApp\bin\zh-Hans\System.Net.Http.WebRequest.resources.dll
@@ -572,5 +568,8 @@ D:\SSKJProject\LeaRun.WebApp\bin\zh-Hans\System.Web.Razor.resources.dll
 D:\SSKJProject\LeaRun.WebApp\bin\zh-Hans\System.Web.WebPages.resources.dll
 D:\SSKJProject\LeaRun.WebApp\bin\zh-Hans\System.Web.WebPages.Deployment.resources.dll
 D:\SSKJProject\LeaRun.WebApp\bin\zh-Hans\System.Web.WebPages.Razor.resources.dll
+D:\SSKJProject\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.csprojResolveAssemblyReference.cache
+D:\SSKJProject\LeaRun.WebApp\obj\Debug\RdlCompile.cache
+D:\SSKJProject\LeaRun.WebApp\obj\Debug\RdlCompile.compiled
 D:\SSKJProject\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.dll
 D:\SSKJProject\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.pdb
