@@ -13,6 +13,7 @@
         var Data;
         $(function () {
             InitControl();
+            LoadMemberUnit();
         })
         //得到一个对象实体
         function InitControl() {
@@ -39,6 +40,34 @@
                     closeDialog();
                 });
             }, 200);
+        };
+
+        //载入构件单位
+        function LoadMemberUnit() {
+            $.ajax({
+                url: '/SteelMember/ProjectManagement/GetMemderUnit',
+                type: 'post',
+                datatype: 'Json',
+                data: {},
+                success: function (data) {
+                    if (data) {
+                        var projectname_sel = [];
+                        // projectname_sel.push('<option value="" selected>请选择</option>')
+                        for (var i = 0, len = data.length; i < len; i++) {
+                            var projectname = data[i];
+                            projectname_sel.push('<option value="' + projectname.UnitId + '">' + projectname.UnitName + '</option>')
+                        }
+                        $("#RawMaterialUnit").html(projectname_sel.join(' '));
+                        if (!!KeyValue) {
+                            //编辑时获取值
+                            $("#UnitId  option[value='" + Data.UnitId + "']").attr("selected", true);
+                        }
+                    }
+                },
+                error: function () {
+
+                }
+            });
         };
     </script>
 </head>
@@ -73,7 +102,7 @@
                     单位：
                 </th>
                 <td class="formValue">
-                    <input id="RawMaterialUnit" type="text" class="txt" />
+                    <input id="UnitId" type="text" class="txt" />
                 </td>
             </tr>
             <tr>

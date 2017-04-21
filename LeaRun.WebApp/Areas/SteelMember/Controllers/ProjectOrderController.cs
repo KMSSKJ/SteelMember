@@ -403,6 +403,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 var file = OrderManagementCurrent.Find(f => f.OrderId == OrderId).First();
                 file.ModifiedTime = DateTime.Now;
                 file.IsSubmit = 1;
+                file.SubmitTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-mm-dd hh:MM:ss"));
+                file.SubmitMan = "System";
                 OrderManagementCurrent.Modified(file);
 
                 List<RMC_ProjectWarehouse> projectwarehouselist = ProjectWarehouseCurrent.Find(f => f.MemberId == _MemberId).ToList();

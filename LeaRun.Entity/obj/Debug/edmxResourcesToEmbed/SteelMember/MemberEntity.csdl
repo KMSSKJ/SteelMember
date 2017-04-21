@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="kskfModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="kskfEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="TestTable" EntityType="kskfModel.TestTable" />
     <EntitySet Name="RMC_Company" EntityType="kskfModel.RMC_Company" />
     <EntitySet Name="RMC_FactoryWarehouse" EntityType="kskfModel.RMC_FactoryWarehouse" />
     <EntitySet Name="RMC_MemberLibrary" EntityType="kskfModel.RMC_MemberLibrary" />
@@ -14,6 +15,17 @@
     <EntitySet Name="RMC_ShipManagement" EntityType="kskfModel.RMC_ShipManagement" />
     <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
   </EntityContainer>
+  <EntityType Name="TestTable">
+    <Key>
+      <PropertyRef Name="TestId" />
+    </Key>
+    <Property Name="TestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="Int32" Nullable="false" />
+    <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="CreateUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
   <EntityType Name="RMC_Company">
     <Key>
       <PropertyRef Name="MemberCompanyId" />
@@ -220,7 +232,10 @@
     <Property Name="IsReview" Type="Int32" />
     <Property Name="ReviewMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="IsSubmit" Type="Int32" />
+    <Property Name="SubmitMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="SubmitTime" Type="DateTime" Precision="3" />
     <Property Name="ConfirmOrder" Type="Int32" />
+    <Property Name="ConfirmMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="CreateTime" Type="DateTime" Precision="3" />
     <Property Name="CreateMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="RawMaterialId" Type="Int32" />
@@ -258,9 +273,11 @@
     <Property Name="RawMaterialName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
     <Property Name="RawMaterialStandard" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
     <Property Name="RawMaterialNumber" Type="Int32" />
-    <Property Name="RawMaterialUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="UnitId" Type="Int32" />
     <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="DeleteFlag" Type="Int32" />
+    <Property Name="UnitPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="UnitName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="RMC_ShipManagement">
     <Key>

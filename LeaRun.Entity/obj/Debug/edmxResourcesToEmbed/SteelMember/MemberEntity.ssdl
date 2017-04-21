@@ -206,7 +206,10 @@
     <Property Name="IsReview" Type="int" />
     <Property Name="ReviewMan" Type="nvarchar" MaxLength="10" />
     <Property Name="IsSubmit" Type="int" />
+    <Property Name="SubmitMan" Type="nvarchar" MaxLength="10" />
+    <Property Name="SubmitTime" Type="datetime" />
     <Property Name="ConfirmOrder" Type="int" />
+    <Property Name="ConfirmMan" Type="nvarchar" MaxLength="10" />
     <Property Name="CreateTime" Type="datetime" />
     <Property Name="CreateMan" Type="nvarchar" MaxLength="10" />
     <Property Name="RawMaterialId" Type="int" />
@@ -244,9 +247,11 @@
     <Property Name="RawMaterialName" Type="nvarchar" MaxLength="30" />
     <Property Name="RawMaterialStandard" Type="nvarchar" MaxLength="30" />
     <Property Name="RawMaterialNumber" Type="int" />
-    <Property Name="RawMaterialUnit" Type="nvarchar" MaxLength="10" />
+    <Property Name="UnitId" Type="int" />
     <Property Name="Description" Type="nvarchar" MaxLength="500" />
     <Property Name="DeleteFlag" Type="int" />
+    <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="UnitName" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="RMC_ShipManagement">
     <Key>
@@ -295,6 +300,17 @@
     <Property Name="IsReview" Type="int" />
     <Property Name="FileType" Type="nvarchar" MaxLength="20" />
   </EntityType>
+  <EntityType Name="TestTable">
+    <Key>
+      <PropertyRef Name="TestId" />
+    </Key>
+    <Property Name="TestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="int" Nullable="false" />
+    <Property Name="FullName" Type="varchar" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="CreateUserName" Type="varchar" MaxLength="50" />
+    <Property Name="Remark" Type="varchar" MaxLength="200" />
+  </EntityType>
   <EntityContainer Name="kskfModelStoreContainer">
     <EntitySet Name="RMC_Company" EntityType="Self.RMC_Company" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_FactoryWarehouse" EntityType="Self.RMC_FactoryWarehouse" Schema="dbo" store:Type="Tables" />
@@ -308,5 +324,6 @@
     <EntitySet Name="RMC_RawMaterialLibrary" EntityType="Self.RMC_RawMaterialLibrary" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_ShipManagement" EntityType="Self.RMC_ShipManagement" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_Tree" EntityType="Self.RMC_Tree" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TestTable" EntityType="Self.TestTable" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>

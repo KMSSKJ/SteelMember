@@ -43,6 +43,9 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public ShipManagementIBLL ShipManagementCurrent { get; set; }
         [Inject]
         public ProjectWarehouseIBLL ProjectWarehouseCurrent { get; set; }
+
+        [Inject]
+        public MemberUnitIBLL MemberUnitCurrent { get; set; }
         public virtual ActionResult Index()
         {
             return View();
@@ -310,7 +313,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         }
 
         /// <summary>
-        /// 确认文件
+        /// 确认生产订单
         /// </summary>
         /// <param name="FolderId"></param>
         /// <returns></returns>
@@ -322,6 +325,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 var file = OrderManagementCurrent.Find(f => f.OrderId == OrderId).First();
                 file.ModifiedTime = DateTime.Now;
                 file.ConfirmOrder = 1;
+                file.ConfirmMan = "System";
                 OrderManagementCurrent.Modified(file);
                 var tree = TreeCurrent.Find(f => f.TreeName == "生产制程设计").SingleOrDefault();
                 if (tree != null)
@@ -349,6 +353,37 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         #endregion
 
         #region 构件厂原材料库存管理
+
+        public ActionResult TreeJsonRawMaterials(string ItemId)
+        {
+            int itemid = Convert.ToInt32(ItemId);
+            List<RMC_Tree> list = TreeCurrent.Find(t => t.ItemID == itemid && t.DeleteFlag != 1).ToList();
+            List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
+            foreach (RMC_Tree item in list)
+            {
+                TreeJsonEntity tree = new TreeJsonEntity();
+                bool hasChildren = false;
+                List<RMC_Tree> childnode = list.FindAll(t => t.ParentID == item.TreeID);
+                if (childnode.Count > 0)
+                {
+                    hasChildren = true;
+                }
+                tree.id = item.TreeID.ToString();
+                tree.text = item.TreeName;
+                tree.icon = item.Icon;
+                tree.ismenu = item.IsMenu.ToString();
+                tree.url = item.Url;
+                tree.value = item.TreeID.ToString();
+                tree.isexpand = item.State == 1 ? true : false;
+                tree.complete = true;
+                tree.hasChildren = hasChildren;
+                tree.parentId = item.ParentID.ToString();
+                //tree.iconCls = item.Icon != null ? "/Content/Images/Icon16/" + item.Icon : item.Icon;
+                TreeList.Add(tree);
+            }
+            return Content(TreeList.TreeToJson());
+        }
+
         public ActionResult RawMaterialsIndex()
         {
             return View();
@@ -360,7 +395,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <param name="FolderId">文件夹ID</param>
         /// <param name="IsPublic">是否公共 1-公共、0-我的</param>
         /// <returns></returns>         
-        public ActionResult GridListJsonRawMaterials(/*ProjectInfoViewModel model,*/ string TreeID, JqGridParam jqgridparam, string IsPublic)
+        public ActionResult GridListJsonRawMaterials(/*ProjectInfoViewModel model,*/ string TreeID, JqGridParam jqgridparam, RMC_RawMaterialLibrary RawMaterialLibrary, string IsPublic)
         {
             try
             {
@@ -368,7 +403,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //int FolderId = Convert.ToInt32(FolderId);
                 if (TreeID == "" || TreeID == null)
                 {
-                    TreeId = 24;
+                    TreeId = 29;
                 }
                 else
                 {
@@ -405,27 +440,26 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                          , f => f.RawMaterialId.ToString()
                                          , out total
                                          ).ToList();
-                //List<ProduceOrderModel> produceorderlist = new List<ProduceOrderModel>();
-                //foreach (var item in listfile)
-                //{
-                //    ProduceOrderModel produceorder = new ProduceOrderModel();
-                //    produceorder.OrderId = item.OrderId;
-                //    var order = OrderManagementCurrent.Find(f => f.OrderId == item.OrderId).SingleOrDefault();
-                //    var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == order.ProjectDemandId).SingleOrDefault();
-                //    var member = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
-                //    produceorder.MemberNumbering = member.MemberNumbering;
-                //    produceorder.MemberName = member.MemberModel;
-                //    produceorder.RawMaterialConsumption = item.RawMaterialConsumption;
-                //    produceorder.OrderBudget = item.OrderBudget;
-                //    produceorder.ConfirmOrder = item.ConfirmOrder;
-                //    produceorder.Description = item.Description;
-                //    produceorderlist.Add(produceorder);
-                //}
-                if (listfile.Count() > 0)// && listtree.Count() > 0
+                List<RMC_RawMaterialLibrary> RawMaterialLibrarylist = new List<RMC_RawMaterialLibrary>();
+                foreach (var item in listfile)
+                {
+
+                    var Unit = MemberUnitCurrent.Find(f => f.UnitId == item.UnitId).SingleOrDefault();
+                    RawMaterialLibrary.UnitName = Unit.UnitName;
+                    RawMaterialLibrary.RawMaterialId = item.RawMaterialId;
+                    RawMaterialLibrary.RawMaterialName = item.RawMaterialName;
+                    RawMaterialLibrary.RawMaterialNumber = item.RawMaterialNumber;
+                    RawMaterialLibrary.RawMaterialStandard = item.RawMaterialStandard;
+                    RawMaterialLibrary.UnitPrice = item.UnitPrice;
+                    RawMaterialLibrary.TreeId = item.TreeId;
+                    RawMaterialLibrary.Description= item.Description;
+                    RawMaterialLibrarylist.Add(RawMaterialLibrary);
+                }
+                if (RawMaterialLibrarylist.Count() > 0)// && listtree.Count() > 0
                 {
 
                     //ListData0 = ListToDataTable(listtree);
-                    ListData1 = DataHelper.ListToDataTable(listfile);
+                    ListData1 = DataHelper.ListToDataTable(RawMaterialLibrarylist);
                     ListData = ListData1.Clone();
                     object[] obj = new object[ListData.Columns.Count];
                     ////添加DataTable0的数据
@@ -448,7 +482,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //}
                 else if (listfile.Count() > 0)
                 {
-                    ListData = DataHelper.ListToDataTable(listfile);
+                    ListData = DataHelper.ListToDataTable(RawMaterialLibrarylist);
                 }
                 else
                 {
@@ -519,7 +553,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.RawMaterialName = entity.RawMaterialName;
                     Oldentity.RawMaterialNumber = entity.RawMaterialNumber;
                     Oldentity.RawMaterialStandard = entity.RawMaterialStandard;
-                    Oldentity.RawMaterialUnit = entity.RawMaterialUnit;
+                    Oldentity.UnitId = entity.UnitId;
                     Oldentity.RawMaterialNumber = entity.RawMaterialNumber;
                     Oldentity.Description = entity.Description;
                     RawMaterialCurrent.Modified(Oldentity);
@@ -534,7 +568,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.RawMaterialName = entity.RawMaterialName;
                     Oldentity.RawMaterialNumber = entity.RawMaterialNumber;
                     Oldentity.RawMaterialStandard = entity.RawMaterialStandard;
-                    Oldentity.RawMaterialUnit = entity.RawMaterialUnit;
+                    Oldentity.UnitId = entity.UnitId;
                     Oldentity.RawMaterialNumber = entity.RawMaterialNumber;
                     Oldentity.Description = entity.Description;
                     RawMaterialCurrent.Add(Oldentity);

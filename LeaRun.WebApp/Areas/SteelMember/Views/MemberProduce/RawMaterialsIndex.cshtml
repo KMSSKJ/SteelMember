@@ -21,15 +21,14 @@
                 TreeName = node.text;
                 GridFolderEvent(TreeId);
             },
-            url: "@Url.Content("/SteelMember/ProjectInfo/TreeJson")?ItemId=" + ItemId
+            url: "@Url.Content("/SteelMember/MemberProduce/TreeJsonRawMaterials")?ItemId=" + ItemId
     };
     $("#ItemsTree").treeview(itemtree);
     };
     //表格文件夹点击事件
-    function GridFolderEvent(TreeID) {
-        TreeId = TreeID;
+    function GridFolderEvent(TreeId) {
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonRawMaterials")?TreeId=" + TreeId, page: 1
+            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonRawMaterials")?TreeID=" + TreeId, page: 1
         }).trigger('reloadGrid');
     };
 
@@ -43,11 +42,12 @@
             autowidth: true,
             colModel: [
                     { label: '主键', name: "RawMaterialId", hidden: true },
-                    { label: '原材料名称', name: "RawMaterialName", index: "MemberNumbering", width: 10 },
-                    { label: '材料规格', name: "RawMaterialStandard", index: "MemberName", width: 10 },
-                    { label: '库存量', name: "RawMaterialNumber", index: "RawMaterialConsumption", width: 20 },
-                    { label: "单位", name: "RawMaterialUnit", index: "OrderBudget", width: 8 },
-                    { label: '备注', name: 'Description', index: 'Description', width: 12 },
+                    { label: '原材料名称', name: "RawMaterialName", index: "MemberNumbering", width: 15 },
+                    { label: '材料规格', name: "RawMaterialStandard", index: "MemberName", width: 15 },
+                    { label: "单位", name: "RawMaterialUnit", index: "OrderBudget", width: 10 },
+                    { label: "单价", name: "UnitPrice", index: "UnitPrice", width: 10 },
+                    { label: '库存量', name: "RawMaterialNumber", index: "RawMaterialConsumption", width:10 },
+                    { label: '备注', name: 'Description', index: 'Description', width: 15 },
             ],
             rowNum: 30,
             sortname: 'SortCode',

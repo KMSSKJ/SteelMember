@@ -10,3 +10,4 @@ D:\SSKJProject\LeaRun.Resource\obj\Debug\zh-CN\LeaRun.Resource.resources.dll
 D:\SSKJProject\LeaRun.Resource\obj\Debug\zh-TW\LeaRun.Resource.resources.dll
 D:\SSKJProject\LeaRun.Resource\obj\Debug\LeaRun.Resource.dll
 D:\SSKJProject\LeaRun.Resource\obj\Debug\LeaRun.Resource.pdb
+D:\SSKJProject\LeaRun.Resource\obj\Debug\LeaRun.Resource.csprojResolveAssemblyReference.cache

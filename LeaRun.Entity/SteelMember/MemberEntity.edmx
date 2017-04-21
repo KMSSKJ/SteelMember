@@ -252,9 +252,11 @@
           <Property Name="RawMaterialName" Type="nvarchar" MaxLength="30" />
           <Property Name="RawMaterialStandard" Type="nvarchar" MaxLength="30" />
           <Property Name="RawMaterialNumber" Type="int" />
-          <Property Name="RawMaterialUnit" Type="nvarchar" MaxLength="10" />
+          <Property Name="UnitId" Type="int" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
           <Property Name="DeleteFlag" Type="int" />
+          <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="UnitName" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="RMC_ShipManagement">
           <Key>
@@ -303,6 +305,17 @@
           <Property Name="IsReview" Type="int" />
           <Property Name="FileType" Type="nvarchar" MaxLength="20" />
         </EntityType>
+        <EntityType Name="TestTable">
+          <Key>
+            <PropertyRef Name="TestId" />
+          </Key>
+          <Property Name="TestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="int" Nullable="false" />
+          <Property Name="FullName" Type="varchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="CreateUserName" Type="varchar" MaxLength="50" />
+          <Property Name="Remark" Type="varchar" MaxLength="200" />
+        </EntityType>
         <EntityContainer Name="kskfModelStoreContainer">
           <EntitySet Name="RMC_Company" EntityType="Self.RMC_Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMC_FactoryWarehouse" EntityType="Self.RMC_FactoryWarehouse" Schema="dbo" store:Type="Tables" />
@@ -316,12 +329,14 @@
           <EntitySet Name="RMC_RawMaterialLibrary" EntityType="Self.RMC_RawMaterialLibrary" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMC_ShipManagement" EntityType="Self.RMC_ShipManagement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMC_Tree" EntityType="Self.RMC_Tree" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestTable" EntityType="Self.TestTable" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="kskfModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="kskfEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TestTable" EntityType="kskfModel.TestTable" />
           <EntitySet Name="RMC_Company" EntityType="kskfModel.RMC_Company" />
           <EntitySet Name="RMC_FactoryWarehouse" EntityType="kskfModel.RMC_FactoryWarehouse" />
           <EntitySet Name="RMC_MemberLibrary" EntityType="kskfModel.RMC_MemberLibrary" />
@@ -329,12 +344,23 @@
           <EntitySet Name="RMC_ProcessManagement" EntityType="kskfModel.RMC_ProcessManagement" />
           <EntitySet Name="RMC_ProjectDemand" EntityType="kskfModel.RMC_ProjectDemand" />
           <EntitySet Name="RMC_ProjectInfo" EntityType="kskfModel.RMC_ProjectInfo" />
+          <EntitySet Name="RMC_ProjectOrder" EntityType="kskfModel.RMC_ProjectOrder" />
           <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
           <EntitySet Name="RMC_RawMaterialLibrary" EntityType="kskfModel.RMC_RawMaterialLibrary" />
           <EntitySet Name="RMC_ShipManagement" EntityType="kskfModel.RMC_ShipManagement" />
           <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
-          <EntitySet Name="RMC_ProjectOrder" EntityType="kskfModel.RMC_ProjectOrder" />
-        </EntityContainer>
+          </EntityContainer>
+        <EntityType Name="TestTable">
+          <Key>
+            <PropertyRef Name="TestId" />
+          </Key>
+          <Property Name="TestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="Int32" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="RMC_Company">
           <Key>
             <PropertyRef Name="MemberCompanyId" />
@@ -528,6 +554,33 @@
           <Property Name="ProjectBackground" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="RMC_ProjectOrder">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TreeId" Type="Int32" />
+          <Property Name="ProjectDemandId" Type="Int32" />
+          <Property Name="OrderNumbering" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="OrderNumber" Type="Int32" />
+          <Property Name="OrderBudget" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="IsReview" Type="Int32" />
+          <Property Name="ReviewMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IsSubmit" Type="Int32" />
+          <Property Name="SubmitMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SubmitTime" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmOrder" Type="Int32" />
+          <Property Name="ConfirmMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="RawMaterialId" Type="Int32" />
+          <Property Name="RawMaterialUnitPrice" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="RawMaterialConsumption" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="Productioned" Type="Int32" />
+          <Property Name="ModifiedTime" Type="DateTime" Precision="3" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="RMC_ProjectWarehouse">
           <Key>
             <PropertyRef Name="ProjectWarehouseId" />
@@ -555,9 +608,11 @@
           <Property Name="RawMaterialName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="RawMaterialStandard" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="RawMaterialNumber" Type="Int32" />
-          <Property Name="RawMaterialUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UnitId" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="UnitName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="RMC_ShipManagement">
           <Key>
@@ -606,39 +661,24 @@
           <Property Name="IsReview" Type="Int32" />
           <Property Name="FileType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="RMC_ProjectOrder">
-          <Key>
-            <PropertyRef Name="OrderId" />
-          </Key>
-          <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TreeId" Type="Int32" />
-          <Property Name="ProjectDemandId" Type="Int32" />
-          <Property Name="OrderNumbering" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="OrderNumber" Type="Int32" />
-          <Property Name="OrderBudget" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="IsReview" Type="Int32" />
-          <Property Name="ReviewMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="IsSubmit" Type="Int32" />
-          <Property Name="SubmitMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="SubmitTime" Type="DateTime" Precision="3" />
-          <Property Name="ConfirmOrder" Type="Int32" />
-          <Property Name="ConfirmMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="RawMaterialId" Type="Int32" />
-          <Property Name="RawMaterialUnitPrice" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="RawMaterialConsumption" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DeleteFlag" Type="Int32" />
-          <Property Name="Productioned" Type="Int32" />
-          <Property Name="ModifiedTime" Type="DateTime" Precision="3" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="kskfModelStoreContainer" CdmEntityContainer="kskfEntities">
+          <EntitySetMapping Name="TestTable">
+            <EntityTypeMapping TypeName="kskfModel.TestTable">
+              <MappingFragment StoreEntitySet="TestTable">
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CreateUserName" ColumnName="CreateUserName" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="RMC_Company">
             <EntityTypeMapping TypeName="kskfModel.RMC_Company">
               <MappingFragment StoreEntitySet="RMC_Company">
@@ -839,6 +879,34 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="RMC_ProjectOrder">
+            <EntityTypeMapping TypeName="kskfModel.RMC_ProjectOrder">
+              <MappingFragment StoreEntitySet="RMC_ProjectOrder">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
+                <ScalarProperty Name="Productioned" ColumnName="Productioned" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="RawMaterialConsumption" ColumnName="RawMaterialConsumption" />
+                <ScalarProperty Name="RawMaterialUnitPrice" ColumnName="RawMaterialUnitPrice" />
+                <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
+                <ScalarProperty Name="CreateMan" ColumnName="CreateMan" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ConfirmMan" ColumnName="ConfirmMan" />
+                <ScalarProperty Name="ConfirmOrder" ColumnName="ConfirmOrder" />
+                <ScalarProperty Name="SubmitTime" ColumnName="SubmitTime" />
+                <ScalarProperty Name="SubmitMan" ColumnName="SubmitMan" />
+                <ScalarProperty Name="IsSubmit" ColumnName="IsSubmit" />
+                <ScalarProperty Name="ReviewMan" ColumnName="ReviewMan" />
+                <ScalarProperty Name="IsReview" ColumnName="IsReview" />
+                <ScalarProperty Name="OrderBudget" ColumnName="OrderBudget" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
+                <ScalarProperty Name="ProjectDemandId" ColumnName="ProjectDemandId" />
+                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="RMC_ProjectWarehouse">
             <EntityTypeMapping TypeName="kskfModel.RMC_ProjectWarehouse">
               <MappingFragment StoreEntitySet="RMC_ProjectWarehouse">
@@ -861,9 +929,11 @@
           <EntitySetMapping Name="RMC_RawMaterialLibrary">
             <EntityTypeMapping TypeName="kskfModel.RMC_RawMaterialLibrary">
               <MappingFragment StoreEntitySet="RMC_RawMaterialLibrary">
+                <ScalarProperty Name="UnitName" ColumnName="UnitName" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="RawMaterialUnit" ColumnName="RawMaterialUnit" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
                 <ScalarProperty Name="RawMaterialNumber" ColumnName="RawMaterialNumber" />
                 <ScalarProperty Name="RawMaterialStandard" ColumnName="RawMaterialStandard" />
                 <ScalarProperty Name="RawMaterialName" ColumnName="RawMaterialName" />
@@ -918,34 +988,6 @@
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="TreeID" ColumnName="TreeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RMC_ProjectOrder">
-            <EntityTypeMapping TypeName="kskfModel.RMC_ProjectOrder">
-              <MappingFragment StoreEntitySet="RMC_ProjectOrder">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
-                <ScalarProperty Name="Productioned" ColumnName="Productioned" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="RawMaterialConsumption" ColumnName="RawMaterialConsumption" />
-                <ScalarProperty Name="RawMaterialUnitPrice" ColumnName="RawMaterialUnitPrice" />
-                <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
-                <ScalarProperty Name="CreateMan" ColumnName="CreateMan" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="ConfirmMan" ColumnName="ConfirmMan" />
-                <ScalarProperty Name="ConfirmOrder" ColumnName="ConfirmOrder" />
-                <ScalarProperty Name="SubmitTime" ColumnName="SubmitTime" />
-                <ScalarProperty Name="SubmitMan" ColumnName="SubmitMan" />
-                <ScalarProperty Name="IsSubmit" ColumnName="IsSubmit" />
-                <ScalarProperty Name="ReviewMan" ColumnName="ReviewMan" />
-                <ScalarProperty Name="IsReview" ColumnName="IsReview" />
-                <ScalarProperty Name="OrderBudget" ColumnName="OrderBudget" />
-                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
-                <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
-                <ScalarProperty Name="ProjectDemandId" ColumnName="ProjectDemandId" />
-                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

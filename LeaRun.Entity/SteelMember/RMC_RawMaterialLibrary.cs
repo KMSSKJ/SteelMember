@@ -19,8 +19,10 @@ namespace LeaRun.Entity.SteelMember
         public string RawMaterialName { get; set; }
         public string RawMaterialStandard { get; set; }
         public Nullable<int> RawMaterialNumber { get; set; }
-        public string RawMaterialUnit { get; set; }
+        public Nullable<int> UnitId { get; set; }
         public string Description { get; set; }
         public Nullable<int> DeleteFlag { get; set; }
+        public Nullable<decimal> UnitPrice { get; set; }
+        public string UnitName { get; set; }
     }
 }

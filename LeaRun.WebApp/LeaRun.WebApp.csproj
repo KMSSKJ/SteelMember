@@ -2668,6 +2668,7 @@
     <Content Include="Content\Images\Icon16\next_footnote.png" />
     <Content Include="Content\Images\Icon16\next_markup.png" />
     <Content Include="Content\Images\Icon16\next_seven_days.png" />
+    <Content Include="Content\Images\Icon16\no.png" />
     <Content Include="Content\Images\Icon16\node.png" />
     <Content Include="Content\Images\Icon16\node_design.png" />
     <Content Include="Content\Images\Icon16\node_magnifier.png" />
@@ -2697,6 +2698,7 @@
     <Content Include="Content\Images\Icon16\office_apps.png" />
     <Content Include="Content\Images\Icon16\oil.png" />
     <Content Include="Content\Images\Icon16\oil_barrel.png" />
+    <Content Include="Content\Images\Icon16\ok.png" />
     <Content Include="Content\Images\Icon16\omelet.png" />
     <Content Include="Content\Images\Icon16\online_video_insert.png" />
     <Content Include="Content\Images\Icon16\openid.png" />
