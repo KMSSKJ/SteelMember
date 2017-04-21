@@ -44,7 +44,7 @@
                     { label: '主键', name: "RawMaterialId", hidden: true },
                     { label: '原材料名称', name: "RawMaterialName", index: "MemberNumbering", width: 15 },
                     { label: '材料规格', name: "RawMaterialStandard", index: "MemberName", width: 15 },
-                    { label: "单位", name: "RawMaterialUnit", index: "OrderBudget", width: 10 },
+                    { label: "单位", name: "UnitName", index: "UnitName", width: 10 },
                     { label: "单价", name: "UnitPrice", index: "UnitPrice", width: 10 },
                     { label: '库存量', name: "RawMaterialNumber", index: "RawMaterialConsumption", width:10 },
                     { label: '备注', name: 'Description', index: 'Description', width: 15 },
@@ -195,7 +195,7 @@
     <div class="layoutPanel layout-center">
         <div class="btnbartitle">
             <div>
-                项目信息<span id="CenterTitle"></span>
+                材料信息<span id="CenterTitle"></span>
             </div>
         </div>
         <div class="tools_bar" style="border-top: none; margin-bottom: 0px;">

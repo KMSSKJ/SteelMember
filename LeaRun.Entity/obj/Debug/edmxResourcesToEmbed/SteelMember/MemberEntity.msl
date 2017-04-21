@@ -325,5 +325,24 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="RMC_AnalysisRawMaterial">
+      <EntityTypeMapping TypeName="kskfModel.RMC_AnalysisRawMaterial">
+        <MappingFragment StoreEntitySet="RMC_AnalysisRawMaterial">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="AnalysisTime" ColumnName="AnalysisTime" />
+          <ScalarProperty Name="AnalysisMan" ColumnName="AnalysisMan" />
+          <ScalarProperty Name="MaterialBudget" ColumnName="MaterialBudget" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="MaterialStandard" ColumnName="MaterialStandard" />
+          <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+          <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
+          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+          <ScalarProperty Name="AnalysisRawMaterialId" ColumnName="AnalysisRawMaterialId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

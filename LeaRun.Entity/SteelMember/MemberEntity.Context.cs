@@ -38,5 +38,6 @@ namespace LeaRun.Entity.SteelMember
         public virtual DbSet<RMC_RawMaterialLibrary> RMC_RawMaterialLibrary { get; set; }
         public virtual DbSet<RMC_ShipManagement> RMC_ShipManagement { get; set; }
         public virtual DbSet<RMC_Tree> RMC_Tree { get; set; }
+        public virtual DbSet<RMC_AnalysisRawMaterial> RMC_AnalysisRawMaterial { get; set; }
     }
 }

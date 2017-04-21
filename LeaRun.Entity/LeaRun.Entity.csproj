@@ -116,6 +116,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MemberEntity.edmx</DependentUpon>
     </Compile>
+    <Compile Include="SteelMember\RMC_AnalysisRawMaterial.cs">
+      <DependentUpon>MemberEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="SteelMember\RMC_Company.cs">
       <DependentUpon>MemberEntity.tt</DependentUpon>
     </Compile>

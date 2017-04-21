@@ -1,5 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="kskfModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="RMC_AnalysisRawMaterial">
+    <Key>
+      <PropertyRef Name="AnalysisRawMaterialId" />
+    </Key>
+    <Property Name="AnalysisRawMaterialId" Type="int" Nullable="false" />
+    <Property Name="TreeId" Type="int" />
+    <Property Name="OrderNumbering" Type="nvarchar" MaxLength="20" />
+    <Property Name="MaterialName" Type="nvarchar" MaxLength="20" />
+    <Property Name="MaterialStandard" Type="nvarchar" MaxLength="20" />
+    <Property Name="Number" Type="int" />
+    <Property Name="UnitId" Type="int" />
+    <Property Name="UnitPrice" Type="int" />
+    <Property Name="MaterialBudget" Type="nvarchar" MaxLength="20" />
+    <Property Name="AnalysisMan" Type="nvarchar" MaxLength="10" />
+    <Property Name="AnalysisTime" Type="datetime" />
+    <Property Name="DeleteFlag" Type="int" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" />
+  </EntityType>
   <EntityType Name="RMC_Company">
     <Key>
       <PropertyRef Name="MemberCompanyId" />
@@ -312,6 +330,7 @@
     <Property Name="Remark" Type="varchar" MaxLength="200" />
   </EntityType>
   <EntityContainer Name="kskfModelStoreContainer">
+    <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="Self.RMC_AnalysisRawMaterial" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_Company" EntityType="Self.RMC_Company" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_FactoryWarehouse" EntityType="Self.RMC_FactoryWarehouse" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_MemberLibrary" EntityType="Self.RMC_MemberLibrary" Schema="dbo" store:Type="Tables" />

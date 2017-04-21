@@ -50,6 +50,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="RepositoryFactory.cs" />
+    <Compile Include="SteelMember.BLL\AnalysisRawMaterialBLL.cs" />
     <Compile Include="SteelMember.BLL\CompanyBLL.cs" />
     <Compile Include="SteelMember.BLL\FactoryWarehouseBLL.cs" />
     <Compile Include="SteelMember.BLL\FileBLL.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="SteelMember.BLL\RawMaterialBLL.cs" />
     <Compile Include="SteelMember.BLL\ShipManagementBLL.cs" />
     <Compile Include="SteelMember.BLL\TreeBLL.cs" />
+    <Compile Include="SteelMember.DAL\AnalysisRawMaterialDAL.cs" />
     <Compile Include="SteelMember.DAL\BaseDAL.cs" />
     <Compile Include="SteelMember.DAL\ComanyDAL.cs" />
     <Compile Include="SteelMember.DAL\FactoryWarehouseDAL.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="SteelMember.DAL\ShipManagementDAL.cs" />
     <Compile Include="SteelMember.DAL\TreeDAL.cs" />
     <Compile Include="SteelMember.IBLL\BaseIBLL.cs" />
+    <Compile Include="SteelMember.IBLL\AnalysisRawMaterialIBLL.cs" />
     <Compile Include="SteelMember.IBLL\CompanyIBLL.cs" />
     <Compile Include="SteelMember.IBLL\FactoryWarehouseIBLL.cs" />
     <Compile Include="SteelMember.IBLL\FileIBLL.cs" />
@@ -88,6 +91,7 @@
     <Compile Include="SteelMember.IBLL\ShipManagementIBLL.cs" />
     <Compile Include="SteelMember.IBLL\ProjectInfoIBLL.cs" />
     <Compile Include="SteelMember.IBLL\TreeIBLL.cs" />
+    <Compile Include="SteelMember.IDAL\AnalysisRawMaterialIDAL.cs" />
     <Compile Include="SteelMember.IDAL\BaseIDAL.cs" />
     <Compile Include="SteelMember.IDAL\CompanyIDAL.cs" />
     <Compile Include="SteelMember.IDAL\FactoryWarehouseIDAL.cs" />

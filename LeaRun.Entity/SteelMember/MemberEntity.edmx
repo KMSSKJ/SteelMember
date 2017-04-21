@@ -5,6 +5,24 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="kskfModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="RMC_AnalysisRawMaterial">
+          <Key>
+            <PropertyRef Name="AnalysisRawMaterialId" />
+          </Key>
+          <Property Name="AnalysisRawMaterialId" Type="int" Nullable="false" />
+          <Property Name="TreeId" Type="int" />
+          <Property Name="OrderNumbering" Type="nvarchar" MaxLength="20" />
+          <Property Name="MaterialName" Type="nvarchar" MaxLength="20" />
+          <Property Name="MaterialStandard" Type="nvarchar" MaxLength="20" />
+          <Property Name="Number" Type="int" />
+          <Property Name="UnitId" Type="int" />
+          <Property Name="UnitPrice" Type="int" />
+          <Property Name="MaterialBudget" Type="nvarchar" MaxLength="20" />
+          <Property Name="AnalysisMan" Type="nvarchar" MaxLength="10" />
+          <Property Name="AnalysisTime" Type="datetime" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="RMC_Company">
           <Key>
             <PropertyRef Name="MemberCompanyId" />
@@ -317,6 +335,7 @@
           <Property Name="Remark" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityContainer Name="kskfModelStoreContainer">
+          <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="Self.RMC_AnalysisRawMaterial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMC_Company" EntityType="Self.RMC_Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMC_FactoryWarehouse" EntityType="Self.RMC_FactoryWarehouse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMC_MemberLibrary" EntityType="Self.RMC_MemberLibrary" Schema="dbo" store:Type="Tables" />
@@ -349,6 +368,7 @@
           <EntitySet Name="RMC_RawMaterialLibrary" EntityType="kskfModel.RMC_RawMaterialLibrary" />
           <EntitySet Name="RMC_ShipManagement" EntityType="kskfModel.RMC_ShipManagement" />
           <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
+          <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="kskfModel.RMC_AnalysisRawMaterial" />
           </EntityContainer>
         <EntityType Name="TestTable">
           <Key>
@@ -660,6 +680,24 @@
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="IsReview" Type="Int32" />
           <Property Name="FileType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RMC_AnalysisRawMaterial">
+          <Key>
+            <PropertyRef Name="AnalysisRawMaterialId" />
+          </Key>
+          <Property Name="AnalysisRawMaterialId" Type="Int32" Nullable="false" />
+          <Property Name="TreeId" Type="Int32" />
+          <Property Name="OrderNumbering" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MaterialName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MaterialStandard" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Number" Type="Int32" />
+          <Property Name="UnitId" Type="Int32" />
+          <Property Name="UnitPrice" Type="Int32" />
+          <Property Name="MaterialBudget" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AnalysisMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="AnalysisTime" Type="DateTime" Precision="3" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -988,6 +1026,25 @@
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="TreeID" ColumnName="TreeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMC_AnalysisRawMaterial">
+            <EntityTypeMapping TypeName="kskfModel.RMC_AnalysisRawMaterial">
+              <MappingFragment StoreEntitySet="RMC_AnalysisRawMaterial">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="AnalysisTime" ColumnName="AnalysisTime" />
+                <ScalarProperty Name="AnalysisMan" ColumnName="AnalysisMan" />
+                <ScalarProperty Name="MaterialBudget" ColumnName="MaterialBudget" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="MaterialStandard" ColumnName="MaterialStandard" />
+                <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+                <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
+                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+                <ScalarProperty Name="AnalysisRawMaterialId" ColumnName="AnalysisRawMaterialId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

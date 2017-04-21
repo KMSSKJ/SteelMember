@@ -18,6 +18,7 @@
         <EntityTypeShape EntityType="kskfModel.RMC_RawMaterialLibrary" Width="1.5" PointX="10.75" PointY="0.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_ShipManagement" Width="1.5" PointX="10.75" PointY="4.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_Tree" Width="1.5" PointX="10.75" PointY="10.75" />
+        <EntityTypeShape EntityType="kskfModel.RMC_AnalysisRawMaterial" Width="1.5" PointX="5.375" PointY="11.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

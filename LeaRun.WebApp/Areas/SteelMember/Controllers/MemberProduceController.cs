@@ -16,6 +16,7 @@ using LeaRun.Repository.SteelMember.IBLL;
 using LeaRun.Entity.SteelMember;
 using LeaRun.Utilities;
 using SteelMember.Models;
+using LeaRun.WebApp.Areas.SteelMember.Models;
 
 namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 {
@@ -43,10 +44,13 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public ShipManagementIBLL ShipManagementCurrent { get; set; }
         [Inject]
         public ProjectWarehouseIBLL ProjectWarehouseCurrent { get; set; }
-
         [Inject]
         public MemberUnitIBLL MemberUnitCurrent { get; set; }
-        public virtual ActionResult Index()
+        [Inject] 
+        public AnalysisRawMaterialIBLL AnalysisRawMaterialCurrent { get; set; }
+
+
+    public virtual ActionResult Index()
         {
             return View();
         }
@@ -349,6 +353,129 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }.ToString());
             }
         }
+
+        #endregion
+
+        #region 原材料用量分析
+        public ActionResult AnalysisRawMaterialIndex()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 【工程项目管理】返回文件（夹）列表JSON
+        /// </summary>
+        /// <param name="keywords">文件名搜索条件</param>
+        /// <param name="FolderId">文件夹ID</param>
+        /// <param name="IsPublic">是否公共 1-公共、0-我的</param>
+        /// <returns></returns>         
+        public ActionResult GridListJsonAnalysisRawMaterial(/*ProjectInfoViewModel model,*/ string TreeID, JqGridParam jqgridparam, string IsPublic)
+        {
+            try
+            {
+                int TreeId;
+                //int FolderId = Convert.ToInt32(FolderId);
+                if (TreeID == "" || TreeID == null)
+                {
+                    TreeId = 29;
+                }
+                else
+                {
+                    TreeId = Convert.ToInt32(TreeID);
+                }
+                int total = 0;
+                Expression<Func<RMC_AnalysisRawMaterial, bool>> func = ExpressionExtensions.True<RMC_AnalysisRawMaterial>();
+                func = f => f.DeleteFlag != 1 && f.TreeId == TreeId;
+
+                #region 查询条件拼接
+                //if (model.ProjectName != null && model.ProjectName != "&nbsp;")
+                //{
+                //    func = func.And(f => f.ProjectName.Contains(model.ProjectName));
+                //}
+                //if (!string.IsNullOrEmpty(model.ProjectAddress))
+                //{
+                //    func = func.And(f => f.ProjectAddress == model.ProjectAddress); /*func = func.And(f => f.FullPath.Contains(model.FilePath))*/
+                //}
+                #endregion
+
+                DataTable ListData, ListData1;
+                ListData = null;
+                //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
+                //                         , jqgridparam.rows
+                //                         , func1
+                //                         , true
+                //                         , f => f.TreeID.ToString()
+                //                         , out total
+                //                         ).ToList();
+                List<RMC_AnalysisRawMaterial> listfile = AnalysisRawMaterialCurrent.FindPage<string>(jqgridparam.page
+                                         , jqgridparam.rows
+                                         , func
+                                         , true
+                                         , f => f.AnalysisTime.ToString()
+                                         , out total
+                                         ).ToList();
+                List<AnalysisRawMaterialModel> AnalysisRawMaterialModelList = new List<AnalysisRawMaterialModel>();
+                foreach (var item in listfile)
+                {
+                    AnalysisRawMaterialModel AnalysisRawMaterialModel = new AnalysisRawMaterialModel();
+                    var Unit = MemberUnitCurrent.Find(f => f.UnitId == item.UnitId).SingleOrDefault();
+                    AnalysisRawMaterialModel.UnitName = Unit.UnitName;
+                    AnalysisRawMaterialModel.AnalysisRawMaterialId = item.AnalysisRawMaterialId;
+                    AnalysisRawMaterialModel.MaterialName = item.MaterialName;
+                    AnalysisRawMaterialModel.Number = item.Number;
+                    AnalysisRawMaterialModel.MaterialStandard = item.MaterialStandard;
+                    AnalysisRawMaterialModel.UnitPrice = item.UnitPrice;
+                    AnalysisRawMaterialModel.TreeId = item.TreeId;
+                    AnalysisRawMaterialModel.Description = item.Description;
+                    AnalysisRawMaterialModelList.Add(AnalysisRawMaterialModel);
+                }
+                if (AnalysisRawMaterialModelList.Count() > 0)// && listtree.Count() > 0
+                {
+
+                    //ListData0 = ListToDataTable(listtree);
+                    ListData1 = DataHelper.ListToDataTable(AnalysisRawMaterialModelList);
+                    ListData = ListData1.Clone();
+                    object[] obj = new object[ListData.Columns.Count];
+                    ////添加DataTable0的数据
+                    //for (int i = 0; i < ListData0.Rows.Count; i++)
+                    //{
+                    //    ListData0.Rows[i].ItemArray.CopyTo(obj, 0);
+                    //    ListData.Rows.Add(obj);
+                    //}
+                    //添加DataTable1的数据
+                    for (int i = 0; i < ListData1.Rows.Count; i++)
+                    {
+                        ListData1.Rows[i].ItemArray.CopyTo(obj, 0);
+                        ListData.Rows.Add(obj);
+                    }
+
+                }
+                //else if (listtree.Count() > 0)
+                //{
+                //    ListData = ListToDataTable(listtree);
+                //}
+                else if (listfile.Count() > 0)
+                {
+                    ListData = DataHelper.ListToDataTable(AnalysisRawMaterialModelList);
+                }
+                else
+                {
+                    ListData = null;
+                }
+
+                var JsonData = new
+                {
+                    rows = ListData,
+                };
+                return Content(JsonData.ToJson());
+            }
+            catch (Exception ex)
+            {
+                return Content("<script>alertDialog('" + ex.Message + "');</script>");
+            }
+        }
+
+
 
         #endregion
 
