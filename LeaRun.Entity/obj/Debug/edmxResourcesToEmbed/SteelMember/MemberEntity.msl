@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="kskfModelStoreContainer" CdmEntityContainer="kskfEntities">
-    <EntitySetMapping Name="TestTable">
-      <EntityTypeMapping TypeName="kskfModel.TestTable">
-        <MappingFragment StoreEntitySet="TestTable">
-          <ScalarProperty Name="Remark" ColumnName="Remark" />
-          <ScalarProperty Name="CreateUserName" ColumnName="CreateUserName" />
-          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="FullName" ColumnName="FullName" />
-          <ScalarProperty Name="Code" ColumnName="Code" />
-          <ScalarProperty Name="TestId" ColumnName="TestId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="RMC_Company">
       <EntityTypeMapping TypeName="kskfModel.RMC_Company">
         <MappingFragment StoreEntitySet="RMC_Company">
@@ -124,42 +112,6 @@
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="UnitName" ColumnName="UnitName" />
           <ScalarProperty Name="UnitId" ColumnName="UnitId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="RMC_ProcessManagement">
-      <EntityTypeMapping TypeName="kskfModel.RMC_ProcessManagement">
-        <MappingFragment StoreEntitySet="RMC_ProcessManagement">
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="PackingDays" ColumnName="PackingDays" />
-          <ScalarProperty Name="Packing" ColumnName="Packing" />
-          <ScalarProperty Name="IsPacking" ColumnName="IsPacking" />
-          <ScalarProperty Name="QualifiedNumber" ColumnName="QualifiedNumber" />
-          <ScalarProperty Name="UnqualifiedNumber" ColumnName="UnqualifiedNumber" />
-          <ScalarProperty Name="Supervision" ColumnName="Supervision" />
-          <ScalarProperty Name="QualityInspection" ColumnName="QualityInspection" />
-          <ScalarProperty Name="IsPaintProcessing" ColumnName="IsPaintProcessing" />
-          <ScalarProperty Name="PaintProcessingDays" ColumnName="PaintProcessingDays" />
-          <ScalarProperty Name="PaintProcessing" ColumnName="PaintProcessing" />
-          <ScalarProperty Name="IsPaintProcessingTask" ColumnName="IsPaintProcessingTask" />
-          <ScalarProperty Name="IsRivetingProcessing" ColumnName="IsRivetingProcessing" />
-          <ScalarProperty Name="RivetingProcessingDays" ColumnName="RivetingProcessingDays" />
-          <ScalarProperty Name="RivetingProcessing" ColumnName="RivetingProcessing" />
-          <ScalarProperty Name="IsRivetingProcessingTask" ColumnName="IsRivetingProcessingTask" />
-          <ScalarProperty Name="IsSubmergedArcProcessing" ColumnName="IsSubmergedArcProcessing" />
-          <ScalarProperty Name="SubmergedArcProcessingDays" ColumnName="SubmergedArcProcessingDays" />
-          <ScalarProperty Name="SubmergedArcProcessing" ColumnName="SubmergedArcProcessing" />
-          <ScalarProperty Name="IsSubmergedArcProcessingTask" ColumnName="IsSubmergedArcProcessingTask" />
-          <ScalarProperty Name="IsSetUpProcessing" ColumnName="IsSetUpProcessing" />
-          <ScalarProperty Name="SetUpProcessingDays" ColumnName="SetUpProcessingDays" />
-          <ScalarProperty Name="SetUpProcessing" ColumnName="SetUpProcessing" />
-          <ScalarProperty Name="IsSetUpProcessingTask" ColumnName="IsSetUpProcessingTask" />
-          <ScalarProperty Name="MemberCompanyId" ColumnName="MemberCompanyId" />
-          <ScalarProperty Name="ProduceEndDate" ColumnName="ProduceEndDate" />
-          <ScalarProperty Name="ProduceStartDate" ColumnName="ProduceStartDate" />
-          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
-          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-          <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -325,6 +277,43 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="RMC_ProcessManagement">
+      <EntityTypeMapping TypeName="kskfModel.RMC_ProcessManagement">
+        <MappingFragment StoreEntitySet="RMC_ProcessManagement">
+          <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="PackingDays" ColumnName="PackingDays" />
+          <ScalarProperty Name="Packing" ColumnName="Packing" />
+          <ScalarProperty Name="IsPacking" ColumnName="IsPacking" />
+          <ScalarProperty Name="QualifiedNumber" ColumnName="QualifiedNumber" />
+          <ScalarProperty Name="UnqualifiedNumber" ColumnName="UnqualifiedNumber" />
+          <ScalarProperty Name="Supervision" ColumnName="Supervision" />
+          <ScalarProperty Name="QualityInspection" ColumnName="QualityInspection" />
+          <ScalarProperty Name="IsPaintProcessing" ColumnName="IsPaintProcessing" />
+          <ScalarProperty Name="PaintProcessingDays" ColumnName="PaintProcessingDays" />
+          <ScalarProperty Name="PaintProcessing" ColumnName="PaintProcessing" />
+          <ScalarProperty Name="IsPaintProcessingTask" ColumnName="IsPaintProcessingTask" />
+          <ScalarProperty Name="IsRivetingProcessing" ColumnName="IsRivetingProcessing" />
+          <ScalarProperty Name="RivetingProcessingDays" ColumnName="RivetingProcessingDays" />
+          <ScalarProperty Name="RivetingProcessing" ColumnName="RivetingProcessing" />
+          <ScalarProperty Name="IsRivetingProcessingTask" ColumnName="IsRivetingProcessingTask" />
+          <ScalarProperty Name="IsSubmergedArcProcessing" ColumnName="IsSubmergedArcProcessing" />
+          <ScalarProperty Name="SubmergedArcProcessingDays" ColumnName="SubmergedArcProcessingDays" />
+          <ScalarProperty Name="SubmergedArcProcessing" ColumnName="SubmergedArcProcessing" />
+          <ScalarProperty Name="IsSubmergedArcProcessingTask" ColumnName="IsSubmergedArcProcessingTask" />
+          <ScalarProperty Name="IsSetUpProcessing" ColumnName="IsSetUpProcessing" />
+          <ScalarProperty Name="SetUpProcessingDays" ColumnName="SetUpProcessingDays" />
+          <ScalarProperty Name="SetUpProcessing" ColumnName="SetUpProcessing" />
+          <ScalarProperty Name="IsSetUpProcessingTask" ColumnName="IsSetUpProcessingTask" />
+          <ScalarProperty Name="MemberCompanyId" ColumnName="MemberCompanyId" />
+          <ScalarProperty Name="ProduceEndDate" ColumnName="ProduceEndDate" />
+          <ScalarProperty Name="ProduceStartDate" ColumnName="ProduceStartDate" />
+          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="RMC_AnalysisRawMaterial">
       <EntityTypeMapping TypeName="kskfModel.RMC_AnalysisRawMaterial">
         <MappingFragment StoreEntitySet="RMC_AnalysisRawMaterial">
@@ -339,6 +328,10 @@
           <ScalarProperty Name="MaterialStandard" ColumnName="MaterialStandard" />
           <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
           <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
+          <ScalarProperty Name="MaterialClassId" ColumnName="MaterialClassId" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
           <ScalarProperty Name="TreeId" ColumnName="TreeId" />
           <ScalarProperty Name="AnalysisRawMaterialId" ColumnName="AnalysisRawMaterialId" />
         </MappingFragment>

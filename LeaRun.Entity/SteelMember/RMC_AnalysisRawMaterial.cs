@@ -16,6 +16,10 @@ namespace LeaRun.Entity.SteelMember
     {
         public int AnalysisRawMaterialId { get; set; }
         public Nullable<int> TreeId { get; set; }
+        public Nullable<int> OrderId { get; set; }
+        public Nullable<int> RawMaterialId { get; set; }
+        public Nullable<int> ParentId { get; set; }
+        public Nullable<int> MaterialClassId { get; set; }
         public string OrderNumbering { get; set; }
         public string MaterialName { get; set; }
         public string MaterialStandard { get; set; }

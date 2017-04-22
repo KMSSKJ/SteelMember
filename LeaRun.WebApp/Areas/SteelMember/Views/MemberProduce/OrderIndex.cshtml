@@ -45,7 +45,6 @@
             autowidth: true,
             colModel: [
                     { label: '主键', name: "OrderId", hidden: true },
-                    //{ label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", width: 10 },
                     { label: '外键', name: "MemberId", hidden: true },
                     { label: '订单编号', name: "OrderNumbering", index: "OrderNumbering", width: 10 },
                     { label: '构件名', name: "MemberName", index: "MemberName", width: 10 },
@@ -94,8 +93,8 @@
             gridComplete: function () {
                 //合计
                 $(this).footerData("set", {
-                    "MemberName": "合计",
-                    "OrderBudget": $(this).getCol("OrderBudget", false, "sum"),
+                    "OrderNumbering": "合计",
+                    "OrderNumber": $(this).getCol("OrderNumber", false, "sum"),
                 });
 
                 //表格行样式

@@ -255,10 +255,11 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// 获取构件名称
         /// </summary>
         /// <returns></returns>
-        public ActionResult MemberName()
+        public ActionResult MemberName(string TreeId)
         {
+            int _TreeId = Convert.ToInt32(TreeId);
             List<SelectListItem> List = new List<SelectListItem>();
-            List<RMC_MemberLibrary> ProjectList = MemberLibraryCurrent.Find(f => f.MemberID > 0).ToList();
+            List<RMC_MemberLibrary> ProjectList = MemberLibraryCurrent.Find(f => f.TreeID==_TreeId).ToList();
             foreach (var Item in ProjectList)
             {
                 SelectListItem item = new SelectListItem();
@@ -403,7 +404,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 var file = OrderManagementCurrent.Find(f => f.OrderId == OrderId).First();
                 file.ModifiedTime = DateTime.Now;
                 file.IsSubmit = 1;
-                file.SubmitTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-mm-dd hh:MM:ss"));
+                file.SubmitTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"));
                 file.SubmitMan = "System";
                 OrderManagementCurrent.Modified(file);
 

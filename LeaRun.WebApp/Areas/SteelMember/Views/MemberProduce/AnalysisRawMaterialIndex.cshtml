@@ -30,7 +30,7 @@
     function GridFolderEvent(TreeId) {
         TreeId = TreeId;
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonOrder")?TreeID=" + TreeId, page: 1
+            url: "@Url.Content("/SteelMember/MemberProduce/TreeGridJsonAnalysisRawMaterial")?TreeID=" + TreeId, page: 1
     }).trigger('reloadGrid');
     }
 
@@ -38,17 +38,23 @@
     function GetGrid() {
         var SelectRowIndx;
         $("#gridTable").jqGrid({
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonAnalysisRawMaterial")?TreeID=" + TreeId,
+            url: "@Url.Content("/SteelMember/MemberProduce/TreeGridJsonAnalysisRawMaterial")?TreeID=" + TreeId,
             datatype: "json",
+
+            treeGrid: true,
+            treeGridModel: "nested",
+            ExpandColumn: "Code",
+
             height: $(window).height() - 122,
             autowidth: true,
             colModel: [
-                    { label: '主键', name: "OrderId", hidden: true },
+                    { label: '主键', name: "AnalysisRawMaterialId", hidden: true },
                     //{ label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", width: 10 },
                     { label: '外键', name: "MemberId", hidden: true },
                     { label: '订单编号', name: "OrderNumbering", index: "OrderNumbering", width: 10 },
-                    { label: '材料名', name: "MaterialName", index: "MaterialName", width: 10 },
                     { label: '构件型号', name: "MemberModel", index: "MemberModel", width: 10 },
+                    { label: '材料名', name: "MaterialName", index: "MaterialName", width: 10 },
+                    { label: '材料规格', name: "MaterialStandard", index: "MaterialStandard", width: 10 },
                     { label: '数量', name: "Number", index: "Number", width: 10 },
                     { label: '单位', name: "UnitName", index: "UnitName", width: 10 },
                     { label: '单价', name: "UnitPrice", index: "UnitPrice", width: 10 },
@@ -79,8 +85,9 @@
             gridComplete: function () {
                 //合计
                 $(this).footerData("set", {
-                    "MemberName": "合计",
-                    "OrderBudget": $(this).getCol("OrderBudget", false, "sum"),
+                    "OrderNumbering": "合计",
+                    "Number": $(this).getCol("Number", false, "sum"),
+                    "MaterialBudget": $(this).getCol("MaterialBudget", false, "sum"),
                 });
 
                 //表格行样式
@@ -109,25 +116,35 @@
 
     //新增信息
     function btn_add() {
-        //var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
-        if (IsChecked(TreeId)) {
-            var url = "/SteelMember/MemberProduce/OrderForm?KeyValue= " + TreeId;
-            openDialog(url, "OrderForm", "新增信息", 500, 400, function (iframe) {
-                top.frames[iframe].AcceptClick();
-            });
+        var KeyValue = GetJqGridRowValue("#gridTable", "AnalysisRawMaterialId");
+        var OrderNumbering = GetJqGridRowValue("#gridTable", "OrderNumbering");
+        var ItemId = 3;
+        if (OrderNumbering = !"") {
+            if (IsChecked(KeyValue)) {
+                var url = "/SteelMember/MemberProduce/AnalysisRawMaterialForm?KeyValue= " + KeyValue + "&ItemId=" + ItemId + "&OrderNumbering=" + OrderNumbering;
+                openDialog(url, "AnalysisRawMaterialForm", "新增信息", 500, 400, function (iframe) {
+                    top.frames[iframe].AcceptClick();
+                });
+            }
+        } else {
+            alertDialog("请选择订单！", 0);
         }
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
     //编辑信息(得到实体)
     function btn_edit() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "OrderId");
-        var ItemID = 1;
-        if (IsChecked(KeyValue)) {
-            var url = "/SteelMember/MemberProduce/OrderForm?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
-            openDialog(url, "OrderForm", "编辑信息", 600, 400, function (iframe) {
-                top.frames[iframe].AcceptClick();
-            });
+        var KeyValue = GetJqGridRowValue("#gridTable", "AnalysisRawMaterialId");
+        var OrderNumbering = GetJqGridRowValue("#gridTable", "OrderNumbering");
+        var ItemId = 3;
+        if(OrderNumbering==""){
+            if (IsChecked(KeyValue)) {
+                var url = "/SteelMember/MemberProduce/AnalysisRawMaterialForm?KeyValue= " + KeyValue + "&ItemId=" + ItemId + "&OrderNumbering=" + OrderNumbering;
+                openDialog(url, "AnalysisRawMaterialForm", "编辑信息", 600, 400, function (iframe) {
+                    top.frames[iframe].AcceptClick();
+                });
+            }}else{
+            alertDialog("请选择原材料！", 0);
         }
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }

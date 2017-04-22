@@ -165,6 +165,7 @@
     <Compile Include="Areas\SteelMember\Controllers\ProjectWarehouseController.cs" />
     <Compile Include="Areas\SteelMember\Controllers\TreeController.cs" />
     <Compile Include="Areas\SteelMember\Models\AnalysisRawMaterialModel.cs" />
+    <Compile Include="Areas\SteelMember\Models\RawMaterialLibraryModel.cs" />
     <Compile Include="Areas\SteelMember\Models\ProcessManagementModel.cs" />
     <Compile Include="Areas\SteelMember\Models\ProduceOrderModel.cs" />
     <Compile Include="Areas\SteelMember\Models\ProjectDemandModel.cs" />
@@ -8716,6 +8717,7 @@
     <Content Include="Areas\SteelMember\Views\MemberProduce\OrderIndex.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\AnalysisRawMaterialIndex.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberSettlement\Index.cshtml" />
+    <Content Include="Areas\SteelMember\Views\MemberProduce\AnalysisRawMaterialForm.cshtml" />
     <None Include="Properties\PublishProfiles\LR-FDMS.pubxml" />
     <Content Include="Views\Home\SkinIndex.cshtml" />
     <Content Include="Views\Login\Default.cshtml" />

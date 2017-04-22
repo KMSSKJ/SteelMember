@@ -53,36 +53,6 @@
                     { label: '类型', name: "Class", index: "Class", width: 16 },
                     { label: '库管员', name: "Librarian", index: "Librarian", width: 16 },
                     { label: '领用人', name: "Leader", index: "Leader", width: 16 },
-                    //{
-                    //    label: '审核状态', name: 'IsReview', index: 'IsReview', width: 12,
-                    //    formatter: function (cellvalue,value, row, index) {
-                    //        var isreview = cellvalue;
-                    //        if (isreview != "" || isreview != null) {
-                    //            if (isreview == 1) {
-                    //                return "<img src='../../Content/Images/checkokmark.gif'/>";
-                    //            } else {
-                    //                return "<img src='../../Content/Images/checknomark.gif'/>";
-                    //            }
-                    //        } else {
-                    //            return "";
-                    //        }
-                    //    }
-                    //},
-                    //{
-                    //    label: '提交状态', name: 'IsSubmit', index: 'IsSubmit', width: 12,
-                    //    formatter: function (cellvalue, value, row, index) {
-                    //        var issubmit = cellvalue;
-                    //        if (issubmit != "" || issubmit != null) {
-                    //            if (issubmit == 1) {
-                    //                return "<img src='../../Content/Images/checkokmark.gif'/>";
-                    //            } else {
-                    //                return "<img src='../../Content/Images/checknomark.gif'/>";
-                    //            }
-                    //        } else {
-                    //            return "";
-                    //        }
-                    //    }
-                    //},
                     { label: '备注', name: 'Description', index: 'Description', width: 12 },
             ],
             rowNum: 30,
@@ -109,7 +79,7 @@
                 //合计
                 $(this).footerData("set", {
                     "MemberName": "合计",
-                    "InStock": $(this).getCol("MemberNumber", false, "sum"),
+                    "InStock": $(this).getCol("InStock", false, "sum"),
                 });
 
                 //表格行样式

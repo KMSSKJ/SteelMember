@@ -122,7 +122,7 @@
             gridComplete: function () {
                 //合计
                 $(this).footerData("set", {
-                    "MemberName": "合计",
+                    "OrderNumbering": "合计",
                     "MemberNumber": $(this).getCol("MemberNumber", false, "sum"),
                     "CostBudget": $(this).getCol("CostBudget", false, "sum"),
                 });
@@ -216,7 +216,7 @@
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
             var IsSubmit1 = IsSubmit.replace(/"/, "'").replace(/"/, "'");
-            if (IsSubmit1 != "<img src='~/Content/Images/checkokmark.gif'>") {
+            if (IsSubmit1 != "<img src='../../Content/Images/checkokmark.gif'>") {
                 var url = "/SteelMember/ProjectManagement/Form?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
                 openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
                     top.frames[iframe].AcceptClick();
@@ -279,7 +279,7 @@
         //var MemberNumber = GetJqGridRowValue("#gridTable", "MemberNumber");
         var MemberId = GetJqGridRowValue("#gridTable", "MemberId");
         var IsReview1 = IsReview.replace(/"/, "'").replace(/"/, "'");
-        if (IsReview1 == "<img src='~/Content/Images/checkokmark.gif'>") {
+        if (IsReview1 == "<img src='../../Content/Images/checkokmark.gif'>") {
         var Prompt = "您确实要提交此文件吗？";
         if (IsDelData(KeyValue)) {
             delConfirm('/SteelMember/ProjectOrder/SubmitProjectOrder', { KeyValue: KeyValue, MemberId: MemberId }, Prompt);

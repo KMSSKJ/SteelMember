@@ -4,8 +4,12 @@
     <Key>
       <PropertyRef Name="AnalysisRawMaterialId" />
     </Key>
-    <Property Name="AnalysisRawMaterialId" Type="int" Nullable="false" />
+    <Property Name="AnalysisRawMaterialId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="TreeId" Type="int" />
+    <Property Name="OrderId" Type="int" />
+    <Property Name="RawMaterialId" Type="int" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="MaterialClassId" Type="int" />
     <Property Name="OrderNumbering" Type="nvarchar" MaxLength="20" />
     <Property Name="MaterialName" Type="nvarchar" MaxLength="20" />
     <Property Name="MaterialStandard" Type="nvarchar" MaxLength="20" />
@@ -162,6 +166,7 @@
     <Property Name="Packing" Type="nvarchar" MaxLength="10" />
     <Property Name="PackingDays" Type="int" />
     <Property Name="Description" Type="nvarchar" MaxLength="500" />
+    <Property Name="OrderNumbering" Type="nvarchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="RMC_ProjectDemand">
     <Key>
@@ -318,17 +323,6 @@
     <Property Name="IsReview" Type="int" />
     <Property Name="FileType" Type="nvarchar" MaxLength="20" />
   </EntityType>
-  <EntityType Name="TestTable">
-    <Key>
-      <PropertyRef Name="TestId" />
-    </Key>
-    <Property Name="TestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Code" Type="int" Nullable="false" />
-    <Property Name="FullName" Type="varchar" MaxLength="50" />
-    <Property Name="CreateDate" Type="datetime" />
-    <Property Name="CreateUserName" Type="varchar" MaxLength="50" />
-    <Property Name="Remark" Type="varchar" MaxLength="200" />
-  </EntityType>
   <EntityContainer Name="kskfModelStoreContainer">
     <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="Self.RMC_AnalysisRawMaterial" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_Company" EntityType="Self.RMC_Company" Schema="dbo" store:Type="Tables" />
@@ -343,6 +337,5 @@
     <EntitySet Name="RMC_RawMaterialLibrary" EntityType="Self.RMC_RawMaterialLibrary" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_ShipManagement" EntityType="Self.RMC_ShipManagement" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_Tree" EntityType="Self.RMC_Tree" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="TestTable" EntityType="Self.TestTable" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>

@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "工程项目管理";
-        Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
 
 <script type="text/javascript">
@@ -22,8 +22,8 @@
                 GridFolderEvent(TreeId);
             },
             url: "@Url.Content("/SteelMember/MemberProduce/TreeJsonRawMaterials")?ItemId=" + ItemId
-    };
-    $("#ItemsTree").treeview(itemtree);
+        };
+        $("#ItemsTree").treeview(itemtree);
     };
     //表格文件夹点击事件
     function GridFolderEvent(TreeId) {
@@ -46,7 +46,7 @@
                     { label: '材料规格', name: "RawMaterialStandard", index: "MemberName", width: 15 },
                     { label: "单位", name: "UnitName", index: "UnitName", width: 10 },
                     { label: "单价", name: "UnitPrice", index: "UnitPrice", width: 10 },
-                    { label: '库存量', name: "RawMaterialNumber", index: "RawMaterialConsumption", width:10 },
+                    { label: '库存量', name: "RawMaterialNumber", index: "RawMaterialConsumption", width: 10 },
                     { label: '备注', name: 'Description', index: 'Description', width: 15 },
             ],
             rowNum: 30,
@@ -56,6 +56,7 @@
             viewrecords: true,
             rownumbers: true,
             gridview: true,
+            footerData:true,
             rowList: [15, 30, 50, 100, 500, 1000],
             ondblClickRow: function (TreeId) {
                 var rowData = $("#gridTable").getRowData(TreeId);  //根据ID拿到一行的数据
@@ -77,9 +78,29 @@
                     }
                 }
                 $("#" + this.id).jqGrid('setSelection', SelectRowIndx);
+            },
+
+            gridComplete: function () {
+                //合计
+                $(this).footerData("set", {
+                    "RawMaterialName": "合计",
+                    "RawMaterialNumber": $(this).getCol("RawMaterialNumber", false, "sum"),
+                });
+
+                //表格行样式
+                var ids = $("#gridTable").getDataIDs();
+                for (var i = 0; i < ids.length; i++) {
+                    var rowData = $("#gridTable").getRowData(ids[i]);
+                    if (rowData.Enabled == "无效") {//如果无效，则背景色置于红色
+                        $('#' + ids[i]).find("td").addClass("SelectBG");
+                    }
+                }
+                $("#" + this.id).jqGrid('setSelection', SelectRowIndx);
             }
         });
+
         columnModelData("#gridTable");
+
         //自应高度
         $(window).resize(function () {
             $("#gridTable").setGridHeight($(window).height() - 200);
@@ -88,7 +109,6 @@
 
     //刷新表格 树
     function btn_reload() {
-        window.parent.GetTree();
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
@@ -121,7 +141,7 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "RawMaterialId");
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
-            var url = "/SteelMember/MemberProduce/Form?KeyValue= " + KeyValue;
+            var url = "/SteelMember/MemberProduce/RawMaterialsForm?KeyValue= " + KeyValue;
             openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
                 top.frames[iframe].AcceptClick();
             });
@@ -129,22 +149,13 @@
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
-    //标记删除信息
-    function btn_mark() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "RawMaterialId");
-        var Prompt = "您确实要删除此文件吗？";
-        if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/MemberProduce/MarkProjectDemand', { KeyValue: KeyValue }, Prompt);
-        }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
-    }
-
+   
     //删除信息
     function btn_delete() {
         var KeyValue = GetJqGridRowValue("#gridTable", "RawMaterialId");
         var Prompt = "您确实要删除此文件吗？";
         if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/MemberProduce/DeleteProjectDemand', { KeyValue: KeyValue }, Prompt);
+            delConfirm('/SteelMember/MemberProduce/DeleteRawMaterial', { KeyValue: KeyValue }, Prompt);
             $("#gridTable").trigger("reloadGrid"); //重新载入
         }
 
@@ -155,10 +166,10 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "MemberNumbering");
         var Sort = GetJqGridRowValue("#gridTable", "Sort");
         if (IsChecked(KeyValue)) {
-                var url = '/SteelMember/File/DrawingManagement?KeyValue=' + KeyValue;
-                Dialog(url, "DrawingManagement", "文件管理", 900, 890, function (iframe) {
-                    top.frames[iframe].AcceptClick()
-                });
+            var url = '/SteelMember/File/DrawingManagement?KeyValue=' + KeyValue;
+            Dialog(url, "DrawingManagement", "文件管理", 900, 890, function (iframe) {
+                top.frames[iframe].AcceptClick()
+            });
         }
     }
 

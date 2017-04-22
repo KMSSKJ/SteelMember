@@ -17,6 +17,8 @@ using LeaRun.Entity.SteelMember;
 using LeaRun.Utilities;
 using SteelMember.Models;
 using LeaRun.WebApp.Areas.SteelMember.Models;
+using System.Text;
+using LeaRun.Entity;
 
 namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 {
@@ -49,8 +51,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         [Inject] 
         public AnalysisRawMaterialIBLL AnalysisRawMaterialCurrent { get; set; }
 
-
-    public virtual ActionResult Index()
+        public virtual ActionResult Index()
         {
             return View();
         }
@@ -158,13 +159,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     produceorder.MemberId = member.MemberID;
                     produceorder.MemberNumbering =member.MemberNumbering.ToString();
                     produceorder.OrderNumbering = order.OrderNumbering;
+                    produceorder.OrderNumber = order.OrderNumber;
                     produceorder.MemberName = member.MemberName;
                     produceorder.MemberModel = member.MemberModel;
                     produceorder.IsSubmit = item.IsSubmit;
-                    produceorder.SubmitMan = item.SubmitMan;
+                    produceorder.SubmitMan = "System";
                     produceorder.SubmitTime = item.SubmitTime.ToString();
                     produceorder.ConfirmOrder = item.ConfirmOrder;
-                    produceorder.ConfirmMan = item.ConfirmMan;
+                    produceorder.ConfirmMan = "System";
                     produceorder.Description = item.Description;
                     produceorderlist.Add(produceorder);
                 }
@@ -321,7 +323,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// </summary>
         /// <param name="FolderId"></param>
         /// <returns></returns>
-        public ActionResult ConfirmOrder(string KeyValue, RMC_ProcessManagement Entity)
+        public ActionResult ConfirmOrder(string KeyValue, RMC_ProcessManagement Entity,RMC_AnalysisRawMaterial AnalysisRawMaterialEntity)
         {
             try
             {
@@ -331,16 +333,31 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 file.ConfirmOrder = 1;
                 file.ConfirmMan = "System";
                 OrderManagementCurrent.Modified(file);
+
+                var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == file.ProjectDemandId).SingleOrDefault();
+                var member = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
+                AnalysisRawMaterialEntity.TreeId = file.TreeId;
+                AnalysisRawMaterialEntity.MaterialName = member.MemberName;
+                AnalysisRawMaterialEntity.OrderNumbering = file.OrderNumbering;
+                AnalysisRawMaterialEntity.OrderId = file.OrderId;
+                AnalysisRawMaterialEntity.UnitId = demand.UnitId;
+                AnalysisRawMaterialEntity.ParentId = 0;
+                AnalysisRawMaterialEntity.RawMaterialId = 0;
+                AnalysisRawMaterialEntity.Number = file.OrderNumber;
+                AnalysisRawMaterialCurrent.Add(AnalysisRawMaterialEntity);
+
                 var tree = TreeCurrent.Find(f => f.TreeName == "生产制程设计").SingleOrDefault();
                 if (tree != null)
                 {
                     Entity.OrderId = OrderId;
+                    Entity.OrderNumbering = file.OrderNumbering; 
                     Entity.TreeId = tree.TreeID;
                     Entity.Supervision = 0;
                     Entity.QualityInspection = 0;
                     Entity.MemberCompanyId = file.ProjectDemandId;
                 }
                 ProcessManagementCurrent.Add(Entity);
+
                 return Content(new JsonMessage { Success = true, Code = "1", Message = "操作成功。" }.ToString());
             }
             catch (Exception ex)
@@ -369,7 +386,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <param name="FolderId">文件夹ID</param>
         /// <param name="IsPublic">是否公共 1-公共、0-我的</param>
         /// <returns></returns>         
-        public ActionResult GridListJsonAnalysisRawMaterial(/*ProjectInfoViewModel model,*/ string TreeID, JqGridParam jqgridparam, string IsPublic)
+        public ActionResult TreeGridJsonAnalysisRawMaterial111(/*ProjectInfoViewModel model,*/ string TreeID, JqGridParam jqgridparam, string IsPublic)
         {
             try
             {
@@ -417,17 +434,22 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 List<AnalysisRawMaterialModel> AnalysisRawMaterialModelList = new List<AnalysisRawMaterialModel>();
                 foreach (var item in listfile)
                 {
-                    AnalysisRawMaterialModel AnalysisRawMaterialModel = new AnalysisRawMaterialModel();
+                    AnalysisRawMaterialModel _AnalysisRawMaterialModel = new AnalysisRawMaterialModel();
                     var Unit = MemberUnitCurrent.Find(f => f.UnitId == item.UnitId).SingleOrDefault();
-                    AnalysisRawMaterialModel.UnitName = Unit.UnitName;
-                    AnalysisRawMaterialModel.AnalysisRawMaterialId = item.AnalysisRawMaterialId;
-                    AnalysisRawMaterialModel.MaterialName = item.MaterialName;
-                    AnalysisRawMaterialModel.Number = item.Number;
-                    AnalysisRawMaterialModel.MaterialStandard = item.MaterialStandard;
-                    AnalysisRawMaterialModel.UnitPrice = item.UnitPrice;
-                    AnalysisRawMaterialModel.TreeId = item.TreeId;
-                    AnalysisRawMaterialModel.Description = item.Description;
-                    AnalysisRawMaterialModelList.Add(AnalysisRawMaterialModel);
+                    _AnalysisRawMaterialModel.UnitName = Unit.UnitName;
+                    _AnalysisRawMaterialModel.AnalysisRawMaterialId = item.AnalysisRawMaterialId;
+                    _AnalysisRawMaterialModel.MaterialName = item.MaterialName;
+                    var order = OrderManagementCurrent.Find(f=>f.OrderId==item.OrderId).SingleOrDefault();
+                    var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == order.ProjectDemandId).SingleOrDefault();
+                    var member = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
+                    _AnalysisRawMaterialModel.MemberModel = member.MemberModel;
+                    _AnalysisRawMaterialModel.Number = item.Number;
+                    _AnalysisRawMaterialModel.MaterialStandard = item.MaterialStandard;
+                    _AnalysisRawMaterialModel.UnitPrice = item.UnitPrice;
+                    _AnalysisRawMaterialModel.TreeId = item.TreeId;
+                    _AnalysisRawMaterialModel.OrderNumbering = item.OrderNumbering;
+                    _AnalysisRawMaterialModel.Description = item.Description;
+                    AnalysisRawMaterialModelList.Add(_AnalysisRawMaterialModel);
                 }
                 if (AnalysisRawMaterialModelList.Count() > 0)// && listtree.Count() > 0
                 {
@@ -475,8 +497,227 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             }
         }
 
+        public ActionResult TreeGridJsonAnalysisRawMaterial(string TreeID,JqGridParam jqgridparam)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(TreeID))
+            {
+                int TreeId;
+                //int FolderId = Convert.ToInt32(FolderId);
+                if (TreeID == "" || TreeID == null)
+                {
+                    TreeId = 29;
+                }
+                else
+                {
+                    TreeId = Convert.ToInt32(TreeID);
+                }
+
+                int total = 0;
+                Expression<Func<RMC_AnalysisRawMaterial, bool>> func = ExpressionExtensions.True<RMC_AnalysisRawMaterial>();
+                func = f => f.DeleteFlag != 1 && f.TreeId == TreeId;
+                #region 查询条件拼接
+             
+                #endregion
+
+                //DataTable ListData, ListData1;
+                //ListData = null;
+
+                //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
+                //                         , jqgridparam.rows
+                //                         , func1
+                //                         , true
+                //                         , f => f.TreeID.ToString()
+                //                         , out total
+                //                         ).ToList();
+                List<RMC_AnalysisRawMaterial> listfile = AnalysisRawMaterialCurrent.FindPage<string>(jqgridparam.page
+                                         , jqgridparam.rows
+                                         , func
+                                         , true
+                                         , f => f.RawMaterialId.ToString()
+                                         , out total
+                                         ).ToList();
+
+               List<AnalysisRawMaterialModel> AnalysisRawMaterialModellist = new List<AnalysisRawMaterialModel>();
+                foreach (var item in listfile)
+                {
+                    AnalysisRawMaterialModel _AnalysisRawMaterialModel = new AnalysisRawMaterialModel();
+                    var Unit = MemberUnitCurrent.Find(f => f.UnitId == item.UnitId).SingleOrDefault();
+                    _AnalysisRawMaterialModel.UnitName = Unit.UnitName;
+                    if (item.OrderId != 0) { 
+                    var order = OrderManagementCurrent.Find(f => f.OrderId == item.OrderId).SingleOrDefault();
+                    var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == order.ProjectDemandId).SingleOrDefault();
+                    var member = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
+                    _AnalysisRawMaterialModel.MemberModel = member.MemberModel;
+                    _AnalysisRawMaterialModel.Number = order.OrderNumber;
+                    }
+                    if (item.RawMaterialId != 0) {
+                    var RawMaterial = AnalysisRawMaterialCurrent.Find(f => f.RawMaterialId == item.RawMaterialId).SingleOrDefault();
+                        _AnalysisRawMaterialModel.UnitPrice = RawMaterial.UnitPrice;
+                        _AnalysisRawMaterialModel.MaterialBudget = RawMaterial.UnitPrice * RawMaterial.Number;
+                    }
+                    _AnalysisRawMaterialModel.OrderNumbering = item.OrderNumbering;
+                    _AnalysisRawMaterialModel.AnalysisRawMaterialId = item.AnalysisRawMaterialId;
+                    _AnalysisRawMaterialModel.ParentId = item.ParentId;
+                    _AnalysisRawMaterialModel.MaterialName = item.MaterialName;
+                    _AnalysisRawMaterialModel.Number = item.Number;
+                    _AnalysisRawMaterialModel.MaterialStandard = item.MaterialStandard;
+                    _AnalysisRawMaterialModel.TreeId = item.TreeId;
+                    _AnalysisRawMaterialModel.AnalysisMan = item.AnalysisMan;
+                    _AnalysisRawMaterialModel.Description = item.Description;
+                    AnalysisRawMaterialModellist.Add(_AnalysisRawMaterialModel);
+                }
+
+                sb.Append("{ \"rows\": [");
+                sb.Append(TreeGridJson(AnalysisRawMaterialModellist, -1));
+                sb.Append("]}");
+            }
+            return Content(sb.ToString());
+        }
+        int lft = 1, rgt = 1000000;
+        public string TreeGridJson(List<AnalysisRawMaterialModel> AnalysisRawMaterialModellist, int index, int ParentId = 0)
+        {
+            StringBuilder sb = new StringBuilder();
+            List<AnalysisRawMaterialModel> ChildNodeList = AnalysisRawMaterialModellist.FindAll(t => t.ParentId == ParentId);
+            if (ChildNodeList.Count > 0) { index++; }
+            foreach (AnalysisRawMaterialModel entity in ChildNodeList)
+            {
+                string strJson = entity.ToJson();
+                strJson = strJson.Insert(1, "\"level\":" + index + ",");
+                strJson = strJson.Insert(1, "\"isLeaf\":" + (AnalysisRawMaterialModellist.Count<AnalysisRawMaterialModel>(t => t.ParentId == entity.AnalysisRawMaterialId) == 0 ? true : false).ToString().ToLower() + ",");
+                strJson = strJson.Insert(1, "\"expanded\":true,");
+                strJson = strJson.Insert(1, "\"lft\":" + lft++ + ",");
+                strJson = strJson.Insert(1, "\"rgt\":" + rgt-- + ",");
+                sb.Append(strJson);
+                sb.Append(TreeGridJson(AnalysisRawMaterialModellist, index, entity.AnalysisRawMaterialId));
+            }
+            return sb.ToString().Replace("}{", "},{");
+        }
+
+        /// <summary>
+        /// 表单视图
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AnalysisRawMaterialForm()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 【项目信息管理】返回文件夹对象JSON
+        /// </summary>
+        /// <param name="KeyValue">主键值</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateInput(false)]
+        //[LoginAuthorize]
+        public ActionResult SetAnalysisRawMaterialForm(string KeyValue)
+        {
+            RMC_AnalysisRawMaterial entity = new RMC_AnalysisRawMaterial();
+            if (!string.IsNullOrEmpty(KeyValue))
+            {
+                int key_value = Convert.ToInt32(KeyValue);
+                entity = AnalysisRawMaterialCurrent.Find(f => f.AnalysisRawMaterialId== key_value).SingleOrDefault();
+            }
+            return Content(entity.ToJson());
+            //return Json(entity);
+        }
+
+        /// <summary>
+        /// 提交文件夹表单
+        /// </summary>
+        /// <param name="entity">实体对象</param>
+        /// <param name="KeyValue">主键值</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateInput(false)]
+        //[LoginAuthorize]
+        public virtual ActionResult SubmitAnalysisRawMaterialForm(RMC_AnalysisRawMaterial entity, string KeyValue,string OrderNumbering)
+        {
+            try
+            {
+                int IsOk = 0;
+                string Message = OrderNumbering == "" ? "编辑成功。" : "新增成功。";
+                if (!string.IsNullOrEmpty(OrderNumbering))
+                {
+
+                    int key_value = Convert.ToInt32(KeyValue);
+                    RMC_AnalysisRawMaterial AnalysisRawMaterial = AnalysisRawMaterialCurrent.Find(t => t.AnalysisRawMaterialId == key_value).SingleOrDefault();
+                    RMC_AnalysisRawMaterial Oldentity = new RMC_AnalysisRawMaterial();
+                    Oldentity.TreeId = AnalysisRawMaterial.TreeId;
+                    Oldentity.ParentId = key_value;
+                    Oldentity.OrderId = 0;
+                    Oldentity.RawMaterialId = entity.RawMaterialId;
+                    Oldentity.MaterialClassId = entity.MaterialClassId;
+                    Oldentity.Number = entity.Number;
+                    Oldentity.MaterialName = entity.MaterialName;
+                    Oldentity.Description = entity.Description;
+                    AnalysisRawMaterialCurrent.Add(Oldentity);
+                    IsOk = 1;
+                    //this.WriteLog(IsOk, entity, null, KeyValue, Message);
+                }
+                else
+                {
+                    int key_value = Convert.ToInt32(KeyValue);
+                    RMC_AnalysisRawMaterial Oldentity = AnalysisRawMaterialCurrent.Find(t => t.AnalysisRawMaterialId == key_value).SingleOrDefault();//获取没更新之前实体对象
+
+                    Oldentity.Number = entity.Number;
+                    Oldentity.RawMaterialId = entity.RawMaterialId;
+                    Oldentity.Description = entity.Description;
+                    AnalysisRawMaterialCurrent.Modified(Oldentity);
+                    IsOk = 1;//更新实体对象
+                    //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
+                }
+                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+            }
+            catch (Exception ex)
+            {
+                //this.WriteLog(-1, entity, null, KeyValue, "操作失败：" + ex.Message);
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+            }
+        }
+
+        /// <summary>
+        /// 删除（销毁）文件
+        /// </summary>
+        /// <param name="FolderId"></param>
+        /// <returns></returns>
+        public ActionResult DeleteAnalysisRawMaterial(string KeyValue)
+        {
+            try
+            {
+                List<int> ids = new List<int>();
+                int key_value = Convert.ToInt32(KeyValue);
+                ids.Add(key_value);
+                AnalysisRawMaterialCurrent.Remove(ids);
+                return Content(new JsonMessage { Success = true, Code = "1", Message = "删除成功。" }.ToString());
+            }
+            catch (Exception ex)
+            {
+                return Content(new JsonMessage
+                {
+                    Success = false,
+                    Code = "-1",
+                    Message = "操作失败：" + ex.Message
+                }.ToString());
+            }
+        }
 
 
+     public ActionResult GetRawMaterialName()
+        {
+            List<SelectListItem> List = new List<SelectListItem>();
+            List<RMC_RawMaterialLibrary> ProjectList = RawMaterialCurrent.Find(f => f.RawMaterialId> 0).ToList();
+            foreach (var Item in ProjectList)
+            {
+                SelectListItem item = new SelectListItem();
+                item.Text = Item.RawMaterialName;
+                item.Value = Item.RawMaterialId.ToString();
+                List.Add(item);
+            }
+            return Json(List, JsonRequestBehavior.AllowGet);
+
+        }
         #endregion
 
         #region 构件厂原材料库存管理
@@ -522,7 +763,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <param name="FolderId">文件夹ID</param>
         /// <param name="IsPublic">是否公共 1-公共、0-我的</param>
         /// <returns></returns>         
-        public ActionResult GridListJsonRawMaterials(/*ProjectInfoViewModel model,*/ string TreeID, JqGridParam jqgridparam, RMC_RawMaterialLibrary RawMaterialLibrary, string IsPublic)
+        public ActionResult GridListJsonRawMaterials(/*ProjectInfoViewModel model,*/ string TreeID, JqGridParam jqgridparam, string IsPublic)
         {
             try
             {
@@ -553,6 +794,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 DataTable ListData, ListData1;
                 ListData = null;
+               
                 //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
                 //                         , jqgridparam.rows
                 //                         , func1
@@ -567,26 +809,27 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                          , f => f.RawMaterialId.ToString()
                                          , out total
                                          ).ToList();
-                List<RMC_RawMaterialLibrary> RawMaterialLibrarylist = new List<RMC_RawMaterialLibrary>();
+                
+                List<RawMaterialLibraryModel> RawMaterialLibraryModellist = new List<RawMaterialLibraryModel>();
                 foreach (var item in listfile)
                 {
-
+                    RawMaterialLibraryModel RawMaterialLibraryModel = new RawMaterialLibraryModel();
                     var Unit = MemberUnitCurrent.Find(f => f.UnitId == item.UnitId).SingleOrDefault();
-                    RawMaterialLibrary.UnitName = Unit.UnitName;
-                    RawMaterialLibrary.RawMaterialId = item.RawMaterialId;
-                    RawMaterialLibrary.RawMaterialName = item.RawMaterialName;
-                    RawMaterialLibrary.RawMaterialNumber = item.RawMaterialNumber;
-                    RawMaterialLibrary.RawMaterialStandard = item.RawMaterialStandard;
-                    RawMaterialLibrary.UnitPrice = item.UnitPrice;
-                    RawMaterialLibrary.TreeId = item.TreeId;
-                    RawMaterialLibrary.Description= item.Description;
-                    RawMaterialLibrarylist.Add(RawMaterialLibrary);
+                    RawMaterialLibraryModel.UnitName = Unit.UnitName;
+                    RawMaterialLibraryModel.RawMaterialId = item.RawMaterialId;
+                    RawMaterialLibraryModel.RawMaterialName = item.RawMaterialName;
+                    RawMaterialLibraryModel.RawMaterialNumber = item.RawMaterialNumber;
+                    RawMaterialLibraryModel.RawMaterialStandard = item.RawMaterialStandard;
+                    RawMaterialLibraryModel.UnitPrice = item.UnitPrice;
+                    RawMaterialLibraryModel.TreeId = item.TreeId;
+                    RawMaterialLibraryModel.Description= item.Description;
+                    RawMaterialLibraryModellist.Add(RawMaterialLibraryModel);
                 }
-                if (RawMaterialLibrarylist.Count() > 0)// && listtree.Count() > 0
+                 if (RawMaterialLibraryModellist.Count() > 0)// && listtree.Count() > 0
                 {
 
                     //ListData0 = ListToDataTable(listtree);
-                    ListData1 = DataHelper.ListToDataTable(RawMaterialLibrarylist);
+                    ListData1 = DataHelper.ListToDataTable(RawMaterialLibraryModellist);
                     ListData = ListData1.Clone();
                     object[] obj = new object[ListData.Columns.Count];
                     ////添加DataTable0的数据
@@ -607,9 +850,9 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //{
                 //    ListData = ListToDataTable(listtree);
                 //}
-                else if (listfile.Count() > 0)
+                else if (RawMaterialLibraryModellist.Count() > 0)
                 {
-                    ListData = DataHelper.ListToDataTable(RawMaterialLibrarylist);
+                    ListData = DataHelper.ListToDataTable(RawMaterialLibraryModellist);
                 }
                 else
                 {
@@ -666,7 +909,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         [HttpPost]
         [ValidateInput(false)]
         //[LoginAuthorize]
-        public virtual ActionResult SubmitRawMaterialsForm(RMC_RawMaterialLibrary entity, string KeyValue, string OrderId)
+        public virtual ActionResult SubmitRawMaterialsForm(RMC_RawMaterialLibrary entity, string KeyValue, string TreeId)
         {
             try
             {
@@ -681,6 +924,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.RawMaterialNumber = entity.RawMaterialNumber;
                     Oldentity.RawMaterialStandard = entity.RawMaterialStandard;
                     Oldentity.UnitId = entity.UnitId;
+                    Oldentity.UnitPrice = entity.UnitPrice;
                     Oldentity.RawMaterialNumber = entity.RawMaterialNumber;
                     Oldentity.Description = entity.Description;
                     RawMaterialCurrent.Modified(Oldentity);
@@ -689,13 +933,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
                 else
                 {
-                    int key_value = Convert.ToInt32(KeyValue);
+                    
                     RMC_RawMaterialLibrary Oldentity = new RMC_RawMaterialLibrary();
-                    Oldentity.TreeId = key_value;
+                    Oldentity.TreeId =Convert.ToInt32(TreeId);
                     Oldentity.RawMaterialName = entity.RawMaterialName;
                     Oldentity.RawMaterialNumber = entity.RawMaterialNumber;
                     Oldentity.RawMaterialStandard = entity.RawMaterialStandard;
                     Oldentity.UnitId = entity.UnitId;
+                    Oldentity.UnitPrice = entity.UnitPrice;
                     Oldentity.RawMaterialNumber = entity.RawMaterialNumber;
                     Oldentity.Description = entity.Description;
                     RawMaterialCurrent.Add(Oldentity);
@@ -716,7 +961,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// </summary>
         /// <param name="FolderId"></param>
         /// <returns></returns>
-        public ActionResult DeleteRawMaterials(string KeyValue)
+        public ActionResult DeleteRawMaterial(string KeyValue)
         {
             try
             {

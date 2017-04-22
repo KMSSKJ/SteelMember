@@ -155,9 +155,6 @@
     <Compile Include="SteelMember\RMC_Tree.cs">
       <DependentUpon>MemberEntity.tt</DependentUpon>
     </Compile>
-    <Compile Include="SteelMember\TestTable.cs">
-      <DependentUpon>MemberEntity.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LeaRun.DataAccess\LeaRun.DataAccess.csproj">

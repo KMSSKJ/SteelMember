@@ -44,5 +44,6 @@ namespace LeaRun.Entity.SteelMember
         public string Packing { get; set; }
         public Nullable<int> PackingDays { get; set; }
         public string Description { get; set; }
+        public string OrderNumbering { get; set; }
     }
 }

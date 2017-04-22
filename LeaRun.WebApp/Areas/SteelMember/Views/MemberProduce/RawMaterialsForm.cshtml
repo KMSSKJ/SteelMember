@@ -3,13 +3,9 @@
     Layout = "~/Views/Shared/_LayoutForm.cshtml";
 }
 <head>
-    <script src="~/Scripts/jqueryPicture/js/jquery.mousewheel.min.js"></script>
-    <script src="~/Scripts/jqueryPicture/js/jquery.iviewer.js"></script>
-
     <script type="text/javascript">
         var KeyValue = GetQuery('KeyValue');
-        //var ItemID = GetQuery('ItemID');
-        //var TreeId = GetQuery('TreeId');
+        var TreeId = GetQuery('TreeId');
         var Data;
         $(function () {
             InitControl();
@@ -34,7 +30,7 @@
             Loading(true, "正在提交数据...");
             window.setTimeout(function () {
                 var postData = GetWebControls("#form2");
-                AjaxJson("/SteelMember/MemberProduce/SubmitRawMaterialsForm?KeyValue=" + KeyValue, postData, function (data) {//+ '&ItemID=' + ItemID
+                AjaxJson("/SteelMember/MemberProduce/SubmitRawMaterialsForm?KeyValue=" + KeyValue+"&TreeId="+TreeId, postData, function (data) {//+ '&ItemID=' + ItemID
                     tipDialog(data.Message, 3, data.Code);
                     top.frames[tabiframeId()].windowload();
                     closeDialog();
@@ -57,7 +53,7 @@
                             var projectname = data[i];
                             projectname_sel.push('<option value="' + projectname.UnitId + '">' + projectname.UnitName + '</option>')
                         }
-                        $("#RawMaterialUnit").html(projectname_sel.join(' '));
+                        $("#UnitId").html(projectname_sel.join(' '));
                         if (!!KeyValue) {
                             //编辑时获取值
                             $("#UnitId  option[value='" + Data.UnitId + "']").attr("selected", true);
@@ -73,13 +69,7 @@
 </head>
 <form id="form2" style="margin: 25px; margin-left: 40px; margin-right: 40px;">
     <div>
-        <input id="IsPublic" type="hidden" />
-        <input id="SortCode" type="hidden" />
-        <input id="ParentID" type="hidden" />
-        @*<input id="ProjectId" type="hidden" />
-            <input id="MemberId" type="hidden" />
-            <input id="MemberCompanyId" type="hidden" />*@
-
+      
         <table class="form">
             <tr>
                 <th class="formTitle">
@@ -102,7 +92,15 @@
                     单位：
                 </th>
                 <td class="formValue">
-                    <input id="UnitId" type="text" class="txt" />
+                    <select id="UnitId" name="UnitId"></select>
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">
+                    单价：
+                </th>
+                <td class="formValue">
+                    <input id="UnitPrice" name="UnitPrice" type="text" class="txt"/>
                 </td>
             </tr>
             <tr>
