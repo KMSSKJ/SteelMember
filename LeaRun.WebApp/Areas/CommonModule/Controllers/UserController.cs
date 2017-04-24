@@ -41,7 +41,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
         /// 【用户管理】返回用户列表JSON
         /// </summary>
         /// <param name="keywords">查询关键字</param>
-        /// <param name="CompanyId">公司ID</param>
+        /// <param name="CompanyId">单位ID</param>
         /// <param name="DepartmentId">部门ID</param>
         /// <param name="jqgridparam">表格参数</param>
         /// <returns></returns>
@@ -133,7 +133,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             Base_Employee base_employee = DataFactory.Database().FindEntity<Base_Employee>(KeyValue);
             Base_Company base_company = DataFactory.Database().FindEntity<Base_Company>(base_user.CompanyId);
             string strJson = base_user.ToJson();
-            //公司
+            //单位
             strJson = strJson.Insert(1, "\"CompanyName\":\"" + base_company.FullName + "\",");
             //员工信息
             strJson = strJson.Insert(1, base_employee.ToJson().Replace("{", "").Replace("}", "") + ",");
@@ -196,7 +196,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
         /// <summary>
         /// 加载用户角色
         /// </summary>
-        /// <param name="CompanyId">公司ID</param>
+        /// <param name="CompanyId">单位ID</param>
         /// <param name="UserId">用户Id</param>
         /// <returns></returns>
         public ActionResult UserRoleList(string CompanyId, string UserId)

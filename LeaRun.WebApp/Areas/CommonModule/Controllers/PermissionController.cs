@@ -232,7 +232,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             return View();
         }
         /// <summary>
-        /// 根据公司Id/部门Id加载用户视图
+        /// 根据单位Id/部门Id加载用户视图
         /// </summary>
         /// <returns></returns>
         [ManagerPermission(PermissionMode.Enforce)]
@@ -241,9 +241,9 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             return View();
         }
         /// <summary>
-        /// 根据公司Id加载用户列表
+        /// 根据单位Id加载用户列表
         /// </summary>
-        /// <param name="CompanyId">公司ID</param>
+        /// <param name="CompanyId">单位ID</param>
         /// <param name="DepartmentId">部门ID</param>
         /// <param name="ObjectId">对象主键</param>
         /// <param name="Category">对象分类:1-部门2-角色3-岗位4-群组</param>
@@ -414,9 +414,9 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             }
         }
 
-        #region 公司管理
+        #region 单位管理
         /// <summary>
-        /// 加载公司
+        /// 加载单位
         /// <param name="ObjectId">对象主键</param>
         /// <param name="Category">对象分类:1-部门2-角色3-岗位4-群组</param>
         /// </summary>

@@ -27,7 +27,7 @@ namespace LeaRun.Business
         /// <summary>
         /// 成员列表
         /// </summary>
-        /// <param name="CompanyId">公司ID</param>
+        /// <param name="CompanyId">单位ID</param>
         /// <param name="DepartmentId">部门ID</param>
         /// <param name="ObjectId">对象主键</param>
         /// <param name="Category">对象分类:1-部门2-角色3-岗位4-群组</param>
@@ -42,7 +42,7 @@ namespace LeaRun.Business
                                                 u.RealName ,			--姓名
                                                 u.Code ,				--工号
                                                 u.Gender ,				--性别
-                                                u.CompanyId ,			--公司ID
+                                                u.CompanyId ,			--单位ID
                                                 u.DepartmentId ,		--部门ID
                                                 u.SortCode ,			--排序码
                                                 ou.ObjectId				--是否存在
@@ -200,7 +200,7 @@ namespace LeaRun.Business
                                     u.RealName ,			--姓名
                                     u.Code ,				--工号
                                     u.Gender ,				--性别
-                                    u.CompanyId ,			--公司ID
+                                    u.CompanyId ,			--单位ID
                                     u.DepartmentId ,		--部门ID
                                     u.SortCode 			    --排序码
                             FROM    Base_User u

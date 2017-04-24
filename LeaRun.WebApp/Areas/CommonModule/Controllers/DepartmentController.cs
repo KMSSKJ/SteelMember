@@ -20,7 +20,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
     {
         Base_DepartmentBll base_departmentbll = new Base_DepartmentBll();
         /// <summary>
-        /// 【部门管理】返回 公司、部门 树JONS
+        /// 【部门管理】返回 单位、部门 树JONS
         /// </summary>
         /// <returns></returns>
         public ActionResult TreeJson()
@@ -70,7 +70,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
         /// <summary>
         /// 【部门管理】返回表格JONS
         /// </summary>
-        /// <param name="CompanyId">公司ID</param>
+        /// <param name="CompanyId">单位ID</param>
         /// <returns></returns>
         public ActionResult GridListJson(string CompanyId)
         {
@@ -82,9 +82,9 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             return Content(JsonData.ToJson());
         }
         /// <summary>
-        /// 【部门管理】根据公司id获取部门列表返回树JONS
+        /// 【部门管理】根据单位id获取部门列表返回树JONS
         /// </summary>
-        /// <param name="CompanyId">公司Id</param>
+        /// <param name="CompanyId">单位Id</param>
         /// <returns></returns>
         public ActionResult DepartmentTreeJson(string CompanyId)
         {
@@ -109,7 +109,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
         /// <summary>
         /// 【部门管理】返回列表JONS
         /// </summary>
-        /// <param name="CompanyId">公司ID</param>
+        /// <param name="CompanyId">单位ID</param>
         /// <returns></returns>
         public ActionResult ListJson(string CompanyId)
         {

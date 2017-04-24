@@ -13,7 +13,7 @@ using System.Text;
 namespace LeaRun.Business
 {
     /// <summary>
-    /// 公司管理
+    /// 单位管理
     /// <author>
     ///		<name>she</name>
     ///		<date>2014.08.06 10:59</date>
@@ -22,7 +22,7 @@ namespace LeaRun.Business
     public class Base_CompanyBll : RepositoryFactory<Base_Company>
     {
         /// <summary>
-        /// 获取公司列表
+        /// 获取单位列表
         /// </summary>
         /// <returns></returns>
         public List<Base_Company> GetList()

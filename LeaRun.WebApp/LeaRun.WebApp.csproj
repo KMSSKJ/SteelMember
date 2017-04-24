@@ -8007,6 +8007,16 @@
     <Content Include="Content\Scripts\bootstrap\tag\bootstrap.tag.js" />
     <Content Include="Content\Scripts\bootstrap\timepicker\bootstrap.timepicker.css" />
     <Content Include="Content\Scripts\bootstrap\timepicker\bootstrap.timepicker.js" />
+    <Content Include="Content\Scripts\C3D\CSS3DRenderer.js" />
+    <Content Include="Content\Scripts\C3D\flash10canvas.swf" />
+    <Content Include="Content\Scripts\C3D\flashcanvas.js" />
+    <Content Include="Content\Scripts\C3D\jsc3d.js" />
+    <Content Include="Content\Scripts\C3D\jsc3d.touch.js" />
+    <Content Include="Content\Scripts\C3D\jsc3d.webgl.js" />
+    <Content Include="Content\Scripts\C3D\ObjectLoader.js" />
+    <Content Include="Content\Scripts\C3D\OBJLoader.js" />
+    <Content Include="Content\Scripts\C3D\three.js" />
+    <Content Include="Content\Scripts\C3D\WebGLRenderer.js" />
     <Content Include="Content\Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Content\Scripts\ckeditor\build-config.js" />
     <Content Include="Content\Scripts\ckeditor\ckeditor.js" />
@@ -8718,9 +8728,14 @@
     <Content Include="Areas\SteelMember\Views\MemberProduce\AnalysisRawMaterialIndex.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberSettlement\Index.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\AnalysisRawMaterialForm.cshtml" />
+    <Content Include="Content\Scripts\C3D\iphoneg4.obj" />
+    <Content Include="Content\Scripts\C3D\SFma-B.fbx" />
+    <Content Include="Content\Scripts\C3D\OBJ.mtl" />
     <None Include="Properties\PublishProfiles\LR-FDMS.pubxml" />
     <Content Include="Views\Home\SkinIndex.cshtml" />
     <Content Include="Views\Login\Default.cshtml" />
+    <Content Include="Views\TestDemo\Index.cshtml" />
+    <Content Include="Views\TestDemo\iphoneg4.obj" />
     <None Include="Views\Utility\PrintPage.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

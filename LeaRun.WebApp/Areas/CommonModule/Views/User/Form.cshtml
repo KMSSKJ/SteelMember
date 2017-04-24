@@ -6,9 +6,9 @@
     $(function () {
         BindCombobox();
         InitControl();
-        //判断新增的时候。如果选择了left项目，公司、部门会自动赋值
+        //判断新增的时候。如果选择了left项目，单位、部门会自动赋值
         if (!!GetQuery('CompanyId')) {
-            //获取公司名称
+            //获取单位名称
             AjaxJson("/CommonModule/Company/SetForm", { KeyValue: GetQuery('CompanyId') }, function (data) {
                 $("#CompanyId").val(data.CompanyId);
                 $("#CompanyName").val(data.FullName);
@@ -19,7 +19,7 @@
     })
     //初始化绑定下拉框
     function BindCombobox() {
-        //加载公司
+        //加载单位
         $("#CompanyName").focus(function () {
             var objId = this.id;
             comboBoxTree(objId, "150px");
@@ -109,9 +109,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="formTitle">登录账户：</th>
+                    <th class="formTitle">账户：</th>
                     <td class="formValue">
-                        <input id="Account" type="text" class="txt required" datacol="yes" err="登录账户" checkexpession="NotNull" />
+                        <input id="Account" type="text" class="txt required" datacol="yes" err="账户" checkexpession="NotNull" />
                     </td>
                     <th class="formTitle">登录密码：
                     </th>
@@ -153,14 +153,14 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="formTitle">所在公司：</th>
+                    <th class="formTitle">所属单位：</th>
                     <td class="formValue">
                         <input id="CompanyId" type="hidden" />
-                        <input id="CompanyName" type="text" class="txt icontree" datacol="yes" err="所在公司" checkexpession="NotNull" />
+                        <input id="CompanyName" type="text" class="txt icontree" datacol="yes" err="所属单位" checkexpession="NotNull" />
                     </td>
-                    <th class="formTitle">所在部门：</th>
+                    <th class="formTitle">所属部门：</th>
                     <td class="formValue">
-                        <select id="DepartmentId" class="txtselect" datacol="yes" err="所在部门" checkexpession="NotNull">
+                        <select id="DepartmentId" class="txtselect" datacol="yes" err="所属部门" checkexpession="NotNull">
                         </select>
                     </td>
                 </tr>
@@ -207,7 +207,7 @@
                     <td class="formValue">
                         <input id="IDCard" type="text" class="txt" />
                     </td>
-                    <th class="formTitle">担任职务：</th>
+                    <th class="formTitle">职务：</th>
                     <td class="formValue">
                         <select id="Duty" class="txtselect">
                         </select>

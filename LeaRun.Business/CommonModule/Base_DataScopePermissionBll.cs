@@ -64,9 +64,9 @@ namespace LeaRun.Business
             }
         }
 
-        #region 公司管理
+        #region 单位管理
         /// <summary>
-        /// 加载公司列表
+        /// 加载单位列表
         /// <param name="ModuleId">模块主键</param>
         /// <param name="ObjectId">对象主键</param>
         /// <param name="Category">对象分类:1-部门2-角色3-岗位4-群组</param>
@@ -76,8 +76,8 @@ namespace LeaRun.Business
         {
             StringBuilder strSql = new StringBuilder();
             List<DbParameter> parameter = new List<DbParameter>();
-            strSql.Append(@"SELECT  c.CompanyId ,				--公司ID
-                                    c.ParentId ,				--公司节点
+            strSql.Append(@"SELECT  c.CompanyId ,				--单位ID
+                                    c.ParentId ,				--单位节点
                                     c.Code ,					--编码
                                     c.FullName ,				--名称
                                     c.SortCode ,				--排序吗
@@ -116,16 +116,16 @@ namespace LeaRun.Business
             List<DbParameter> parameter = new List<DbParameter>();
             strSql.Append(@"SELECT  T.* ,
                                     dsp.ObjectId
-                            FROM    ( SELECT    CompanyId ,				--公司ID
+                            FROM    ( SELECT    CompanyId ,				--单位ID
                                                 CompanyId AS DepartmentId ,--部门ID
                                                 Code ,					--编码
                                                 FullName ,				--名称
                                                 ParentId ,				--节点ID
                                                 SortCode ,				--排序编码
                                                 'Company' AS Sort		--分类
-                                      FROM      Base_Company			--公司表
+                                      FROM      Base_Company			--单位表
                                       UNION
-                                      SELECT    CompanyId ,				--公司ID
+                                      SELECT    CompanyId ,				--单位ID
                                                 DepartmentId ,			--部门ID
                                                 Code ,					--编码
                                                 FullName ,				--名称
@@ -168,16 +168,16 @@ namespace LeaRun.Business
             List<DbParameter> parameter = new List<DbParameter>();
             strSql.Append(@"SELECT  T.* ,
                                     dsp.ObjectId
-                            FROM    ( SELECT    CompanyId ,				--公司ID
+                            FROM    ( SELECT    CompanyId ,				--单位ID
                                                 CompanyId AS RoleId ,	--角色ID
                                                 Code ,					--编码
                                                 FullName ,				--名称
                                                 ParentId ,				--节点ID
                                                 SortCode ,				--排序编码
                                                 'Company' AS Sort		--分类
-                                      FROM      Base_Company			--公司表
+                                      FROM      Base_Company			--单位表
                                       UNION
-                                      SELECT    CompanyId ,				--公司ID
+                                      SELECT    CompanyId ,				--单位ID
                                                 RoleId ,				--角色ID
                                                 Code ,					--编码
                                                 FullName ,				--名称
@@ -219,13 +219,13 @@ namespace LeaRun.Business
             List<DbParameter> parameter = new List<DbParameter>();
             strSql.Append(@"SELECT  T.* ,
                                     dsp.ObjectId
-                            FROM    ( SELECT    CompanyId AS Id ,		--公司ID
+                            FROM    ( SELECT    CompanyId AS Id ,		--单位ID
                                                 Code ,					--编码
                                                 FullName ,				--名称
                                                 ParentId ,				--节点ID
                                                 SortCode ,				--排序编码
                                                 'Company' AS Sort		--分类
-                                      FROM      Base_Company			--公司表
+                                      FROM      Base_Company			--单位表
                                       UNION
                                       SELECT    DepartmentId AS Id,		--部门ID
                                                 Code ,					--编码
@@ -277,13 +277,13 @@ namespace LeaRun.Business
             List<DbParameter> parameter = new List<DbParameter>();
             strSql.Append(@"SELECT  T.* ,
                                     dsp.ObjectId
-                            FROM    ( SELECT    CompanyId AS Id ,		--公司ID
+                            FROM    ( SELECT    CompanyId AS Id ,		--单位ID
                                                 Code ,					--编码
                                                 FullName ,				--名称
                                                 ParentId ,				--节点ID
                                                 SortCode ,				--排序编码
                                                 'Company' AS Sort		--分类
-                                      FROM      Base_Company			--公司表
+                                      FROM      Base_Company			--单位表
                                       UNION
                                       SELECT    DepartmentId AS Id,		--部门ID
                                                 Code ,					--编码
@@ -335,14 +335,14 @@ namespace LeaRun.Business
             List<DbParameter> parameter = new List<DbParameter>();
             strSql.Append(@"SELECT  T.* ,
                                     dsp.ObjectId
-                            FROM    ( SELECT    CompanyId AS Id ,		--公司ID
+                            FROM    ( SELECT    CompanyId AS Id ,		--单位ID
                                                 Code ,					--编码
                                                 FullName ,				--名称
                                                 ParentId ,				--节点ID
                                                 '' AS Gender,			--性别
                                                 SortCode ,				--排序编码
                                                 'Company' AS Sort		--分类
-                                      FROM      Base_Company			--公司表
+                                      FROM      Base_Company			--单位表
                                       UNION
                                       SELECT    DepartmentId AS Id,		--部门ID
                                                 Code ,					--编码

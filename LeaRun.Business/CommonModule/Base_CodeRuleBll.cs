@@ -194,7 +194,7 @@ namespace LeaRun.Business
                                     billCode = billCode + base_department.FullName;
                                 }
                                 break;
-                            //公司
+                            //单位
                             case "4":
                                 Base_Company base_company = database.FindEntity<Base_Company>(base_user.CompanyId);
                                 if (base_coderuledetail.FormatStr == "code")

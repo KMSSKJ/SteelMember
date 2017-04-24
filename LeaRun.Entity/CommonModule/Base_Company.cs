@@ -13,22 +13,22 @@ using System.Text;
 namespace LeaRun.Entity
 {
     /// <summary>
-    /// 公司管理
+    /// 单位管理
     /// <author>
     ///		<name>she</name>
     ///		<date>2014.08.06 10:59</date>
     /// </author>
     /// </summary>
-    [Description("公司管理")]
+    [Description("单位管理")]
     [PrimaryKey("CompanyId")]
     public class Base_Company : BaseEntity
     {
         #region 获取/设置 字段值
         /// <summary>
-        /// 公司主键
+        /// 单位主键
         /// </summary>
         /// <returns></returns>
-        [DisplayName("公司主键")]
+        [DisplayName("单位主键")]
         public string CompanyId { get; set; }
         /// <summary>
         /// 父级主键
@@ -36,35 +36,37 @@ namespace LeaRun.Entity
         /// <returns></returns>
         [DisplayName("父级主键")]
         public string ParentId { get; set; }
+
+        ///// <summary>
+        ///// 单位分类
+        ///// </summary>
+        ///// <returns></returns>
+        //[DisplayName("单位分类")]
+        //public string Category { get; set; }
+
         /// <summary>
-        /// 公司分类
+        /// 单位编码
         /// </summary>
         /// <returns></returns>
-        [DisplayName("公司分类")]
-        public string Category { get; set; }
-        /// <summary>
-        /// 公司编码
-        /// </summary>
-        /// <returns></returns>
-        [DisplayName("公司编码")]
+        [DisplayName("单位编码")]
         public string Code { get; set; }
         /// <summary>
-        /// 公司名称
+        /// 单位名称
         /// </summary>
         /// <returns></returns>
-        [DisplayName("公司名称")]
+        [DisplayName("单位名称")]
         public string FullName { get; set; }
         /// <summary>
-        /// 公司简称
+        /// 单位简称
         /// </summary>
         /// <returns></returns>
-        [DisplayName("公司简称")]
+        [DisplayName("单位简称")]
         public string ShortName { get; set; }
         /// <summary>
-        /// 公司性质
+        /// 单位性质
         /// </summary>
         /// <returns></returns>
-        [DisplayName("公司性质")]
+        [DisplayName("单位性质")]
         public string Nature { get; set; }
         /// <summary>
         /// 法定代表人

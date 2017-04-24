@@ -22,7 +22,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
         /// <summary>
         /// 【岗位管理】返回列表JONS
         /// </summary>
-        /// <param name="CompanyId">公司ID</param>
+        /// <param name="CompanyId">单位ID</param>
         /// <param name="DepartmentId">部门ID</param>
         /// <param name="jqgridparam">分页条件</param>
         /// <returns></returns>

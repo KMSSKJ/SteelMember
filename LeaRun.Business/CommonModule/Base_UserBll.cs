@@ -29,7 +29,7 @@ namespace LeaRun.Business
         /// 获取用户列表
         /// </summary>
         /// <param name="keyword">模块查询</param>
-        /// <param name="CompanyId">公司ID</param>
+        /// <param name="CompanyId">单位ID</param>
         /// <param name="DepartmentId">部门ID</param>
         /// <param name="jqgridparam">分页条件</param>
         /// <returns></returns>
@@ -47,8 +47,8 @@ namespace LeaRun.Business
                                                 u.Mobile ,					--手机
                                                 u.Telephone ,				--电话
                                                 u.Email ,					--电子邮箱
-                                                u.CompanyId ,			    --所在公司ID
-                                                c.FullName AS CompanyName ,	--所在公司
+                                                u.CompanyId ,			    --所属单位ID
+                                                c.FullName AS CompanyName ,	--所属单位
                                                 u.DepartmentId,				--所在部门ID
                                                 d.FullName AS DepartmentName,--所在部门
                                                 e.Duty,                     --职务
@@ -155,7 +155,7 @@ namespace LeaRun.Business
         /// <summary>
         /// 获取用户角色列表
         /// </summary>
-        /// <param name="CompanyId">公司ID</param>
+        /// <param name="CompanyId">单位ID</param>
         /// <param name="UserId">用户Id</param>
         /// <returns></returns>
         public DataTable UserRoleList(string CompanyId, string UserId)

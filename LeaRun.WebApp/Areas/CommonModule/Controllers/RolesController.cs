@@ -22,7 +22,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
         /// <summary>
         /// 【角色管理】返回列表JONS
         /// </summary>
-        /// <param name="CompanyId">公司ID</param>
+        /// <param name="CompanyId">单位ID</param>
         /// <param name="jqgridparam">JqGrid表格参数</param>
         /// <returns></returns>
         public ActionResult GridPageListJson(string CompanyId, JqGridParam jqgridparam)

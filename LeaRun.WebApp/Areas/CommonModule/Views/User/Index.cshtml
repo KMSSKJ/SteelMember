@@ -24,7 +24,7 @@
             onnodeclick: function (item) {
                 if (item.Type == "Company") {
                     DepartmentId = "";
-                    CompanyId = item.CompanyId;     //公司ID
+                    CompanyId = item.CompanyId;     //单位ID
                 } else if (item.Type == "Department") {
                     CompanyId = item.parentnodes;
                     DepartmentId = item.id;         //部门ID
@@ -55,16 +55,16 @@
             colModel: [
                 { label: '主键', name: 'userid', index: 'userid', width: 80, align: 'left', hidden: true },
                 { label: '工号', name: 'code', index: 'code', width: 80, align: 'left' },
-                { label: '登录账户', name: 'account', index: 'account', width: 80, align: 'left' },
+                { label: '账户', name: 'account', index: 'account', width: 80, align: 'left' },
                 { label: '姓名', name: 'realname', index: 'realname', width: 80, align: 'left' },
                 { label: '性别', name: 'gender', index: 'gender', width: 45, align: 'center' },
                 { label: '手机', name: 'mobile', index: 'mobile', width: 100, align: 'left' },
                 { label: '电话', name: 'telephone', index: 'telephone', width: 100, align: 'left' },
                 { label: '邮箱', name: 'email', index: 'email', width: 100, align: 'left' },
-                { label: '所在公司Id', name: 'companyid', hidden: true },
-                { label: '所在公司', name: 'companyname', index: 'companyname', width: 150, align: 'left' },
-                { label: '所在部门', name: 'departmentname', index: 'departmentname', width: 80, align: 'left' },
-                { label: '担任职务', name: 'duty', index: 'duty', width: 80, align: 'left' },
+                { label: '所属单位Id', name: 'companyid', hidden: true },
+                { label: '所属单位', name: 'companyname', index: 'companyname', width: 150, align: 'left' },
+                { label: '所属部门', name: 'departmentname', index: 'departmentname', width: 80, align: 'left' },
+                { label: '职务', name: 'duty', index: 'duty', width: 80, align: 'left' },
                 {
                     label: '有效', name: 'enabled', index: 'enabled', width: 45, align: 'center',
                     formatter: function (cellvalue, options, rowObject) {

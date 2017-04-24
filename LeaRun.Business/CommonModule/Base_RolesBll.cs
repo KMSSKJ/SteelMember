@@ -25,9 +25,9 @@ namespace LeaRun.Business
     public class Base_RolesBll : RepositoryFactory<Base_Roles>
     {
         /// <summary>
-        /// 根据公司id获取角色 列表
+        /// 根据单位id获取角色 列表
         /// </summary>
-        /// <param name="CompanyId">公司ID</param>
+        /// <param name="CompanyId">单位ID</param>
         /// <param name="jqgridparam">分页条件</param>
         /// <returns></returns>
         public DataTable GetPageList(string CompanyId, ref JqGridParam jqgridparam)
@@ -36,8 +36,8 @@ namespace LeaRun.Business
             List<DbParameter> parameter = new List<DbParameter>();
             strSql.Append(@"SELECT  *
                             FROM    ( SELECT    r.RoleId ,					--主键
-                                                r.CompanyId ,				--所属公司Id
-                                                c.FullName AS CompanyName ,	--所属公司
+                                                r.CompanyId ,				--所属单位Id
+                                                c.FullName AS CompanyName ,	--所属单位
                                                 r.Code ,					--编码
                                                 r.FullName ,				--名称
                                                 isnull(U.Qty,0) AS MemberCount,--成员人数

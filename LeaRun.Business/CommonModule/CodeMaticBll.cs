@@ -224,7 +224,7 @@ namespace LeaRun.Business
         /// </summary>
         public string CreateYear { get; set; }
         /// <summary>
-        /// 公司
+        /// 单位
         /// </summary>
         public string Company { get; set; }
         /// <summary>

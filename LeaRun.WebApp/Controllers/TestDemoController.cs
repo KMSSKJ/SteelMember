@@ -24,5 +24,10 @@ namespace LeaRun.WebApp.Controllers
         {
             return View();
         }
+
+        public ActionResult Index()
+        {
+            return View();
+        }
     }
 }

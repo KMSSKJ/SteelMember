@@ -43,7 +43,7 @@ namespace LeaRun.Utilities
         /// </summary>
         public string Gender { get; set; }
         /// <summary>
-        /// 公司Id
+        /// 单位Id
         /// </summary>
         public string CompanyId { get; set; }
         /// <summary>

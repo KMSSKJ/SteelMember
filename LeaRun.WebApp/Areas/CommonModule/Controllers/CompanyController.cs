@@ -16,13 +16,13 @@ using System.Web.Mvc;
 namespace LeaRun.WebApp.Areas.CommonModule.Controllers
 {
     /// <summary>
-    /// 公司管理控制器
+    /// 单位管理控制器
     /// </summary>
     public class CompanyController : PublicController<Base_Company>
     {
         Base_CompanyBll base_companybll = new Base_CompanyBll();
         /// <summary>
-        /// 【公司管理】返回树JONS
+        /// 【单位管理】返回树JONS
         /// </summary>
         /// <returns></returns>
         public ActionResult TreeJson()
@@ -60,7 +60,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             return Content(TreeList.TreeToJson());
         }
         /// <summary>
-        /// 【公司管理】返回公司列表JONS
+        /// 【单位管理】返回单位列表JONS
         /// </summary>
         /// <returns></returns>
         public ActionResult TreeGridListJson()
@@ -92,7 +92,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             return sb.ToString().Replace("}{", "},{");
         }
         /// <summary>
-        /// 【公司管理】返回列表JONS
+        /// 【单位管理】返回列表JONS
         /// </summary>
         /// <returns></returns>
         public ActionResult ListJson(string ParentId)
@@ -105,7 +105,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             return Content(list.ToJson());
         }
         /// <summary>
-        /// 【公司管理】删除数据
+        /// 【单位管理】删除数据
         /// </summary>
         /// <param name="KeyValue">主键值</param>
         /// <returns></returns>
@@ -128,7 +128,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
                 }
                 else
                 {
-                    Message = "公司内有部门，不能删除。";
+                    Message = "单位内有部门，不能删除。";
                 }
                 WriteLog(IsOk, KeyValue, Message);
                 return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
@@ -140,7 +140,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             }
         }
         /// <summary>
-        /// 【公司管理】表单赋值
+        /// 【单位管理】表单赋值
         /// </summary>
         /// <param name="KeyValue">主键值</param>
         /// <returns></returns>
@@ -155,7 +155,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             return Content(strJson);
         }
         /// <summary>
-        /// 【公司管理】提交表单
+        /// 【单位管理】提交表单
         /// </summary>
         /// <param name="entity">实体对象</param>
         /// <param name="KeyValue">主键值</param>

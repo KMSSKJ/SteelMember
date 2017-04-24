@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "公司管理";
+    ViewBag.Title = "单位管理";
     Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
 <script src="~/Content/Scripts/jqgrid/grid.treegrid.js"></script>
@@ -22,7 +22,6 @@
             { label: "名称", name: "FullName", index: "FullName", width: 200 },
             { label: "编码", name: "Code", index: "Code", width: 100 },
             { label: "简称", name: "ShortName", index: "ShortName", width: 100 },
-            { label: "分类", name: "Category", index: "Category", width: 50, align: "center" },
             { label: "联系人", name: "Contact", index: "Contact", width: 100 },
             { label: "电话", name: "Phone", index: "Phone", width: 100 },
             { label: "传真", name: "Fax", index: "Fax", width: 100 },
@@ -49,7 +48,7 @@
             CompanyId = 0;
         }
         var url = "/CommonModule/Company/Form?CompanyId=" + CompanyId;
-        openDialog(url, "Form", "新增公司", 650, 380, function (iframe) {
+        openDialog(url, "Form", "新增单位", 650, 380, function (iframe) {
             top.frames[iframe].AcceptClick()
         });
     }
@@ -58,7 +57,7 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "CompanyId");
         if (IsChecked(KeyValue)) {
             var url = "/CommonModule/Company/Form?KeyValue=" + KeyValue;
-            openDialog(url, "Form", "编辑公司", 650, 380, function (iframe) {
+            openDialog(url, "Form", "编辑单位", 650, 380, function (iframe) {
                 top.frames[iframe].AcceptClick();
             });
         }
