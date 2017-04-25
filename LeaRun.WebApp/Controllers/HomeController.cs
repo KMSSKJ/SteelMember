@@ -97,9 +97,13 @@ namespace LeaRun.WebApp.Controllers
         public ActionResult AccordionIndex()
         {
             string ObjectId = ManageProvider.Provider.Current().ObjectId;
-            Base_Module model = base_modulepermissionbll.GetModuleList(ObjectId).FindAll(t =>t.ParentId.Trim()=="0"&& t.Enabled == 1).SingleOrDefault();
+            Base_Module model = base_modulepermissionbll.GetModuleList(ObjectId).FindAll(t => t.ParentId.Trim() == "0" && t.Enabled == 1).SingleOrDefault();
             ViewBag.Account = ManageProvider.Provider.Current().Account + "（" + ManageProvider.Provider.Current().UserName + "）";
-            ViewBag.ModuleId = model.ModuleId.ToString();
+            if (model != null)
+            {
+                ViewBag.ModuleId = model.ModuleId.ToString();
+            }
+
             return View();
         }
         /// <summary>

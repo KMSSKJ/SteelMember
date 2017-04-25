@@ -1,39 +1,128 @@
-﻿<!DOCTYPE HTML>
-<HTML>
-<HEAD>
-    <TITLE> JSC3D - IPhone G4 Demo </TITLE>
-    <META NAME="Author" CONTENT="JSC3D">
-</HEAD>
+﻿@{
+    ViewBag.Title = "文件中心管理/文件上传";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+<!--上传文件组件start-->
+<link href="~/Content/Scripts/uploadify/uploadify.css" rel="stylesheet" />
+<script src="~/Content/Scripts/uploadify/jquery.uploadify.js"></script>
+<!--上传文件组件end-->
+<script>
+    $(function () {
+        uploadify();
+    });
+    //上传文件
+    var index_uploadify = 1;
+    function uploadify() {
+        $("#uploadify").uploadify({
+            uploader: '/TestDemo/SubmitUploadify?FolderId=' + GetQuery('FolderId'),
+            swf: '/Content/Scripts/uploadify/uploadify.swf',
+            buttonText: "添加文件",
+            height: 24,
+            width: 70,
+            fileTypeDesc: '支持格式:jpg/gif/jpeg/png/bmp.',
+            fileTypeExts: '*.jpg;*.gif;*.jpeg;*.png;*.bmp',//允许的格式  
+            fileSizeLimit: '3MB',
 
-<BODY>
-    <div style="width:420px; margin:auto; position:relative; font-size:9pt; color:#777777;">
-        <canvas id="cv" style="border: 1px solid;" width="420" height="560"></canvas>
-        <div id="tip" style="display:block; color:#ffffff; position:absolute; left:10px; top:508px; background-color:#000000; height:32px; width:250px; border-radius:5px; border:1px solid #777777; opacity:0.5; font:1em/1.4 Cambria,Arial,sans-serif; padding:6px; pointer-events:none;">
-            Drag mouse to rotate <br> Drag mouse with shift pressed to zoom
+            onFallback: function () {
+                alert("您未安装FLASH控件，无法上传！请安装FLASH控件后再试。");
+            },
+            onUploadSuccess: function (file, data, response) {
+                @*$('.drag-tip').remove();
+                var DataJson = JSON.parse(data);
+                var html = "";
+                html += '<tr>';
+                if (DataJson.NetworkFile.Icon == "new") {
+                    html += '<td style="width: 16px;"><img src="@Url.Content("~/Content/Images/Icon32/page_white.png")" /></td>';
+                } else {
+                    html += '<td style="width: 16px;"><img src="../../Content/Images/Icon32/file_extension_' + DataJson.NetworkFile.Icon + '.png" /></td>';
+                }
+                html += '<td style="width: 320px;"><div id="divFileName">' + DataJson.NetworkFile.FileName + '</div></td>';
+                html += '<td style="width: 70px;">' + DataJson.NetworkFile.FileSize + '</td>';
+                if (DataJson.Status > 0) {
+                    html += '<td title="上传成功" style="width: 26px;"><img src="@Url.Content("~/Content/Images/Icon16/accept.png")" /></td>';
+                } else {
+                    html += '<td title=' + DataJson.Status + ' style="width: 26px;"><img src="@Url.Content("~/Content/Images/Icon16/delete.png")" /></td>';
+                }
+                html += '</tr>';
+                $("#grid tbody").prepend(html);
+                top.frames[tabiframeId()].windowload();*@
+            },
+            //返回一个错误，选择文件的时候触发
+            //onSelectError: function (file, errorCode, errorMsg) {
+            //    switch (errorCode) {
+            //        case -110:
+            //            alert("文件 [" + file.name + "] 大小超出系统限制的" + jQuery('#upload_org_code').uploadify('settings', 'fileSizeLimit') + "大小！");
+            //            break;
+            //        case -120:
+            //            alert("文件 [" + file.name + "] 大小异常！");
+            //            break;
+            //        case -130:
+            //            alert("文件 [" + file.name + "] 类型不正确！");
+            //            break;
+            //    }
+            //},
+        });
+    }
+</script>
+<style>
+    #grid td {
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+        padding: 6px 2px;
+    }
+
+    #divFileName {
+        width: 310px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    #grid td img {
+        vertical-align: middle;
+        border: 0px solid #fff;
+    }
+
+    .uploadify-queue {
+        margin-top: 6px;
+    }
+
+    .uploadify-queue-item {
+        width: 468px;
+        padding-top: 8px;
+        padding-bottom: 7px;
+        margin-top: 0px;
+        border-top: none;
+    }
+
+        .uploadify-queue-item .cancel a {
+            display: none;
+        }
+</style>
+<form id="form1" style="margin: 10px">
+    <div style="height: 29px;">
+        <div style="float: left;">
+            <input id="uploadify" name="uploadify" type="file" />
         </div>
-        <p style="font-family:Cambria,Arial,sans-serif;">This demo consists of 43930 vertices, 48888 faces and 3 textures. It may take a while to load.<p>
-        <p style="font-family:Cambria,Arial,sans-serif;">The IPhone4 model used here is from the internet. It <b>should not</b> be used for any commercial purpose.<p>
+        @*<div style="float: right; line-height: 26px; color: #3083eb; cursor: pointer;">
+            上传必知
+        </div>*@
     </div>
-    <script src="~/Content/Scripts/C3D/flashcanvas.js"></script>
-    <script src="~/Content/Scripts/C3D/jsc3d.js"></script>
-    <script src="~/Content/Scripts/C3D/jsc3d.touch.js"></script>
-    <script src="~/Content/Scripts/C3D/jsc3d.webgl.js"></script>
-    <script type="text/javascript">
-	var canvas = document.getElementById('cv');
-	var viewer = new JSC3D.Viewer(canvas);
-	var path = "D:\\Source\\Repos\\GGJ\\LeaRun.WebApp\\Views\\TestDemo\\iphoneg4.obj";
-	viewer.setParameter('SceneUrl', path);
-	viewer.setParameter('InitRotationX', 0);
-	viewer.setParameter('InitRotationY', 0);
-	viewer.setParameter('InitRotationZ', 0);
-	viewer.setParameter('ModelColor', '#AAAAAA');
-	viewer.setParameter('BackgroundColor1', '#333333');
-	viewer.setParameter('BackgroundColor2', '#333333');
-	viewer.setParameter('RenderMode', 'texturesmooth');
-	viewer.setParameter('MipMapping', JSC3D.PlatformInfo.supportWebGL ? 'off' : 'on');
-	viewer.setParameter('Renderer', 'webgl');
-	viewer.init();
-	viewer.update();
-    </script>
-</BODY>
-</HTML>
+    <div id="showImg">
+    </div>
+    @*<div class="border background" style="height: 298px; overflow: auto; overflow-y: hidden">
+        <div class="upload-item">
+            <table id="grid" style="width: 100%; border-collapse: collapse;">
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="drag-tip" style="text-align: center; padding-top: 100px;">
+            <h1 style="color: #666; font-size: 20px; font-family: Microsoft Yahei; padding-bottom: 2px;">试试将电脑里的文件拖拽到此上传</h1>
+            <p style="color: #666; font-size: 12px;">
+                （您的浏览器不支持此拖拽功能）
+            </p>
+        </div>
+    </div>*@
+</form>
+

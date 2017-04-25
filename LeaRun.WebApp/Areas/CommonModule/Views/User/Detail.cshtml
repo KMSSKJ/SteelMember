@@ -8,12 +8,6 @@
     var gender = GetQuery('gender');
     /*基本信息begin=====================================*/
     $(function () {
-        if (gender == "男") {
-            $("#imgGender").attr('src', '/Content/Images/man.png')
-        }
-        else {
-            $("#imgGender").attr('src', '/Content/Images/woman.png')
-        }
         InitControl();
     })
     //初始化个人信息
@@ -29,7 +23,19 @@
         //职业资格
         BindDropItem("#Competency", "Professional", "未填");
         AjaxJson("/CommonModule/User/SetUserForm", { KeyValue: KeyValue }, function (data) {
+            if (data["Avatar"] == ""||data["Avatar"]==null) {
+                if (gender == "男") {
+                    $("#imgGender").attr('src', '/Content/Images/man.png')
+                }
+                else {
+                    $("#imgGender").attr('src', '/Content/Images/woman.png')
+                }
+            } else {
+                $("#imgGender").attr('src', data["Avatar"]);
+            }
+
             $("#UserName").html(data.RealName + "(" + data.Code + ")");
+
             SetWebControls(data);
             BindDepartment(); $("#DepartmentId").val(data.DepartmentId);
         });
@@ -101,8 +107,8 @@
     /*拥有权限end=====================================*/
 
 </script>
-<div class="border" style="margin: 1px; height: 40px; line-height: 40px; padding-left: 5px; background: #FFFDCD;">
-    <img id="imgGender" src="" style="width: 38px; height: 38px;vertical-align: middle; margin-bottom:5px;" />
+<div class="border" style="margin: 1px; height: 70px; line-height: 70px; padding-left: 5px; background: #FFFDCD;">
+    <img id="imgGender" src="" style="width: 65px; height: 67px;vertical-align: middle; margin-bottom:5px;padding-right: 15px;padding-left:10px;" />
     <span id="UserName" style="font-weight: bold; font-family: 'Roboto', sans-serif; color: #666;"></span>
 </div>
 <div class="bd" style="border-bottom: none; margin: 1px;">
@@ -120,19 +126,22 @@
             <tr>
                 <th class="formTitle">工号：</th>
                 <td class="formValue">
-                    <input id="Code" type="text" class="txt" /></td>
+                    <input id="Code" type="text" class="txt" />
+                </td>
                 <th class="formTitle">姓名：</th>
                 <td class="formValue">
                     <input id="RealName" type="text" class="txt" />
                 </td>
             </tr>
             <tr>
-                <th class="formTitle">联系手机：</th>
+                <th class="formTitle">手机号码：</th>
                 <td class="formValue">
-                    <input id="Mobile" type="text" class="txt" /></td>
+                    <input id="Mobile" type="text" class="txt" />
+                </td>
                 <th class="formTitle">联系电话：</th>
                 <td class="formValue">
-                    <input id="Telephone" type="text" class="txt" /></td>
+                    <input id="Telephone" type="text" class="txt" />
+                </td>
             </tr>
             <tr>
                 <th class="formTitle">电子邮箱：</th>
@@ -151,15 +160,13 @@
                 </td>
                 <th class="formTitle">所属部门：</th>
                 <td class="formValue">
-                    <select id="DepartmentId" class="txtselect">
-                    </select>
+                    <select id="DepartmentId" class="txtselect"></select>
                 </td>
             </tr>
             <tr>
                 <th class="formTitle">工作性质：</th>
                 <td class="formValue">
-                    <select id="WorkingProperty" class="txtselect">
-                    </select>
+                    <select id="WorkingProperty" class="txtselect"></select>
                 </td>
                 <th class="formTitle">入职日期：</th>
                 <td class="formValue">
@@ -173,20 +180,17 @@
                 </td>
                 <th class="formTitle">职务：</th>
                 <td class="formValue">
-                    <select id="Duty" class="txtselect">
-                    </select>
+                    <select id="Duty" class="txtselect"></select>
                 </td>
             </tr>
             <tr>
                 <th class="formTitle">最高学历：</th>
                 <td class="formValue">
-                    <select id="Education" class="txtselect">
-                    </select>
+                    <select id="Education" class="txtselect"></select>
                 </td>
                 <th class="formTitle">最高学位：</th>
                 <td class="formValue">
-                    <select id="Degree" class="txtselect">
-                    </select>
+                    <select id="Degree" class="txtselect"></select>
                 </td>
             </tr>
             <tr>
@@ -194,7 +198,8 @@
                 <td class="formValue">
                     <input id="Major" type="text" class="txt" />
                 </td>
-                <th class="formTitle">毕业院校：
+                <th class="formTitle">
+                    毕业院校：
                 </th>
                 <td class="formValue">
                     <input id="School" type="text" class="txt" />
@@ -207,8 +212,7 @@
                 </td>
                 <th class="formTitle">职业资格：</th>
                 <td class="formValue">
-                    <select id="Competency" class="txtselect">
-                    </select>
+                    <select id="Competency" class="txtselect"></select>
                 </td>
             </tr>
             <tr>
@@ -218,10 +222,12 @@
                 </td>
                 <th class="formTitle">在职：</th>
                 <td class="formValue">
-                    <input id="IsDimission" type="text" class="txt" /></td>
+                    <input id="IsDimission" type="text" class="txt" />
+                </td>
             </tr>
             <tr>
-                <th class="formTitle">说明：
+                <th class="formTitle">
+                    说明：
                 </th>
                 <td class="formValue" colspan="3">
                     <input id="Remark" type="text" class="txt" />

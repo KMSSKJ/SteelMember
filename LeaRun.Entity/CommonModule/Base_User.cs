@@ -55,17 +55,23 @@ namespace LeaRun.Entity
         [DisplayName("ÓÃ»§±àÂë")]
         public string Code { get; set; }
         /// <summary>
-        /// µÇÂ¼ÕË»§
+        /// ÕË»§
         /// </summary>
         /// <returns></returns>
-        [DisplayName("µÇÂ¼ÕË»§")]
+        [DisplayName("ÕË»§")]
         public string Account { get; set; }
         /// <summary>
-        /// µÇÂ¼ÃÜÂë
+        /// ÃÜÂë
         /// </summary>
         /// <returns></returns>
-        [DisplayName("µÇÂ¼ÃÜÂë")]
-        public string Password { get; set; }
+        [DisplayName("ÃÜÂë")]
+        public string Password { get; set; } 
+        /// <summary>
+        /// Í·Ïñ
+        /// </summary>
+        /// <returns></returns>
+        [DisplayName("Í·Ïñ")]
+        public string Avatar { get; set; }
         /// <summary>
         /// ÃÜÂëÃØÔ¿
         /// </summary>

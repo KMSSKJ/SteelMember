@@ -49,8 +49,8 @@ namespace LeaRun.Business
                                                 u.Email ,					--电子邮箱
                                                 u.CompanyId ,			    --所属单位ID
                                                 c.FullName AS CompanyName ,	--所属单位
-                                                u.DepartmentId,				--所在部门ID
-                                                d.FullName AS DepartmentName,--所在部门
+                                                u.DepartmentId,				--所属部门ID
+                                                d.FullName AS DepartmentName,--所属部门
                                                 e.Duty,                     --职务
                                                 u.Enabled ,					--是否有效
                                                 u.LogOnCount ,				--登录次数

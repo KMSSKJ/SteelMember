@@ -36,11 +36,11 @@
                 var txtpassword = $("#txtpassword").val();
                 if (txtaccount == "") {
                     $("#txtaccount").focus();
-                    formMessage('登录账户不能为空', 'warning');
+                    formMessage('账户不能为空', 'warning');
                     return false;
                 } else if (txtpassword == "") {
                     $("#txtpassword").focus();
-                    formMessage('登录密码不能为空', 'warning');
+                    formMessage('密码不能为空', 'warning');
                     return false;
                 } else {
                     formMessage('正在登录...', 'succeed');
@@ -52,14 +52,14 @@
                         getAjax('/Login/CheckLogin', postData, function (rs) {
                             if (parseInt(rs) == -1) {
                                 $("#txtaccount").focus();
-                                formMessage('登录账户不存在', 'error');
+                                formMessage('账户不存在', 'error');
                             } else if (parseInt(rs) == 2) {
                                 $("#txtaccount").focus();
-                                formMessage('登录账户被系统锁定', 'error');
+                                formMessage('账户被系统锁定', 'error');
                             } else if (parseInt(rs) == 4) {
                                 $("#txtaccount").focus();
                                 $("#txtpassword").val("");
-                                formMessage('登录密码错误', 'error');
+                                formMessage('密码错误', 'error');
                             } else if (parseInt(rs) == 3) {
                                 formMessage('登录验证成功,正在跳转首页', 'succeed');
                                 setInterval(Load, 1000);

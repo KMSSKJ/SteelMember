@@ -29,6 +29,12 @@
         //职业资格
         BindDropItem("#Competency", "Professional", "未填");
         AjaxJson("/CommonModule/User/SetUserForm", { KeyValue: KeyValue }, function (data) {
+            if (data["Avatar"]==""||data["Avatar"]==null) {
+                $("#imgGender").attr('src', '../../Content/Images/@ViewBag.imgGender');
+            } else {
+                $("#imgGender").attr('src', data["Avatar"]);
+            }
+            
             SetWebControls(data);
             BindDepartment(); $("#DepartmentId").val(data.DepartmentId);
         });
@@ -198,8 +204,8 @@
     }
     /*修改密码end================================*/
 </script>
-<div class="border" style="margin: 1px; height: 40px; line-height: 40px; padding-left: 5px; font-weight: bold; font-family: 'Roboto', sans-serif; color: #666; background: #FFFDCD;">
-    <img src="../../Content/Images/@ViewBag.imgGender" style="width: 38px; height: 38px;vertical-align: middle; margin-bottom:5px;" />
+<div class="border" style="margin: 1px; height: 70px; line-height: 70px; padding-left: 5px; font-weight: bold; font-family: 'Roboto', sans-serif; color: #666; background: #FFFDCD;">
+    <img id="imgGender" src="" style="width: 65px; height: 67px;vertical-align: middle; margin-bottom:5px;padding-right: 15px;padding-left:10px;" />
     @ViewBag.strUserInfo
 </div>
 <div class="bd" style="border-bottom: none; margin: 1px;">
@@ -226,7 +232,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="formTitle">联系手机：</th>
+                <th class="formTitle">手机号码：</th>
                 <td class="formValue">
                     <input id="Mobile" type="text" class="txt" />
                 </td>
@@ -250,7 +256,7 @@
                 <td class="formValue">
                     <input id="CompanyName" type="text" class="txt" />
                 </td>
-                <th class="formTitle">所在部门：</th>
+                <th class="formTitle">所属部门：</th>
                 <td class="formValue">
                     <select id="DepartmentId" class="txtselect"></select>
                 </td>
@@ -329,7 +335,7 @@
     </div>
     <!--拥有权限-->
     <div id="PermissionTree" class="tabPanel" style="display: none;">
-        <div class="border" style="float: left; width: 246px; margin-right: 1px; height: 318px;">
+        <div class="border" style="float: left; width: 33%; margin-right: 1px; height: 318px;">
             <div class="btnbartitle">
                 <div>
                     模块权限
@@ -337,7 +343,7 @@
             </div>
             <div id="ModulePermission" style="height: 290px; overflow: auto"></div>
         </div>
-        <div class="border" style="float: left; width: 247px; margin-right: 1px; height: 318px;">
+        <div class="border" style="float: left; width: 32.9%; margin-right: 1px; height: 318px;">
             <div class="btnbartitle">
                 <div>
                     按钮权限
@@ -345,7 +351,7 @@
             </div>
             <div id="ButtonePermission" style="height: 290px; overflow: auto"></div>
         </div>
-        <div class="border" style="float: left; width: 247px; height: 318px;">
+        <div class="border" style="float: left; width: 33%; height: 318px;">
             <div class="btnbartitle">
                 <div>
                     视图权限

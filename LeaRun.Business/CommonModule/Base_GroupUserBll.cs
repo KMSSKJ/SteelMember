@@ -39,8 +39,8 @@ namespace LeaRun.Business
                             FROM    ( SELECT    gu.GroupUserId ,              --用户组ID
                                                 gu.Code ,                     --用户组编码
                                                 gu.FullName ,                 --用户组名称
-                                                gu.DepartmentId ,             --所在部门Id
-                                                dep.FullName AS DepartmentName ,--所在部门
+                                                gu.DepartmentId ,             --所属部门Id
+                                                dep.FullName AS DepartmentName ,--所属部门
                                                 gu.CompanyId ,                --所属单位Id
                                                 cpy.FullName AS CompanyName , --所属单位
                                                 gu.Enabled ,                  --是否有效

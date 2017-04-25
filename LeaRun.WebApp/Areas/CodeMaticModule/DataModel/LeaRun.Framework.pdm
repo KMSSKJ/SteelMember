@@ -9144,13 +9144,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o457">
 <a:ObjectID>852E4820-8985-4071-98BF-4B52A88EFE54</a:ObjectID>
-<a:Name>登录账户</a:Name>
+<a:Name>账户</a:Name>
 <a:Code>Account</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>登录账户</a:Comment>
+<a:Comment>账户</a:Comment>
 <a:History>ORG {6394E500-89E2-4CD2-B529-1F47C08B6645}
 DAT 1406873112
 ATT LABL</a:History>
@@ -9162,13 +9162,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o458">
 <a:ObjectID>CBDA5AD0-66C0-4527-8FB4-E810DDC38A8E</a:ObjectID>
-<a:Name>登录密码</a:Name>
+<a:Name>密码</a:Name>
 <a:Code>Password</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>登录密码</a:Comment>
+<a:Comment>密码</a:Comment>
 <a:History>ORG {B8863063-AC92-4606-958F-2F9E57B1C2F5}
 DAT 1406873112
 ATT LABL</a:History>

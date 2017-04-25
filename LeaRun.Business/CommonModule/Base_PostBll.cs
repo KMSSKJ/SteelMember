@@ -39,8 +39,8 @@ namespace LeaRun.Business
                             FROM    ( SELECT    post.PostId ,                   --岗位ID
                                                 post.Code ,                     --岗位编码
                                                 post.FullName ,                 --岗位名称
-                                                post.DepartmentId ,             --所在部门Id
-                                                dep.FullName AS DepartmentName ,--所在部门
+                                                post.DepartmentId ,             --所属部门Id
+                                                dep.FullName AS DepartmentName ,--所属部门
                                                 post.CompanyId ,                --所属单位Id
                                                 cpy.FullName AS CompanyName ,   --所属单位
                                                 post.Enabled ,                  --是否有效

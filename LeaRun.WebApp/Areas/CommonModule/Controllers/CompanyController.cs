@@ -42,7 +42,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
                 tree.text = item.FullName;
                 tree.value = item.CompanyId;
                 tree.Attribute = "Category";
-                tree.AttributeValue = item.Category;
+                //tree.AttributeValue = item.Category;
                 tree.isexpand = true;
                 tree.complete = true;
                 tree.hasChildren = hasChildren;

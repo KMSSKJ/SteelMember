@@ -120,7 +120,7 @@ function IndexOut() {
 //个人中心
 function PersonCenter() {
     var url = "/CommonModule/User/PersonCenter";
-    Dialog(url, "ResetPassword", "个人中心", 750, 400);
+    Dialog(url, "ResetPassword", "个人中心", 750, 435);
 }
 //页面关闭事件
 function PageClose() {

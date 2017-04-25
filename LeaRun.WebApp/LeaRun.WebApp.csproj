@@ -9027,7 +9027,9 @@
   <ItemGroup>
     <Content Include="Areas\ExampleModule\Views\Print\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Content\Images\Avatar\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Content\Report\BankAnalyze\BankAnalyze.rdlc" />
     <EmbeddedResource Include="Content\Report\Money\Money.rdlc" />

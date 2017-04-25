@@ -2,6 +2,7 @@
     ViewBag.Title = "用户管理";
     Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
+
 <script type="text/javascript">
     $(document).ready(function () {
         GetTree();
@@ -16,6 +17,7 @@
                 $("#btnSearch").click();
             }
         });
+        
     });
     var CompanyId = "", DepartmentId = "", DepartmentName = "";
     //加载左边树
@@ -140,7 +142,7 @@
         var gender = GetJqGridRowValue("#gridTable", "gender");
         if (IsChecked(KeyValue)) {
             var url = "/CommonModule/User/Detail?KeyValue=" + KeyValue + '&gender=' + escape(gender);
-            Dialog(url, "Detail", "用户明细", 750, 400);
+            Dialog(url, "Detail", "用户明细", 750, 435);
         }
     }
     //删除
@@ -269,6 +271,7 @@
         $("#grid_View").html(html);
     }
     /*视图end=========================================================================*/
+    
 </script>
 <div id="layout" class="layout">
     <!--左边-->
