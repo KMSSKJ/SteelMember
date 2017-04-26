@@ -24,16 +24,22 @@
     <script>
         /**初始化**/
         $(document).ready(function () {
+            if ("@ViewBag.Avatar"==""||"@ViewBag.Avatar"==null) {
+                $("#imgGender").attr('src', '/Content/Images/man.png')
+            }else {
+                $("#imgGender").attr('src', "@ViewBag.Avatar")
+                }
+
             //AddTabMenu('Imain', '@Url.Content("~/Home/StartPanel")', '欢迎首页', "house.png", 'false');
             GetStartmenu();
-            //ShortcutsList();
-            setIframeH();
-            initStartMenu();
-            //var interval = setInterval("IconSong('icon_message')", 400);
-            //$("#div_icon_message").click(function () {
-            //    clearInterval(interval);
-            //    window.open('http://www.learun.cn/fdms/index.html', '_blank');
-            //})
+        //ShortcutsList();
+        setIframeH();
+        initStartMenu();
+        //var interval = setInterval("IconSong('icon_message')", 400);
+        //$("#div_icon_message").click(function () {
+        //    clearInterval(interval);
+        //    window.open('http://www.learun.cn/fdms/index.html', '_blank');
+        //})
         });
         /*设置iframe高度*/
         function setIframeH() {
@@ -234,7 +240,7 @@
                 <!-- 登录用户信息 -->
                 <div class="panel-user">
                     <div class="avatar" title="我的信息">
-                        <img src="~/Content/Images/man.png" />
+                        <img id="imgGender" style="border-radius:10%;" src="" />
                     </div>
                     <div class="name">
                         账户：@ViewBag.Account
@@ -260,11 +266,11 @@
                     <img src="~/Content/Images/bottom_icon_usergroup.png" />
                 </div>
                 @*<div title="邮件消息" class="bottom_icon">
-                    <img id="icon_email" src="~/Content/Images/youjian.png" style="padding-top: 5px;" />
-                </div>
-                <div id="div_icon_message" title="即时消息" class="bottom_icon">
-                    <img id="icon_message" src="~/Content/Images/bottom_icon_message.png" />
-                </div>*@
+                        <img id="icon_email" src="~/Content/Images/youjian.png" style="padding-top: 5px;" />
+                    </div>
+                    <div id="div_icon_message" title="即时消息" class="bottom_icon">
+                        <img id="icon_message" src="~/Content/Images/bottom_icon_message.png" />
+                    </div>*@
                 <div class="bottom_icon" style="padding-top: 4px;">
                     <img title="我的信息，账户：@ViewBag.Account" src="~/Content/Images/bottom_icon_userinfo.png" />
                 </div>

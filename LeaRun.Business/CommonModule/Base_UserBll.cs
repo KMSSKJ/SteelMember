@@ -41,6 +41,7 @@ namespace LeaRun.Business
                             FROM    ( SELECT    u.UserId ,					--用户ID
                                                 u.Code ,					--用户编码
                                                 u.Account ,					--登录账户
+                                                u.Avatar,                   --用户头像
                                                 u.RealName ,				--姓名
                                                 u.Spell,                    --拼音
                                                 u.Gender ,					--性别
@@ -198,6 +199,7 @@ namespace LeaRun.Business
                                         u.UserId ,
                                         u.Account ,
                                         u.code,
+                                        u.Avatar, 
                                         u.RealName ,
                                         u.DepartmentId ,
                                         d.FullName AS DepartmentName,
@@ -247,6 +249,7 @@ namespace LeaRun.Business
                                         u.UserId ,
                                         u.Account ,
                                         u.code ,
+                                        u.Avatar,
                                         u.RealName ,
                                         u.DepartmentId ,
                                         d.FullName AS DepartmentName ,
