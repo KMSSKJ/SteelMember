@@ -6,7 +6,7 @@
     <script type="text/javascript">
         var KeyValue = GetQuery('KeyValue');
         var ItemId = GetQuery('ItemId');
-        var OrderNumbering = GetQuery('OrderNumbering');
+        var MemberId = GetQuery('MemberID');
         var Data;
         $(function () {
             InitControl();
@@ -96,7 +96,7 @@
 </head>
 <form id="form2" style="margin: 25px; margin-left: 40px; margin-right: 40px;">
     <div>
-       
+       <input id="MemberId" type="hidden" />
         <table class="form">
             <tr>
                 <th class="formTitle">

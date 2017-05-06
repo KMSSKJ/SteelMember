@@ -56,12 +56,12 @@
                 label: "文件名", name: "MemberName", index: "MemberName", width: 330,
                 formatter: function (cellvalue, options, rowObject) {
                     if (rowObject.Icon == "-1") {
-                        return "<div style='cursor:pointer;padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;' src='~/Content/Images/Icon16/folder.png' />" + cellvalue + "</div>";
+                        return "<div style='cursor:pointer;padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;' src='../../Content/Images/Icon16/folder.png' />" + cellvalue + "</div>";
                     } else {
                         if (rowObject.Icon == "new") {
-                            return "<div style='padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;' src='~/Content/Images/Icon16/page_white.png' />" + cellvalue + "</div>";
+                            return "<div style='padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;' src='../../Content/Images/Icon16/page_white.png' />" + cellvalue + "</div>";
                         } else {
-                            return "<div style='padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;' src='~/Content/Images/Icon16/file_extension_" + rowObject.Icon + ".png' />" + cellvalue + "</div>";
+                            return "<div style='padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;' src='../../Content/Images/Icon16/file_extension_" + rowObject.Icon + ".png' />" + cellvalue + "</div>";
                         }
                     }
                 }
@@ -89,14 +89,14 @@
             {
                 label: '有效', name: 'Enabled', index: 'Enabled', width: 35, align: 'center',
                 formatter: function (cellvalue, options, rowObject) {
-                    if (cellvalue == '1') return "<img src='~/Content/Images/checkokmark.gif' />";
-                    if (cellvalue == '0') return "<img src='~/Content/Images/checknomark.gif' />";
+                    if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif' />";
+                    if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif' />";
                 }
             }, {
                 label: '审核状态', name: 'IsReview', index: 'IsReview', width: 38, align: 'center',
                 formatter: function (cellvalue, options, rowObject) {
-                    if (cellvalue == '1') return "<img src='~/Content/Images/checkokmark.gif' />";
-                    if (cellvalue == '0') return "<img src='~/Content/Images/checknomark.gif' />";
+                    if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif' />";
+                    if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif' />";
                 }
             },
             { label: '描述', name: 'Description', index: 'Description', width: 300 },
@@ -238,19 +238,19 @@
             <div class="PartialButton">
                 <div style="float: left;padding-left:8px;padding-top:8px">
                     <div onclick="Search()" style="float:left;padding-left:8px">
-                        <div class="icon" style="text-align-last:center"><img src="~/Content/Images/Icon16/zoom.png" /></div>
+                        <div class="icon" style="text-align-last:center"><img src="../../Content/Images/Icon16/zoom.png" /></div>
                         <div class="text">查询</div>
                     </div>
                     <div onclick="Reload()" style="float:left;padding-left:8px">
-                        <div class="icon" style="text-align-last:center"><img src="~/Content/Images/Icon16/arrow_refresh.png" /></div>
+                        <div class="icon" style="text-align-last:center"><img src="../../Content/Images/Icon16/arrow_refresh.png" /></div>
                         <div class="text">刷新</div>
                     </div>
                     <div onclick="Upward()" style="float:left;padding-left:8px">
-                        <div class="icon" style="text-align-last:center"><img src="~/Content/Images/Icon16/folder_go.png" /></div>
+                        <div class="icon" style="text-align-last:center"><img src="../../Content/Images/Icon16/folder_go.png" /></div>
                         <div class="text">返回上一级</div>
                     </div>
                     <div onclick="OnlineLook()" style="float:left;padding-left:8px">
-                        <div class="icon" style="text-align-last:center"><img src="~/Content/Images/Icon16/folder_explore.png" /></div>
+                        <div class="icon" style="text-align-last:center"><img src="../../Content/Images/Icon16/folder_explore.png" /></div>
                         <div class="text">查看文件信息</div>
                     </div>
                 </div>

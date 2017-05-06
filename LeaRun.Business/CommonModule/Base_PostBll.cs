@@ -27,7 +27,7 @@ namespace LeaRun.Business
         /// <summary>
         /// 获取岗位列表
         /// </summary>
-        /// <param name="CompanyId">单位ID</param>
+        /// <param name="CompanyId">公司ID</param>
         /// <param name="DepartmentId">部门ID</param>
         /// <param name="jqgridparam">分页条件</param>
         /// <returns></returns>
@@ -39,10 +39,10 @@ namespace LeaRun.Business
                             FROM    ( SELECT    post.PostId ,                   --岗位ID
                                                 post.Code ,                     --岗位编码
                                                 post.FullName ,                 --岗位名称
-                                                post.DepartmentId ,             --所属部门Id
-                                                dep.FullName AS DepartmentName ,--所属部门
-                                                post.CompanyId ,                --所属单位Id
-                                                cpy.FullName AS CompanyName ,   --所属单位
+                                                post.DepartmentId ,             --所在部门Id
+                                                dep.FullName AS DepartmentName ,--所在部门
+                                                post.CompanyId ,                --所在公司Id
+                                                cpy.FullName AS CompanyName ,   --所在公司
                                                 post.Enabled ,                  --是否有效
                                                 post.Remark ,                   --岗位描述
                                                 post.SortCode                   --排序码

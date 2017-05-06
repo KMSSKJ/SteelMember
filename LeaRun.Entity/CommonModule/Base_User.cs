@@ -31,10 +31,10 @@ namespace LeaRun.Entity
         [DisplayName("用户主键")]
         public string UserId { get; set; }
         /// <summary>
-        /// 单位主键
+        /// 公司主键
         /// </summary>
         /// <returns></returns>
-        [DisplayName("单位主键")]
+        [DisplayName("公司主键")]
         public string CompanyId { get; set; }
         /// <summary>
         /// 部门主键
@@ -55,23 +55,17 @@ namespace LeaRun.Entity
         [DisplayName("用户编码")]
         public string Code { get; set; }
         /// <summary>
-        /// 账户
+        /// 登录账户
         /// </summary>
         /// <returns></returns>
-        [DisplayName("账户")]
+        [DisplayName("登录账户")]
         public string Account { get; set; }
         /// <summary>
-        /// 密码
+        /// 登录密码
         /// </summary>
         /// <returns></returns>
-        [DisplayName("密码")]
-        public string Password { get; set; } 
-        /// <summary>
-        /// 头像
-        /// </summary>
-        /// <returns></returns>
-        [DisplayName("头像")]
-        public string Avatar { get; set; }
+        [DisplayName("登录密码")]
+        public string Password { get; set; }
         /// <summary>
         /// 密码秘钥
         /// </summary>

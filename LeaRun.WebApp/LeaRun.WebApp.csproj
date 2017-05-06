@@ -165,6 +165,8 @@
     <Compile Include="Areas\SteelMember\Controllers\ProjectWarehouseController.cs" />
     <Compile Include="Areas\SteelMember\Controllers\TreeController.cs" />
     <Compile Include="Areas\SteelMember\Models\AnalysisRawMaterialModel.cs" />
+    <Compile Include="Areas\SteelMember\Models\MemberMaterialModel.cs" />
+    <Compile Include="Areas\SteelMember\Models\OrderModel.cs" />
     <Compile Include="Areas\SteelMember\Models\RawMaterialLibraryModel.cs" />
     <Compile Include="Areas\SteelMember\Models\ProcessManagementModel.cs" />
     <Compile Include="Areas\SteelMember\Models\ProduceOrderModel.cs" />
@@ -8007,16 +8009,6 @@
     <Content Include="Content\Scripts\bootstrap\tag\bootstrap.tag.js" />
     <Content Include="Content\Scripts\bootstrap\timepicker\bootstrap.timepicker.css" />
     <Content Include="Content\Scripts\bootstrap\timepicker\bootstrap.timepicker.js" />
-    <Content Include="Content\Scripts\C3D\CSS3DRenderer.js" />
-    <Content Include="Content\Scripts\C3D\flash10canvas.swf" />
-    <Content Include="Content\Scripts\C3D\flashcanvas.js" />
-    <Content Include="Content\Scripts\C3D\jsc3d.js" />
-    <Content Include="Content\Scripts\C3D\jsc3d.touch.js" />
-    <Content Include="Content\Scripts\C3D\jsc3d.webgl.js" />
-    <Content Include="Content\Scripts\C3D\ObjectLoader.js" />
-    <Content Include="Content\Scripts\C3D\OBJLoader.js" />
-    <Content Include="Content\Scripts\C3D\three.js" />
-    <Content Include="Content\Scripts\C3D\WebGLRenderer.js" />
     <Content Include="Content\Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Content\Scripts\ckeditor\build-config.js" />
     <Content Include="Content\Scripts\ckeditor\ckeditor.js" />
@@ -8326,6 +8318,9 @@
     <Content Include="Content\Scripts\echarts\jquery.flexslider.js" />
     <Content Include="Content\Scripts\echarts\jquery.js" />
     <Content Include="Content\Scripts\echarts\require.js" />
+    <Content Include="Content\Scripts\editable-select\index.html" />
+    <Content Include="Content\Scripts\editable-select\jquery.editable-select.min.css" />
+    <Content Include="Content\Scripts\editable-select\jquery.editable-select.min.js" />
     <Content Include="Content\Scripts\FlexPaper\FlexPaperViewer.swf" />
     <Content Include="Content\Scripts\FlexPaper\flexpaper_flash.js" />
     <Content Include="Content\Scripts\FlexPaper\pdf2swf.exe" />
@@ -8505,6 +8500,8 @@
     <Content Include="Content\Scripts\lodop\PrintSample7.html" />
     <Content Include="Content\Scripts\lodop\PrintSample8.html" />
     <Content Include="Content\Scripts\lodop\PrintSample9.html" />
+    <Content Include="Content\Scripts\jquery-jqprint\jquery-1.4.4.min.js" />
+    <Content Include="Content\Scripts\jquery-jqprint\jquery.jqprint-0.3.js" />
     <Content Include="Content\Scripts\scrollbar\scrollbar.js" />
     <Content Include="Content\Scripts\smartwizard\images\loader.gif" />
     <Content Include="Content\Scripts\smartwizard\jquery.smartWizard-2.0.js" />
@@ -8714,7 +8711,7 @@
     <Content Include="Areas\SteelMember\Views\MemberProduce\RawMaterialsIndex.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\ShipManagementForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\ShipManagementIndex.cshtml" />
-    <Content Include="Areas\SteelMember\Views\ProjectManagement\CreateOrderForm.cshtml" />
+    <Content Include="Areas\SteelMember\Views\ProjectOrder\OrderForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\ProjectManagement\Form.cshtml" />
     <Content Include="Areas\SteelMember\Views\ProjectManagement\Index.cshtml" />
     <Content Include="Areas\SteelMember\Views\ProjectOrder\DetailForm.cshtml" />
@@ -8728,14 +8725,15 @@
     <Content Include="Areas\SteelMember\Views\MemberProduce\AnalysisRawMaterialIndex.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberSettlement\Index.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\AnalysisRawMaterialForm.cshtml" />
-    <Content Include="Content\Scripts\C3D\iphoneg4.obj" />
-    <Content Include="Content\Scripts\C3D\SFma-B.fbx" />
-    <Content Include="Content\Scripts\C3D\OBJ.mtl" />
+    <Content Include="Areas\SteelMember\Views\ProjectOrder\CreateOrderForm.cshtml" />
+    <Content Include="Areas\SteelMember\Views\ProjectOrder\ItemList.cshtml" />
+    <Content Include="Areas\SteelMember\Views\File\RawMaterialsDosageIndex.cshtml" />
+    <Content Include="Areas\SteelMember\Views\File\RawMaterialsDosageForm.cshtml" />
+    <Content Include="Areas\SteelMember\Views\File\MemberProcessIndex.cshtml" />
+    <Content Include="Areas\SteelMember\Views\File\MemberProcessForm.cshtml" />
     <None Include="Properties\PublishProfiles\LR-FDMS.pubxml" />
     <Content Include="Views\Home\SkinIndex.cshtml" />
     <Content Include="Views\Login\Default.cshtml" />
-    <Content Include="Views\TestDemo\Index.cshtml" />
-    <Content Include="Views\TestDemo\iphoneg4.obj" />
     <None Include="Views\Utility\PrintPage.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -9027,9 +9025,7 @@
   <ItemGroup>
     <Content Include="Areas\ExampleModule\Views\Print\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Images\Avatar\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Content\Report\BankAnalyze\BankAnalyze.rdlc" />
     <EmbeddedResource Include="Content\Report\Money\Money.rdlc" />

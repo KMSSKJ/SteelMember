@@ -1,4 +1,5 @@
 ﻿using LeaRun.Business;
+using LeaRun.Entity;
 using LeaRun.Entity.SteelMember;
 using LeaRun.Repository.SteelMember.IBLL;
 using LeaRun.Utilities;
@@ -42,6 +43,9 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
         [Inject]
         public MemberUnitIBLL MemberUnitCurrent { get; set; }
+
+        [Inject]
+        public OrderMemberIBLL OrderMemberCurrent { get; set; }
 
         public ActionResult Index()
         {
@@ -141,12 +145,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     var memberlibrary = MemberLibraryCurrent.Find(f => f.MemberID == item.MemberId).SingleOrDefault();
                     projectdemand.MemberName = memberlibrary.MemberName;
                     projectdemand.MemberModel = memberlibrary.MemberModel;
-                    projectdemand.UnitName = memberunit.UnitName;
+                    projectdemand.MemberUnit = memberunit.UnitName;
+                    projectdemand.UnitPrice = memberlibrary.UnitPrice;
                     projectdemand.MemberId = memberlibrary.MemberID;
                     projectdemand.MemberNumbering = memberlibrary.MemberNumbering.ToString();
                     projectdemand.IsReview = item.IsReview;
                     projectdemand.ReviewMan = "System";
-                    //projectdemand.IsDemandSubmit = item.IsDemandSubmit;
                     projectdemand.MemberNumber = item.MemberNumber;
                     projectdemand.OrderQuantityed = item.OrderQuantityed;
                     projectdemand.Productioned = item.Productioned;
@@ -286,10 +290,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.MemberClassId = entity.MemberClassId;
                     Oldentity.ProjectId = entity.ProjectId;//给旧实体重新赋值
                     Oldentity.MemberId = entity.MemberId;
+                    var Member = MemberLibraryCurrent.Find(f => f.MemberID == entity.MemberId).SingleOrDefault();
+                    Oldentity.MemberNumbering = Member.MemberNumbering;
+                    Oldentity.MemberModel = Member.MemberModel;
                     Oldentity.UnitId = entity.UnitId;
                     Oldentity.IsSubmit = 0;
                     Oldentity.IsDemandSubmit= 0;
                     Oldentity.IsReview = 0;
+                    Oldentity.OrderQuantityed = 0;
                     Oldentity.MemberNumber = entity.MemberNumber;
                     Oldentity.MemberWeight = entity.MemberWeight;
                     Oldentity.MemberCompanyId = entity.MemberCompanyId;
@@ -399,7 +407,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         }
         #endregion
 
-        #region 审核需求 创建订单
+        #region 审核需求
 
         /// <summary>
         /// 审核需求
@@ -417,69 +425,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 file.IsReview =Convert.ToInt32(IsReview);
                 ProjectManagementCurrent.Modified(file);
                 return Content(new JsonMessage { Success = true, Code = "1", Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage
-                {
-                    Success = false,
-                    Code = "-1",
-                    Message = "操作失败：" + ex.Message
-                }.ToString());
-            }
-        }
-        /// <summary>
-        /// 创建订单表单
-        /// </summary>
-        /// <param name="FolderId"></param>
-        /// <returns></returns>
-        public ActionResult CreateOrderForm() {
-            return View();
-        }
-
-        /// <summary>
-        /// 创建项目订单
-        /// </summary>
-        /// <param name="FolderId"></param>
-        /// <returns></returns>
-
-        public ActionResult CreateProjectDemand(string KeyValue,/*RMC_ProjectDemand De_Entity, */RMC_ProjectOrder PrOr_Entity)
-        {
-            try
-            {
-                int ProjectDemandId = Convert.ToInt32(KeyValue);
-                var file = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).First();
-                file.ModifiedTime = DateTime.Now;
-                file.OrderQuantityed =Convert.ToInt32(file.OrderQuantityed)+ PrOr_Entity.OrderNumber;
-                ProjectManagementCurrent.Modified(file);
-                PrOr_Entity.CreateTime =Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"));
-                PrOr_Entity.OrderNumbering = DateTime.Now.ToString("yyyyMMddhhmmss");
-                PrOr_Entity.ProjectDemandId = ProjectDemandId;
-                PrOr_Entity.CreateMan = "System";
-                PrOr_Entity.TreeId = file.TreeId;
-                OrderManagementCurrent.Add(PrOr_Entity);
-
-                //List<RMC_ProjectWarehouse> projectwarehouselist = ProjectWarehouseCurrent.Find(f => f.MemberId == file.MemberId).ToList();
-                //if (projectwarehouselist.Count() == 0)
-                //{
-                //    RMC_ProjectWarehouse projectwarehouse = new RMC_ProjectWarehouse();
-                //    projectwarehouse.MemberId = file.MemberId;
-                //    projectwarehouse.TreeId = file.TreeId;
-                //    projectwarehouse.IsShiped = 0;
-                //    ProjectWarehouseCurrent.Add(projectwarehouse);
-                //}
-
-                //List<RMC_ShipManagement> shipmanagementlist = ShipManagementCurrent.Find(f => f.MemberId == file.MemberId).ToList();
-                //if (shipmanagementlist.Count() == 0)
-                //{
-                //    RMC_ShipManagement shipmanagement = new RMC_ShipManagement();
-                //    shipmanagement.MemberId = file.MemberId;
-                //    shipmanagement.TreeId = file.TreeId;
-                //    shipmanagement.IsPackaged = 0;
-                //    ShipManagementCurrent.Add(shipmanagement);
-                //}
-
-                return Content(new JsonMessage { Success = true, Code = "1", Message = "提交成功。" }.ToString());
             }
             catch (Exception ex)
             {

@@ -22,6 +22,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
     using Repository.SteelMember.IBLL;
     using Entity.SteelMember;
     using Utilities;
+    using Models;
 
     public class FileController : Controller
     {
@@ -34,7 +35,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public FileIBLL MemberLibraryCurrent { get; set; }
         [Inject]
         public ProjectInfoIBLL ProjectInfoCurrent { get; set; }
-
+        [Inject]
+        public MemberMaterialIBLL MemberMaterialCurrent { get; set; }
+        [Inject]
+        public RawMaterialIBLL RawMaterialCurrent { get; set; }
+        [Inject]
+        public MemberUnitIBLL MemberUnitCurrent { get; set; }
+        [Inject]
+        public MemberProcessIBLL MemberProcessCurrent { get; set; }
 
         #region 已注销代码
         ///// <summary>
@@ -1118,14 +1126,15 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     MemberLibrary.GravityCenterDistance_0 = Convert.ToDecimal(table.Rows[i][29]);
                     MemberLibrary.GravityCenterDistance_x0 = Convert.ToDecimal(table.Rows[i][30]);
                     MemberLibrary.GravityCenterDistance_y0 = Convert.ToDecimal(table.Rows[i][31]);
-                    MemberLibrary.UnitPrice = table.Rows[i][32].ToString();
+                    MemberLibrary.MemberUnit = table.Rows[i][32].ToString();
+                    MemberLibrary.UnitPrice = table.Rows[i][33].ToString();
                     string CAD_Drawing = "";
                     string Model_Drawing = "";
-                    if (table.Rows[i][33].ToString() == "")
+                    if (table.Rows[i][34].ToString() == "")
                     {
                         CAD_Drawing = "1.png";
                     }
-                    if (table.Rows[i][34].ToString() == "")
+                    if (table.Rows[i][35].ToString() == "")
                     {
                         Model_Drawing = "1.png";
                     }
@@ -1550,6 +1559,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.GravityCenterDistance_0 = entity.GravityCenterDistance_0;
                     Oldentity.GravityCenterDistance_x0 = entity.GravityCenterDistance_x0;
                     Oldentity.GravityCenterDistance_y0 = entity.GravityCenterDistance_y0;
+                    Oldentity.MemberUnit = entity.MemberUnit;
+                    Oldentity.UnitPrice = entity.UnitPrice;
                     MemberLibraryCurrent.Modified(Oldentity);
                     IsOk = 1;//更新实体对象
                     //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
@@ -1575,9 +1586,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                             MemberNumbering += Number[I];
                         }
                     }
-
-
-
 
                     entitys.MemberNumbering = (MemberNumbering + "-" + DateTime.Now.ToString("yyyyMMddhhmmssff")).ToString();
                     entitys.SectionalArea = entity.SectionalArea;
@@ -1610,6 +1618,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     entitys.GravityCenterDistance_0 = entity.GravityCenterDistance_0;
                     entitys.GravityCenterDistance_x0 = entity.GravityCenterDistance_x0;
                     entitys.GravityCenterDistance_y0 = entity.GravityCenterDistance_y0;
+                    entitys.MemberUnit = entity.MemberUnit;
+                    entitys.UnitPrice = entity.UnitPrice;
                     entitys.CAD_Drawing = "1.png";
                     entitys.Model_Drawing = "1.png";
                     MemberLibraryCurrent.Add(entitys);
@@ -1718,6 +1728,269 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             return View();
         }
 
+        #endregion
+
+        #region 构件原材料用量
+        public ActionResult RawMaterialsDosageIndex()
+        {
+            return View();
+        }
+        public ActionResult GridListJsonMemberMaterial(string KeyValue, JqGridParam jqgridparam)
+        {
+            int _KeyValue = Convert.ToInt32(KeyValue);
+            try
+            {
+                int total = 0;
+                Expression<Func<RMC_MemberMaterial, bool>> func = ExpressionExtensions.True<RMC_MemberMaterial>();
+                func = f =>f.MemberId == _KeyValue;
+                #region 查询条件拼接
+                //if (keywords != null && keywords != "&nbsp;")
+                //{
+                //    func = func.And(f => f.MemberNumbering.Contains(MemberNumbering));
+                //}
+                //if (!string.IsNullOrEmpty(MemberModel))
+                //{
+                //    func = func.And(f => f.MemberModel.Contains(MemberModel)); /*func = func.And(f => f.FullPath.Contains(model.FilePath))*/
+                //}
+                #endregion
+
+                List<RMC_MemberMaterial> listfile = MemberMaterialCurrent.FindPage<string>(jqgridparam.page
+                                         , jqgridparam.rows
+                                         , func
+                                         , true
+                                         , f => f.MemberMaterialId.ToString()
+                                         , out total
+                                         ).ToList();
+                List<MemberMaterialModel> EntityModelList = new List<MemberMaterialModel>();
+                foreach (var item in listfile)
+                {
+                    MemberMaterialModel EntityModel = new MemberMaterialModel();
+                    EntityModel.MemberMaterialId = item.MemberMaterialId;
+                    EntityModel.MemberId = item.MemberId;
+                    EntityModel.RawMaterialId = item.RawMaterialId;
+                    EntityModel.MaterialNumber = item.MaterialNumber;
+                    EntityModel.Description = item.Description;
+                    var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == item.RawMaterialId).SingleOrDefault();
+                    var Unit = MemberUnitCurrent.Find(f => f.UnitId == RawMaterial.UnitId).SingleOrDefault();
+                    EntityModel.RawMaterialName = RawMaterial.RawMaterialName;
+                    EntityModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
+                    EntityModel.UnitName = Unit.UnitName;
+                    EntityModelList.Add(EntityModel);
+                }
+                var JsonData = new
+                {
+                    //rows = MemberMaterialCurrent.Find(f => f.MemberId == _KeyValue),
+                    rows = EntityModelList,
+                };
+                return Content(JsonData.ToJson());
+            }
+            catch (Exception ex)
+            {
+                Base_SysLogBll.Instance.WriteLog("", OperationType.Query, "-1", "异常错误：" + ex.Message);
+                return null;
+            }
+
+        }
+
+
+        //表单
+        public ActionResult RawMaterialsDosageForm()
+        {
+            return View();
+        }
+
+        public ActionResult SetDataForm(string KeyValue)
+        {
+            int _KeyValue = Convert.ToInt32(KeyValue);
+            RMC_MemberMaterial entity = MemberMaterialCurrent.Find(f => f.MemberMaterialId== _KeyValue).SingleOrDefault();
+            //string JsonData = entity.ToJson();
+            ////自定义
+            //JsonData = JsonData.Insert(1, Sys_FormAttributeBll.Instance.GetBuildForm(KeyValue));
+            return Content(entity.ToJson());
+        }
+        /// <summary>
+        /// 提交文件夹表单
+        /// </summary>
+        /// <param name="entity">实体对象</param>
+        /// <param name="KeyValue">主键值</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateInput(false)]
+        //[LoginAuthorize]
+        public virtual ActionResult SubmitDataForm(RMC_MemberMaterial entity, string KeyValue, string TreeId)
+        {
+            try
+            {
+                int IsOk = 0;
+                string Message = KeyValue == "" ? "新增成功。" : "编辑成功。";
+                if (!string.IsNullOrEmpty(KeyValue))
+                {
+                    int _KeyValue = Convert.ToInt32(KeyValue);
+                    RMC_MemberMaterial Oldentity = MemberMaterialCurrent.Find(t => t.MemberMaterialId == _KeyValue).SingleOrDefault();//获取没更新之前实体对象
+                    Oldentity.RawMaterialId = entity.RawMaterialId;
+                    Oldentity.MaterialNumber = entity.MaterialNumber;
+                    Oldentity.Description = entity.Description;
+                    MemberMaterialCurrent.Modified(Oldentity);
+                    IsOk = 1;//更新实体对象
+                    //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
+                }
+                else
+                {
+                    MemberMaterialCurrent.Add(entity);
+                    IsOk = 1;
+                    //this.WSectionalSize_r = entity.SectionalSize_r;riteLog(IsOk, entity, null, KeyValue, Message);
+                }
+                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+            }
+            catch (Exception ex)
+            {
+                //this.WriteInertiaDistance_x1 = entity.InertiaDistance_x1;Log(-1, entity, null, KeyValue, "操作失败：" + ex.Message);
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+            }
+        }
+
+        public virtual ActionResult DeleteData(RMC_MemberLibrary entity, string KeyValue)
+        {
+
+            int IsOk = -1;
+            int key_value = Convert.ToInt32(KeyValue);
+            List<int> ids = new List<int>();
+            ids.Add(key_value);
+            IsOk = MemberLibraryCurrent.Remove(ids);
+            return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = "删除成功。" }.ToString());
+        }
+
+        /// <summary>
+        /// 获取原材料
+        /// </summary>
+        /// <param name="MaterialClassId"></param>
+        /// <returns></returns>
+        public virtual ActionResult GetMaterialName(string MaterialClassId)
+        { 
+              int _MaterialClassId = Convert.ToInt32(MaterialClassId);
+             List<RMC_RawMaterialLibrary> Entity = RawMaterialCurrent.Find(f => f.TreeId== _MaterialClassId).ToList();
+            //string JsonData = entity.ToJson();
+            ////自定义
+            //JsonData = JsonData.Insert(1, Sys_FormAttributeBll.Instance.GetBuildForm(KeyValue));
+            // return Content(entity.ToJson());
+            return Json(Entity);
+        }
+        #endregion
+
+        #region 构件制程
+        public ActionResult MemberProcessIndex()
+        {
+            return View();
+        }
+        public ActionResult GridListJsonMemberProcess(string KeyValue, JqGridParam jqgridparam)
+        {
+            int _KeyValue = Convert.ToInt32(KeyValue);
+            try
+            {
+                int total = 0;
+                Expression<Func<RMC_MemberProcess, bool>> func = ExpressionExtensions.True<RMC_MemberProcess>();
+                func = f => f.MemberId == _KeyValue;
+                #region 查询条件拼接
+                //if (keywords != null && keywords != "&nbsp;")
+                //{
+                //    func = func.And(f => f.MemberNumbering.Contains(MemberNumbering));
+                //}
+                //if (!string.IsNullOrEmpty(MemberModel))
+                //{
+                //    func = func.And(f => f.MemberModel.Contains(MemberModel)); /*func = func.And(f => f.FullPath.Contains(model.FilePath))*/
+                //}
+                #endregion
+
+                List<RMC_MemberProcess> listfile = MemberProcessCurrent.FindPage<string>(jqgridparam.page
+                                         , jqgridparam.rows
+                                         , func
+                                         , true
+                                         , f => f.SortCode.ToString()
+                                         , out total
+                                         ).ToList();
+                var JsonData = new
+                {
+                    rows = listfile,
+                };
+                return Content(JsonData.ToJson());
+            }
+            catch (Exception ex)
+            {
+                Base_SysLogBll.Instance.WriteLog("", OperationType.Query, "-1", "异常错误：" + ex.Message);
+                return null;
+            }
+
+        }
+
+
+        //表单
+        public ActionResult MemberProcessForm()
+        {
+            return View();
+        }
+
+        public ActionResult SetMemberProcessForm(string KeyValue)
+        {
+            int _KeyValue = Convert.ToInt32(KeyValue);
+            RMC_MemberProcess entity = MemberProcessCurrent.Find(f => f.MemberProcessId== _KeyValue).SingleOrDefault();
+            //string JsonData = entity.ToJson();
+            ////自定义
+            //JsonData = JsonData.Insert(1, Sys_FormAttributeBll.Instance.GetBuildForm(KeyValue));
+            return Content(entity.ToJson());
+        }
+        /// <summary>
+        /// 提交文件夹表单
+        /// </summary>
+        /// <param name="entity">实体对象</param>
+        /// <param name="KeyValue">主键值</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateInput(false)]
+        //[LoginAuthorize]
+        public virtual ActionResult SubmitMemberProcessForm(RMC_MemberProcess entity, string KeyValue, string TreeId)
+        {
+            try
+            {
+                int IsOk = 0;
+                string Message = KeyValue == "" ? "新增成功。" : "编辑成功。";
+                if (!string.IsNullOrEmpty(KeyValue))
+                {
+                    int _KeyValue = Convert.ToInt32(KeyValue);
+                    RMC_MemberProcess Oldentity = MemberProcessCurrent.Find(t => t.MemberProcessId == _KeyValue).SingleOrDefault();//获取没更新之前实体对象
+                    Oldentity.OperationTime = entity.OperationTime;
+                    Oldentity.ProcessName = entity.ProcessName;
+                    Oldentity.ProcessRequirements = entity.ProcessRequirements;
+                    Oldentity.SortCode= entity.SortCode;
+                    Oldentity.Description = entity.Description;
+                    MemberProcessCurrent.Modified(Oldentity);
+                    IsOk = 1;//更新实体对象
+                    //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
+                }
+                else
+                {
+                    MemberProcessCurrent.Add(entity);
+                    IsOk = 1;
+                    //this.WSectionalSize_r = entity.SectionalSize_r;riteLog(IsOk, entity, null, KeyValue, Message);
+                }
+                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+            }
+            catch (Exception ex)
+            {
+                //this.WriteInertiaDistance_x1 = entity.InertiaDistance_x1;Log(-1, entity, null, KeyValue, "操作失败：" + ex.Message);
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+            }
+        }
+
+        public virtual ActionResult DeleteMemberProcess(RMC_MemberLibrary entity, string KeyValue)
+        {
+
+            int IsOk = -1;
+            int key_value = Convert.ToInt32(KeyValue);
+            List<int> ids = new List<int>();
+            ids.Add(key_value);
+            IsOk = MemberProcessCurrent.Remove(ids);
+            return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = "删除成功。" }.ToString());
+        }
         #endregion
     }
 }

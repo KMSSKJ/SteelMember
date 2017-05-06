@@ -18,6 +18,7 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<int> TreeId { get; set; }
         public Nullable<int> ProjectId { get; set; }
         public Nullable<int> MemberId { get; set; }
+        public string MemberNumbering { get; set; }
         public Nullable<int> MemberCompanyId { get; set; }
         public Nullable<int> MemberClassId { get; set; }
         public Nullable<int> UnitId { get; set; }
@@ -35,5 +36,6 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<int> Productioned { get; set; }
         public Nullable<System.DateTime> DeleteTime { get; set; }
         public Nullable<System.DateTime> ModifiedTime { get; set; }
+        public string MemberModel { get; set; }
     }
 }

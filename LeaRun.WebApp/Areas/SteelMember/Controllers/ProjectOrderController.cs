@@ -1,5 +1,6 @@
 ﻿
 using LeaRun.Business;
+using LeaRun.Entity;
 using LeaRun.Entity.SteelMember;
 using LeaRun.Repository.SteelMember.IBLL;
 using LeaRun.Utilities;
@@ -8,6 +9,7 @@ using SteelMember.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -39,6 +41,11 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public ProjectWarehouseIBLL ProjectWarehouseCurrent { get; set; }
         [Inject]
         public ShipManagementIBLL ShipManagementCurrent { get; set; }
+        [Inject]
+        public OrderMemberIBLL OrderMemberCurrent { get; set; }
+
+        public MemberUnitIBLL MemberUnitCurrent { get; set; }
+
         public ActionResult Index()
         {
             return View();
@@ -50,8 +57,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <returns></returns>      
         public ActionResult TreeJson(string ItemId)
         {
-            int itemid = Convert.ToInt32(ItemId);
-            List<RMC_Tree> list = TreeCurrent.Find(t => t.ItemID == itemid && t.DeleteFlag != 1).ToList();
+            int _ItemId = Convert.ToInt32(ItemId);
+            List<RMC_Tree> list = TreeCurrent.Find(t => t.ItemID == _ItemId && t.DeleteFlag != 1).ToList();
             List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
             foreach (RMC_Tree item in list)
             {
@@ -75,7 +82,164 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             return Content(TreeList.TreeToJson());
         }
 
+        public ActionResult TreeName(string TreeId)
+        {
+            int _TreeId = Convert.ToInt32(TreeId);
+            RMC_Tree Entity = TreeCurrent.Find(t => t.TreeID== _TreeId && t.DeleteFlag != 1).SingleOrDefault();
+            return Content(Entity.ToJson());
+            //return Json(entity);
+        }
+
         #region 构件订单管理
+
+        /// <summary>
+        /// 创建订单表单
+        /// </summary>
+        /// <param name="FolderId"></param>
+        /// <returns></returns>
+        public ActionResult CreateOrderForm()
+        {
+            ViewBag.OrderNumbering = DateTime.Now.ToString("yyyyMMddhhmmss");
+            return View();
+        }
+
+        /// <summary>
+        ///构件列表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ItemList()
+        {
+            return View();
+        }
+        public ActionResult OrderForm() {
+            return View();
+        }
+
+        public ActionResult DetailForm()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        //[LoginAuthorize]
+        public virtual ActionResult SubmitOrderForm(RMC_ProjectOrder entity, string KeyValue, string TreeId, string POOrderEntryJson)
+        {
+            try
+            {
+                int IsOk = 0;
+                string Message = KeyValue == "" ? "变更成功。" : "新增成功。";
+                if (!string.IsNullOrEmpty(KeyValue))
+                {
+                    int _OrderId = Convert.ToInt32(KeyValue);
+                    RMC_ProjectOrder Oldentity = OrderManagementCurrent.Find(f => f.OrderId == _OrderId).SingleOrDefault();
+                    Oldentity.OrderNumbering = entity.OrderNumbering;//给旧实体重新赋值
+                    Oldentity.VeliveryTime = entity.VeliveryTime;
+                    Oldentity.IsSubmit = 0;
+                    Oldentity.IsReview = 0;
+                    Oldentity.CreateMan = "System";
+                    Oldentity.CreateTime = entity.SubmitTime;
+                    Oldentity.Description = entity.Description;
+
+                    List<int> Ids = new List<int>();
+                    List<RMC_OrderMember> OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == _OrderId).ToList();
+                    for (int i = 0; i < OrderMemberList.Count(); i++)
+                    {
+                        int OrderMemberId = OrderMemberList[i].OrderMemberId;
+                        Ids.Add(OrderMemberId);
+                        int ProjectDemandId =Convert.ToInt32(OrderMemberList[i].ProjectDemandId);
+                        var OrderMember = OrderMemberCurrent.Find(f => f.OrderMemberId == OrderMemberId).SingleOrDefault();
+                        var ProjectDemand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).SingleOrDefault();
+                        ProjectDemand.OrderQuantityed = ProjectDemand.OrderQuantityed - OrderMember.Qty;
+                        ProjectManagementCurrent.Modified(ProjectDemand);
+                    }
+                    OrderMemberCurrent.Remove(Ids);
+
+                    //构件单
+                    List<OrderModel> POOrderEntryList = POOrderEntryJson.JonsToList<OrderModel>();
+                    //int index = 1;
+                    foreach (OrderModel poorderentry in POOrderEntryList)
+                    {
+                        if (!string.IsNullOrEmpty(poorderentry.MemberNumbering))
+                        {
+                            RMC_OrderMember OrderMember = new RMC_OrderMember();
+                            OrderMember.OrderId = _OrderId;
+                            OrderMember.ProjectDemandId = Convert.ToInt32(poorderentry.ProjectDemandId);
+                            OrderMember.MemberId= Convert.ToInt32(poorderentry.MemberID);
+                            OrderMember.Description = poorderentry.Description;
+                            OrderMember.MemberNumbering = poorderentry.MemberNumbering;
+                            OrderMember.MemberModel = poorderentry.MemberModel;
+                            OrderMember.MemberName = poorderentry.MemberName;
+                            OrderMember.MemberUnit = poorderentry.MemberUnit;
+                            OrderMember.Price = Convert.ToDecimal(poorderentry.Price);
+                            OrderMember.PriceAmount = Convert.ToDecimal(poorderentry.PriceAmount);
+                            OrderMember.Qty = Convert.ToInt32(poorderentry.Qty);
+
+
+                            var ProjectDemand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == OrderMember.ProjectDemandId).SingleOrDefault();
+                            ProjectDemand.OrderQuantityed = ProjectDemand.OrderQuantityed +Convert.ToInt32(poorderentry.Qty);
+                            ProjectManagementCurrent.Modified(ProjectDemand);
+
+                            OrderMemberCurrent.Add(OrderMember);
+                            //index++;
+                        }
+                    }
+
+                }
+                else
+                {
+                    int _TreeId = Convert.ToInt32(TreeId);
+                    RMC_ProjectOrder Oldentity = new RMC_ProjectOrder();
+                    Oldentity.TreeId = _TreeId;
+                    Oldentity.OrderNumbering = entity.OrderNumbering;//给旧实体重新赋值
+                    Oldentity.VeliveryTime = entity.VeliveryTime;
+                    Oldentity.IsSubmit = 0;
+                    Oldentity.IsReview = 0;
+                    Oldentity.CreateMan = "System";
+                    Oldentity.CreateTime = entity.CreateTime;
+                    Oldentity.Description = entity.Description;
+                    int OrderId= OrderManagementCurrent.Add(Oldentity).OrderId;
+
+                    RMC_OrderMember OrderMember = new RMC_OrderMember();
+                    List<OrderModel> POOrderEntryList = POOrderEntryJson.JonsToList<OrderModel>();
+                    int index = 1;
+                    foreach (OrderModel poorderentry in POOrderEntryList)
+                    {
+                        if (!string.IsNullOrEmpty(poorderentry.MemberNumbering))
+                        {
+                            //poorderentry.SortCode = index;
+                            //poorderentry.Create();
+                            OrderMember.OrderId = OrderId;
+                            OrderMember.ProjectDemandId = Convert.ToInt32(poorderentry.ProjectDemandId);
+                            OrderMember.MemberId = Convert.ToInt32(poorderentry.MemberID);
+                            OrderMember.Description = poorderentry.Description;
+                            OrderMember.MemberNumbering = poorderentry.MemberNumbering;
+                            OrderMember.MemberModel = poorderentry.MemberModel;
+                            OrderMember.MemberName = poorderentry.MemberName;
+                            OrderMember.MemberUnit = poorderentry.MemberUnit;
+                            OrderMember.Price = Convert.ToDecimal(poorderentry.Price);
+                            OrderMember.PriceAmount = Convert.ToDecimal(poorderentry.PriceAmount);
+                            OrderMember.Qty = Convert.ToInt32(poorderentry.Qty);
+
+                            var Demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == OrderMember.ProjectDemandId).SingleOrDefault();
+                            Demand.OrderQuantityed = Demand.OrderQuantityed + OrderMember.Qty;
+                            ProjectManagementCurrent.Modified(Demand);
+
+                            OrderMemberCurrent.Add(OrderMember);
+                            index++;
+                        }
+                    }
+                }
+                IsOk = 1;
+                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+            }
+            catch (Exception ex)
+            {
+                //this.WriteLog(-1, entity, null, KeyValue, "操作失败：" + ex.Message);
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+            }
+        }
+
         /// <summary>
         /// 【工程项目管理】返回文件（夹）列表JSON
         /// </summary>
@@ -89,7 +253,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             {
                 int TreeId;
                 //int FolderId = Convert.ToInt32(FolderId);
-                if (TreeID == ""|| TreeID == null)
+                if (TreeID == "" || TreeID == null)
                 {
                     TreeId = 1;
                 }
@@ -132,44 +296,9 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 foreach (var item in listfile)
                 {
                     ProjectDemandModel projectdemand = new ProjectDemandModel();
-                    projectdemand.OrderId = item.OrderId;
-                    var order = OrderManagementCurrent.Find(f => f.OrderId == item.OrderId).SingleOrDefault();
-                    var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == order.ProjectDemandId).SingleOrDefault();
-                    var memberlibrary = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
-                    projectdemand.MemberId = memberlibrary.MemberID;
                     projectdemand.OrderNumbering = item.OrderNumbering;
-                    projectdemand.MemberName = memberlibrary.MemberName;
-                    projectdemand.MemberModel = memberlibrary.MemberModel;
-                    projectdemand.UnitPrice = memberlibrary.UnitPrice;
-                    projectdemand.MemberNumbering = memberlibrary.MemberNumbering.ToString();
-                    projectdemand.OrderNumber = item.OrderNumber;
-
-                    string a = memberlibrary.UnitPrice;
-                    char[] b = a.ToArray();
-                    string result = "";
-                    for (int i = 0; i < b.Length; i++)
-                    {
-                        if (("0123456789.").IndexOf(b[i] + "") != -1)
-                        {
-                            result += b[i];
-                        }
-                    }
-                    decimal d = Convert.ToDecimal(result);
-
-                    string membernumber = item.OrderNumber.ToString();
-                    char[] c = membernumber.ToArray();
-                    string MemberNumber = "";
-                    for (int i = 0; i < c.Length; i++)
-                    {
-                        if (("0123456789.").IndexOf(c[i] + "") != -1)
-                        {
-                            MemberNumber += c[i];
-                        }
-                    }
-                    decimal Number = Convert.ToDecimal(MemberNumber);
-                    projectdemand.CostBudget = (d * Number).ToString() + "元";
-                    //var company = CompanyCurrent.Find(f => f.MemberCompanyId == item.MemberCompanyId).SingleOrDefault();
-                    //projectdemand.MemberCompany = company.FullName;
+                    projectdemand.VeliveryTime = item.VeliveryTime;
+                    projectdemand.OrderId = item.OrderId;
                     projectdemand.IsReview = item.IsReview;
                     projectdemand.ReviewMan = "System";
                     projectdemand.IsSubmit = item.IsSubmit;
@@ -180,7 +309,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
                 if (projectdemandlist.Count() > 0)// && listtree.Count() > 0
                 {
-                 
+
                     //ListData0 = ListToDataTable(listtree);
                     ListData1 = DataHelper.ListToDataTable(projectdemandlist);
                     ListData = ListData1.Clone();
@@ -197,7 +326,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         ListData1.Rows[i].ItemArray.CopyTo(obj, 0);
                         ListData.Rows.Add(obj);
                     }
-                  
+
                 }
                 //else if (listtree.Count() > 0)
                 //{
@@ -205,7 +334,140 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //}
                 else if (listfile.Count() > 0)
                 {
-                    ListData =DataHelper.ListToDataTable(listfile);
+                    ListData = DataHelper.ListToDataTable(listfile);
+                }
+                else
+                {
+                    ListData = null;
+                }
+
+                var JsonData = new
+                {
+                    rows = ListData,
+                };
+                return Content(JsonData.ToJson());
+            }
+            catch (Exception ex)
+            {
+                return Content("<script>alertDialog('" + ex.Message + "');</script>");
+            }
+        }
+
+
+        /// <summary>
+        /// 【工程项目管理】返回文件（夹）列表JSON
+        /// </summary>
+        /// <param name="keywords">文件名搜索条件</param>
+        /// <param name="FolderId">文件夹ID</param>
+        /// <param name="IsPublic">是否公共 1-公共、0-我的</param>
+        /// <returns></returns>         
+        public ActionResult GridListJsonDemand(/*ProjectInfoViewModel model,*/ string TreeID, JqGridParam jqgridparam, string IsPublic, string keywords)
+        {
+            try
+            {
+                int TreeId;
+                string MemberModel ="";
+                string MemberNumbering = "";
+                //int FolderId = Convert.ToInt32(FolderId);
+                if (TreeID == "" || TreeID == null)
+                {
+                    TreeId = 1;
+                }
+                else
+                {
+                    TreeId = Convert.ToInt32(TreeID);
+                }
+                if (keywords != null) { 
+                if (keywords.Length>10)
+                {
+                    MemberNumbering = keywords;
+                }
+                else
+                {
+                    MemberModel = keywords;
+                }
+                }
+
+                int total = 0;
+                Expression<Func<RMC_ProjectDemand, bool>> func = ExpressionExtensions.True<RMC_ProjectDemand>();
+                func = f => f.DeleteFlag != 1 && f.TreeId == TreeId && f.IsReview == 1;
+                #region 查询条件拼接
+                if (keywords != null && keywords != "&nbsp;")
+                {
+                    func = func.And(f => f.MemberNumbering.Contains(MemberNumbering));
+                }
+                if (!string.IsNullOrEmpty(MemberModel))
+                {
+                    func = func.And(f => f.MemberModel.Contains(MemberModel)); /*func = func.And(f => f.FullPath.Contains(model.FilePath))*/
+                }
+                #endregion
+
+                DataTable ListData, ListData1;
+                ListData = null;
+                //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
+                //                         , jqgridparam.rows
+                //                         , func1
+                //                         , true
+                //                         , f => f.TreeID.ToString()
+                //                         , out total
+                //                         ).ToList();
+                List<RMC_ProjectDemand> listfile = ProjectManagementCurrent.FindPage<string>(jqgridparam.page
+                                         , jqgridparam.rows
+                                         , func
+                                         , true
+                                         , f => f.ProjectDemandId.ToString()
+                                         , out total
+                                         ).ToList();
+                List<ProjectDemandModel> projectdemandlist = new List<ProjectDemandModel>();
+                foreach (var item in listfile)
+                {
+                    ProjectDemandModel projectdemand = new ProjectDemandModel();
+                    projectdemand.ProjectDemandId = item.ProjectDemandId;
+                    var memberlibrary = MemberLibraryCurrent.Find(f => f.MemberID == item.MemberId).SingleOrDefault();
+                    projectdemand.MemberName = memberlibrary.MemberName;
+                    projectdemand.MemberModel = memberlibrary.MemberModel;
+                    projectdemand.MemberUnit = memberlibrary.MemberUnit;
+                    projectdemand.UnitPrice = memberlibrary.UnitPrice;
+                    projectdemand.MemberId = memberlibrary.MemberID;
+                    projectdemand.MemberNumbering = memberlibrary.MemberNumbering.ToString();
+                    projectdemand.IsReview = item.IsReview;
+                    projectdemand.ReviewMan = "System";
+                    projectdemand.MemberNumber = item.MemberNumber;
+                    projectdemand.OrderQuantityed = item.OrderQuantityed;
+                    projectdemand.Productioned = item.Productioned;
+                    //projectdemand.MemberWeight = item.MemberWeight;
+                    //var company = CompanyCurrent.Find(f=>f.MemberCompanyId==item.MemberCompanyId).SingleOrDefault();
+                    //projectdemand.MemberCompany = company.FullName;
+                    projectdemand.Description = item.Description;
+                    projectdemandlist.Add(projectdemand);
+                }
+
+                if (projectdemandlist.Count() > 0)// && listtree.Count() > 0
+                {
+                    //ListData0 = ListToDataTable(listtree);
+                    ListData1 = DataHelper.ListToDataTable(projectdemandlist);
+                    ListData = ListData1.Clone();
+                    object[] obj = new object[ListData.Columns.Count];
+                    ////添加DataTable0的数据
+                    //for (int i = 0; i < ListData0.Rows.Count; i++)
+                    //{
+                    //    ListData0.Rows[i].ItemArray.CopyTo(obj, 0);
+                    //    ListData.Rows.Add(obj);
+                    //}
+                    //添加DataTable1的数据
+                    for (int i = 0; i < ListData1.Rows.Count; i++)
+                    {
+                        ListData1.Rows[i].ItemArray.CopyTo(obj, 0);
+                        ListData.Rows.Add(obj);
+                    }
+                }
+                //else if (listtree.Count() > 0)
+                //{
+                //    ListData = ListToDataTable(listtree);
+                //}
+                else if (listfile.Count() > 0)
+                {
+                    ListData = DataHelper.ListToDataTable(projectdemandlist);
                 }
                 else
                 {
@@ -225,6 +487,30 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         }
 
         /// <summary>
+        /// 订单明细列表（返回Json）
+        /// </summary>
+        /// <param name="POOrderId">订单主键</param>
+        /// <returns></returns>
+        public ActionResult GetOrderEntryList(string OrderId)
+        {
+            int _OrderId = Convert.ToInt32(OrderId);
+            try
+            {
+                var JsonData = new
+                {
+                    rows = OrderMemberCurrent.Find(f => f.OrderId == _OrderId),
+                };
+                return Content(JsonData.ToJson());
+            }
+            catch (Exception ex)
+            {
+                Base_SysLogBll.Instance.WriteLog("", OperationType.Query, "-1", "异常错误：" + ex.Message);
+                return null;
+            }
+        }
+
+
+        /// <summary>
         /// 表单视图
         /// </summary>
         /// <returns></returns>
@@ -240,7 +526,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public ActionResult ProjectName()
         {
             List<SelectListItem> List = new List<SelectListItem>();
-            List<RMC_ProjectInfo> ProjectList =ProjectInfoCurrent.Find(f => f.ProjectId > 0).ToList();
+            List<RMC_ProjectInfo> ProjectList = ProjectInfoCurrent.Find(f => f.ProjectId > 0).ToList();
             foreach (var Item in ProjectList)
             {
                 SelectListItem item = new SelectListItem();
@@ -259,7 +545,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             int _TreeId = Convert.ToInt32(TreeId);
             List<SelectListItem> List = new List<SelectListItem>();
-            List<RMC_MemberLibrary> ProjectList = MemberLibraryCurrent.Find(f => f.TreeID==_TreeId).ToList();
+            List<RMC_MemberLibrary> ProjectList = MemberLibraryCurrent.Find(f => f.TreeID == _TreeId).ToList();
             foreach (var Item in ProjectList)
             {
                 SelectListItem item = new SelectListItem();
@@ -298,69 +584,51 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         //[LoginAuthorize]
         public ActionResult SetDataForm(string KeyValue)
         {
-            int ProjectDemandId = Convert.ToInt32(KeyValue);
-            RMC_ProjectDemand entity = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).SingleOrDefault();
-            //string JsonData = entity.ToJson();
-            ////自定义
-            //JsonData = JsonData.Insert(1, Sys_FormAttributeBll.Instance.GetBuildForm(KeyValue));
+            int OrderId = Convert.ToInt32(KeyValue);
+            RMC_ProjectOrder entity = OrderManagementCurrent.Find(f => f.OrderId == OrderId).SingleOrDefault();
             return Content(entity.ToJson());
             //return Json(entity);
         }
 
-        /// <summary>
-        /// 提交文件夹表单
-        /// </summary>
-        /// <param name="entity">实体对象</param>
-        /// <param name="KeyValue">主键值</param>
-        /// <returns></returns>
-        [HttpPost]
-        [ValidateInput(false)]
-        //[LoginAuthorize]
-        public virtual ActionResult SubmitDataForm(RMC_ProjectDemand entity, string KeyValue, string TreeId)
+        public ActionResult DeleteProjectOrder(string KeyValue)
         {
             try
             {
-                int IsOk = 0;
-                string Message = KeyValue == "" ? "新增成功。" : "编辑成功。";
-                if (!string.IsNullOrEmpty(KeyValue))
+                List<int> ids = new List<int>();
+                List<int> ids1 = new List<int>();
+                int OrderId = Convert.ToInt32(KeyValue);
+                ids.Add(OrderId);
+                OrderManagementCurrent.Remove(ids);
+
+
+                List<RMC_OrderMember> OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
+                if (OrderMemberList.Count() > 0)
                 {
-                    int keyvalue = Convert.ToInt32(KeyValue);
-                    RMC_ProjectDemand Oldentity = ProjectManagementCurrent.Find(t => t.ProjectDemandId == keyvalue).SingleOrDefault();//获取没更新之前实体对象
-                    Oldentity.ProjectId = entity.ProjectId;//给旧实体重新赋值
-                    Oldentity.MemberId = entity.MemberId;
-                    Oldentity.MemberNumber = entity.MemberNumber;
-                    Oldentity.MemberWeight = entity.MemberWeight;
-                    Oldentity.MemberCompanyId = entity.MemberCompanyId;
-                    Oldentity.Description = entity.Description;
-                    ProjectManagementCurrent.Modified(Oldentity);
-                    IsOk = 1;//更新实体对象
-                    //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
+                    for (int i = 0; i < OrderMemberList.Count(); i++)
+                    {
+                        ids1.Add(Convert.ToInt32(OrderMemberList[i].OrderMemberId));
+
+                        var OrderMember = OrderMemberCurrent.Find(f => f.OrderMemberId== OrderMemberList[i].OrderMemberId).SingleOrDefault();
+                        var Demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == OrderMember.ProjectDemandId).SingleOrDefault();
+                        Demand.OrderQuantityed = Demand.OrderQuantityed - OrderMemberList[i].Qty;
+                        ProjectManagementCurrent.Modified(Demand);
+                    }
+                    OrderMemberCurrent.Remove(ids1);
                 }
-                else    
-                {
-                    int treeid = Convert.ToInt32(TreeId);
-                    RMC_ProjectDemand Oldentity = new RMC_ProjectDemand();
-                    Oldentity.TreeId = treeid;
-                    Oldentity.ProjectId = entity.ProjectId;//给旧实体重新赋值
-                    Oldentity.MemberId = entity.MemberId;
-                    Oldentity.IsSubmit = 0;
-                    Oldentity.IsReview = 0;
-                    Oldentity.MemberNumber = entity.MemberNumber;
-                    Oldentity.MemberWeight = entity.MemberWeight;
-                    Oldentity.MemberCompanyId = entity.MemberCompanyId;
-                    Oldentity.Description = entity.Description;
-                    ProjectManagementCurrent.Add(Oldentity);
-                    IsOk = 1;
-                    //this.WriteLog(IsOk, entity, null, KeyValue, Message);
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+                return Content(new JsonMessage { Success = true, Code = "1", Message = "删除成功。" }.ToString());
             }
             catch (Exception ex)
             {
-                //this.WriteLog(-1, entity, null, KeyValue, "操作失败：" + ex.Message);
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+                return Content(new JsonMessage
+                {
+                    Success = false,
+                    Code = "-1",
+                    Message = "操作失败：" + ex.Message
+                }.ToString());
             }
+
         }
+
 
         /// <summary>
         /// 审核需求
@@ -395,12 +663,11 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// </summary>
         /// <param name="KeyValue"></param>
         /// <returns></returns>
-        public ActionResult SubmitProjectOrder(string KeyValue,string MemberId,RMC_ProjectOrder Entity)
+        public ActionResult SubmitProjectOrder(string KeyValue, RMC_ProjectOrder Entity)
         {
             try
             {
                 int OrderId = Convert.ToInt32(KeyValue);
-                int _MemberId = Convert.ToInt32(MemberId);
                 var file = OrderManagementCurrent.Find(f => f.OrderId == OrderId).First();
                 file.ModifiedTime = DateTime.Now;
                 file.IsSubmit = 1;
@@ -408,26 +675,32 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 file.SubmitMan = "System";
                 OrderManagementCurrent.Modified(file);
 
-                List<RMC_ProjectWarehouse> projectwarehouselist = ProjectWarehouseCurrent.Find(f => f.MemberId == _MemberId).ToList();
-                if (projectwarehouselist.Count() == 0)
+                List<RMC_OrderMember> OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
+                foreach (var item in OrderMemberList)
                 {
-                    RMC_ProjectWarehouse projectwarehouse = new RMC_ProjectWarehouse();
-                    projectwarehouse.OrderId = OrderId;
-                    projectwarehouse.MemberId = _MemberId;
-                    projectwarehouse.TreeId = file.TreeId;
-                    projectwarehouse.IsShiped = 0;
-                    ProjectWarehouseCurrent.Add(projectwarehouse);
-                }
+                    List<RMC_ProjectWarehouse> projectwarehouselist = ProjectWarehouseCurrent.Find(f => f.MemberId == item.MemberId).ToList();
+                    if (projectwarehouselist.Count() == 0)
+                    {
+                        RMC_ProjectWarehouse projectwarehouse = new RMC_ProjectWarehouse();
+                        projectwarehouse.OrderId = OrderId;
+                        projectwarehouse.MemberId = item.MemberId;
+                        projectwarehouse.TreeId = file.TreeId;
+                        projectwarehouse.IsShiped = 0;
+                        ProjectWarehouseCurrent.Add(projectwarehouse);
+                    }
 
-                List<RMC_ShipManagement> shipmanagementlist = ShipManagementCurrent.Find(f => f.MemberId == _MemberId).ToList();
-                if (shipmanagementlist.Count() == 0)
-                {
-                    RMC_ShipManagement shipmanagement = new RMC_ShipManagement();
-                    shipmanagement.OrderId = OrderId;
-                    shipmanagement.MemberId = _MemberId;
-                    shipmanagement.TreeId = file.TreeId;
-                    shipmanagement.IsPackaged = 0;
-                    ShipManagementCurrent.Add(shipmanagement);
+                    List<RMC_ShipManagement> shipmanagementlist = ShipManagementCurrent.Find(f => f.MemberId == item.MemberId).ToList();
+                    if (shipmanagementlist.Count() == 0)
+                    {
+                        RMC_ShipManagement shipmanagement = new RMC_ShipManagement();
+                        shipmanagement.OrderId = OrderId;
+                        shipmanagement.MemberId = item.MemberId;
+                        shipmanagement.TreeId = file.TreeId;
+                        shipmanagement.IsPackaged = 0;
+                        shipmanagement.ShipNumber = "0";
+                        ShipManagementCurrent.Add(shipmanagement);
+                    }
+
                 }
 
                 return Content(new JsonMessage { Success = true, Code = "1", Message = "提交成功。" }.ToString());
@@ -460,7 +733,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 {
                     for (int i = 0; i < OldEntity.Count(); i++)
                     {
-                            
+
                         ProjectManagementCurrent.Find(f => f.ProjectDemandId == OldEntity[i].ProjectDemandId).SingleOrDefault();
                         Entity.ModifiedTime = DateTime.Now;
                         Entity.IsSubmit = 1;

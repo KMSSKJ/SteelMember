@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
     <title>钢构件管理系统</title>
-    <link href="~/Content/Images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="../../Content/Images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <!--框架必需start-->
     <link href="~/Content/Styles/learunui-accordionTree.css" rel="stylesheet" />
     <link href="~/Content/Styles/learunui-framework.css" rel="stylesheet" />
@@ -174,12 +174,12 @@
 </head>
 <body onbeforeunload="PageClose()" onselectstart="return false;" style="-moz-user-select: none; overflow: hidden;">
     <div id="ajax-loader" style="position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: #fff; z-index: 100; overflow: hidden;">
-        <img src="~/Content/Images/ajax-loader.gif" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;" />
+        <img src="../../Content/Images/ajax-loader.gif" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;" />
     </div>
     <!-- header -->
     <div class="header">
         <div class="logo fleft">
-            <img src="~/Content/Images/loginlogo.png" />
+            <img src="../../Content/Images/loginlogo.png" />
         </div>
         <div id="Headermenu">
             <ul id="topnav">
@@ -196,7 +196,7 @@
                                 <i></i>
                                 <ul>
                                     <li onclick="Shortcuts()">
-                                        <img src="~/Content/Images/Icon16/shortcuts.png" />快捷方式设置</li>
+                                        <img src="../../Content/Images/Icon16/shortcuts.png" />快捷方式设置</li>
                                     <div id="Shortcuts"></div>
                                 </ul>
                             </div>
@@ -209,13 +209,13 @@
                                 <i></i>
                                 <ul>
                                     <li onclick="alert('测试关闭')">
-                                        <img src="~/Content/Images/Icon16/help.png" />查看帮助</li>
+                                        <img src="../../Content/Images/Icon16/help.png" />查看帮助</li>
                                     <li title="将反馈建议提交给开发商进行解决" onclick=" window.open('http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=uICJioyLiYuPivjJyZbb19U','_blank')">
-                                        <img src="~/Content/Images/Icon16/email_open.png" />反馈建议</li>
+                                        <img src="../../Content/Images/Icon16/email_open.png" />反馈建议</li>
                                     <li onclick="Support()">
-                                        <img src="~/Content/Images/Icon16/premium_support.png" />技术支持</li>
+                                        <img src="../../Content/Images/Icon16/premium_support.png" />技术支持</li>
                                     <li onclick="About()">
-                                        <img src="~/Content/Images/Icon16/information.png" />关于我们</li>
+                                        <img src="../../Content/Images/Icon16/information.png" />关于我们</li>
                                 </ul>
                             </div>
                         </a>
@@ -285,16 +285,16 @@
         <div style="width: 30%; text-align: right; float: right;">
             <div style="padding-right: 0px;">
                 <div title="在线用户（@HttpContext.Current.Application["OnLineCount"].ToString()）人" class="bottom_icon" style="padding-top:2px;">
-                    <img src="~/Content/Images/bottom_icon_usergroup.png" />
+                    <img src="../../Content/Images/bottom_icon_usergroup.png" />
                 </div>
                 @*<div title="邮件消息" class="bottom_icon" style="padding-top: 2px;">
-                    <img id="icon_email" src="~/Content/Images/youjian.png" style="padding-top: 5px;" />
+                    <img id="icon_email" src="../../Content/Images/youjian.png" style="padding-top: 5px;" />
                 </div>
                 <div id="div_icon_message" title="即时消息" class="bottom_icon" style="padding-top: 2px;">
-                    <img id="icon_message" src="~/Content/Images/bottom_icon_message.png" />
+                    <img id="icon_message" src="../../Content/Images/bottom_icon_message.png" />
                 </div>*@
                 <div class="bottom_icon" style="padding-top: 1px;">
-                    <img title="我的信息，账户：@ViewBag.Account" src="~/Content/Images/bottom_icon_userinfo.png" />
+                    <img title="我的信息，账户：@ViewBag.Account" src="../../Content/Images/bottom_icon_userinfo.png" />
                 </div>
             </div>
         </div>

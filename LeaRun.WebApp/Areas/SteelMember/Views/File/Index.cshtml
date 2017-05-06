@@ -12,8 +12,8 @@
 
     //加载左边树
     //注意 FolderId 默认等于1 这样就可以加载一级目录下的子节点文件夹
-    var ItemId ="";
-    var TreeId="";
+    var ItemId = "";
+    var TreeId = "";
     ItemId = 1, TreeName = "";
     function GetTree() {
         var itemtree = {
@@ -48,11 +48,11 @@
                     { label: '主键', name: "TreeID", hidden: true },
                     { label: 'Sort', name: 'Sort', hidden: true },
                     {
-                      label: '编号', name: "MemberNumbering", index: "MemberNumbering", width: 10
-                     },
+                        label: '编号', name: "MemberNumbering", index: "MemberNumbering", width: 10
+                    },
                     {
                         label: '型号', name: "MemberModel", index: "MemberModel", width: 10,
-                     },
+                    },
                     { label: '截面面积/cm²', name: "SectionalArea", index: "SectionalArea", width: 19, rowspan: 2 },
                     { label: '外表面积/(m²/m)', name: "SurfaceArea", index: "SurfaceArea", width: 23, rowspan: 2 },
                     { label: '理论重量/(㎏/m)', name: "TheoreticalWeight", index: "TheoreticalWeight", width: 22, rowspan: 2 },
@@ -65,11 +65,11 @@
                     //{ label: '内圆弧半径', name: 'SectionalSize_r', index: 'SectionalSize_r', width: 8 },
                     //{ label: '腿端圆弧半径', name: 'SectionalSize_r1', index: 'SectionalSize_r1', width: 8 },
                     {
-                        label: '图纸', name: 'CAD_Drawing', index: 'IsHaveDrawing', width: 8,
+                        label: '图纸', name: 'CAD_Drawing', index: 'CAD_Drawing', width: 8,
                         formatter: function (cellvalue, value, row, index) {
                             var is_have_drawing = cellvalue;
                             if (is_have_drawing != "" || is_have_drawing != null) {
-                                if (is_have_drawing!= "1.png") {
+                                if (is_have_drawing != "1.png") {
                                     return "<img src='../../Content/Images/checkokmark.gif'/>";
                                 } else {
                                     return "<img src='../../Content/Images/checknomark.gif'/>";
@@ -77,13 +77,14 @@
                             } else {
                                 return "";
                             }
-                        }},
+                        }
+                    },
                     {
-                        label: '模型', name: 'Model_Drawing', index: 'IsHaveModel', width: 8,
+                        label: '模型', name: 'Model_Drawing', index: 'Model_Drawing', width: 8,
                         formatter: function (cellvalue, value, row, index) {
                             var is_have_model = cellvalue;
                             if (is_have_model != "" || is_have_model != null) {
-                                if (is_have_model !="1.png") {
+                                if (is_have_model != "1.png") {
                                     return "<img src='../../Content/Images/checkokmark.gif'/>";
                                 } else {
                                     return "<img src='../../Content/Images/checknomark.gif'/>";
@@ -204,15 +205,15 @@
 
     //导入文件
     function btn_import() {
-        if(!!TreeId){
-        var url = "/SteelMember/File/ImportFile?KeyValue=" + TreeId;
-        Dialog(url, "ImportFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
-            top.frames[iframe].AcceptClick()
-        });
-    }
-    else {
+        if (!!TreeId) {
+            var url = "/SteelMember/File/ImportFile?KeyValue=" + TreeId;
+            Dialog(url, "ImportFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
+                top.frames[iframe].AcceptClick()
+            });
+        }
+        else {
             tipDialog('请选择文件夹目录。', 4, 'warning');
-    }
+        }
     }
 
     //导出文件
@@ -244,7 +245,7 @@
         $("#gridTable").jqGrid('setGridParam', {
             url: "@Url.Content("/SteelMember/File/GridListJson")?FolderId=" + FolderId, postData, page: 1
             }).trigger('reloadGrid');
-    }
+            }
 
     //新建树
     function btn_addfolder() {
@@ -254,7 +255,7 @@
             if (Sort == "1") {
                 tipDialog('请选择文件夹目录。', 4, 'warning');
             } else {
-                var url = "/SteelMember/Tree/FolderForm?TreeId=" + TreeId + '&ItemID=' + ItemID;
+                var url = "/SteelMember/Tree/FolderForm?TreeId=" +TreeId + '&ItemID=' +ItemID;
                 openDialog(url, "FolderForm", "新增文件夹", 400, 240, function (iframe) {
                     top.frames[iframe].AcceptClick()
                 });
@@ -274,7 +275,7 @@
     //编辑树节点(得到实体)
     function btn_editfolder() {
         var Sort = GetJqGridRowValue("#gridTable", "Sort");
-        if (Sort !=1) {
+        if (Sort != 1) {
             if (IsChecked(TreeId)) {
                 var url = "/SteelMember/Tree/FolderForm?KeyValue= " + TreeId;
                 openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
@@ -298,7 +299,7 @@
         } else {
             alertDialog("请选择目录！", 0);
         }
-       
+
     }
 
     //新建构件
@@ -342,7 +343,7 @@
         }
     }
 
-    //数控参数 
+    //数控参数
     function btn_parameter() {
         var KeyValue = GetJqGridRowValue("#gridTable", "MemberID");
         var Sort = GetJqGridRowValue("#gridTable", "Sort");
@@ -383,11 +384,32 @@
                 QueryParamJson = JsonData;
                 $("#gridTable").jqGrid('setGridParam', {
                     url: "@Url.Content("/SteelMember/File/GridListJson")?ParameterJson=" + escape(JsonData), page: 1
-            }).trigger('reloadGrid');
+                }).trigger('reloadGrid');
+            });
         });
-    });
     }
 
+    //构件材料用量
+    function btn_raw_materials_dosage() {
+        var MemberID = GetJqGridRowValue("#gridTable", "MemberID");
+        if (IsChecked(MemberID)) {
+            var url = "/SteelMember/File/RawMaterialsDosageIndex?MemberID= " + MemberID;
+            Dialog(url, "RawMaterialsDosageIndex", "材料用量", 900, 435, function (iframe) {
+                top.frames[iframe].AcceptClick(); 
+            });
+        }
+    }//  AddTabMenu("OrderForm", "Url.Content("/SteelMember/ProjectOrder/CreateOrderForm")?TreeId=" + TreeId, "新增订单", "page_white_add.png", true, true, true);
+
+    //构件制程
+    function btn_member_process() {
+        var MemberID = GetJqGridRowValue("#gridTable", "MemberID");
+        if (IsChecked(MemberID)) {
+            var url = "/SteelMember/File/MemberProcessIndex?MemberID= " + MemberID;
+            Dialog(url, "MemberProcessIndex", "构件制程", 900, 435, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
+        }
+    }
 
     /*视图begin=========================================================================*/
     //切换到列表/视图
@@ -418,7 +440,7 @@
                         icon = "Folder";
                     }
                     html += '<div class="filelist-item">';
-                    html += '<div><img src="~/Content/Images/fileType/' + icon + '_72.png" /></div>';
+                    html += '<div><img src="../../Content/Images/fileType/' + icon + '_72.png" /></div>';
                     html += '<div title="' + data[i].fullname + '" class="filelist-text">' + data[i].fullname + '</div>';
                     html += '</div>';
                 }

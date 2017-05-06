@@ -9,7 +9,11 @@ namespace SteelMember.Models
     {
         public int OrderId { get; set; }
         public String OrderNumbering { get; set; }
+        public DateTime? CreateTime { get; set; }
+        public string CreateMan { get; set; }
+        public DateTime? VeliveryTime { get; set; }
         public Nullable<int> OrderNumber { get; set; }
+        public Nullable<int> MemberNumber { get; set; }
         public Nullable<int> TreeId { get; set; }
         public string MemberNumbering { get; set; }//Nullable<long>
         public Nullable<int> MemberId { get; set; }

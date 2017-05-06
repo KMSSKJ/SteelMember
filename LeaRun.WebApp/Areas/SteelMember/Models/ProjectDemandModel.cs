@@ -14,7 +14,7 @@ namespace SteelMember.Models
         public string ProjectName { get; set; }
         public Nullable<int> MemberId { get; set; }
         public Nullable<int> UnitId { get; set; }
-        public string UnitName { get; set; }
+        public string MemberUnit { get; set; }
         public string MemberName{ get; set; }
         public string MemberCompany { get; set; }
         public Nullable<int> MemberNumber { get; set; }
@@ -33,6 +33,7 @@ namespace SteelMember.Models
         public Nullable<int> OrderQuantityed { get; set; }
         public Nullable<int> Productioned { get; set; }
         public Nullable<DateTime> CreateTime { get; set; }
+        public Nullable<DateTime> VeliveryTime { get; set; }
         public string CreateMan { get; set; }
         public Nullable<int> IsDemandSubmit { get; set; }
         public string CADDrawing { get; set; }

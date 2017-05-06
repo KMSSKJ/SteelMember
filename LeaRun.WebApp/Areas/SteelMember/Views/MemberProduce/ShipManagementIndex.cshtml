@@ -8,8 +8,8 @@
         GetGrid();
     });
 
-    var ItemId = 1;
-    var TreeId=28;
+    //var ItemId = 1;
+    var TreeId="";
     //表格文件夹点击事件
     @*function GridFolderEvent(TreeID) {
         TreeId = TreeID;
@@ -30,13 +30,14 @@
                     { label: '构件名', name: "MemberName", index: "MemberName", width: 10 },
                     { label: '构件编号', name: 'MemberNumbering', index: 'MemberNumbering', width: 10 },
                     { label: '构件型号', name: 'MemberModel', index: 'MemberModel', width: 10 },
-                    //{ label: '库存量', name: 'InStockNumber', index: 'MemberNumber', width: 10, hidden: true },
-                    { label: '发货量', name: 'ShipNumber', index: 'MemberNumber', width: 10 },
-                    { label: '单价', name: 'UnitPrice', index: 'MemberNumber', width: 10 },
-                    { label: '总价', name: 'TotalPrice', index: 'MemberNumber', width: 10 },
-                    { label: '发货日期', name: 'ShipDate', index: 'ProduceStartDate', width: 10 },
-                    { label: '发货人', name: 'ShipMan', index: 'ProduceStartDate', width: 10 },
-                    { label: '发货状态', name: 'LogisticsStatus', index: 'SetUpProcessing', width: 10,
+                    { label: '库存量', name: 'LibraryNumber', index: 'LibraryNumber', width: 10 },
+                    { label: '发货量', name: 'ShipNumber', index: 'ShipNumber', width: 10 },
+                    { label: '单价', name: 'UnitPrice', index: 'UnitPrice', width: 10 },
+                    { label: '总价', name: 'TotalPrice', index: 'TotalPrice', width: 10 },
+                    { label: '发货日期', name: 'ShipDate', index: 'ShipDate', width: 10 },
+                    { label: '发货人', name: 'ShipMan', index: 'ShipMan', width: 10 },
+                    {
+                        label: '发货状态', name: 'LogisticsStatus', index: 'LogisticsStatus', width: 10,
                         formatter: function (cellvalue, value, row, index) {
                             var logistics_status = cellvalue;
                             if (logistics_status != "" || logistics_status != null) {
@@ -49,9 +50,9 @@
                                 return "";
                             }
                         }},
-                    { label: '收货地址', name: 'ShippingAddress', index: 'ProduceEndDate', width: 10 },
-                    { label: '收货电话', name: 'ShippingTEL', index: 'ProduceEndDate', width: 10 },
-                    { label: '收货人', name: 'ShippingMan', index: 'ProduceEndDate', width: 10 },
+                    { label: '收货地址', name: 'ShippingAddress', index: 'ShippingAddress', width: 10 },
+                    { label: '收货电话', name: 'ShippingTEL', index: 'ShippingTEL', width: 10 },
+                    { label: '收货人', name: 'ShippingMan', index: 'ShippingMan', width: 10 },
                     { label: '备注', name: 'Description', index: 'Description', width: 15 },
             ],
             rowNum: 30,
@@ -104,7 +105,7 @@
 
     //刷新表格树
     function btn_reload() {
-        window.parent.GetTree();
+       // window.parent.GetTree();
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
@@ -127,7 +128,7 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "ShipId");
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
-            var url = "/SteelMember/MemberProduce/ShipManagementForm?KeyValue= " + KeyValue + "&ItemId=" + ItemId;
+            var url = "/SteelMember/MemberProduce/ShipManagementForm?KeyValue= " + KeyValue;
             openDialog(url, "ShipManagementForm", "编辑信息", 600, 400, function (iframe) {
                 top.frames[iframe].AcceptClick();
             });
@@ -160,7 +161,7 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "ShipId");
         var Prompt = "您确实要提交此文件吗？";
         if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/MemberProduce/Ship', { KeyValue: KeyValue }, Prompt);
+            subConfirm('/SteelMember/MemberProduce/Ship', { KeyValue: KeyValue }, Prompt);
         }
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }

@@ -31,10 +31,6 @@ namespace LeaRun.Utilities
         /// </summary>
         public string Password { get; set; }
         /// <summary>
-        /// 用户头像
-        /// </summary>
-        public string Avatar { get; set; }
-        /// <summary>
         /// 登录时间
         /// </summary>
         public DateTime LogTime { get; set; }
@@ -47,7 +43,7 @@ namespace LeaRun.Utilities
         /// </summary>
         public string Gender { get; set; }
         /// <summary>
-        /// 单位Id
+        /// 公司Id
         /// </summary>
         public string CompanyId { get; set; }
         /// <summary>

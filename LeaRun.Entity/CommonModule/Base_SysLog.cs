@@ -55,10 +55,10 @@ namespace LeaRun.Entity
         [DisplayName("IP地址所在地址")]
         public string IPAddressName { get; set; }
         /// <summary>
-        /// 单位主键
+        /// 公司主键
         /// </summary>
         /// <returns></returns>
-        [DisplayName("单位主键")]
+        [DisplayName("公司主键")]
         public string CompanyId { get; set; }
         /// <summary>
         /// 部门主键
