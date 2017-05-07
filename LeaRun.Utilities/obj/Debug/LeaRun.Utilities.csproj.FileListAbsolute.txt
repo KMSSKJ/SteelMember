@@ -92,3 +92,17 @@ D:\SSKJProject\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.pdb
 D:\SSKJProject\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.csprojResolveAssemblyReference.cache
 D:\SSKJProject\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.dll
 D:\SSKJProject\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.pdb
+E:\SSKJProject\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.dll.config
+E:\SSKJProject\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.dll
+E:\SSKJProject\LeaRun.Utilities\bin\Debug\LeaRun.Utilities.pdb
+E:\SSKJProject\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.dll
+E:\SSKJProject\LeaRun.Utilities\bin\Debug\log4net.dll
+E:\SSKJProject\LeaRun.Utilities\bin\Debug\Newtonsoft.Json.dll
+E:\SSKJProject\LeaRun.Utilities\bin\Debug\SharpZipLib.dll
+E:\SSKJProject\LeaRun.Utilities\bin\Debug\Oracle.DataAccess.dll
+E:\SSKJProject\LeaRun.Utilities\bin\Debug\MySql.Data.dll
+E:\SSKJProject\LeaRun.Utilities\bin\Debug\System.Data.SQLite.dll
+E:\SSKJProject\LeaRun.Utilities\bin\Debug\LeaRun.DataAccess.pdb
+E:\SSKJProject\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.csprojResolveAssemblyReference.cache
+E:\SSKJProject\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.dll
+E:\SSKJProject\LeaRun.Utilities\obj\Debug\LeaRun.Utilities.pdb

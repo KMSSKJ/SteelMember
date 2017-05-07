@@ -81,3 +81,15 @@ D:\SSKJProject\LeaRun.DataAccess\bin\Debug\LeaRun.Cache.pdb
 D:\SSKJProject\LeaRun.DataAccess\obj\Debug\LeaRun.DataAccess.csprojResolveAssemblyReference.cache
 D:\SSKJProject\LeaRun.DataAccess\obj\Debug\LeaRun.DataAccess.dll
 D:\SSKJProject\LeaRun.DataAccess\obj\Debug\LeaRun.DataAccess.pdb
+E:\SSKJProject\LeaRun.DataAccess\bin\Debug\LeaRun.DataAccess.dll
+E:\SSKJProject\LeaRun.DataAccess\bin\Debug\LeaRun.DataAccess.pdb
+E:\SSKJProject\LeaRun.DataAccess\bin\Debug\EntityFramework.dll
+E:\SSKJProject\LeaRun.DataAccess\bin\Debug\LeaRun.Cache.dll
+E:\SSKJProject\LeaRun.DataAccess\bin\Debug\log4net.dll
+E:\SSKJProject\LeaRun.DataAccess\bin\Debug\MySql.Data.dll
+E:\SSKJProject\LeaRun.DataAccess\bin\Debug\Oracle.DataAccess.dll
+E:\SSKJProject\LeaRun.DataAccess\bin\Debug\System.Data.SQLite.dll
+E:\SSKJProject\LeaRun.DataAccess\bin\Debug\LeaRun.Cache.pdb
+E:\SSKJProject\LeaRun.DataAccess\obj\Debug\LeaRun.DataAccess.csprojResolveAssemblyReference.cache
+E:\SSKJProject\LeaRun.DataAccess\obj\Debug\LeaRun.DataAccess.dll
+E:\SSKJProject\LeaRun.DataAccess\obj\Debug\LeaRun.DataAccess.pdb
