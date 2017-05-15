@@ -1,128 +1,111 @@
-﻿@{
-    ViewBag.Title = "文件中心管理/文件上传";
-    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
-}
-<!--上传文件组件start-->
-<link href="~/Content/Scripts/uploadify/uploadify.css" rel="stylesheet" />
-<script src="~/Content/Scripts/uploadify/jquery.uploadify.js"></script>
-<!--上传文件组件end-->
-<script>
-    $(function () {
-        uploadify();
-    });
-    //上传文件
-    var index_uploadify = 1;
-    function uploadify() {
-        $("#uploadify").uploadify({
-            uploader: '/TestDemo/SubmitUploadify?FolderId=' + GetQuery('FolderId'),
-            swf: '/Content/Scripts/uploadify/uploadify.swf',
-            buttonText: "添加文件",
-            height: 24,
-            width: 70,
-            fileTypeDesc: '支持格式:jpg/gif/jpeg/png/bmp.',
-            fileTypeExts: '*.jpg;*.gif;*.jpeg;*.png;*.bmp',//允许的格式  
-            fileSizeLimit: '3MB',
+﻿<!DOCTYPE html>
 
-            onFallback: function () {
-                alert("您未安装FLASH控件，无法上传！请安装FLASH控件后再试。");
-            },
-            onUploadSuccess: function (file, data, response) {
-                @*$('.drag-tip').remove();
-                var DataJson = JSON.parse(data);
-                var html = "";
-                html += '<tr>';
-                if (DataJson.NetworkFile.Icon == "new") {
-                    html += '<td style="width: 16px;"><img src="@Url.Content("~/Content/Images/Icon32/page_white.png")" /></td>';
-                } else {
-                    html += '<td style="width: 16px;"><img src="../../Content/Images/Icon32/file_extension_' + DataJson.NetworkFile.Icon + '.png" /></td>';
-                }
-                html += '<td style="width: 320px;"><div id="divFileName">' + DataJson.NetworkFile.FileName + '</div></td>';
-                html += '<td style="width: 70px;">' + DataJson.NetworkFile.FileSize + '</td>';
-                if (DataJson.Status > 0) {
-                    html += '<td title="上传成功" style="width: 26px;"><img src="@Url.Content("~/Content/Images/Icon16/accept.png")" /></td>';
-                } else {
-                    html += '<td title=' + DataJson.Status + ' style="width: 26px;"><img src="@Url.Content("~/Content/Images/Icon16/delete.png")" /></td>';
-                }
-                html += '</tr>';
-                $("#grid tbody").prepend(html);
-                top.frames[tabiframeId()].windowload();*@
-            },
-            //返回一个错误，选择文件的时候触发
-            //onSelectError: function (file, errorCode, errorMsg) {
-            //    switch (errorCode) {
-            //        case -110:
-            //            alert("文件 [" + file.name + "] 大小超出系统限制的" + jQuery('#upload_org_code').uploadify('settings', 'fileSizeLimit') + "大小！");
-            //            break;
-            //        case -120:
-            //            alert("文件 [" + file.name + "] 大小异常！");
-            //            break;
-            //        case -130:
-            //            alert("文件 [" + file.name + "] 类型不正确！");
-            //            break;
-            //    }
-            //},
-        });
-    }
-</script>
-<style>
-    #grid td {
-        text-align: left;
-        border-bottom: 1px solid #ccc;
-        padding: 6px 2px;
-    }
+<html>
 
-    #divFileName {
-        width: 310px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        -o-text-overflow: ellipsis;
-        overflow: hidden;
-    }
+<head>
+    <meta charset="utf-8">
+    <title>Example 08.06 - Load OBJ model </title>
+    <script src="/Content/Scripts/C3D/three.js"></script>
+    <script src="/Content/Scripts/C3D/OBJLoader.js"></script>
+    @*<script src="~/Content/Scripts/C3D/CanvasRenderer.js"></script>*@
 
-    #grid td img {
-        vertical-align: middle;
-        border: 0px solid #fff;
-    }
+    <script src="/Content/Scripts/C3D/stats.min.js"></script>
+    <script src="/Content/Scripts/C3D/dat.gui.min.js"></script>
 
-    .uploadify-queue {
-        margin-top: 6px;
-    }
-
-    .uploadify-queue-item {
-        width: 468px;
-        padding-top: 8px;
-        padding-bottom: 7px;
-        margin-top: 0px;
-        border-top: none;
-    }
-
-        .uploadify-queue-item .cancel a {
-            display: none;
+    <style>
+        body {
+            /* set margin to 0 and overflow to hidden, to go fullscreen */
+            margin: 0;
+            overflow: hidden;
         }
-</style>
-<form id="form1" style="margin: 10px">
-    <div style="height: 29px;">
-        <div style="float: left;">
-            <input id="uploadify" name="uploadify" type="file" />
-        </div>
-        @*<div style="float: right; line-height: 26px; color: #3083eb; cursor: pointer;">
-            上传必知
-        </div>*@
-    </div>
-    <div id="showImg">
-    </div>
-    @*<div class="border background" style="height: 298px; overflow: auto; overflow-y: hidden">
-        <div class="upload-item">
-            <table id="grid" style="width: 100%; border-collapse: collapse;">
-                <tbody></tbody>
-            </table>
-        </div>
-        <div class="drag-tip" style="text-align: center; padding-top: 100px;">
-            <h1 style="color: #666; font-size: 20px; font-family: Microsoft Yahei; padding-bottom: 2px;">试试将电脑里的文件拖拽到此上传</h1>
-            <p style="color: #666; font-size: 12px;">
-                （您的浏览器不支持此拖拽功能）
-            </p>
-        </div>
-    </div>*@
-</form>
+    </style>
+</head>
+<body>
 
+    <div id="Stats-output">
+    </div>
+    <!-- Div which will hold the Output -->
+    <div id="WebGL-output">
+    </div>
+
+    <!-- Javascript code that runs our Three.js examples -->
+    <script type="text/javascript">
+    // once everything is loaded, we run our Three.js stuff.
+    function init() {
+        var stats = initStats();
+        // create a scene, that will hold all our elements such as objects, cameras and lights.
+        var scene = new THREE.Scene();
+        // create a camera, which defines where we are looking at.
+        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        // create a render and set the size
+        var CanvasRenderer = new THREE.CanvasRenderer();
+        CanvasRenderer.setClearColor(new THREE.Color(0xaaaaff, 1.0));
+        CanvasRenderer.setSize(window.innerWidth, window.innerHeight);
+        CanvasRenderer.shadowMapEnabled = true;
+        // position and point the camera to the center of the scene
+        camera.position.x = 130;
+        camera.position.y = 140;
+        camera.position.z = 150;
+        camera.lookAt(scene.position);
+        scene.add(camera);
+        // add spotlight for the shadows
+        var spotLight = new THREE.DirectionalLight(0xffffff);
+        spotLight.position.set(30, 40, 50);
+        spotLight.intensity = 1;
+        scene.add(spotLight);
+        // add the output of the renderer to the html element
+        document.getElementById("WebGL-output").appendChild(CanvasRenderer.domElement);
+        // call the render function
+        var step = 0;
+        // setup the control gui
+        var controls = new function () {
+            // we need the first child, since it is a multimaterial
+        };
+        var gui = new dat.GUI();
+
+
+          /*  加载OBJLoader*/
+        var mesh;
+        var loader = new THREE.OBJLoader();
+        loader.load('D:/Source/iphoneg4.obj', function (loadedMesh) {
+            var material = new THREE.MeshLambertMaterial({color: 0x5C3A21});
+            // loadedMesh is a group of meshes. For
+            // each mesh set the material, and compute the information
+            // three.js needs for rendering.
+            loadedMesh.children.forEach(function (child) {
+                child.material = material;
+                child.geometry.computeFaceNormals();
+                child.geometry.computeVertexNormals();
+            });
+            mesh = loadedMesh;
+            loadedMesh.scale.set(1, 1, 1);
+            loadedMesh.rotation.x = -0.3;
+            scene.add(loadedMesh);
+        });
+        render();
+        function render() {
+            stats.update();
+            if (mesh) {
+                mesh.rotation.y += 0.006;
+                mesh.rotation.x += 0.006;
+//                mesh.rotation.y+=0.006;
+            }
+            // render using requestAnimationFrame
+            requestAnimationFrame(render);
+            CanvasRenderer.render(scene, camera);
+        }
+        function initStats() {
+            var stats = new Stats();
+            stats.setMode(0); // 0: fps, 1: ms
+            // Align top-left
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.left = '0px';
+            stats.domElement.style.top = '0px';
+            document.getElementById("Stats-output").appendChild(stats.domElement);
+            return stats;
+        }
+    }
+    window.onload = init;
+    </script>
+</body>
+</html>
