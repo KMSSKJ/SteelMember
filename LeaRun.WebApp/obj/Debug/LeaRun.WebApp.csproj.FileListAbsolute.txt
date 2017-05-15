@@ -573,11 +573,6 @@ D:\SSKJProject\LeaRun.WebApp\obj\Debug\RdlCompile.cache
 D:\SSKJProject\LeaRun.WebApp\obj\Debug\RdlCompile.compiled
 D:\SSKJProject\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.dll
 D:\SSKJProject\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.pdb
-D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.csprojResolveAssemblyReference.cache
-D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\RdlCompile.cache
-D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\RdlCompile.compiled
-D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.dll
-D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.pdb
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\LeaRun.WebApp.dll.config
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\LeaRun.WebApp.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\LeaRun.WebApp.pdb
@@ -643,7 +638,6 @@ D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\pt\Microsoft.SqlServer.Types.resou
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\ru\Microsoft.SqlServer.Types.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\Microsoft.SqlServer.Types.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hant\Microsoft.SqlServer.Types.resources.dll
-D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Web.Mvc.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Net.Http.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Net.Http.Formatting.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Net.Http.WebRequest.resources.dll
@@ -654,3 +648,8 @@ D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Web.Razor.resources
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Web.WebPages.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Web.WebPages.Deployment.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Web.WebPages.Razor.resources.dll
+D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.csprojResolveAssemblyReference.cache
+D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\RdlCompile.cache
+D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\RdlCompile.compiled
+D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.dll
+D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.pdb
