@@ -573,4 +573,3 @@ D:\SSKJProject\LeaRun.WebApp\obj\Debug\RdlCompile.cache
 D:\SSKJProject\LeaRun.WebApp\obj\Debug\RdlCompile.compiled
 D:\SSKJProject\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.dll
 D:\SSKJProject\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.pdb
-D:\SSKJProject\LeaRun.WebApp\bin\zh-Hans\System.Web.Mvc.resources.dll

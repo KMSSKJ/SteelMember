@@ -92,7 +92,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             return Content(TreeList.TreeToJson());
         }
         /// <summary>
-        /// 【模块按钮管理】返回单位列表JONS
+        /// 【模块按钮管理】返回公司列表JONS
         /// </summary>
         /// <param name="ModuleId">模块ID</param>
         /// <param name="Category">分类：1-工具栏，2：右击栏</param>

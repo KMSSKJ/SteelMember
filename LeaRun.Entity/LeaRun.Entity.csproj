@@ -128,7 +128,16 @@
     <Compile Include="SteelMember\RMC_MemberLibrary.cs">
       <DependentUpon>MemberEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="SteelMember\RMC_MemberMaterial.cs">
+      <DependentUpon>MemberEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SteelMember\RMC_MemberProcess.cs">
+      <DependentUpon>MemberEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="SteelMember\RMC_MemberUnit.cs">
+      <DependentUpon>MemberEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SteelMember\RMC_OrderMember.cs">
       <DependentUpon>MemberEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="SteelMember\RMC_ProcessManagement.cs">

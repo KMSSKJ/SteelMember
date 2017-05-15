@@ -29,9 +29,8 @@
 
     //表格文件夹点击事件
     function GridFolderEvent(TreeId) {
-        TreeID = TreeId;
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/ProjectManagement/GridListJson")?TreeId=" + TreeID, page: 1
+            url: "@Url.Content("/SteelMember/ProjectManagement/GridListJson")?TreeId=" + TreeId, page: 1
         }).trigger('reloadGrid');
     }
 
@@ -52,7 +51,7 @@
                     { label: '构件型号', name: "MemberModel", index: "MemberModel", width: 6 },
                     { label: '需求量', name: "MemberNumber", index: "MemberNumber", width: 6 },
                     {
-                        label: '单位', name: "UnitName", index: "UnitName", width: 6,
+                        label: '单位', name: "MemberUnit", index: "MemberUnit", width: 6,
                         formatter: function (cellvalue, value, row, index) {
                            unit_name = cellvalue;
                            return unit_name
@@ -61,13 +60,13 @@
                      {
                          label: '审核状态', name: 'IsReview', index: 'IsReview', width: 6,
                          formatter: function (cellvalue, value, row, index) {
-                             var isreview = cellvalue;
-                             if (isreview == 0) {
+                            var _IsReview = cellvalue;
+                            if (_IsReview == 0) {
                                  return "<img src='../../Content/Images/checknomark.gif'/>";
-                             } else if (isreview == 1) {
+                            } else if (_IsReview == 1) {
                                  return "<img src='../../Content/Images/checkokmark.gif'/>";
-                             } else if (isreview == 2) {
-                                 return "<img src='~/Content/Images/checkerrormark.gif'/>";
+                            } else if (_IsReview == 2) {
+                                 return "<img src='../../Content/Images/checkerrormark.gif'/>";
                              }
                          }
                      },
@@ -77,6 +76,13 @@
                     //{ label: '订单创建状态', name: 'IsDemandSubmit', index: 'IsDemandSubmit', width: 6 },
                     { label: '已成订单量', name: 'OrderQuantityed', index: 'OrderQuantityed', width: 6 },
                     { label: '已生产量', name: 'Productioned', index: 'Productioned', width: 6 },
+                    { label: '已领用量', name: 'CollarNumbered', index: 'Productioned', width: 6 },
+                     {
+                         label: '创建时间', name: "CreateTime", index: "CreateTime", width: 10,
+                         formatter: function (cellvalue, options, rowObject) {
+                             return formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
+                         }
+                     },
                     { label: '备注', name: 'Description', index: 'Description', width: 12 },
             ],
             rowNum: 30,
@@ -108,7 +114,9 @@
                 $(this).footerData("set", {
                     "MemberName": "合计",
                     "MemberNumber": $(this).getCol("MemberNumber", false, "sum"),
-                    "UnitName": unit_name,
+                    "OrderQuantityed": $(this).getCol("OrderQuantityed", false, "sum"),
+                    "Productioned": $(this).getCol("Productioned", false, "sum"),
+                    //"UnitName": unit_name,
                    });
 
                 //表格行样式
@@ -148,38 +156,6 @@
             }).trigger('reloadGrid');
             }
 
-    //新建树
-    function btn_addfolder() {
-        var ItemID = GetQuery("ItemID");
-        var IsItem = 0;
-        if (!!TreeId) {
-            var url = "/SteelMember/Tree/FolderForm?TreeId=" + TreeId + "&ItemID=" + ItemID + "&IsItem=" + IsItem;
-            openDialog(url, "Form", "新增信息", 500, 400, function (iframe) {
-                top.frames[iframe].AcceptClick()
-            });
-            $("#gridTable").trigger("reloadGrid"); //重新载入
-        }
-    }
-
-    //编辑树节点(得到实体)
-    function btn_editfolder() {
-        if (IsChecked(TreeId)) {
-            var url = "/SteelMember/Tree/FolderForm?KeyValue= " + TreeId;
-            openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
-                top.frames[iframe].AcceptClick();
-            });
-        }
-
-        $("#gridTable").trigger("reloadGrid"); //重新载入
-    }
-    //删除树节点
-    function btn_deletefolder() {
-        var Prompt = "您确实要删除此文件吗？";
-        if (IsDelData(TreeId)) {
-            delConfirm('/SteelMember/Tree/DeleteTree', { KeyValue: TreeId }, Prompt);
-        }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
-    }
 
     //新增信息
     function btn_add() {
@@ -187,7 +163,7 @@
         var ItemID = 1
         if (IsChecked(TreeId)) {
             var url = "/SteelMember/ProjectManagement/Form?TreeID= " + TreeId + "&ItemID=" + ItemID;
-            openDialog(url, "Form", "新增信息", 500, 400, function (iframe) {
+            openDialog(url, "Form", "新增信息", 500, 320, function (iframe) {
                 top.frames[iframe].AcceptClick();
             });
         }
@@ -201,9 +177,9 @@
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
             var IsReview1 = IsReview.replace(/"/, "'").replace(/"/, "'");
-            if (IsReview1 != "<img src='~/Content/Images/checkokmark.gif'>") {
+            if (IsReview1 != "<img src='../../Content/Images/checkokmark.gif'>") {
                 var url = "/SteelMember/ProjectManagement/Form?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
-                openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
+                openDialog(url, "Form", "编辑信息", 500, 500, function (iframe) {
                     top.frames[iframe].AcceptClick();
                 });
             } else {
@@ -219,8 +195,7 @@
         var Prompt = "您确实要删除此文件吗？";
         var IsReview = GetJqGridRowValue("#gridTable", "IsReview");
         if (IsDelData(KeyValue)) {
-            var IsReview1 = IsReview.replace(/"/, "'").replace(/"/, "'");
-            if (IsReview1 != "<img src='~/Content/Images/checkokmark.gif'>") {
+            if (IsReview.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
                 delConfirm('/SteelMember/ProjectManagement/DeleteProjectDemand', { KeyValue: KeyValue }, Prompt);
                 $("#gridTable").trigger("reloadGrid"); //重新载入
             } else {
@@ -249,24 +224,7 @@
         }
     }
 
-    //创建订单
-    function btn_CreateOrder() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "ProjectDemandId");
-        var IsReview = GetJqGridRowValue("#gridTable", "IsReview");
-        var MemberNumber = GetJqGridRowValue("#gridTable", "MemberNumber");
-        var MemberModel = GetJqGridRowValue("#gridTable", "MemberModel");
-        var IsReview1 = IsReview.replace(/"/, "'").replace(/"/, "'");
-        if (IsReview1 == "<img src='~/Content/Images/checkokmark.gif'>") {
-            if (IsDelData(KeyValue)) {
-                var url = "/SteelMember/ProjectManagement/CreateOrderForm?KeyValue= " + KeyValue + "&MemberNumber=" + MemberNumber + "&MemberModel=" + MemberModel;
-                openDialog(url, "Form", "创建订单", 600, 400, function (iframe) {
-                    top.frames[iframe].AcceptClick();
-                });
-            }
-        } else {
-            tipDialog('该信息未审核或未通过审核！', 4, 'warning');
-        }
-    }
+    
 
     //提交项目
     function btn_SubmitItem() {
@@ -318,6 +276,36 @@
         });
     }
 
+    //创建订单
+    function btn_create_order() {
+        var IsReview = GetJqGridRowValue("#gridTable", "IsReview");
+        var ProjectDemandId = GetJqGridRowValue("#gridTable", "ProjectDemandId");
+        if (IsDelData(ProjectDemandId)) {
+            if (IsReview.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
+                AddTabMenu("POOrderForm", "@Url.Content("/SteelMember/ProjectManagement/CreateOrderForm")?ProjectDemandId= " + ProjectDemandId + "&TreeId=" + TreeId, "新增订单", "page_white_add.png", true, true, true);
+            //var url = "/SteelMember/ProjectManagement/CreateOrderForm?KeyValue= " + KeyValue + "&MemberNumber=" + MemberNumber + "&MemberModel=" + MemberModel;
+            //openDialog(url, "Form", "创建订单", 600, 400, function (iframe) {
+            //    top.frames[iframe].AcceptClick();
+                //});
+            }else{
+                alertDialog("该需求未通过或未提交审核！");
+            }
+        }
+    }
+
+    //查询
+    var QueryParamJson = "";
+    function btn_query() {
+        QueryDialog("/SteelMember/ProjectManagement/QueryPage", "QueryPage", "查询", 540, 30, function (iframe) {
+            top.frames[iframe].QueryClick(function (JsonData) {
+                QueryParamJson = JsonData;
+                $("#gridTable").jqGrid('setGridParam', {
+                    url: "@Url.Content("/SteelMember/ProjectManagement/GridListJson")?ParameterJson=" + escape(JsonData) + "&TreeID=" + TreeId, page: 1
+            }).trigger('reloadGrid');
+        });
+    });
+    }
+
     /*视图begin=========================================================================*/
     //切换到列表/视图
     function SwitchListAndView() {
@@ -347,7 +335,7 @@
                         icon = "Folder";
                     }
                     html += '<div class="filelist-item">';
-                    html += '<div><img src="~/Content/Images/fileType/' + icon + '_72.png" /></div>';
+                    html += '<div><img src="../../Content/Images/fileType/' + icon + '_72.png" /></div>';
                     html += '<div title="' + data[i].fullname + '" class="filelist-text">' + data[i].fullname + '</div>';
                     html += '</div>';
                 }

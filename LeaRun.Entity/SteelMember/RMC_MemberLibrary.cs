@@ -19,7 +19,7 @@ namespace LeaRun.Entity.SteelMember
         public string MemberName { get; set; }
         public string MemberModel { get; set; }
         public string MemberNumbering { get; set; }
-        public string MemberClass { get; set; }
+        public string MemberUnit { get; set; }
         public string EngineeringClass { get; set; }
         public Nullable<int> SectionalSizeB { get; set; }
         public Nullable<int> SectionalSize_h { get; set; }
@@ -55,6 +55,8 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<decimal> GravityCenterDistance_y0 { get; set; }
         public string CAD_Drawing { get; set; }
         public string Model_Drawing { get; set; }
+        public Nullable<int> IsRawMaterial { get; set; }
+        public Nullable<int> IsProcess { get; set; }
         public string Icon { get; set; }
         public Nullable<int> ParentID { get; set; }
         public Nullable<System.DateTime> ModifiedTime { get; set; }

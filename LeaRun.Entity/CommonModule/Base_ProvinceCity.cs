@@ -37,10 +37,10 @@ namespace LeaRun.Entity
         [DisplayName("父级主键")]
         public string ParentId { get; set; }
         /// <summary>
-        /// 单位
+        /// 公司
         /// </summary>
         /// <returns></returns>
-        [DisplayName("单位")]
+        [DisplayName("公司")]
         public string Category { get; set; }
         /// <summary>
         /// 编码

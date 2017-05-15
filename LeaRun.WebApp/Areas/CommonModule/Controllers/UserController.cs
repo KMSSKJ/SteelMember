@@ -10,10 +10,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -43,7 +41,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
         /// 【用户管理】返回用户列表JSON
         /// </summary>
         /// <param name="keywords">查询关键字</param>
-        /// <param name="CompanyId">单位ID</param>
+        /// <param name="CompanyId">公司ID</param>
         /// <param name="DepartmentId">部门ID</param>
         /// <param name="jqgridparam">表格参数</param>
         /// <returns></returns>
@@ -69,48 +67,6 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
                 return null;
             }
         }
-
-        /// <summary>
-        /// 上传用户头像
-        /// </summary>
-        /// <param name="Filedata">用户图片对象</param>
-        /// <returns></returns>
-        public ActionResult SubmitUploadify(HttpPostedFileBase Filedata)
-        {
-            try
-            {
-                Thread.Sleep(1000);////延迟500毫秒
-                //没有文件上传，直接返回
-                if (Filedata == null || string.IsNullOrEmpty(Filedata.FileName) || Filedata.ContentLength == 0)
-                {
-                    return HttpNotFound();
-                }
-                //获取文件完整文件名(包含绝对路径)
-                //文件存放路径格式：/Resource/Document/NetworkDisk/{日期}/{guid}.{后缀名}
-                //例如：/Resource/Document/Email/20130913/43CA215D947F8C1F1DDFCED383C4D706.jpg
-                string fileGuid = CommonHelper.GetGuid;
-                long filesize = Filedata.ContentLength;
-                string FileEextension = Path.GetExtension(Filedata.FileName);
-                string uploadDate = DateTime.Now.ToString("yyyyMMdd");
-                string UserId = ManageProvider.Provider.Current().UserId;
-
-                string virtualPath = string.Format("/Content/Images/Avatar/{0}/{1}/{2}{3}", UserId, uploadDate, fileGuid, FileEextension);
-                string fullFileName = this.Server.MapPath(virtualPath);
-                //创建文件夹，保存文件
-                string path = Path.GetDirectoryName(fullFileName);
-                Directory.CreateDirectory(path);
-                if (!System.IO.File.Exists(fullFileName))
-                {
-                    Filedata.SaveAs(fullFileName);
-                }
-                return Content(virtualPath);
-            }
-            catch (Exception ex)
-            {
-                return Content(ex.Message);
-            }
-        }
-
         /// <summary>
         /// 【用户管理】提交表单
         /// </summary>
@@ -120,9 +76,8 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
         /// <param name="BuildFormJson">自定义表单</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult SubmitUserForm(string KeyValue, string avatarImg, Base_User base_user, Base_Employee base_employee, string BuildFormJson)
+        public ActionResult SubmitUserForm(string KeyValue, Base_User base_user, Base_Employee base_employee, string BuildFormJson)
         {
-            base_user.Avatar = avatarImg;
             string ModuleId = DESEncrypt.Decrypt(CookieHelper.GetCookie("ModuleId"));
             IDatabase database = DataFactory.Database();
             DbTransaction isOpenTrans = database.BeginTrans();
@@ -178,7 +133,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             Base_Employee base_employee = DataFactory.Database().FindEntity<Base_Employee>(KeyValue);
             Base_Company base_company = DataFactory.Database().FindEntity<Base_Company>(base_user.CompanyId);
             string strJson = base_user.ToJson();
-            //单位
+            //公司
             strJson = strJson.Insert(1, "\"CompanyName\":\"" + base_company.FullName + "\",");
             //员工信息
             strJson = strJson.Insert(1, base_employee.ToJson().Replace("{", "").Replace("}", "") + ",");
@@ -188,7 +143,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
         }
         #endregion
 
-        #region 修改密码
+        #region 修改登录密码
         /// <summary>
         /// 重置密码
         /// </summary>
@@ -214,8 +169,8 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
                 base_user.ModifyDate = DateTime.Now;
                 base_user.ModifyUserId = ManageProvider.Provider.Current().UserId;
                 base_user.ModifyUserName = ManageProvider.Provider.Current().UserName;
-                base_user.Secretkey = Md5Helper.MD5(CommonHelper.CreateNo(), 16).ToLower();
-                base_user.Password = Md5Helper.MD5(DESEncrypt.Encrypt(Password, base_user.Secretkey).ToLower(), 32).ToLower();
+                base_user.Secretkey = null;// Md5Helper.MD5(CommonHelper.CreateNo(), 16).ToLower();
+                base_user.Password = Md5Helper.MD5(Password);
                 IsOk = repositoryfactory.Repository().Update(base_user);
                 Base_SysLogBll.Instance.WriteLog(KeyValue, OperationType.Update, IsOk.ToString(), "修改密码");
                 return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = "密码修改成功。" }.ToString());
@@ -241,7 +196,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
         /// <summary>
         /// 加载用户角色
         /// </summary>
-        /// <param name="CompanyId">单位ID</param>
+        /// <param name="CompanyId">公司ID</param>
         /// <param name="UserId">用户Id</param>
         /// <returns></returns>
         public ActionResult UserRoleList(string CompanyId, string UserId)
@@ -311,7 +266,7 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             {
                 return Content(new JsonMessage { Success = true, Code = "0", Message = "当前账户不能修改密码" }.ToString());
             }
-            OldPassword = Md5Helper.MD5(DESEncrypt.Encrypt(Md5Helper.MD5(OldPassword, 32).ToLower(), ManageProvider.Provider.Current().Secretkey).ToLower(), 32).ToLower();
+            OldPassword = Md5Helper.MD5(OldPassword);//Md5Helper.MD5(DESEncrypt.Encrypt(Md5Helper.MD5(OldPassword, 32).ToLower(), ManageProvider.Provider.Current().Secretkey).ToLower(), 32).ToLower();
             if (OldPassword != ManageProvider.Provider.Current().Password)
             {
                 return Content(new JsonMessage { Success = true, Code = "0", Message = "原密码错误，请重新输入" }.ToString());

@@ -3,6 +3,7 @@ using LeaRun.Business;
 using LeaRun.Entity.SteelMember;
 using LeaRun.Repository.SteelMember.IBLL;
 using LeaRun.Utilities;
+using LeaRun.WebApp.Controllers;
 using Ninject;
 using SteelMember.Models;
 using System;
@@ -17,7 +18,7 @@ using System.Web.Mvc.Html;
 
 namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 {
-    public class ProjectWarehouseController : Controller
+    public class ProjectWarehouseController : BaseController
     {
 
         public Base_ModuleBll Sys_modulebll = new Base_ModuleBll();

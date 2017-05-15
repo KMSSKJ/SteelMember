@@ -104,7 +104,7 @@ namespace LeaRun.WebApp.Controllers
                 chkCode += character[rnd.Next(character.Length)];
             }
             //写入Session、验证码加密
-            Session["session_verifycode"] = Md5Helper.MD5(chkCode.ToLower(), 16);
+            Session["session_verifycode"] = Md5Helper.MD5(chkCode);// Md5Helper.MD5(chkCode.ToLower(), 16);
             //创建画布
             Bitmap bmp = new Bitmap(codeW, codeH);
             Graphics g = Graphics.FromImage(bmp);
@@ -165,7 +165,7 @@ namespace LeaRun.WebApp.Controllers
                 //系统管理
                 if (Account == ConfigHelper.AppSettings("CurrentUserName"))
                 {
-                    if (ConfigHelper.AppSettings("CurrentPassword") == Password)
+                    if (ConfigHelper.AppSettings("CurrentPassword") ==Md5Helper.MD5(Password))
                     {
                         IManageUser imanageuser = new IManageUser();
                         imanageuser.UserId = "System";
@@ -184,6 +184,10 @@ namespace LeaRun.WebApp.Controllers
                         HttpContext rq = System.Web.HttpContext.Current;
                         rq.Application["OnLineCount"] = (int)rq.Application["OnLineCount"] + 1;
                         Msg = "3";//验证成功
+
+                        Base_User base_user = new Base_User();
+                        base_user.RealName = "管理员";
+                        System.Web.HttpContext.Current.Session["User"] = base_user;
                         Base_SysLogBll.Instance.WriteLog(Account, OperationType.Login, "1", "登陆成功、IP所在城市：" + IPAddressName);
                     }
                     else
@@ -229,6 +233,9 @@ namespace LeaRun.WebApp.Controllers
                             HttpContext rq = System.Web.HttpContext.Current;
                             rq.Application["OnLineCount"] = (int)rq.Application["OnLineCount"] + 1;
                             Msg = "3";//验证成功
+
+                            System.Web.HttpContext.Current.Session["User"] = base_user;
+
                             Base_SysLogBll.Instance.WriteLog(Account, OperationType.Login, "1", "登陆成功、IP所在城市：" + IPAddressName);
                             break;
                         default:

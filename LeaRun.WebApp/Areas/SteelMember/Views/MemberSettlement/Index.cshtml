@@ -31,7 +31,7 @@
     function GridFolderEvent(TreeId) {
         TreeId = TreeId;
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/ProjectOrder/GridListJson")?TreeId=" + TreeId, page: 1
+            url: "@Url.Content("/SteelMember/MemberSettlement/GridListJson")?TreeId=" + TreeId, page: 1
         }).trigger('reloadGrid');
     }
 
@@ -39,7 +39,7 @@
     function GetGrid() {
         var SelectRowIndx;
         $("#gridTable").jqGrid({
-            url: "@Url.Content("/SteelMember/ProjectOrder/GridListJson")?TreeID=" + TreeId,
+            url: "@Url.Content("/SteelMember/MemberSettlement/GridListJson")?TreeID=" + TreeId,
             datatype: "json",
             height: $(window).height() - 154,
             autowidth: true,
@@ -53,48 +53,32 @@
                     //{ label: "单价", name: "UnitPrice", index: "UnitPrice", width: 16 },
                     //{ label: '数量', name: "MemberNumber", index: "MemberNumber", width: 12 },
                     //{ label: '总价', name: "CostBudget", index: "CostBudget", width: 16 },
-                    { label: '订单编号', name: "OrderNumbering", index: "OrderNumbering", width: 12 },
-                    { label: '构件型号', name: "MemberModel", index: "MemberModel", width: 6 },
-                    { label: "单价", name: "UnitPrice", index: "UnitPrice", width: 12 },
-                    { label: '数量', name: "OrderNumber", index: "OrderNumber", width: 12 },
-                    { label: '总价', name: "CostBudget", index: "CostBudget", width: 12 },
-                    {
+                    //{ label: '构件型号', name: "MemberModel", index: "MemberModel", width: 6 },
+                    //{ label: "单价", name: "UnitPrice", index: "UnitPrice", width: 12 },
+                    //{ label: '数量', name: "OrderNumber", index: "OrderNumber", width: 12 },
+                      { label: '订单编号', name: "OrderNumbering", index: "OrderNumbering", width: 12 },
+                       { label: '总价', name: "CostBudget", index: "CostBudget", width: 12 },
+                      {
                         label: '创建时间', name: "CreateTime", index: "CreateTime", width: 12,
                         formatter: function (cellvalue, options, rowObject) {
                             return formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
-                        }},
+                        }
+                      },
+                        {
+                            label: '订单状态', name: "Productioned", index: "Productioned", width: 12,
+                            formatter: function (cellvalue, options, rowObject) {
+                                var Productioned = cellvalue;
+                                if (Productioned == 0) {
+                                    return "未生产"
+                                } else if (Productioned == 1) {
+                                    return "生产完成"
+                                } else {
+                                    return "正在生产"
+                                }
+                            }
+                        },
                     { label: '制单人', name: "CreateMan", index: "CreateMan", width: 12 },
-                    {
-                        label: '审核状态', name: 'IsReview', index: 'IsReview', width: 12,
-                        formatter: function (cellvalue,value, row, index) {
-                            var isreview = cellvalue;
-                            if (isreview != "" || isreview != null) {
-                                if (isreview == 1) {
-                                    return "<img src='../../Content/Images/checkokmark.gif'/>";
-                                } else {
-                                    return "<img src='../../Content/Images/checknomark.gif'/>";
-                                }
-                            } else {
-                                return "";
-                            }
-                        }
-                    },
                     { label: '审核人', name: "ReviewMan", index: "ReviewMan", width: 16 },
-                    {
-                        label: '提交状态', name: 'IsSubmit', index: 'IsSubmit', width: 12,
-                        formatter: function (cellvalue, value, row, index) {
-                            var issubmit = cellvalue;
-                            if (issubmit != "" || issubmit != null) {
-                                if (issubmit == 1) {
-                                    return "<img src='../../Content/Images/checkokmark.gif'/>";
-                                } else {
-                                    return "<img src='../../Content/Images/checknomark.gif'/>";
-                                }
-                            } else {
-                                return "";
-                            }
-                        }
-                    },
                     { label: '备注', name: 'Description', index: 'Description', width: 12 },
             ],
             rowNum: 30,
@@ -216,7 +200,7 @@
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
             var IsSubmit1 = IsSubmit.replace(/"/, "'").replace(/"/, "'");
-            if (IsSubmit1 != "<img src='~/Content/Images/checkokmark.gif'>") {
+            if (IsSubmit1 != "<img src='../../Content/Images/checkokmark.gif'>") {
                 var url = "/SteelMember/ProjectManagement/Form?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
                 openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
                     top.frames[iframe].AcceptClick();
@@ -279,7 +263,7 @@
         //var MemberNumber = GetJqGridRowValue("#gridTable", "MemberNumber");
         var MemberId = GetJqGridRowValue("#gridTable", "MemberId");
         var IsReview1 = IsReview.replace(/"/, "'").replace(/"/, "'");
-        if (IsReview1 == "<img src='~/Content/Images/checkokmark.gif'>") {
+        if (IsReview1 == "<img src='../../Content/Images/checkokmark.gif'>") {
         var Prompt = "您确实要提交此文件吗？";
         if (IsDelData(KeyValue)) {
             delConfirm('/SteelMember/ProjectOrder/SubmitProjectOrder', { KeyValue: KeyValue, MemberId: MemberId }, Prompt);
@@ -290,6 +274,19 @@
         //$("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
+    //查询
+    var QueryParamJson = "";
+    function btn_query() {
+        QueryDialog("/SteelMember/MemberSettlement/QueryPage", "QueryPage", "查询", 540, 30, function (iframe) {
+            top.frames[iframe].QueryClick(function (JsonData) {
+                QueryParamJson = JsonData;
+                $("#gridTable").jqGrid('setGridParam', {
+                    url: "@Url.Content("/SteelMember/MemberSettlement/GridListJson")?ParameterJson=" + escape(JsonData) + "&TreeID=" + TreeId, page: 1
+            }).trigger('reloadGrid');
+        });
+    });
+    }
+
     //导出文件
     function btn_derive() {
         SetDeriveExcel("#gridTable", "项目订单表");
@@ -297,7 +294,24 @@
             top.frames[iframe].AcceptClick();
         })
     }
-
+    //要打印数据源，子页面调用的函数
+    function PrintDataSource() {
+        var columnModel = $("#gridTable").jqGrid('getGridParam', 'colModel');
+        var dataModel = $("#gridTable").jqGrid("getRowData");
+        var footerData = $("#gridTable").jqGrid("footerData");
+        var JsonData = {
+            columnModel: columnModel,
+            dataModel: dataModel,
+            footerData: footerData,
+        }
+        return JsonData;
+    }
+    //点击打印
+    function btn_Print() {
+        PrintDialog("/Utility/PrintPage", "PrintPage", "打印当前页", 1200, 500, function (iframe) {
+            top.frames[iframe].SubmitPrint()
+        });
+    }
 
     /*视图begin=========================================================================*/
     //切换到列表/视图
@@ -328,7 +342,7 @@
                         icon = "Folder";
                     }
                     html += '<div class="filelist-item">';
-                    html += '<div><img src="~/Content/Images/fileType/' + icon + '_72.png" /></div>';
+                    html += '<div><img src="../../Content/Images/fileType/' + icon + '_72.png" /></div>';
                     html += '<div title="' + data[i].fullname + '" class="filelist-text">' + data[i].fullname + '</div>';
                     html += '</div>';
                 }

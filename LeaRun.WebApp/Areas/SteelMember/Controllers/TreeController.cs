@@ -8,10 +8,12 @@ using LeaRun.Business;
 using LeaRun.Repository.SteelMember.IBLL;
 using LeaRun.Entity.SteelMember;
 using LeaRun.Utilities;
+using LeaRun.WebApp.Controllers;
+using LeaRun.Entity;
 
 namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 {
-    public class TreeController: Controller
+    public class TreeController: BaseController
     {
         // GET: DocManagement/Tree
         public Base_ModuleBll Sys_modulebll = new Base_ModuleBll();
@@ -35,6 +37,59 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             return View();
         }
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 【模块管理】返回树JONS
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult TreeJson()
+        {
+            List<RMC_Tree> list =TreeCurrent.Find(f=>f.TreeID>0).ToList();
+            List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
+            foreach (RMC_Tree item in list)
+            {
+                TreeJsonEntity tree = new TreeJsonEntity();
+                bool hasChildren = false;
+                List<RMC_Tree> childnode = list.FindAll(t => t.ParentID == item.TreeID);
+                if (childnode.Count > 0)
+                {
+                    hasChildren = true;
+                }
+                tree.id = item.TreeID.ToString();
+                tree.text = item.TreeName;
+                tree.value = item.TreeID.ToString();
+                tree.itemId = item.ItemID.ToString();
+                tree.isexpand = item.State == 1 ? true : false;
+                tree.complete = true;
+                tree.hasChildren = hasChildren;
+                tree.parentId = item.ParentID.ToString();
+                tree.img = item.Icon != null ? "/Content/Images/Icon16/" + item.Icon : item.Icon;
+                TreeList.Add(tree);
+            }
+            return Content(TreeList.TreeToJson());
+        }
+        /// <summary>
+        /// 【模块管理】返回对象JSON
+        /// </summary>
+        /// <param name="KeyValue">主键值</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SetFormControl(string KeyValue)
+        {
+            int _KeyValue =Convert.ToInt32(KeyValue);
+           RMC_Tree entity = TreeCurrent.Find(f => f.TreeID==_KeyValue).SingleOrDefault();
+            string JsonData = entity.ToJson();
+      
+            JsonData = JsonData.Insert(1, "\"ParentName\":\"" + TreeCurrent.Find(f => f.TreeID == entity.ParentID).SingleOrDefault().TreeName + "\",");
+            return Content(JsonData);
+        }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+
 
         /// <summary>
         /// 【控制测量文档管理】返回文件夹对象JSON

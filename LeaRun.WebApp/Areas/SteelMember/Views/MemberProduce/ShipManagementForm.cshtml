@@ -12,10 +12,7 @@
         var TreeId = GetQuery('TreeId');
         var Data;
         $(function () {
-            LoadMemberClass();
             InitControl();
-            LoadMemberName();
-
         })
         //得到一个对象实体
         function InitControl() {
@@ -23,8 +20,6 @@
             AjaxJson("/SteelMember/MemberProduce/SetShipManagementForm", { KeyValue: KeyValue }, function (data) {
                 SetWebControls(data);
                 Data = data;
-                $("#ProjectName").focus();
-                $("#ProjectName").select();
             });
             //} else {
             //    tipDialog('请选择文件夹!', 3); //,data.Code
@@ -54,7 +49,7 @@
             }, 200);
         };
 
-        //加载上级模块
+        @*//加载上级模块
         function LoadMemberClass() {
             $("#MemberClassName").focus(function () {
                 var objId = this.id;
@@ -123,7 +118,7 @@
 
                 }
             });
-        };
+        };*@
 
     </script>
 
@@ -132,32 +127,24 @@
     <div>
         <table class="form">
             <tr>
-                <th class="formTitle">
+                @*<th class="formTitle">
                     构件类型：
                 </th>
                 <td class="formValue">
                     <input id="MemberClassId" name="MemberClassId" type="hidden" />
                     <input id="MemberClassName" type="text" class="txt icontree" />
-                </td>
+                </td>*@
                 <th class="formTitle">
                     构件型号：
                 </th>
                 <td class="formValue">
-                    <select id="MemberId" name="MemberId"></select>
-                </td>
-            </tr>
-            <tr>
-                <th class="formTitle">
-                    发货量：
-                </th>
-                <td class="formValue">
-                    <input id="ShipNumber" type="text" class="txt" />
+                    <input id="MemberModel"type="text"  class="txt" />
                 </td>
                 <th class="formTitle">
-                    收货人：
+                    库存量：
                 </th>
                 <td class="formValue">
-                    <input id="ShippingMan" type="text" class="txt" />
+                    <input id="LibraryNumber" type="text" class="txt" />
                 </td>
             </tr>
             <tr>
@@ -166,6 +153,20 @@
                 </th>
                 <td class="formValue">
                     <input id="ShippingAddress" type="text" class="txt" />
+                </td>
+                <th class="formTitle">
+                    发货量：
+                </th>
+                <td class="formValue">
+                    <input id="ShipNumber" type="text" class="txt" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">
+                    收货人：
+                </th>
+                <td class="formValue">
+                    <input id="ShippingMan" type="text" class="txt" />
                 </td>
                 <th class="formTitle">
                     收货电话：
@@ -182,6 +183,7 @@
                     <textarea id="Description" name="Description" maxlength="200" class="txtArea" rows="5"></textarea>
                 </td>
             </tr>
+           
         </table>
     </div>
 </form>

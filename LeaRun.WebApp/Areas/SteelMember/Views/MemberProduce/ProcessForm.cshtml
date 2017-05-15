@@ -20,8 +20,7 @@
             AjaxJson("/SteelMember/MemberProduce/SetProcessForm", { KeyValue: KeyValue }, function (data) {
                 SetWebControls(data);
                 Data = data;
-                $("#ProjectName").focus();
-                $("#ProjectName").select();
+              
             });
         }
 
@@ -44,111 +43,61 @@
 </head>
 <form id="form2" style="margin: 25px; margin-left: 40px; margin-right: 40px;">
     <div>
-        <input id="IsPublic" type="hidden" />
-        <input id="SortCode" type="hidden" />
-        <input id="ParentID" type="hidden" />
 
         <table class="form">
+            @*<tr>
+                    <th class="formTitle">
+                        开始时间：
+                    </th>
+                    <td class="formValue">
+                        <input id="ProduceStartDate" type="text" class="txt Wdate" onfocus="WdatePicker({ minDate: '%y-%M-#{%d+1}' })"/>
+                    </td>
+                    <th class="formTitle">
+                        结束时间：
+                    </th>
+                    <td class="formValue">
+                        <input id="ProduceEndDate" type="text" class="txt Wdate" onfocus="WdatePicker({ minDate: '%y-%M-#{%d+1}' })" />
+                    </td>
+                </tr>*@
             <tr>
                 <th class="formTitle">
-                    开始时间：
+                    制程名称：
                 </th>
                 <td class="formValue">
-                    <input id="ProduceStartDate" type="text" class="txt Wdate" onfocus="WdatePicker({ minDate: '%y-%M-#{%d+1}' })"/>
-                </td>
-                <th class="formTitle">
-                    结束时间：
-                </th>
-                <td class="formValue">
-                    <input id="ProduceEndDate" type="text" class="txt Wdate" onfocus="WdatePicker({ minDate: '%y-%M-#{%d+1}' })" />
+                    <input id="ProcessName" type="text" class="txt" />
                 </td>
             </tr>
             <tr>
                 <th class="formTitle">
-                    组立加工：
+                    不合格量：
                 </th>
                 <td class="formValue">
-                    @*<input id="SetUpProcessing" type="text" class="txt" />*@
-                    <select id="SetUpProcessing">
-                        <option value="组立组">组立组</option>
-                        <option value="埋弧组">埋弧组</option>
-                        <option value="铆焊组">铆焊组</option>
-                        <option value="油漆组">油漆组</option>
-                    </select>
-                </td>
-                <th class="formTitle">
-                    加工天数：
-                </th>
-                <td class="formValue">
-                    <input id="SetUpProcessingDays" type="text" class="txt" />
+                    <input id="UnqualifiedNumber" type="text" class="txt" />
                 </td>
             </tr>
             <tr>
                 <th class="formTitle">
-                    埋弧加工：
+                    负责人：
                 </th>
                 <td class="formValue">
-                    @*<input id="SubmergedArcProcessing" type="text" class="txt" />*@
-                    <select id="SubmergedArcProcessing">
-                        <option value="组立组">组立组</option>
-                        <option value="埋弧组">埋弧组</option>
-                        <option value="铆焊组">铆焊组</option>
-                        <option value="油漆组">油漆组</option>
-                    </select>
-                </td>
-                <th class="formTitle">
-                    加工天数：
-                </th>
-                <td class="formValue">
-                    <input id="SubmergedArcProcessingDays" type="text" class="txt" />
+                    <input id="ProcessMan" type="text" class="txt" />
                 </td>
             </tr>
+           
+            @*<tr>
+                <th class="formTitle">
+                    图片：
+                </th>
+                <td class="formValue">
+                    <input id="ProcessManImge" type="text" class="txt" />
+                </td>
+            </tr>*@
             <tr>
                 <th class="formTitle">
-                    铆焊加工：
+                    说明：
                 </th>
                 <td class="formValue">
-                    @*<input id="RivetingProcessing" type="text" class="txt" />*@
-                    <select id="RivetingProcessing">
-                    <option value="组立组">组立组</option>
-                    <option value="埋弧组">埋弧组</option>
-                    <option value="铆焊组">铆焊组</option>
-                    <option value="油漆组">油漆组</option>
-                    </select>
-                </td>
-                <th class="formTitle">
-                    加工天数：
-                </th>
-                <td class="formValue">
-                    <input id="RivetingProcessingDays" type="text" class="txt" />
-                </td>
-            </tr>
-            <tr>
-                <th class="formTitle">
-                    油漆加工：
-                </th>
-                <td class="formValue">
-                    @*<input id="PaintProcessing" type="text" class="txt" />*@
-                    <select id="PaintProcessing">
-                        <option value="组立组">组立组</option>
-                        <option value="埋弧组">埋弧组</option>
-                        <option value="铆焊组">铆焊组</option>
-                        <option value="油漆组">油漆组</option>
-                    </select>
-                </td>
-                <th class="formTitle">
-                    加工天数：
-                </th>
-                <td class="formValue">
-                    <input id="PaintProcessingDays" type="text" class="txt" />
-                </td>
-            </tr>
-            <tr>
-                <th class="formTitle">
-                    备注：
-                </th>
-                <td class="formValue" colspan="2">
-                    <textarea id="Description" name="Description" maxlength="200" class="txtArea" rows="5"></textarea>
+                    <input id="Description" type="text" class="txt" />
                 </td>
             </tr>
         </table>
