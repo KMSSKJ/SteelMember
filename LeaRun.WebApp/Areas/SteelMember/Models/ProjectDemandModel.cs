@@ -33,6 +33,7 @@ namespace SteelMember.Models
         public Nullable<int> OrderQuantityed { get; set; }
         public Nullable<int> Productioned { get; set; }
         public Nullable<DateTime> CreateTime { get; set; }
+        public Nullable<DateTime> VeliveryTime { get; set; }
         public string CreateMan { get; set; }
         public Nullable<int> IsDemandSubmit { get; set; }
         public string CADDrawing { get; set; }
