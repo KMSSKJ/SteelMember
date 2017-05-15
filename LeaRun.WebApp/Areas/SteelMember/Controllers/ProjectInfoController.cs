@@ -2,6 +2,7 @@
 using LeaRun.Entity.SteelMember;
 using LeaRun.Repository.SteelMember.IBLL;
 using LeaRun.Utilities;
+using LeaRun.WebApp.Controllers;
 using Ninject;
 using System;
 using System.Collections;
@@ -19,7 +20,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
     /// <summary>
     /// 代码生成器
     /// </summary>
-    public class ProjectInfoController : Controller
+    public class ProjectInfoController : BaseController
     {
         //
         // GET: /ProjectInfo/
@@ -37,6 +38,21 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             return View();
         }
 
+        public ActionResult HomePage()
+        {
+            return View();
+        }
+    
+        public ActionResult DepartmentIndex()
+        {
+            return View();
+        }
+        public ActionResult ManIndex()
+        {
+            return View();
+        }
+
+
         /// <summary>
         /// 【工程项目管理】返回树JONS
         /// </summary>
@@ -44,7 +60,11 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public ActionResult TreeJson(string ItemId)
         {
             //int itemid = Convert.ToInt32(ItemId);
-            List<RMC_Tree> list = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.IsItem == 1).ToList();
+            List<RMC_Tree> list, list1, list2;
+            list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.IsItemInfo == 0).ToList();
+            list2 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.IsItemInfo == 1&& t.IsProduceOrder!= 1).ToList();
+            list= list1.Concat(list2).Distinct().ToList();
+
             List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
             foreach (RMC_Tree item in list)
             {
@@ -58,6 +78,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 tree.id = item.TreeID.ToString();
                 tree.text = item.TreeName;
                 tree.value = item.TreeID.ToString();
+                tree.ismenu = item.IsMenu.ToString();
+                tree.url = item.Url;
                 tree.isexpand = item.State == 1 ? true : false;
                 tree.complete = true;
                 tree.hasChildren = hasChildren;
@@ -204,6 +226,16 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             int ProjectId = Convert.ToInt32(KeyValue);
             RMC_ProjectInfo entity = ProjectInfoCurrent.Find(f => f.ProjectId == ProjectId).SingleOrDefault();
+            //string JsonData = entity.ToJson();
+            ////自定义D:\SSKJProject\LeaRun.WebApp\Areas\CodeMaticModule\
+            //JsonData = JsonData.Insert(1, Sys_FormAttributeBll.Instance.GetBuildForm(KeyValue));
+            return Content(entity.ToJson());
+            //return Json(entity);
+        }
+        public ActionResult GetItemInfo(string KeyValue)
+        {
+            int TreeId = Convert.ToInt32(KeyValue);
+            RMC_ProjectInfo entity = ProjectInfoCurrent.Find(f => f.TreeID == TreeId).SingleOrDefault();
             //string JsonData = entity.ToJson();
             ////自定义
             //JsonData = JsonData.Insert(1, Sys_FormAttributeBll.Instance.GetBuildForm(KeyValue));

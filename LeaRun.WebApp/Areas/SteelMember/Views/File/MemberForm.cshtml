@@ -41,11 +41,23 @@
         }, 200);
     }
 
+    //上传图标
+    function btn_uploadIcon() {
+        var Icon = "Icon"
+        var CAD = "";
+        var Model = "";
+        var url = "/SteelMember/File/UpLoadFile?KeyValue=" + GetQuery('KeyValue') + "&CAD=" + CAD + "&Model=" + Model + "&Icon=" + Icon;
+        Dialog(url, "UpLoadFile", "上传图标", 500, 600, function (iframe) {
+            top.frames[iframe].AcceptClick()
+            $("#gridTable").trigger("reloadGrid"); //重新载入
+        });
+    }
+
     //上传模型图
-    function btn_uploadModelDrawing(KeyValue) {
+    function btn_uploadModelDrawing() {
         var CAD = "";
         var Model = "Model";
-        var url = "/SteelMember/File/UpLoadFile?KeyValue=" + GetQuery('KeyValue') + "&CAD=" + CAD + "&Model=" + Model;
+        var url = "/RoadDocumentCenterPlugins/File/UpLoadFile?KeyValue=" + GetQuery('KeyValue') + "&CAD=" + CAD + "&Model=" + Model;
         Dialog(url, "UpLoadFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
             top.frames[iframe].AcceptClick()
             $("#gridTable").trigger("reloadGrid"); //重新载入
@@ -53,10 +65,10 @@
     }
 
     //上传CAD图纸
-    function btn_uploadCADDrawing(KeyValue) {
+    function btn_uploadCADDrawing() {
         var CAD = "CAD";
         var Model = "";
-        var url = "/SteelMember/File/UpLoadFile?KeyValue=" + GetQuery('KeyValue') + "&CAD=" + CAD + "&Model=" + Model;
+        var url = "/RoadDocumentCenterPlugins/File/UpLoadFile?KeyValue=" + GetQuery('KeyValue') + "&CAD=" + CAD + "&Model=" + Model;
         Dialog(url, "UpLoadFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
             top.frames[iframe].AcceptClick()
             $("#gridTable").trigger("reloadGrid"); //重新载入
@@ -295,6 +307,20 @@
         </tr>
         <tr>
             <th class="formTitle">
+                单位：
+            </th>
+            <td class="formValue">
+                <input id="MemberUnit" type="text" class="txt" />
+            </td>
+            <th class="formTitle">
+                单价：
+            </th>
+            <td class="formValue">
+                <input id="UnitPrice" type="text" class="txt" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
                 图纸：
             </th>
             <td class="formValue">
@@ -307,6 +333,15 @@
             <td class="formValue">
                 <input id="Model_Drawing" type="text" class="txt" />
                 <input type="button" onclick="btn_uploadModelDrawing()" value="修改/上传" style="margin-left:120px" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">
+                图标：
+            </th>
+            <td class="formValue">
+                <input id="Icon" type="text" class="txt" />
+                <input type="button" onclick="btn_uploadIcon()" value="修改/上传" style="margin-left:120px" />
             </td>
         </tr>
     </table>

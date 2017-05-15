@@ -24,18 +24,18 @@ namespace LeaRun.Utilities
         /// <param name="str">加密字符</param>
         /// <param name="code">加密位数16/32</param>
         /// <returns></returns>
-        public static string MD5(string str, int code)
+        public static string MD5(string str)
         {
             string strEncrypt = string.Empty;
-            if (code == 16)
-            {
-                strEncrypt = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(str, "MD5").Substring(8, 16);
-            }
 
-            if (code == 32)
+            System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
+            byte[] s = md5.ComputeHash(Encoding.UTF8.GetBytes(str));
+            for (int i = 0; i < s.Length; i++)
             {
-                strEncrypt = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(str, "MD5");
+                strEncrypt = strEncrypt + s[i].ToString("x").ToLower();
+
             }
+            //strEncrypt = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(str, "MD5");
 
             return strEncrypt;
         }

@@ -40,8 +40,6 @@
         }else {
             AjaxJson("/SteelMember/ProjectInfo/SetDataForm", { KeyValue: KeyValue }, function (data) {
                 SetWebControls(data);
-                $("#ProjectName").focus();
-                $("#ProjectName").select();
             });
         }
     }
@@ -73,7 +71,8 @@
     }
 
     //上传背景图片
-    function BackgroundUpload(){var Background="Background"
+    function BackgroundUpload(){
+        var Background="Background"
         var url = "/SteelMember/File/UpLoadFile?KeyValue=" + KeyValue+"&Background="+Background;
         Dialog(url, "UpLoadFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
             top.frames[iframe].AcceptClick()
@@ -87,40 +86,25 @@
         <table class="form">
             <tr>
                 <th class="formTitle">
-                    项目Logo：
-                </th>
-                <td class="formValue">
-                    <input id="ProjectLogo" type="text" class="txt" />
-                    <input id="btn_ProjectLogo" type="button" onclick="LogoUpload(@ViewData["projectid"])" value="上传" />
-                </td>
-            </tr>
-            <tr>
-                <th class="formTitle">
-                    项目背景：
-                </th>
-                <td class="formValue">
-                    <input id="ProjectBackground" type="text" class="txt" />
-                    <input id="btn_ProjectBackground" type="button" onclick="BackgroundUpload(@ViewData["projectid"])" value="上传" />
-                </td>
-            </tr>
-            <tr>
-                <th class="formTitle">
-                    项目地址：
-                </th>
-                <td class="formValue">
-                    <input id="ProjectAddress" type="text" class="txt" />
-                </td>
-            </tr>
-            <tr>
-                <th class="formTitle">
-                    建设单位：
+                    业主单位：
                 </th>
                 <td class="formValue">
                     <input id="ConstructionUnit" type="text" class="txt" />
                 </td>
-              
+                <th class="formTitle">
+                    负责人：
+                </th>
+                <td class="formValue">
+                    <input id="ConstructionPrincipal" type="text" class="txt" />
+                </td>
+                <th class="formTitle">
+                    联系电话：
+                </th>
+                <td class="formValue">
+                    <input id="ConstructionPrincipalTEL" type="text" class="txt" />
+                </td>
             </tr>
-          
+
             <tr>
                 <th class="formTitle">
                     设计单位：
@@ -128,11 +112,35 @@
                 <td class="formValue">
                     <input id="DesignUnit" type="text" class="txt" />
                 </td>
+                <th class="formTitle">
+                    负责人：
+                </th>
+                <td class="formValue">
+                    <input id="DesignPrincipal" type="text" class="txt" />
+                </td>
+                <th class="formTitle">
+                    联系电话：
+                </th>
+                <td class="formValue">
+                    <input id="DesignPrincipalTEL" type="text" class="txt" />
+                </td>
             </tr>
             <tr>
                 <th class="formTitle">监理单位：</th>
                 <td class="formValue">
                     <input id="SupervisionUnit" type="text" class="txt" />
+                </td>
+                <th class="formTitle">
+                    负责人：
+                </th>
+                <td class="formValue">
+                    <input id="SupervisionPrincipal" type="text" class="txt" />
+                </td>
+                <th class="formTitle">
+                    联系电话：
+                </th>
+                <td class="formValue">
+                    <input id="SupervisionPrincipalTEL" type="text" class="txt" />
                 </td>
             </tr>
             <tr>
@@ -140,20 +148,79 @@
                 <td class="formValue">
                     <input id="GeneralContractor" type="text" class="txt" />
                 </td>
+                <th class="formTitle">
+                    负责人：
+                </th>
+                <td class="formValue">
+                    <input id="GeneralContractorPrincipal" type="text" class="txt" />
+                </td>
+                <th class="formTitle">
+                    联系电话：
+                </th>
+                <td class="formValue">
+                    <input id="GeneralContractorPrincipalTEL" type="text" class="txt" />
+                </td>
             </tr>
             <tr>
                 <th class="formTitle">专业承包商：</th>
                 <td class="formValue">
                     <input id="ProfessionalContractor" type="text" class="txt" />
                 </td>
-
+                <th class="formTitle">
+                    负责人：
+                </th>
+                <td class="formValue">
+                    <input id="ProfessionalContractorPrincipal" type="text" class="txt" />
+                </td>
+                <th class="formTitle">
+                    联系电话：
+                </th>
+                <td class="formValue">
+                    <input id="ProfessionalContractorPrincipalTEL" type="text" class="txt" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+          
+            <tr>
+                <th class="formTitle">
+                    系统标题：
+                </th>
+                <td class="formValue" colspan="5">
+                    <input id="ProjectSystemTitel" type="text" class="txt" />
+                </td>
             </tr>
             <tr>
                 <th class="formTitle">
-                    备注：
+                    项目地址：
                 </th>
-                <td class="formValue">
+                <td class="formValue" colspan="5">
+                    <input id="ProjectAddress" type="text" class="txt" rowspan="4" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">
+                    工程概况：
+                </th>
+                <td class="formValue" colspan="5">
                     <textarea id="Description" name="Description" maxlength="200" class="txtArea" rows="5"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">
+                    项目Logo：
+                </th>
+                <td class="formValue" colspan="2">
+                    <input id="ProjectLogo" type="text" class="txt" />
+                    <input id="btn_ProjectLogo" type="button" onclick="LogoUpload(@ViewData["projectid"])" value="上传" />
+                </td>
+                <th class="formTitle">
+                    项目背景：
+                </th>
+                <td class="formValue" colspan="2">
+                    <input id="ProjectBackground" type="text" class="txt" />
+                    <input id="btn_ProjectBackground" type="button" onclick="BackgroundUpload(@ViewData["projectid"])" value="上传" />
                 </td>
             </tr>
         </table>

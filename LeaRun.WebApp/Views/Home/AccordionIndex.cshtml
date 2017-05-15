@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
     <title>钢构件管理系统</title>
-    <link href="~/Content/Images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="../../Content/Images/favicon.ico" rel="shortcut icon" type="image/x-icon" media="screen" />
     <!--框架必需start-->
     <link href="~/Content/Styles/learunui-startmenu.css" rel="stylesheet" />
     <link href="~/Content/Styles/learunui-accordion.css" rel="stylesheet" />
@@ -26,14 +26,15 @@
         /**初始化**/
         $(document).ready(function () {
             ServerCurrentTime()
-            //AddTabMenu('Imain', '@Url.Content("~/Home/AccordionPage")', '欢迎首页', "house.png", 'false');
+            AddTabMenu('Imain', '@Url.Content("~/SteelMember/ProjectInfo/HomePage")', '欢迎首页', "house.png", 'false');
             GetAccordionMenu();
             InitializeImpact();
+            LoadLogo();
             //ShortcutsList();
             //var interval = setInterval("IconSong('icon_message')", 400);
             //$("#div_icon_message").click(function () {
             //    clearInterval(interval);
-            //    window.open('http://www.learun.cn/fdms/index.html', '_blank');
+            //    window.open('/www.learun.cn/fdms/index.html', '_blank');
             //})
             //$(".popup li").click(function () {
             //    linkAddTabMenu()
@@ -138,14 +139,14 @@
                 $.each(accordionJson, function (i) {
                     if (accordionJson[i].ParentId == "@ViewBag.ModuleId") {
                         html += "<li title=" + accordionJson[i].FullName + ">";
-                    html += "<div class=\"link\"><img src='../Content/Images/Icon16/" + accordionJson[i].Icon + "'>";
-                    html += "<span>" + accordionJson[i].FullName + "</span><i class=\"chevron-down\"></i>";
-                    html += "</div>";
-                    html += GetSubmenu(accordionJson[i].ModuleId, "b-children");
-                    html += "</li>";
-                }
+                        html += "<div class=\"link\"><img src='../Content/Images/Icon16/" + accordionJson[i].Icon + "'>";
+                        html += "<span>" + accordionJson[i].FullName + "</span><i class=\"chevron-down\"></i>";
+                        html += "</div>";
+                        html += GetSubmenu(accordionJson[i].ModuleId, "b-children");
+                        html += "</li>";
+                    }
                 });
-        })
+            })
             $("#accordion").append(html);
         }
         //导航子菜单
@@ -177,16 +178,33 @@
             return count;
         }
         /*导航菜单end====================*/
+
+        var Data;
+        var filename
+        var project_system_titel;
+        function LoadLogo() {
+            AjaxJson("/SteelMember/ProjectInfo/SetDataForm", { KeyValue: 10 }, function (data) {
+                Data = data;
+                filename = Data.ProjectLogo;
+                filename = filename.substring(0, filename.lastIndexOf('.'));//获取文件名称，去除后缀名
+                filename = "../../Resource/Document/NetworkDisk/System/Project/"+filename + "/" + Data.ProjectLogo;
+                
+                $("p").html(Data.ProjectSystemTitel);
+                document.getElementById("project_logo").src = filename;
+            });
+
+        };
     </script>
 </head>
 <body onbeforeunload="PageClose()" onselectstart="return false;" style="-moz-user-select: none; overflow: hidden;">
     <div id="ajax-loader" style="cursor:progress;position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: #fff; z-index: 100; overflow: hidden;">
-        <img src="~/Content/Images/ajax-loader.gif" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;" />
+        <img src="../../Content/Images/ajax-loader.gif" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;" />
     </div>
     <!-- header -->
     <div class="header">
         <div class="logo fleft">
-            <img src="~/Content/Images/loginlogo.png" />
+           <div style="margin-left:35px;margin-top:7px; float:left"><img id="project_logo" src=""style="width:32px;height:32px;" /></div>
+           <div style="float:left; margin-left:5px;"><p style="font-size:24pt; color:white"></p></div>
         </div>
         <div id="Headermenu">
             <ul id="topnav">
@@ -203,7 +221,7 @@
                                     <i></i>
                                     <ul>
                                         <li onclick="Shortcuts()">
-                                            <img src="~/Content/Images/Icon16/shortcuts.png" />快捷方式设置</li>
+                                            <img src="../../Content/Images/Icon16/shortcuts.png" />快捷方式设置</li>
                                         <div id="Shortcuts"></div>
                                     </ul>
                                 </div>
@@ -216,13 +234,13 @@
                                     <i></i>
                                     <ul>
                                         <li>
-                                            <img src="~/Content/Images/Icon16/help.png" />查看帮助</li>
-                                        <li title="将反馈建议提交给开发商进行解决" onclick=" window.open('http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=uICJioyLiYuPivjJyZbb19U','_blank')">
-                                            <img src="~/Content/Images/Icon16/email_open.png" />反馈建议</li>
+                                            <img src="../../Content/Images/Icon16/help.png" />查看帮助</li>
+                                        <li title="将反馈建议提交给开发商进行解决" onclick=" window.open('//mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=uICJioyLiYuPivjJyZbb19U','_blank')">
+                                            <img src="../../Content/Images/Icon16/email_open.png" />反馈建议</li>
                                         <li onclick="Support()">
-                                            <img src="~/Content/Images/Icon16/premium_support.png" />技术支持</li>
+                                            <img src="../../Content/Images/Icon16/premium_support.png" />技术支持</li>
                                         <li onclick="About()">
-                                            <img src="~/Content/Images/Icon16/information.png" />关于我们</li>
+                                            <img src="../../Content/Images/Icon16/information.png" />关于我们</li>
                                     </ul>
                                 </div>
                             </a>
@@ -233,11 +251,11 @@
                         <span class="c5"></span>个人中心
                     </a>
                 </li>
-                <li id="metnav_2" class="list" onclick="SkinIndex()">
+                @*<li id="metnav_2" class="list" onclick="SkinIndex()">
                     <a id="nav_2">
                         <span class="c2"></span>切换皮肤
                     </a>
-                </li>
+                </li>*@
                 <li id="metnav_4" class="list" onclick="IndexOut();">
                     <a id="nav_4">
                         <span class="c4"></span>
@@ -268,7 +286,6 @@
                     <li onclick="ThisCloseTab()">关闭当前</li>
                     <li onclick="AllcloseTab()">全部关闭</li>
                     <li onclick="othercloseTab()">除此之外全部关闭</li>
-                    <div class='m-split'></div>
                     <li>退出</li>
                 </ul>
             </div>
@@ -283,25 +300,24 @@
     </div>
     <div id="footer" class="cs-south" style="height: 25px;">
         <div class="number" style="width: 30%; text-align: left; float: left; line-height: 25px;">
-            &nbsp;技术支持：<a href="http://www.baidu.com" target="_blank" style="color: white;">信息技术有限公司</a>
-            @*&nbsp; &nbsp;技术交流QQ：<a href="http://shang.qq.com/wpa/qunwpa?idkey=3ba0bad8da1b48fcd8a17cbdd4a67ac202f74b8864d6c94488a1aaec5add856d" title="点击加入QQ群" target="_blank" style="color: white;">100000</a>*@
+            &nbsp;欢迎 @ViewBag.Account 登录系统
         </div>
         <div class="number" style="width: 40%; text-align: center; float: left; line-height: 25px;">
-            CopyRight © 2010-2020 By Learun
+            CopyRight © 2017 <a href="http://www.baidu.com" target="_blank" style="color: white;">昆明双石科技有限公司</a>
         </div>
         <div style="width: 30%; text-align: right; float: right;">
             <div style="padding-right: 0px;">
                 <div title="在线用户（@HttpContext.Current.Application["OnLineCount"].ToString()）人" class="bottom_icon" style="padding-top:2px;">
-                    <img src="~/Content/Images/bottom_icon_usergroup.png" />
+                    <img src="../../Content/Images/bottom_icon_usergroup.png" />
                 </div>
                 @*<div title="邮件消息" class="bottom_icon" style="padding-top: 2px;">
-                    <img id="icon_email" src="~/Content/Images/youjian.png" style="padding-top: 5px;" />
-                </div>
-                <div id="div_icon_message" title="即时消息" class="bottom_icon" style="padding-top: 2px;">
-                    <img id="icon_message" src="~/Content/Images/bottom_icon_message.png" />
-                </div>*@
+                        <img id="icon_email" src="../../Content/Images/youjian.png" style="padding-top: 5px;" />
+                    </div>
+                    <div id="div_icon_message" title="即时消息" class="bottom_icon" style="padding-top: 2px;">
+                        <img id="icon_message" src="../../Content/Images/bottom_icon_message.png" />
+                    </div>*@
                 <div class="bottom_icon" style="padding-top: 1px;">
-                    <img title="我的信息，账户：@ViewBag.Account" src="~/Content/Images/bottom_icon_userinfo.png" />
+                    <img title="我的信息，账户：@ViewBag.Account" src="../../Content/Images/bottom_icon_userinfo.png" />
                 </div>
             </div>
         </div>
@@ -310,10 +326,10 @@
     <!--载进度条start-->
     <div id="loading_background" class="loading_background" style="display: none;"></div>
     <div id="loading" onclick="Loading(false);">
-        <img src="~/Content/Images/loading.gif" style="vertical-align: middle;" />&nbsp;<span>正在拼了命为您加载…</span>&nbsp;
+        <img src="../../Content/Images/loading.gif" style="vertical-align: middle;" />&nbsp;<span>正在拼了命为您加载…</span>&nbsp;
     </div>
     <div id="loadingGird">
-        <img src="~/Content/Images/loading.gif" style="vertical-align: middle;" />&nbsp;正在拼了命为您加载…&nbsp;
+        <img src="../../Content/Images/loading.gif" style="vertical-align: middle;" />&nbsp;正在拼了命为您加载…&nbsp;
     </div>
 </body>
 </html>

@@ -65,9 +65,9 @@
       <PropertyRef Name="FactoryWarehouseId" />
     </Key>
     <Property Name="FactoryWarehouseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="MemberNumbering" Type="bigint" />
+    <Property Name="MemberId" Type="int" />
     <Property Name="MemberModel" Type="nvarchar" MaxLength="20" />
-    <Property Name="InStockNumber" Type="nvarchar" MaxLength="20" />
+    <Property Name="InStockNumber" Type="int" />
     <Property Name="Description" Type="nvarchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="RMC_MemberLibrary">
@@ -79,7 +79,7 @@
     <Property Name="MemberName" Type="nvarchar" MaxLength="20" />
     <Property Name="MemberModel" Type="nvarchar" MaxLength="50" />
     <Property Name="MemberNumbering" Type="nvarchar" MaxLength="30" />
-    <Property Name="MemberClass" Type="nvarchar" MaxLength="30" />
+    <Property Name="MemberUnit" Type="nvarchar" MaxLength="10" />
     <Property Name="EngineeringClass" Type="nvarchar" MaxLength="10" />
     <Property Name="SectionalSizeB" Type="int" />
     <Property Name="SectionalSize_h" Type="int" />
@@ -115,6 +115,8 @@
     <Property Name="GravityCenterDistance_y0" Type="decimal" Precision="6" Scale="2" />
     <Property Name="CAD_Drawing" Type="nvarchar" MaxLength="100" />
     <Property Name="Model_Drawing" Type="nvarchar" MaxLength="100" />
+    <Property Name="IsRawMaterial" Type="int" />
+    <Property Name="IsProcess" Type="int" />
     <Property Name="Icon" Type="nvarchar" MaxLength="100" />
     <Property Name="ParentID" Type="int" />
     <Property Name="ModifiedTime" Type="datetime" />
@@ -124,6 +126,29 @@
     <Property Name="UploadTime" Type="datetime" />
     <Property Name="Sort" Type="int" />
   </EntityType>
+  <EntityType Name="RMC_MemberMaterial">
+    <Key>
+      <PropertyRef Name="MemberMaterialId" />
+    </Key>
+    <Property Name="MemberMaterialId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RawMaterialId" Type="int" />
+    <Property Name="MemberId" Type="int" />
+    <Property Name="RawMaterialClassId" Type="int" />
+    <Property Name="MaterialNumber" Type="int" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="RMC_MemberProcess">
+    <Key>
+      <PropertyRef Name="MemberProcessId" />
+    </Key>
+    <Property Name="MemberProcessId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MemberId" Type="int" />
+    <Property Name="ProcessName" Type="nvarchar" MaxLength="15" />
+    <Property Name="OperationTime" Type="nvarchar" MaxLength="5" />
+    <Property Name="ProcessRequirements" Type="nvarchar" MaxLength="200" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" />
+    <Property Name="SortCode" Type="int" />
+  </EntityType>
   <EntityType Name="RMC_MemberUnit">
     <Key>
       <PropertyRef Name="UnitId" />
@@ -132,41 +157,40 @@
     <Property Name="UnitName" Type="nvarchar" MaxLength="10" />
     <Property Name="Description" Type="nvarchar" MaxLength="200" />
   </EntityType>
+  <EntityType Name="RMC_OrderMember">
+    <Key>
+      <PropertyRef Name="OrderMemberId" />
+    </Key>
+    <Property Name="OrderMemberId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderId" Type="int" />
+    <Property Name="ProjectDemandId" Type="int" />
+    <Property Name="MemberId" Type="int" />
+    <Property Name="MemberNumbering" Type="nvarchar" MaxLength="30" />
+    <Property Name="MemberName" Type="nvarchar" MaxLength="15" />
+    <Property Name="MemberModel" Type="nvarchar" MaxLength="15" />
+    <Property Name="MemberUnit" Type="nvarchar" MaxLength="10" />
+    <Property Name="Qty" Type="int" />
+    <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PriceAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" />
+  </EntityType>
   <EntityType Name="RMC_ProcessManagement">
     <Key>
       <PropertyRef Name="ProcessId" />
     </Key>
     <Property Name="ProcessId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="OrderId" Type="int" />
-    <Property Name="TreeId" Type="int" />
+    <Property Name="MemberId" Type="int" />
+    <Property Name="MemberProcessId" Type="int" />
     <Property Name="ProduceStartDate" Type="datetime" />
     <Property Name="ProduceEndDate" Type="datetime" />
-    <Property Name="MemberCompanyId" Type="int" />
-    <Property Name="IsSetUpProcessingTask" Type="int" />
-    <Property Name="SetUpProcessing" Type="nvarchar" MaxLength="30" />
-    <Property Name="SetUpProcessingDays" Type="int" />
-    <Property Name="IsSetUpProcessing" Type="int" />
-    <Property Name="IsSubmergedArcProcessingTask" Type="int" />
-    <Property Name="SubmergedArcProcessing" Type="nvarchar" MaxLength="10" />
-    <Property Name="SubmergedArcProcessingDays" Type="int" />
-    <Property Name="IsSubmergedArcProcessing" Type="int" />
-    <Property Name="IsRivetingProcessingTask" Type="int" />
-    <Property Name="RivetingProcessing" Type="nvarchar" MaxLength="10" />
-    <Property Name="RivetingProcessingDays" Type="int" />
-    <Property Name="IsRivetingProcessing" Type="int" />
-    <Property Name="IsPaintProcessingTask" Type="int" />
-    <Property Name="PaintProcessing" Type="nvarchar" MaxLength="10" />
-    <Property Name="PaintProcessingDays" Type="int" />
-    <Property Name="IsPaintProcessing" Type="int" />
-    <Property Name="QualityInspection" Type="int" />
-    <Property Name="Supervision" Type="int" />
+    <Property Name="ProcessMan" Type="nvarchar" MaxLength="15" />
     <Property Name="UnqualifiedNumber" Type="int" />
     <Property Name="QualifiedNumber" Type="int" />
-    <Property Name="IsPacking" Type="int" />
-    <Property Name="Packing" Type="nvarchar" MaxLength="10" />
-    <Property Name="PackingDays" Type="int" />
     <Property Name="Description" Type="nvarchar" MaxLength="500" />
-    <Property Name="OrderNumbering" Type="nvarchar" MaxLength="20" />
+    <Property Name="IsProcessStatus" Type="int" />
+    <Property Name="ProcessManImge" Type="nvarchar" MaxLength="30" />
+    <Property Name="ProcessName" Type="nvarchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="RMC_ProjectDemand">
     <Key>
@@ -174,8 +198,10 @@
     </Key>
     <Property Name="ProjectDemandId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="TreeId" Type="int" />
-    <Property Name="ProjectId" Type="int" />
+    <Property Name="TreeName" Type="nvarchar" MaxLength="20" />
     <Property Name="MemberId" Type="int" />
+    <Property Name="MemberNumbering" Type="nvarchar" MaxLength="40" />
+    <Property Name="MemberModel" Type="nvarchar" MaxLength="20" />
     <Property Name="MemberCompanyId" Type="int" />
     <Property Name="MemberClassId" Type="int" />
     <Property Name="UnitId" Type="int" />
@@ -191,8 +217,9 @@
     <Property Name="MemberNumber" Type="int" />
     <Property Name="OrderQuantityed" Type="int" />
     <Property Name="Productioned" Type="int" />
-    <Property Name="DeleteTime" Type="datetime" />
+    <Property Name="CreateTime" Type="datetime" />
     <Property Name="ModifiedTime" Type="datetime" />
+    <Property Name="CollarNumbered" Type="int" />
   </EntityType>
   <EntityType Name="RMC_ProjectInfo">
     <Key>
@@ -202,18 +229,29 @@
     <Property Name="ParentId" Type="int" />
     <Property Name="TreeID" Type="int" />
     <Property Name="ProjectName" Type="nvarchar" MaxLength="100" />
+    <Property Name="ProjectSystemTitel" Type="nvarchar" MaxLength="30" />
+    <Property Name="ProjectLogo" Type="nvarchar" MaxLength="200" />
+    <Property Name="ProjectBackground" Type="nvarchar" MaxLength="200" />
     <Property Name="State" Type="int" />
     <Property Name="ProjectAddress" Type="nvarchar" MaxLength="200" />
     <Property Name="ConstructionPermitId" Type="int" />
     <Property Name="ConstructionUnit" Type="nvarchar" MaxLength="50" />
+    <Property Name="ConstructionPrincipal" Type="nvarchar" MaxLength="50" />
+    <Property Name="ConstructionPrincipalTEL" Type="nvarchar" MaxLength="50" />
     <Property Name="DesignUnit" Type="nvarchar" MaxLength="50" />
+    <Property Name="DesignPrincipal" Type="nvarchar" MaxLength="50" />
+    <Property Name="DesignPrincipalTEL" Type="nvarchar" MaxLength="50" />
     <Property Name="SupervisionUnit" Type="nvarchar" MaxLength="50" />
+    <Property Name="SupervisionPrincipal" Type="nvarchar" MaxLength="50" />
+    <Property Name="SupervisionPrincipalTEL" Type="nvarchar" MaxLength="50" />
     <Property Name="GeneralContractor" Type="nvarchar" MaxLength="50" />
+    <Property Name="GeneralContractorPrincipal" Type="nvarchar" MaxLength="50" />
+    <Property Name="GeneralContractorPrincipalTEL" Type="nvarchar" MaxLength="50" />
     <Property Name="ProfessionalContractor" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalContractorPrincipal" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfessionalContractorPrincipalTEL" Type="nvarchar" MaxLength="50" />
     <Property Name="DeleteFlag" Type="int" />
     <Property Name="ModifiedTime" Type="datetime" />
-    <Property Name="ProjectLogo" Type="nvarchar" MaxLength="200" />
-    <Property Name="ProjectBackground" Type="nvarchar" MaxLength="200" />
     <Property Name="Description" Type="nvarchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="RMC_ProjectOrder">
@@ -224,10 +262,11 @@
     <Property Name="TreeId" Type="int" />
     <Property Name="ProjectDemandId" Type="int" />
     <Property Name="OrderNumbering" Type="nvarchar" MaxLength="20" />
-    <Property Name="OrderNumber" Type="int" />
+    <Property Name="Icon" Type="nvarchar" MaxLength="20" />
     <Property Name="OrderBudget" Type="numeric" Precision="8" Scale="2" />
     <Property Name="IsReview" Type="int" />
     <Property Name="ReviewMan" Type="nvarchar" MaxLength="10" />
+    <Property Name="ReviewTime" Type="datetime" />
     <Property Name="IsSubmit" Type="int" />
     <Property Name="SubmitMan" Type="nvarchar" MaxLength="10" />
     <Property Name="SubmitTime" Type="datetime" />
@@ -235,13 +274,12 @@
     <Property Name="ConfirmMan" Type="nvarchar" MaxLength="10" />
     <Property Name="CreateTime" Type="datetime" />
     <Property Name="CreateMan" Type="nvarchar" MaxLength="10" />
-    <Property Name="RawMaterialId" Type="int" />
-    <Property Name="RawMaterialUnitPrice" Type="nvarchar" MaxLength="10" />
-    <Property Name="RawMaterialConsumption" Type="nvarchar" MaxLength="100" />
     <Property Name="DeleteFlag" Type="int" />
     <Property Name="Productioned" Type="int" />
     <Property Name="ModifiedTime" Type="datetime" />
     <Property Name="Description" Type="nvarchar" MaxLength="500" />
+    <Property Name="Priority" Type="int" />
+    <Property Name="EngineeringPosition" Type="nvarchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="RMC_ProjectWarehouse">
     <Key>
@@ -299,6 +337,7 @@
     <Property Name="ShippingTEL" Type="nvarchar" MaxLength="15" />
     <Property Name="ShippingMan" Type="nvarchar" MaxLength="10" />
     <Property Name="Description" Type="nvarchar" MaxLength="200" />
+    <Property Name="LibraryNumber" Type="int" />
   </EntityType>
   <EntityType Name="RMC_Tree">
     <Key>
@@ -308,8 +347,9 @@
     <Property Name="ParentID" Type="int" />
     <Property Name="ItemID" Type="int" />
     <Property Name="IsItem" Type="int" />
+    <Property Name="IsItemInfo" Type="int" />
     <Property Name="TreeName" Type="nvarchar" MaxLength="20" />
-    <Property Name="Url" Type="nvarchar" MaxLength="25" />
+    <Property Name="Url" Type="nvarchar" MaxLength="80" />
     <Property Name="Icon" Type="nvarchar" MaxLength="10" />
     <Property Name="IsMenu" Type="int" />
     <Property Name="State" Type="int" />
@@ -322,13 +362,17 @@
     <Property Name="Description" Type="nvarchar" MaxLength="500" />
     <Property Name="IsReview" Type="int" />
     <Property Name="FileType" Type="nvarchar" MaxLength="20" />
+    <Property Name="IsProduceOrder" Type="int" />
   </EntityType>
   <EntityContainer Name="kskfModelStoreContainer">
     <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="Self.RMC_AnalysisRawMaterial" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_Company" EntityType="Self.RMC_Company" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_FactoryWarehouse" EntityType="Self.RMC_FactoryWarehouse" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_MemberLibrary" EntityType="Self.RMC_MemberLibrary" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RMC_MemberMaterial" EntityType="Self.RMC_MemberMaterial" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RMC_MemberProcess" EntityType="Self.RMC_MemberProcess" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_MemberUnit" EntityType="Self.RMC_MemberUnit" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RMC_OrderMember" EntityType="Self.RMC_OrderMember" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_ProcessManagement" EntityType="Self.RMC_ProcessManagement" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_ProjectDemand" EntityType="Self.RMC_ProjectDemand" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_ProjectInfo" EntityType="Self.RMC_ProjectInfo" Schema="dbo" store:Type="Tables" />

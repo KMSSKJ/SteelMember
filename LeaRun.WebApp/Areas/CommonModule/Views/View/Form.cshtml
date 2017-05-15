@@ -92,7 +92,7 @@
         tr += '<td style="width: 60px; text-align: center;"><input id="SortCode➩' + TableRowIndex + '" value="' + TableRowIndex + '" type="text" style="text-align: center;" class="txt" datacol="yes" err="排序" checkexpession="Num" /></td>'
         tr += '<td style="width: 60px; text-align: center;"><input id="Enabled➩' + TableRowIndex + '" onclick=\"EnabledEvent(' + TableRowIndex + ')\" checked="checked" type="checkbox" /></td>'
         tr += '<td ><input id="CustomSwitch➩' + TableRowIndex + '"  type="text" class="txt" /></td>'
-        tr += '<td style="width: 30px; text-align: center;"><span onclick="$(this).parent().parent().remove()" title="删除" style="cursor: pointer;"><img src="@Url.Content("~/Content/Images/Icon16/Delete.png")" /></span></td>'
+        tr += '<td style="width: 30px; text-align: center;"><span onclick="$(this).parent().parent().remove()" title="删除" style="cursor: pointer;"><img src="@Url.Content("../../Content/Images/Icon16/Delete.png")" /></span></td>'
         tr += '</tr>';
         $("#grid_ColumnField tbody").append(tr);
         TableRowIndex++;
@@ -149,7 +149,7 @@
         tr += '<td style="width: 60px; text-align: center;"><input id="AllowShow➩WhereField' + RowIndex_WhereField + '"  type="checkbox"/></td>'
         tr += '<td style="width: 60px; text-align: center;"><input id="SortCode➩WhereField' + RowIndex_WhereField + '" value="' + RowIndex_WhereField + '" type="text" style="text-align: center;" class="txt" datacol="yes" err="排序" checkexpession="Num" /></td>'
         tr += '<td style="width: 60px; text-align: center;"><input id="Enabled➩WhereField' + RowIndex_WhereField + '" type="checkbox" checked="checked" /></td>'
-        tr += '<td style="width: 30px; text-align: center;"><span onclick="$(this).parent().parent().remove()" title="删除" style="cursor: pointer;"><img src="@Url.Content("~/Content/Images/Icon16/Delete.png")" /></span></td>'
+        tr += '<td style="width: 30px; text-align: center;"><span onclick="$(this).parent().parent().remove()" title="删除" style="cursor: pointer;"><img src="@Url.Content("../../Content/Images/Icon16/Delete.png")" /></span></td>'
         tr += '</tr>';
         $("#grid_WhereField tbody").append(tr);
         RowIndex_WhereField++;
@@ -226,7 +226,7 @@
                             <td style="width: 30px; text-align: center;">
                                 <div class="table-header">
                                     <span onclick="CreateTableRow()" title="添加一行" style="cursor: pointer;">
-                                        <img src="~/Content/Images/Icon16/add.png" /></span>
+                                        <img src="../../Content/Images/Icon16/add.png" /></span>
                                 </div>
                             </td>
                         </tr>
@@ -276,7 +276,7 @@
                             <td style="width: 30px; text-align: center;">
                                 <div class="table-header">
                                     <span onclick="CreateRow_WhereField()" title="添加一行" style="cursor: pointer;">
-                                        <img src="~/Content/Images/Icon16/add.png" /></span>
+                                        <img src="../../Content/Images/Icon16/add.png" /></span>
                                 </div>
                             </td>
                         </tr>

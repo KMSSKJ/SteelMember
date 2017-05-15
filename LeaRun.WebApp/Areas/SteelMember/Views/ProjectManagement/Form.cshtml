@@ -10,6 +10,7 @@
         var KeyValue = GetQuery('KeyValue');
         var ItemID = GetQuery('ItemID');
         var TreeId = GetQuery('TreeID');
+        var TreeName = GetQuery('TreeName');
         var Data;
         var mole_fileURL;
         var cad_fileURL;
@@ -17,7 +18,6 @@
             LoadProjectName();
             LoadMemberClass();
             InitControl();
-            LoadDrawing();
             LoadMemberName();
             LoadMemberUnit();
         })
@@ -41,6 +41,13 @@
                 //    //$("#IsPublic").val(GetQuery('IsPublic'));
             }
         }
+
+        function LoadProjectName() {
+            AjaxJson("/SteelMember/ProjectManagement/GetTreeName", { KeyValue: TreeId }, function (data) {
+                document.getElementById("TreeName").value = data.TreeName;
+            })
+        }
+
         //保存事件
         function AcceptClick() {
             if (!CheckDataValid('#form2')) {
@@ -77,6 +84,7 @@
         };
 
         //获取构件名称
+        var KeyValueId = "";
         function GetMemberName(treeid) {
             $.ajax({
                 url: '/SteelMember/ProjectManagement/GetMemderName',
@@ -94,11 +102,10 @@
                         $("#MemberId").html(projectname_sel.join(' '));
                         $('#MemberId')[0].selectedIndex = 0;//select下拉框的第二个元素为当前选中值
                         var checkValue = $("#MemberId").val();  //获取Select选择的Value
-                        GetMemberDrawing(checkValue);
-
+                            KeyValueId = checkValue;
                         $("#MemberId").change(function () {//code...});   //为Select添加事件，当选择其中一项时触发
                             var checkValue = $("#MemberId").val();  //获取Select选择的Value
-                            GetMemberDrawing(checkValue);
+                            KeyValueId = checkValue;
                             //var checkText = $("#MemberId").find("option:selected").text();  //获取Select选择的Text
                             //var checkIndex = $("#MemberId ").get(0).selectedIndex;  //获取Select选择的索引值
                             //var maxIndex = $("#MemberId option:last").attr("index");  //获取Select最大的索引值
@@ -108,84 +115,6 @@
                 },
                 error: function () {
                     alert('查询异常');
-                }
-            });
-        };
-
-        //获取构件图像
-        function GetMemberDrawing(MemberId) {
-            $.ajax({
-                url: '/SteelMember/ProjectManagement/GetMemderDrawing',
-                type: 'post',
-                datatype: 'Json',
-                data: { KeyValue: MemberId },
-                success: function (data) {
-                    mole_fileURL = data.CADDrawing;
-                    cad_fileURL = data.ModelDrawing;
-
-                    $("#viewer_cad").iviewer(
-                {
-                    src: cad_fileURL,
-                    update_on_resize: false,
-                    initCallback: function () {
-                        var object = this;
-                        $("#in").click(function () { object.zoom_by(1); });
-                        $("#out").click(function () { object.zoom_by(-1); });
-                        $("#fit").click(function () { object.fit(); });
-                        $("#orig").click(function () { object.set_zoom(100); });
-                        $("#update").click(function () { object.update_container_info(); });
-                    },
-                    onMouseMove: function (object, coords) { },
-                    onStartDrag: function (object, coords) { return false; }, //this image will not be dragged
-                    onDrag: function (object, coords) { }
-                });
-
-                    $("#viewer_model").iviewer(
-                       {
-                           src: mole_fileURL,
-                           update_on_resize: false,
-                           initCallback: function () {
-                               var object = this;
-                               $("#in").click(function () { object.zoom_by(1); });
-                               $("#out").click(function () { object.zoom_by(-1); });
-                               $("#fit").click(function () { object.fit(); });
-                               $("#orig").click(function () { object.set_zoom(100); });
-                               $("#update").click(function () { object.update_container_info(); });
-                           },
-                           onMouseMove: function (object, coords) { },
-                           onStartDrag: function (object, coords) { return false; }, //this image will not be dragged
-                           onDrag: function (object, coords) { }
-                       });
-                },
-                error: function () {
-                }
-            });
-        };
-
-        //载入项目名称
-        function LoadProjectName() {
-            $.ajax({
-                url: '/SteelMember/ProjectManagement/GetProjectName',
-                type: 'post',
-                datatype: 'Json',
-                data: {},
-                success: function (data) {
-                    if (data) {
-                        var projectname_sel = [];
-                        // projectname_sel.push('<option value="" selected>请选择</option>')
-                        for (var i = 0, len = data.length; i < len; i++) {
-                            var projectname = data[i];
-                            projectname_sel.push('<option value="' + projectname.ProjectId + '">' + projectname.ProjectName + '</option>')
-                        }
-                        $("#ProjectId").html(projectname_sel.join(' '));
-                        if (!!KeyValue) {
-                            //编辑时获取值
-                            $("#ProjectId  option[value='" + Data.ProjectId + "']").attr("selected", true);
-                        }
-                    }
-                },
-                error: function () {
- 
                 }
             });
         };
@@ -244,103 +173,30 @@
 
                 }
             });
+        }; 
+
+        function MemberInfo(){
+            if (KeyValueId != "") {
+                var url = "/SteelMember/File/DrawingManagement?KeyValue= " + KeyValueId;
+                    Dialog(url, "DrawingManagement", "构件信息", 760, 660, function (iframe) {
+                    top.frames[iframe].AcceptClick();
+                });
+            }else{
+                alertDialog("数据不能为空",0);
+            }
         };
-
-
-          //载入项目名称
-        function LoadProjectName() {
-            $.ajax({
-                url: '/SteelMember/ProjectManagement/GetProjectName',
-                type: 'post',
-                datatype: 'Json',
-                data: {},
-                success: function (data) {
-                    if (data) {
-                        var projectname_sel = [];
-                        // projectname_sel.push('<option value="" selected>请选择</option>')
-                        for (var i = 0, len = data.length; i < len; i++) {
-                            var projectname = data[i];
-                            projectname_sel.push('<option value="' + projectname.ProjectId + '">' + projectname.ProjectName + '</option>')
-                        }
-                        $("#ProjectId").html(projectname_sel.join(' '));
-                        if (!!KeyValue) {
-                            //编辑时获取值
-                            $("#ProjectId  option[value='" + Data.ProjectId + "']").attr("selected", true);
-                        }
-                    }
-                },
-                error: function () {
- 
-                }
-            });
-        };
-  
-        function LoadDrawing() {
-           mole_fileURL = $("#ModelDrawing").val();
-           cad_fileURL = $("#CADDrawing").val();
-            $("#viewer_cad").iviewer(
-                 {
-                     src: cad_fileURL,
-                     update_on_resize: false,
-                     initCallback: function () {
-                         var object = this;
-                         $("#in").click(function () { object.zoom_by(1); });
-                         $("#out").click(function () { object.zoom_by(-1); });
-                         $("#fit").click(function () { object.fit(); });
-                         $("#orig").click(function () { object.set_zoom(100); });
-                         $("#update").click(function () { object.update_container_info(); });
-                     },
-                     onMouseMove: function (object, coords) { },
-                     onStartDrag: function (object, coords) { return false; }, //this image will not be dragged
-                     onDrag: function (object, coords) { }
-                 });
-
-            $("#viewer_model").iviewer(
-               {
-                   src: mole_fileURL,
-                   update_on_resize: false,
-                   initCallback: function () {
-                       var object = this;
-                       $("#in").click(function () { object.zoom_by(1); });
-                       $("#out").click(function () { object.zoom_by(-1); });
-                       $("#fit").click(function () { object.fit(); });
-                       $("#orig").click(function () { object.set_zoom(100); });
-                       $("#update").click(function () { object.update_container_info(); });
-                   },
-                   onMouseMove: function (object, coords) { },
-                   onStartDrag: function (object, coords) { return false; }, //this image will not be dragged
-                   onDrag: function (object, coords) { }
-               });
-        };
-
     </script>
-
-    <link href="~/Content/Scripts/jqueryPicture/css/jquery.iviewer.css" rel="stylesheet" />
-    <style>
-        .viewer {
-            width: 99%;
-            height: 96%;
-            border: 1px solid black;
-            position: relative;
-        }
-    </style>
 </head>
 <form id="form2"style="margin: 25px; margin-left: 40px; margin-right: 40px;">
     <div>
-        <input id="IsPublic" type="hidden" />
-        <input id="SortCode" type="hidden" />
-        <input id="ParentID" type="hidden" />
-        @*<input id="ProjectId" type="hidden" />
-            <input id="MemberId" type="hidden" />
-            <input id="MemberCompanyId" type="hidden" />*@
-
+       
         <table class="form">
             <tr>
                 <th class="formTitle"> 
-                    项目名称：
+                    分项目名称：
                 </th>
-                <td class="formValue" colspan="3">
-                    <select id="ProjectId" name="ProjectId"></select>
+                <td class="formValue" >
+                    <input readonly id="TreeName" type="text" class="txt" />
                 </td>
             </tr>
             <tr>
@@ -351,11 +207,14 @@
                     <input id="MemberClassId" name="MemberClassId" type="hidden" />
                     <input id="MemberClassName" type="text" class="txt icontree" />
                 </td>
+                </tr>
+            <tr>
                 <th class="formTitle">
                     构件型号：
                 </th>
                 <td class="formValue">
-                    <select id="MemberId" name="MemberId"></select>
+                    <select id="MemberId" name="MemberId" style="width:50%"></select>
+                    <input id="btn_MemberInfo" type="button" onclick="MemberInfo()" value="构件详情" />
                 </td>
             </tr>
             <tr>
@@ -365,39 +224,21 @@
                 <td class="formValue">
                     <input id="MemberNumber" type="text" class="txt" />
                 </td>
+            </tr>
+            <tr>
                 <th class="formTitle">
                     单位：
                 </th>
                 <td class="formValue">
-                    <select id="UnitId" name="UnitId"></select>
+                    <select id="UnitId" name="UnitId" style="width:50%"></select>
                 </td>
             </tr>
-            <tr>
-                <th class="formTitle">
-                    构件预览  ：
-                </th>
-                <td class="formValue" colspan="3">
-                    <div style="width:100%;height:150px">
-                        <div style="float:left;width:50%;height:50%">
-                            <input type="hidden" id="CADDrawing" name="CADDrawing" />
-                            <div>图纸</div>
-                            <div id="viewer_cad" class="viewer"></div>
-                        </div>
-                        <div style="float:left;width:50%;height:50%">
-                            <input type="hidden" id="ModelDrawing" name="ModelDrawing" />
-                            <div>
-                                模型
-                            </div>
-                            <div id="viewer_model" class="viewer"></div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
+
             <tr>
                 <th class="formTitle">
                     备注：
                 </th>
-                <td class="formValue" colspan="3">
+                <td class="formValue">
                     <textarea id="Description" name="Description" maxlength="200" class="txtArea" rows="5"></textarea>
                 </td>
             </tr>

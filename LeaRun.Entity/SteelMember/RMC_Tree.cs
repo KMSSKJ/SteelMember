@@ -18,6 +18,7 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<int> ParentID { get; set; }
         public Nullable<int> ItemID { get; set; }
         public Nullable<int> IsItem { get; set; }
+        public Nullable<int> IsItemInfo { get; set; }
         public string TreeName { get; set; }
         public string Url { get; set; }
         public string Icon { get; set; }
@@ -32,5 +33,6 @@ namespace LeaRun.Entity.SteelMember
         public string Description { get; set; }
         public Nullable<int> IsReview { get; set; }
         public string FileType { get; set; }
+        public Nullable<int> IsProduceOrder { get; set; }
     }
 }

@@ -2,7 +2,6 @@
     ViewBag.Title = "构件库管理";
     Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
-
 <script type="text/javascript">
     $(document).ready(function () {
         GetTree();
@@ -10,10 +9,22 @@
         SwitchListAndView();
     });
 
+    function showBigImg(oEvent, imgPath) {
+        bigImg.src = imgPath;
+        var oDiv = document.getElementById("BigDiv");
+        oDiv.style.visibility = "visible";
+        oDiv.style.left = oEvent.clientX + 5;
+        oDiv.style.top = oEvent.clientY + 5;
+    }
+    function leaveBigImg(oEvent) {
+        var oDiv = document.getElementById("BigDiv");
+        oDiv.style.visibility = "hidden";
+    }
+
     //加载左边树
     //注意 FolderId 默认等于1 这样就可以加载一级目录下的子节点文件夹
-    var ItemId ="";
-    var TreeId="";
+    var ItemId = "";
+    var TreeId = "";
     ItemId = 1, TreeName = "";
     function GetTree() {
         var itemtree = {
@@ -48,42 +59,43 @@
                     { label: '主键', name: "TreeID", hidden: true },
                     { label: 'Sort', name: 'Sort', hidden: true },
                     {
-                      label: '编号', name: "MemberNumbering", index: "MemberNumbering", width: 10
+                        label: '图标', name: 'Icon', width: 3,
+                        formatter: function (cellvalue, options, rowObject) {
+                            var a = rowObject.Icon;
+                            var filename = a.substring(0, a.lastIndexOf('.'));//获取文件名称，去除后缀名
+                            filename = filename + "/" + a;
+                            if (a == "1.png") {
+                                return "<div style='cursor:pointer;padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;' src='../../Content/Scripts/tree/images/folder.gif' onmouseover=\"showBigImg(event,'../../Content/Scripts/tree/images/folder.gif')\" onmouseout=\"leaveBigImg(event)\" /></div>";
+                            } else {
+                                return "<div style='cursor:pointer;padding-top:1px;'><img style='width:32px;height:18px;padding-bottom:3px;padding-right:2px;' src='../../Resource/Document/NetworkDisk/System/Member/" + filename + "' onmouseover=\"showBigImg(event,'../../Resource/Document/NetworkDisk/System/Member/" + filename + "')\" onmouseout=\"leaveBigImg(event)\" /></div>";
+                            }
+                        }
+                    },
+                    { label: '编号', name: "MemberNumbering", index: "MemberNumbering", width: 15 },
+                    { label: '型号', name: "MemberModel", index: "MemberModel", width: 6 },
+                     {
+                         label: '入库时间', name: "UploadTime", index: "UploadTime", width: 10,
+                         formatter: function (cellvalue, options, rowObject) {
+                             return formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
+                         }
                      },
-                    {
-                        label: '型号', name: "MemberModel", index: "MemberModel", width: 10,
-                     },
-                    { label: '截面面积/cm²', name: "SectionalArea", index: "SectionalArea", width: 19, rowspan: 2 },
-                    { label: '外表面积/(m²/m)', name: "SurfaceArea", index: "SurfaceArea", width: 23, rowspan: 2 },
-                    { label: '理论重量/(㎏/m)', name: "TheoreticalWeight", index: "TheoreticalWeight", width: 22, rowspan: 2 },
-                    { label: '高度', name: "SectionalSize_h", index: "SectionalSize_h", width: 8 },
+                    { label: '截面面积/<Br/>cm²', name: "SectionalArea", index: "SectionalArea", width: 6, },
+                    { label: '外表面积/(m²/m)', name: "SurfaceArea", index: "SurfaceArea", width: 6, },
+                    { label: '理论重量/(㎏/m)', name: "TheoreticalWeight", index: "TheoreticalWeight", width: 6, },
+                    { label: '高度', name: "SectionalSize_h", index: "SectionalSize_h", width: 5 },
                     //{ label: '长边宽度', name: 'SectionalSizeB', index: 'SectionalSizeB', width: 8 },
-                    { label: '腿宽度', name: 'SectionalSize_b', index: 'SectionalSize_b', width: 8 },
+                    { label: '腿宽度', name: 'SectionalSize_b', index: 'SectionalSize_b', width: 5 },
                     //{ label: '长边厚度', name: 'SectionalSizeD', index: 'SectionalSizeD', width: 8 },
-                    { label: '腰厚度', name: 'SectionalSize_d', index: 'SectionalSize_d', width: 8 },
+                    { label: '腰厚度', name: 'SectionalSize_d', index: 'SectionalSize_d', width: 5 },
                     //{ label: '平均腿厚度', name: 'SectionalSize_t', index: 'SectionalSize_t', width: 8 },
                     //{ label: '内圆弧半径', name: 'SectionalSize_r', index: 'SectionalSize_r', width: 8 },
                     //{ label: '腿端圆弧半径', name: 'SectionalSize_r1', index: 'SectionalSize_r1', width: 8 },
                     {
-                        label: '图纸', name: 'CAD_Drawing', index: 'IsHaveDrawing', width: 8,
+                        label: '图纸', name: 'CAD_Drawing', index: 'CAD_Drawing', width: 5,
                         formatter: function (cellvalue, value, row, index) {
                             var is_have_drawing = cellvalue;
                             if (is_have_drawing != "" || is_have_drawing != null) {
-                                if (is_have_drawing!= "1.png") {
-                                    return "<img src='../../Content/Images/checkokmark.gif'/>";
-                                } else {
-                                    return "<img src='../../Content/Images/checknomark.gif'/>";
-                                }
-                            } else {
-                                return "";
-                            }
-                        }},
-                    {
-                        label: '模型', name: 'Model_Drawing', index: 'IsHaveModel', width: 8,
-                        formatter: function (cellvalue, value, row, index) {
-                            var is_have_model = cellvalue;
-                            if (is_have_model != "" || is_have_model != null) {
-                                if (is_have_model !="1.png") {
+                                if (is_have_drawing != "1.png") {
                                     return "<img src='../../Content/Images/checkokmark.gif'/>";
                                 } else {
                                     return "<img src='../../Content/Images/checknomark.gif'/>";
@@ -93,38 +105,48 @@
                             }
                         }
                     },
-
-                    //{ label: 'I<sub>x</sub>', name: 'InertiaDistance_x', index: 'InertiaDistance_x', width: 8 },
-                    //{ label: 'I<sub>x0</sub>', name: 'InertiaDistance_x0', index: 'InertiaDistance_x0', width: 8 },
-                    //{ label: 'I<sub>x1</sub>', name: 'InertiaDistance_x1', index: 'InertiaDistance_x1', width: 8 },
-                    //{ label: 'I<sub>y</sub>', name: 'InertiaDistance_y', index: 'InertiaDistance_y', width: 8 },
-                    //{ label: 'I<sub>y0</sub>', name: 'InertiaDistance_y0', index: 'InertiaDistance_y0', width: 8 },
-                    //{ label: 'I<sub>y1</sub>', name: 'InertiaDistance_y1', index: 'InertiaDistance_y1', width: 8 },
-                    //{ label: 'I<sub>u</sub>', name: 'InertiaDistance_u', index: 'InertiaDistance_u', width: 8 },
-                    //{ label: 'i<sub>x</sub>', name: 'InertiaRadius_x', index: 'InertiaRadius_x', width: 8 },
-                    //{ label: 'i<sub>y</sub>', name: 'InertiaRadius_y', index: 'InertiaRadius_y', width: 8 },
-                    //{ label: 'i<sub>x0</sub>', name: 'InertiaRadius_x0', index: 'InertiaRadius_x0', width: 8 },
-                    //{ label: 'i<sub>y0</sub>', name: 'InertiaRadius_y0', index: 'InertiaRadius_y0', width: 8 },
-                    //{ label: 'i<sub>u</sub>', name: 'InertiaRadius_u', index: 'InertiaRadius_u', width: 8 },
-                    //{ label: 'W<sub>x</sub>', name: 'SectionalModulus_x', index: 'SectionalModulus_x', width: 8 },
-                    //{ label: 'W<sub>y</sub>', name: 'SectionalModulus_y', index: 'SectionalModulus_y', width: 8 },
-                    //{ label: 'W<sub>x0</sub>', name: 'SectionalModulus_x0', index: 'SectionalModulus_x0', width: 8 },
-                    //{ label: 'W<sub>y0</sub>', name: 'SectionalModulus_y0', index: 'SectionalModulus_y0', width: 8 },
-                    //{ label: 'W<sub>u</sub>', name: 'SectionalModulus_u', index: 'SectionalModulus_u ', width: 8 },
-                    //{ label: 'Z<sub>0</sub>', name: 'GravityCenterDistance_0', index: 'GravityCenterDistance_0 ', width: 8 },
-                    //{ label: 'X<sub>0</sub>', name: 'GravityCenterDistance_x0', index: 'GravityCenterDistance_x0 ', width: 8 },
-                    //{ label: 'Y<sub>u</sub>', name: 'GravityCenterDistance_y0', index: 'GravityCenterDistance_y0 ', width: 8 },
+                    {
+                        label: '模型', name: 'Model_Drawing', index: 'Model_Drawing', width: 5,
+                        formatter: function (cellvalue, value, row, index) {
+                            var is_have_model = cellvalue;
+                            if (is_have_model != "" || is_have_model != null) {
+                                if (is_have_model != "1.png") {
+                                    return "<img src='../../Content/Images/checkokmark.gif'/>";
+                                } else {
+                                    return "<img src='../../Content/Images/checknomark.gif'/>";
+                                }
+                            } else {
+                                return "";
+                            }
+                        }
+                    },
+                     {
+                         label: '材料', name: 'IsRawMaterial', index: 'IsRawMaterial', width: 5,
+                         formatter: function (cellvalue, value, row, index) {
+                             var IsRawMaterial = cellvalue;
+                             if (IsRawMaterial != 0) {
+                                 return "<img src='../../Content/Images/checkokmark.gif'/>";
+                             } else {
+                                 return "<img src='../../Content/Images/checknomark.gif'/>";
+                             }
+                         }
+                     },
+                    {
+                        label: '制程', name: 'IsProcess', index: 'IsProcess', width: 5,
+                        formatter: function (cellvalue, value, row, index) {
+                            var IsProcess = cellvalue;
+                            if (IsProcess != 0) {
+                                return "<img src='../../Content/Images/checkokmark.gif'/>";
+                            } else {
+                                return "<img src='../../Content/Images/checknomark.gif'/>";
+                            }
+                        }
+                    },
             ],
             rowNum: 30,
             sortname: 'SortCode',
             sortorder: 'Desc',//降序 asc升序
             pager: "#gridPager",
-            //jsonReader: {
-            //    repeatitems: false,
-            //    id: "MemberId"
-            //},
-            //shrinkToFit: false,
-            //footerrow: true,
             viewrecords: true,
             rownumbers: true,
             gridview: true,
@@ -170,62 +192,66 @@
         });
     }
 
-    //构件图纸/模型管理
-    function btn_drawing() {
+    ////构件图纸/模型管理
+    //function btn_drawing() {
+    //    var KeyValue = GetJqGridRowValue("#gridTable", "MemberID");
+    //    var Sort = GetJqGridRowValue("#gridTable", "Sort");
+    //    var CAD_Drawing = GetJqGridRowValue("#gridTable", "CAD_Drawing");
+    //    var Model_Drawing = GetJqGridRowValue("#gridTable", "Model_Drawing");
+
+    //    if (IsChecked(KeyValue)) {
+    //        var CAD_Drawing1 = CAD_Drawing.replace(/"/, "'").replace(/"/, "'");
+    //        var Model_Drawing1 = Model_Drawing.replace(/"/, "'").replace(/"/, "'");
+    //        if (CAD_Drawing1 == "<img src='../../Content/Images/checkokmark.gif'>" || Model_Drawing1 == "<img src='../../Content/Images/checkokmark.gif'>") {
+    //            if (Sort == "1") {
+    //                var url = '/SteelMember/File/DrawingManagement?KeyValue=' + KeyValue;
+    //                Dialog(url, "DrawingManagement", "文件管理", 900, 890, function (iframe) {
+    //                    top.frames[iframe].AcceptClick()
+    //                });
+    //            } else {
+    //                alertDialog("请选择构件", 0);
+    //            }
+    //        } else { alertDialog("该构件无图纸和模型", 0); }
+    //    }
+    //}
+
+    //构件图纸
+    function btn_cad_drawing() {
         var KeyValue = GetJqGridRowValue("#gridTable", "MemberID");
         var Sort = GetJqGridRowValue("#gridTable", "Sort");
         var CAD_Drawing = GetJqGridRowValue("#gridTable", "CAD_Drawing");
-        var Model_Drawing = GetJqGridRowValue("#gridTable", "Model_Drawing");
-
         if (IsChecked(KeyValue)) {
-            var CAD_Drawing1 = CAD_Drawing.replace(/"/, "'").replace(/"/, "'");
-            var Model_Drawing1 = Model_Drawing.replace(/"/, "'").replace(/"/, "'");
-            if (CAD_Drawing1 == "<img src='../../Content/Images/checkokmark.gif'>" || Model_Drawing1 == "<img src='../../Content/Images/checkokmark.gif'>") {
+            if (CAD_Drawing.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
                 if (Sort == "1") {
-                    var url = '/SteelMember/File/DrawingManagement?KeyValue=' + KeyValue;
-                    Dialog(url, "DrawingManagement", "文件管理", 900, 890, function (iframe) {
+                    var url = '/SteelMember/File/CADDrawingManagement?KeyValue=' + KeyValue;
+                    Dialog(url, "DrawingManagement", "构件图纸", 900, 890, function (iframe) {
                         top.frames[iframe].AcceptClick()
                     });
                 } else {
                     alertDialog("请选择构件", 0);
                 }
-            } else { alertDialog("该构件无图纸和模型", 0); }
+            } else { alertDialog("该构件无图纸", 0); }
         }
     }
 
-    //上传文件
-    function UploadFile() {
-        var url = "/SteelMember/File/UpLoadFile?FolderId=" + FolderId;
-        Dialog(url, "UpLoadFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
-            top.frames[iframe].AcceptClick()
-            $("#gridTable").trigger("reloadGrid"); //重新载入
-        });
-    }
+    //模型管理
+    function btn_model_drawing() {
+        var KeyValue = GetJqGridRowValue("#gridTable", "MemberID");
+        var Sort = GetJqGridRowValue("#gridTable", "Sort");
+        var Model_Drawing = GetJqGridRowValue("#gridTable", "Model_Drawing");
 
-    //导入文件
-    function btn_import() {
-        if(!!TreeId){
-        var url = "/SteelMember/File/ImportFile?KeyValue=" + TreeId;
-        Dialog(url, "ImportFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
-            top.frames[iframe].AcceptClick()
-        });
-    }
-    else {
-            tipDialog('请选择文件夹目录。', 4, 'warning');
-    }
-    }
-
-    //导出文件
-    function btn_derive() {
-        SetDeriveExcel("#gridTable", "构件信息");
-        openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "构件信息导出", 900, 500, function (iframe) {
-            top.frames[iframe].AcceptClick();
-        })
-        //var url = "/SteelMember/File/ImportFile?KeyValue=" + TreeId;
-        //Dialog(url, "ImportFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
-        //    top.frames[iframe].AcceptClick()
-        //    $("#gridTable").trigger("reloadGrid"); //重新载入
-        //});
+        if (IsChecked(KeyValue)) {
+            if (Model_Drawing.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
+                if (Sort == "1") {
+                    var url = '/SteelMember/File/ModelDrawingManagement?KeyValue=' + KeyValue;
+                    Dialog(url, "DrawingManagement", "三维模型管理", 900, 890, function (iframe) {
+                        top.frames[iframe].AcceptClick()
+                    });
+                } else {
+                    alertDialog("请选择构件", 0);
+                }
+            } else { alertDialog("该构件无三维模型", 0); }
+        }
     }
 
     //刷新表格树
@@ -244,7 +270,7 @@
         $("#gridTable").jqGrid('setGridParam', {
             url: "@Url.Content("/SteelMember/File/GridListJson")?FolderId=" + FolderId, postData, page: 1
             }).trigger('reloadGrid');
-    }
+            }
 
     //新建树
     function btn_addfolder() {
@@ -254,7 +280,7 @@
             if (Sort == "1") {
                 tipDialog('请选择文件夹目录。', 4, 'warning');
             } else {
-                var url = "/SteelMember/Tree/FolderForm?TreeId=" + TreeId + '&ItemID=' + ItemID;
+                var url = "/SteelMember/Tree/FolderForm?TreeId=" +TreeId + '&ItemID=' +ItemID;
                 openDialog(url, "FolderForm", "新增文件夹", 400, 240, function (iframe) {
                     top.frames[iframe].AcceptClick()
                 });
@@ -274,7 +300,7 @@
     //编辑树节点(得到实体)
     function btn_editfolder() {
         var Sort = GetJqGridRowValue("#gridTable", "Sort");
-        if (Sort !=1) {
+        if (Sort != 1) {
             if (IsChecked(TreeId)) {
                 var url = "/SteelMember/Tree/FolderForm?KeyValue= " + TreeId;
                 openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
@@ -298,7 +324,7 @@
         } else {
             alertDialog("请选择目录！", 0);
         }
-       
+
     }
 
     //新建构件
@@ -342,7 +368,7 @@
         }
     }
 
-    //数控参数 
+    //数控参数
     function btn_parameter() {
         var KeyValue = GetJqGridRowValue("#gridTable", "MemberID");
         var Sort = GetJqGridRowValue("#gridTable", "Sort");
@@ -382,12 +408,70 @@
             top.frames[iframe].QueryClick(function (JsonData) {
                 QueryParamJson = JsonData;
                 $("#gridTable").jqGrid('setGridParam', {
-                    url: "@Url.Content("/SteelMember/File/GridListJson")?ParameterJson=" + escape(JsonData), page: 1
-            }).trigger('reloadGrid');
+                    url: "@Url.Content("/SteelMember/File/GridListJson")?ParameterJson=" + escape(JsonData) + "&TreeID=" + TreeId, page: 1
+                }).trigger('reloadGrid');
+            });
         });
-    });
     }
 
+    //构件材料用量
+    function btn_raw_materials_dosage() {
+        var MemberID = GetJqGridRowValue("#gridTable", "MemberID");
+        if (IsChecked(MemberID)) {
+            var url = "/SteelMember/File/RawMaterialsDosageIndex?MemberID= " + MemberID;
+            Dialog(url, "RawMaterialsDosageIndex", "材料用量", 900, 435, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
+        }
+    }//  AddTabMenu("OrderForm", "Url.Content("/SteelMember/ProjectOrder/CreateOrderForm")?TreeId=" + TreeId, "新增订单", "page_white_add.png", true, true, true);
+
+    //构件制程
+    function btn_member_process() {
+        var MemberID = GetJqGridRowValue("#gridTable", "MemberID");
+        if (IsChecked(MemberID)) {
+            var url = "/SteelMember/File/MemberProcessIndex?MemberID= " + MemberID;
+            Dialog(url, "MemberProcessIndex", "构件制程", 900, 435, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
+        }
+    }
+
+    //上传图标
+    function btn_upload() {
+        var Images = "Images"
+        var url = "/SteelMember/File/UpLoadFile?Images=" + Images;
+        Dialog(url, "UpLoadFile", "上传图标", 500, 600, function (iframe) {
+            top.frames[iframe].AcceptClick()
+            $("#gridTable").trigger("reloadGrid"); //重新载入
+        });
+    }
+
+
+    //导入文件
+    function btn_import() {
+        if (!!TreeId) {
+            var url = "/SteelMember/File/ImportFile?KeyValue=" + TreeId;
+            Dialog(url, "ImportFile", "导入数据", 500, 600, function (iframe) {
+                top.frames[iframe].AcceptClick()
+            });
+        }
+        else {
+            tipDialog('请选择文件夹目录。', 4, 'warning');
+        }
+    }
+
+    //导出文件
+    function btn_derive() {
+        SetDeriveExcel("#gridTable", "构件信息");
+        openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "构件信息导出", 900, 500, function (iframe) {
+            top.frames[iframe].AcceptClick();
+        })
+        //var url = "/SteelMember/File/ImportFile?KeyValue=" + TreeId;
+        //Dialog(url, "ImportFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
+        //    top.frames[iframe].AcceptClick()
+        //    $("#gridTable").trigger("reloadGrid"); //重新载入
+        //});
+    }
 
     /*视图begin=========================================================================*/
     //切换到列表/视图
@@ -418,7 +502,7 @@
                         icon = "Folder";
                     }
                     html += '<div class="filelist-item">';
-                    html += '<div><img src="~/Content/Images/fileType/' + icon + '_72.png" /></div>';
+                    html += '<div><img src="../../Content/Images/fileType/' + icon + '_72.png" /></div>';
                     html += '<div title="' + data[i].fullname + '" class="filelist-text">' + data[i].fullname + '</div>';
                     html += '</div>';
                 }
@@ -432,16 +516,17 @@
     <div class="layoutPanel layout-west">
         <div class="btnbartitle">
             <div>
-                目录信息
+                构件类型
             </div>
         </div>
         <div class="ScrollBar" id="ItemsTree"></div>
     </div>
     <!--中间-->
     <div class="layoutPanel layout-center">
+
         <div class="btnbartitle">
             <div>
-                构件信息<span id="CenterTitle"></span>
+                构件列表<span id="CenterTitle"></span>
             </div>
         </div>
         <div class="tools_bar" style="border-top: none; margin-bottom: 0px;">
@@ -449,6 +534,11 @@
                 @Html.Partial("_PartialButton")
             </div>
         </div>
+        <div id="BigDiv" style="margin-left:50px;margin-top:160px; width:360px;height:360px; position: absolute; visibility: hidden; padding: 5px;z-index:999">
+            <img id="bigImg" src="" style="width:100%;height:100%" />
+        </div>
         <table id="gridTable"></table>
     </div>
+
 </div>
+

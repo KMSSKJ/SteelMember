@@ -15,9 +15,9 @@ namespace LeaRun.Entity.SteelMember
     public partial class RMC_FactoryWarehouse
     {
         public int FactoryWarehouseId { get; set; }
-        public Nullable<long> MemberNumbering { get; set; }
+        public Nullable<int> MemberId { get; set; }
         public string MemberModel { get; set; }
-        public string InStockNumber { get; set; }
+        public Nullable<int> InStockNumber { get; set; }
         public string Description { get; set; }
     }
 }

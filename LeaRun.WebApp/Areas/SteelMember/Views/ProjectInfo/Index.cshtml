@@ -7,164 +7,89 @@
     $(document).ready(function () {
         GetTree();
         GetGrid();
-        SwitchListAndView();
     });
 
     //加载左边树
     //注意 FolderId 默认等于1 这样就可以加载一级目录下的子节点文件夹
     var ItemId = 2;
-    var TreeId = "13";//13
+    var TreeId = "59";
+    var data_id = "";
     //ItemId = GetQuery("ItemID"), IsPublic = "1";
     function GetTree() {
         var itemtree = {
             onnodeclick: function (node) {
                 TreeId = node.id;
                 TreeName = node.text;
-                GridFolderEvent(TreeId);
+                $("#CenterTitle").html(" - " + TreeName);
+                if (TreeName == "工程属性") {
+                    //var leftHeight=parseInt(document.getElementById("left").style.clientHeight);
+                    document.getElementById("table_project").style.display = "block";
+                    document.getElementById("div_project_photo").style.display = "none";
+                    document.getElementById("div_projcet_logo").style.display = "none";
+                } else if (TreeName == "系统Logo") {
+                    document.getElementById("table_project").style.display = "none";
+                    document.getElementById("div_project_photo").style.display = "none";
+                    document.getElementById("div_projcet_logo").style.display = "block";
+                } else {
+                    document.getElementById("table_project").style.display = "none";
+                    document.getElementById("div_project_photo").style.display = "block";
+                    document.getElementById("div_projcet_logo").style.display = "none";
+                }
+
             },
-            url: "@Url.Content("/SteelMember/ProjectInfo/TreeJson")?ItemId=" + ItemId
+            url: "@Url.Content("~/SteelMember/ProjectInfo/TreeJson")?ItemId=" + ItemId
         };
         $("#ItemsTree").treeview(itemtree);
     };
 
-    //表格文件夹点击事件
-    function GridFolderEvent(TreeId) {
-        TreeID = TreeId;
-        $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/ProjectInfo/GridListJson")?TreeID=" + TreeID, page: 1
-        }).trigger('reloadGrid');
-    }
+
+    ////表格文件夹点击事件
+    //function GridFolderEvent(TreeId) {
+    //    AjaxJson("/SteelMember/ProjectInfo/GetItemInfo", { KeyValue: TreeId }, function (data) {
+    //        SetWebControls(data);
+    //        data_id = data.ProjectId;
+    //        var filename="", filename1="";
+
+    //        filename = data.ProjectLogo;
+    //        filename = filename.substring(0, filename.lastIndexOf('.'));//获取文件名称，去除后缀名
+    //        filename = "../../Resource/Document/NetworkDisk/System/Project/" + filename + "/" + data.ProjectLogo;
+    //        document.getElementById("project_logo").src = filename;
+
+    //        filename1 = data.ProjectBackground;
+    //        filename1 = filename1.substring(0, filename1.lastIndexOf('.'));//获取文件名称，去除后缀名
+    //        filename1 = "../../Resource/Document/NetworkDisk/System/Project/" + filename1 + "/" + data.ProjectBackground;
+    //        document.getElementById("project_background").src = filename1;
+    //    });
+    //}
 
     //加载表格
     function GetGrid() {
-        var SelectRowIndx;
-        $("#gridTable").jqGrid({
-            url: "@Url.Content("/SteelMember/ProjectInfo/GridListJson")?TreeID=" + TreeId,
-            datatype: "json",
-            height: $(window).height() - 154,
-            autowidth: true,
-            colModel: [
-                    { label: '主键', name: "ProjectId", hidden: true },
-                    { label: 'TreeId', name: 'TreeId', hidden: true },
-                    //{ label: "项目标题", name: "ProjectSysTitle", index: "ProjectSysTitle", hidden: true },
-                    {
-                        label: '项目Logo', name: "ProjectLogo", index: "ProjectLogo",
-                        formatter: function (cellvalue, options, rowObject) {
-                            var a = cellvalue;
-                            var filename = a.substring(0, a.lastIndexOf('.'));//获取文件名称，去除后缀名
-                            //return "<div style='padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;with:20%;height:20%' src='../../Content/Images/Icon16/file_extension_" + cellvalue + "' />" + cellvalue + "</div>";
-                            return "<div style='padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;with:580px;height:480px' src='../../Resource/Document/NetworkDisk/System/Project/" + filename + "/" + a + "' /></div>";
-                        }
-                        },
-                    {
-                        label: '项目背景图', name: "ProjectBackground", index: "ProjectBackground",
-                        formatter: function (cellvalue, options, rowObject) {
-                            var b = cellvalue;
-                            var filename1 = b.substring(0, b.lastIndexOf('.'));//获取文件名称，去除后缀名
-                            //return "<div style='padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;with:20%;height20%' src='../../Content/Images/Icon16/file_extension_" + cellvalue + "' />" + cellvalue + "</div>";
-                            return "<div style='padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;with:580px;height:480px' src='../../Resource/Document/NetworkDisk/System/Project/" + filename1 + "/" + b + "' /></div>";
-                        }
-                    },
-                    { label: '备注', name: 'Description', index: 'Description', width:20},
-            ],
-            rowNum: 30,
-            sortname: 'SortCode',
-            sortorder: 'Desc',//降序 asc升序
-            pager: "#gridPager",
-            //jsonReader: {
-            //    repeatitems: false,
-            //    id: "ProjectId"
-            //},
-            viewrecords: true,
-            rownumbers: true,
-            gridview: true,
-            rowList: [15, 30, 50, 100, 500, 1000],
-            ondblClickRow: function (TreeId) {
-                var rowData = $("#gridTable").getRowData(TreeId);  //根据ID拿到一行的数据
-                if (rowData.Icon == '-1') {
-                    GridFolderEvent(rowData.TreeId);
-                    var treeid = "ItemsTree_" + rowData.TreeId.replace(/-/g, '_');
-                    $('#' + treeid + ' img').trigger("click");
-                }
-            },
-            onSelectRow: function () {
-                SelectRowIndx = GetJqGridRowIndx("#" + this.id);
-            },
-            gridComplete: function () {
-                var ids = $("#gridTable").getDataIDs();
-                for (var i = 0; i < ids.length; i++) {
-                    var rowData = $("#gridTable").getRowData(ids[i]);
-                    if (rowData.Enabled == "无效") {//如果无效，则背景色置于红色
-                        $('#' + ids[i]).find("td").addClass("SelectBG");
-                    }
-                }
-                $("#" + this.id).jqGrid('setSelection', SelectRowIndx);
-            }
-        });
-        columnModelData("#gridTable");
-        //自应高度
-        $(window).resize(function () {
-            $("#gridTable").setGridHeight($(window).height() - 200);
+        AjaxJson("/SteelMember/ProjectInfo/GetItemInfo", { KeyValue: TreeId }, function (data) {
+            SetWebControls(data);
+            data_id = data.ProjectId;
+            var filename = "", filename1 = "";
+
+            filename = data.ProjectLogo;
+            filename = filename.substring(0, filename.lastIndexOf('.'));//获取文件名称，去除后缀名
+            filename = "../../Resource/Document/NetworkDisk/System/Project/" + filename + "/" + data.ProjectLogo;
+            document.getElementById("project_logo").src = filename;
+
+            filename1 = data.ProjectBackground;
+            filename1 = filename1.substring(0, filename1.lastIndexOf('.'));//获取文件名称，去除后缀名
+            filename1 = "../../Resource/Document/NetworkDisk/System/Project/" + filename1 + "/" + data.ProjectBackground;
+            document.getElementById("project_background").src = filename1;
+
+            document.getElementById("table_project").style.display = "block";
+            document.getElementById("div_project_photo").style.display = "none";
+            document.getElementById("div_projcet_logo").style.display = "none";
         });
     }
 
     //刷新表格 树
     function btn_reload() {
         GetTree();
-        $("#gridTable").trigger("reloadGrid"); //重新载入
-    }
-
-    //新建树
-    function btn_addfolder() {
-        //var FolderId = GetJqGridRowValue("#gridTable", "TreeID");
-        var ItemID = GetQuery("ItemID");
-        var IsItem = 0;
-        if (IsChecked(KeyValue)) {
-            AjaxJson("/SteelMember/Tree/IsItem", { TreeId: TreeId }, function (Data) {
-                IsItem = Data.IsItem;
-            })
-            if (IsItem == 1) {
-                tipDialog('该节点已是项目', 4, 'warning');
-            } else {
-                var url = "/SteelMember/Tree/FolderForm?KeyValue=" + KeyValue + '&ItemID=' + ItemID + '&IsItem=' + IsItem;
-                openDialog(url, "Form", "新增信息", 500, 400, function (iframe) {
-                    top.frames[iframe].AcceptClick()
-                });
-                $("#gridTable").trigger("reloadGrid"); //重新载入
-            }
-        }
-    }
-
-    //编辑树节点(得到实体)
-    function btn_editfolder() {
-        var KeyValue = TreeId;
-        if (IsChecked(KeyValue)) {
-            var url = "/SteelMember/Tree/FolderForm?KeyValue= " + KeyValue;
-            openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
-                top.frames[iframe].AcceptClick();
-            });
-        }
-
-        $("#gridTable").trigger("reloadGrid"); //重新载入
-    }
-
-    //标记删除树节点
-    function btn_markfolder() {
-        var KeyValue = TreeId;
-        var Prompt = "您确实要删除此文件吗？";
-        if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/Tree/MarkTree', { KeyValue: KeyValue }, Prompt);
-        }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
-    }
-
-    //删除树节点
-    function btn_deletefolder() {
-        var Prompt = "您确实要删除此文件吗？";
-        if (IsDelData(TreeId)) {
-            delConfirm('/SteelMember/Tree/DeleteTree', { KeyValue: TreeId }, Prompt);
-        }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
+        GetGrid();
+        //$("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
     //新增信息
@@ -172,7 +97,7 @@
         //var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
         if (IsChecked(TreeId)) {
             var url = "/SteelMember/ProjectInfo/Form?TreeId= " + TreeId;
-            openDialog(url, "Form", "新增信息", 380, 300, function (iframe) {
+            openDialog(url, "Form", "新增信息", 600, 380, function (iframe) {
                 top.frames[iframe].AcceptClick();
             });
         }
@@ -181,83 +106,34 @@
 
     //编辑信息(得到实体)
     function btn_edit() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
-        if (IsChecked(KeyValue)) {
-            var url = "/SteelMember/ProjectInfo/Form?KeyValue= " + KeyValue;
-            openDialog(url, "Form", "编辑信息", 380, 300, function (iframe) {
+        if (data_id != "") {
+            var url = "/SteelMember/ProjectInfo/Form?KeyValue= " + data_id;
+            openDialog(url, "Form", "编辑信息", 600, 380, function (iframe) {
                 top.frames[iframe].AcceptClick();
             });
+        } else {
+            alertDilog("主键不能为空", 0)
         }
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
     //删除信息
     function btn_delete() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
         var Prompt = "您确实要删除此文件吗？";
-        if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/ProjectInfo/DeleteProjectInfo', { KeyValue: KeyValue }, Prompt);
+        if (IsDelData(data_id)) {
+            delConfirm('/SteelMember/ProjectInfo/DeleteProjectInfo', { KeyValue: data_id }, Prompt);
             $("#gridTable").trigger("reloadGrid"); //重新载入
         }
 
     }
 
-    //查看项目信息
-    function btn_project_info() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
-        var Info = 1;
-        if (IsChecked(KeyValue)) {
-            var url = "/SteelMember/ProjectInfo/Form?KeyValue= " + KeyValue+"&Info="+Info;
-            openDialog(url, "Form", "编辑信息", 380, 360, function (iframe) {
-                top.frames[iframe].AcceptClick();
-            });
-        }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
-    }
-    /*视图begin=========================================================================*/
-    //切换到列表/视图
-    function SwitchListAndView() {
-        $('#grid_View').height($(window).height() - 78)
-        $('.switch-btns li').click(function () {
-            $('.switch-btns li').removeClass('selected');
-            $(this).addClass('selected');
-            if ($(this).attr('id') == 'li-switch-list') {
-                $(this).find('div').addClass('icon-btn-switch-list-select');
-                $("#li-switch-view").find('div').addClass('icon-btn-switch-view');
-                $("#li-switch-view").find('div').removeClass('icon-btn-switch-view-select');
-                $('#grid_List').show();
-                $('#grid_View').hide();
-            }
-            //显示视图
-            if ($(this).attr('id') == 'li-switch-view') {
-                $(this).find('div').addClass('icon-btn-switch-view-select');
-                $("#li-switch-list").find('div').addClass('icon-btn-switch-list');
-                $("#li-switch-list").find('div').removeClass('icon-btn-switch-list-select');
-                $('#grid_List').hide();
-                $('#grid_View').show();
-                var data = $("#gridTable").jqGrid("getRowData");
-                var html = "";
-                for (var i = 0; i < data.length; i++) {
-                    var icon = data[i].icon;
-                    if (icon == "-1") {
-                        icon = "Folder";
-                    }
-                    html += '<div class="filelist-item">';
-                    html += '<div><img src="~/Content/Images/fileType/' + icon + '_72.png" /></div>';
-                    html += '<div title="' + data[i].fullname + '" class="filelist-text">' + data[i].fullname + '</div>';
-                    html += '</div>';
-                }
-                $("#grid_View").html(html);
-            }
-        })
-    }
 </script>
 <div id="layout" class="layout">
     <!--左边-->
     <div class="layoutPanel layout-west">
         <div class="btnbartitle">
             <div>
-               目录信息
+                项目信息
             </div>
         </div>
         <div class="ScrollBar" id="ItemsTree"></div>
@@ -266,7 +142,7 @@
     <div class="layoutPanel layout-center">
         <div class="btnbartitle">
             <div>
-               项目信息<span id="CenterTitle"></span>
+                信息表<span id="CenterTitle"></span>
             </div>
         </div>
         <div class="tools_bar" style="border-top: none; margin-bottom: 0px;">
@@ -274,6 +150,153 @@
                 @Html.Partial("_PartialButton")
             </div>
         </div>
-        <table id="gridTable"></table>
+        <div id="table_project">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">
+                        项目地址：
+                    </th>
+                    <td class="formValue" colspan="5">
+                        <input id="ProjectAddress" type="text" class="txt" rowspan="4" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">
+                        业主单位：
+                    </th>
+                    <td class="formValue">
+                        <input id="ConstructionUnit" type="text" class="txt" />
+                    </td>
+                    <th class="formTitle">
+                        负责人：
+                    </th>
+                    <td class="formValue">
+                        <input id="ConstructionPrincipal" type="text" class="txt" />
+                    </td>
+                    <th class="formTitle">
+                        联系电话：
+                    </th>
+                    <td class="formValue">
+                        <input id="ConstructionPrincipalTEL" type="text" class="txt" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="formTitle">
+                        设计单位：
+                    </th>
+                    <td class="formValue">
+                        <input id="DesignUnit" type="text" class="txt" />
+                    </td>
+                    <th class="formTitle">
+                        负责人：
+                    </th>
+                    <td class="formValue">
+                        <input id="DesignPrincipal" type="text" class="txt" />
+                    </td>
+                    <th class="formTitle">
+                        联系电话：
+                    </th>
+                    <td class="formValue">
+                        <input id="DesignPrincipalTEL" type="text" class="txt" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">监理单位：</th>
+                    <td class="formValue">
+                        <input id="SupervisionUnit" type="text" class="txt" />
+                    </td>
+                    <th class="formTitle">
+                        负责人：
+                    </th>
+                    <td class="formValue">
+                        <input id="SupervisionPrincipal" type="text" class="txt" />
+                    </td>
+                    <th class="formTitle">
+                        联系电话：
+                    </th>
+                    <td class="formValue">
+                        <input id="SupervisionPrincipalTEL" type="text" class="txt" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">总承包商：</th>
+                    <td class="formValue">
+                        <input id="GeneralContractor" type="text" class="txt" />
+                    </td>
+                    <th class="formTitle">
+                        负责人：
+                    </th>
+                    <td class="formValue">
+                        <input id="GeneralContractorPrincipal" type="text" class="txt" />
+                    </td>
+                    <th class="formTitle">
+                        联系电话：
+                    </th>
+                    <td class="formValue">
+                        <input id="GeneralContractorPrincipalTEL" type="text" class="txt" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">专业承包商：</th>
+                    <td class="formValue">
+                        <input id="ProfessionalContractor" type="text" class="txt" />
+                    </td>
+                    <th class="formTitle">
+                        负责人：
+                    </th>
+                    <td class="formValue">
+                        <input id="ProfessionalContractorPrincipal" type="text" class="txt" />
+                    </td>
+                    <th class="formTitle">
+                        联系电话：
+                    </th>
+                    <td class="formValue">
+                        <input id="ProfessionalContractorPrincipalTEL" type="text" class="txt" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">
+                        工程概况：
+                    </th>
+                    <td class="formValue" colspan="5">
+                        <textarea id="Description" name="Description" maxlength="200" class="txtArea" rows="5"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="div_projcet_logo" style="margin:10px">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">
+                        系统标题：
+                    </th>
+                    <td class="formValue">
+                        <input id="ProjectSystemTitel" type="text" class="txt" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">
+                        系统logo：
+                    </th>
+                    <td class="formValue" style="height:700px">
+                        <img id="project_logo" src="" style="width:100%;height:100%" />
+                        @*<input id="ProjectLogo" type="text" class="txt" />*@
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="div_project_photo" style="margin:10px">
+            <p style="font-size:18pt;font-weight:100;text-align:center">项目图片</p>
+            <table class="form">
+                <tr>
+                    <td class="formValue" style="height:700px">
+                        <img id="project_background" src="" style="width:100%;height:100%" />
+                        @*<input id="ProjectBackground" type="text" class="txt" />*@
+                    </td>
+                </tr>
+            </table>
+        </div>
+
     </div>
 </div>

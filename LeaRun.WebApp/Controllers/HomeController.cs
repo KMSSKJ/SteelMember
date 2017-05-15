@@ -1,7 +1,6 @@
 ﻿using LeaRun.Business;
 using LeaRun.DataAccess;
 using LeaRun.Entity;
-using LeaRun.Repository;
 using LeaRun.Utilities;
 using System;
 using System.Collections;
@@ -18,7 +17,6 @@ namespace LeaRun.WebApp.Controllers
     {
         public Base_ModuleBll base_modulebll = new Base_ModuleBll();
         Base_ModulePermissionBll base_modulepermissionbll = new Base_ModulePermissionBll();
-        Base_UserBll base_userbll = new Base_UserBll();
         /// <summary>
         /// 初始化页面
         /// </summary>
@@ -56,7 +54,6 @@ namespace LeaRun.WebApp.Controllers
         }
 
         #region 后台首页-开始菜单
-        public readonly RepositoryFactory<Base_User> repositoryfactory = new RepositoryFactory<Base_User>();
         /// <summary>
         /// 开始菜单UI
         /// </summary>
@@ -64,12 +61,10 @@ namespace LeaRun.WebApp.Controllers
         [LoginAuthorize]
         public ActionResult StartIndex()
         {
-            var user = ManageProvider.Provider.Current();
-            string ObjectId = user.ObjectId;
+            string ObjectId = ManageProvider.Provider.Current().ObjectId;
             Base_Module model = base_modulepermissionbll.GetModuleList(ObjectId).FindAll(t => t.ParentId.Trim() == "0" && t.Enabled == 1).SingleOrDefault();
-            ViewBag.Account = user.Account + "（" + user.UserName + "）";
+            ViewBag.Account = ManageProvider.Provider.Current().Account + "（" + ManageProvider.Provider.Current().UserName + "）";
             ViewBag.ModuleId = model.ModuleId.ToString();
-            ViewBag.Avatar = repositoryfactory.Repository().FindEntity(user.UserId).Avatar; ;
             return View();
         }
         /// <summary>
@@ -102,13 +97,9 @@ namespace LeaRun.WebApp.Controllers
         public ActionResult AccordionIndex()
         {
             string ObjectId = ManageProvider.Provider.Current().ObjectId;
-            Base_Module model = base_modulepermissionbll.GetModuleList(ObjectId).FindAll(t => t.ParentId.Trim() == "0" && t.Enabled == 1).SingleOrDefault();
+            Base_Module model = base_modulepermissionbll.GetModuleList(ObjectId).FindAll(t =>t.ParentId.Trim()=="0"&& t.Enabled == 1).SingleOrDefault();
             ViewBag.Account = ManageProvider.Provider.Current().Account + "（" + ManageProvider.Provider.Current().UserName + "）";
-            if (model != null)
-            {
-                ViewBag.ModuleId = model.ModuleId.ToString();
-            }
-
+            ViewBag.ModuleId = model.ModuleId.ToString();
             return View();
         }
         /// <summary>

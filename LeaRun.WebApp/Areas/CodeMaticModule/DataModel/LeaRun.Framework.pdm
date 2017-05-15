@@ -6925,26 +6925,26 @@ DAT 1406873112</a:History>
 </o:Table>
 <o:Table Id="o82">
 <a:ObjectID>4F36C658-899C-4525-8FB4-FA5ACBCE71C9</a:ObjectID>
-<a:Name>单位管理表</a:Name>
+<a:Name>公司管理表</a:Name>
 <a:Code>Base_Company</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1406873104</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>单位管理表</a:Comment>
+<a:Comment>公司管理表</a:Comment>
 <a:History>ORG {716983B0-894E-4BCB-A36F-0B667ED5D75F}
 DAT 1406873112</a:History>
 <a:TotalSavingCurrency/>
 <c:Columns>
 <o:Column Id="o335">
 <a:ObjectID>2B2CCA76-BC41-4406-9569-861DCCCB493F</a:ObjectID>
-<a:Name>单位主键</a:Name>
+<a:Name>公司主键</a:Name>
 <a:Code>CompanyId</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>单位主键</a:Comment>
+<a:Comment>公司主键</a:Comment>
 <a:History>ORG {669E8393-5476-4988-8AA7-B82B3AF4609E}
 DAT 1406873112
 ATT LABL</a:History>
@@ -6975,13 +6975,31 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o337">
 <a:ObjectID>24BA6404-16E8-41BB-9F41-C9265D9B0681</a:ObjectID>
-<a:Name>单位编码</a:Name>
+<a:Name>公司分类</a:Name>
+<a:Code>Category</a:Code>
+<a:CreationDate>1406873104</a:CreationDate>
+<a:Creator>she</a:Creator>
+<a:ModificationDate>1407309759</a:ModificationDate>
+<a:Modifier>she</a:Modifier>
+<a:Comment>公司分类</a:Comment>
+<a:History>ORG {758039FF-FA0E-4C8E-8C17-6217AD8CFBF9}
+DAT 1406873112
+ATT LABL</a:History>
+<a:DataType>varchar(50)</a:DataType>
+<a:Length>50</a:Length>
+<c:Domain>
+<o:PhysicalDomain Ref="o137"/>
+</c:Domain>
+</o:Column>
+<o:Column Id="o338">
+<a:ObjectID>5B194C54-140F-4C3D-A251-CAA5E1BE8E84</a:ObjectID>
+<a:Name>公司编码</a:Name>
 <a:Code>Code</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>单位编码</a:Comment>
+<a:Comment>公司编码</a:Comment>
 <a:History>ORG {1EB63025-7B52-4FC4-821D-A2D54D7C206B}
 DAT 1406873112
 ATT LABL</a:History>
@@ -6993,13 +7011,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o339">
 <a:ObjectID>372C2395-193B-4D4F-BDB5-712A4FF53371</a:ObjectID>
-<a:Name>单位名称</a:Name>
+<a:Name>公司名称</a:Name>
 <a:Code>FullName</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>单位名称</a:Comment>
+<a:Comment>公司名称</a:Comment>
 <a:History>ORG {224C973F-4686-4503-9FE0-58555A7D8886}
 DAT 1406873112
 ATT LABL</a:History>
@@ -7011,13 +7029,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o340">
 <a:ObjectID>DF307802-DE6E-4AF0-9C9F-5421D03B74EE</a:ObjectID>
-<a:Name>单位简称</a:Name>
+<a:Name>公司简称</a:Name>
 <a:Code>ShortName</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>单位简称</a:Comment>
+<a:Comment>公司简称</a:Comment>
 <a:History>ORG {7E8ED8A7-61B6-4D5C-BE62-ABE082C63355}
 DAT 1406873112
 ATT LABL</a:History>
@@ -7029,13 +7047,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o341">
 <a:ObjectID>A5B253C1-A56A-4ED7-B72A-78D13D44E948</a:ObjectID>
-<a:Name>单位性质</a:Name>
+<a:Name>公司性质</a:Name>
 <a:Code>Nature</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>单位性质</a:Comment>
+<a:Comment>公司性质</a:Comment>
 <a:History>ORG {CC3B9A8E-ECC7-4DAF-8AF8-17F68D23693B}
 DAT 1406873112
 ATT LABL</a:History>
@@ -8664,13 +8682,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o431">
 <a:ObjectID>49838AD7-679D-4ECD-9ECE-FF3B0C89D6B5</a:ObjectID>
-<a:Name>单位主键</a:Name>
+<a:Name>公司主键</a:Name>
 <a:Code>CompanyId</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>单位主键</a:Comment>
+<a:Comment>公司主键</a:Comment>
 <a:History>ORG {F668C6EC-CC5C-4519-9169-480A0D49FE90}
 DAT 1406873112
 ATT LABL</a:History>
@@ -9073,13 +9091,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o453">
 <a:ObjectID>0C424372-FFC1-41AF-9E91-7421FDE6607F</a:ObjectID>
-<a:Name>单位主键</a:Name>
+<a:Name>公司主键</a:Name>
 <a:Code>CompanyId</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>单位主键</a:Comment>
+<a:Comment>公司主键</a:Comment>
 <a:History>ORG {97F839A2-4126-46C0-8443-6CEFE1BBCE1F}
 DAT 1406873112
 ATT LABL</a:History>
@@ -9144,13 +9162,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o457">
 <a:ObjectID>852E4820-8985-4071-98BF-4B52A88EFE54</a:ObjectID>
-<a:Name>账户</a:Name>
+<a:Name>登录账户</a:Name>
 <a:Code>Account</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>账户</a:Comment>
+<a:Comment>登录账户</a:Comment>
 <a:History>ORG {6394E500-89E2-4CD2-B529-1F47C08B6645}
 DAT 1406873112
 ATT LABL</a:History>
@@ -9162,13 +9180,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o458">
 <a:ObjectID>CBDA5AD0-66C0-4527-8FB4-E810DDC38A8E</a:ObjectID>
-<a:Name>密码</a:Name>
+<a:Name>登录密码</a:Name>
 <a:Code>Password</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>密码</a:Comment>
+<a:Comment>登录密码</a:Comment>
 <a:History>ORG {B8863063-AC92-4606-958F-2F9E57B1C2F5}
 DAT 1406873112
 ATT LABL</a:History>
@@ -9759,13 +9777,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o491">
 <a:ObjectID>405B83FF-6FA2-461F-9EC2-F5C7AB6EB848</a:ObjectID>
-<a:Name>单位主键</a:Name>
+<a:Name>公司主键</a:Name>
 <a:Code>CompanyId</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>单位主键</a:Comment>
+<a:Comment>公司主键</a:Comment>
 <a:History>ORG {EE5EFA04-5D29-4EF4-9003-517AD4BE1F09}
 DAT 1406873112
 ATT LABL</a:History>
@@ -10738,13 +10756,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o544">
 <a:ObjectID>3F3226AB-45F8-4ACD-A740-59E4DC4BC17A</a:ObjectID>
-<a:Name>单位主键</a:Name>
+<a:Name>公司主键</a:Name>
 <a:Code>CompanyId</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>单位主键</a:Comment>
+<a:Comment>公司主键</a:Comment>
 <a:History>ORG {92A081EF-BA80-4EAC-B511-4092AD6AA40C}
 DAT 1406873112
 ATT LABL</a:History>
@@ -12922,13 +12940,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o660">
 <a:ObjectID>A810086F-9474-4429-BA6B-A039F21A612B</a:ObjectID>
-<a:Name>单位主键</a:Name>
+<a:Name>公司主键</a:Name>
 <a:Code>CompanyId</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>单位主键</a:Comment>
+<a:Comment>公司主键</a:Comment>
 <a:History>ORG {4A7F9CF5-7CED-4FF3-99ED-07D34BCCE212}
 DAT 1406873112
 ATT LABL</a:History>
@@ -14057,13 +14075,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o721">
 <a:ObjectID>049ED403-3528-46DE-8927-DA92A56C4CDF</a:ObjectID>
-<a:Name>单位主键</a:Name>
+<a:Name>公司主键</a:Name>
 <a:Code>CompanyId</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>单位主键</a:Comment>
+<a:Comment>公司主键</a:Comment>
 <a:History>ORG {8083BE4F-EA17-46D8-97F2-0BABA24D654D}
 DAT 1406873112
 ATT LABL</a:History>
@@ -14689,13 +14707,13 @@ ATT LABL</a:History>
 </o:Column>
 <o:Column Id="o754">
 <a:ObjectID>2B9AB381-5230-4048-BC46-C4B2FA0B5B3B</a:ObjectID>
-<a:Name>单位主键</a:Name>
+<a:Name>公司主键</a:Name>
 <a:Code>CompanyId</a:Code>
 <a:CreationDate>1406873104</a:CreationDate>
 <a:Creator>she</a:Creator>
 <a:ModificationDate>1407309759</a:ModificationDate>
 <a:Modifier>she</a:Modifier>
-<a:Comment>单位主键</a:Comment>
+<a:Comment>公司主键</a:Comment>
 <a:History>ORG {D336AD11-B6F0-4015-B0A7-3636406D48ED}
 DAT 1406873112
 ATT LABL</a:History>

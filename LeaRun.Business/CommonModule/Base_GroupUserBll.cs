@@ -27,7 +27,7 @@ namespace LeaRun.Business
         /// <summary>
         /// 获取用户组列表
         /// </summary>
-        /// <param name="CompanyId">单位ID</param>
+        /// <param name="CompanyId">公司ID</param>
         /// <param name="DepartmentId">部门ID</param>
         /// <param name="jqgridparam">分页条件</param>
         /// <returns></returns>
@@ -39,10 +39,10 @@ namespace LeaRun.Business
                             FROM    ( SELECT    gu.GroupUserId ,              --用户组ID
                                                 gu.Code ,                     --用户组编码
                                                 gu.FullName ,                 --用户组名称
-                                                gu.DepartmentId ,             --所属部门Id
-                                                dep.FullName AS DepartmentName ,--所属部门
-                                                gu.CompanyId ,                --所属单位Id
-                                                cpy.FullName AS CompanyName , --所属单位
+                                                gu.DepartmentId ,             --所在部门Id
+                                                dep.FullName AS DepartmentName ,--所在部门
+                                                gu.CompanyId ,                --所在公司Id
+                                                cpy.FullName AS CompanyName , --所在公司
                                                 gu.Enabled ,                  --是否有效
                                                 gu.Remark ,                   --岗位描述
                                                 gu.SortCode                   --排序码
