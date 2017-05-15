@@ -296,6 +296,18 @@
         };
     };
 
+    //构件详情
+    function btn_member_info() {
+        if (KeyValueId != "") {
+            var url = "/SteelMember/File/DrawingManagement?KeyValue= " + KeyValueId;
+            Dialog(url, "DrawingManagement", "构件信息", 760, 660, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
+        } else {
+            alertDialog("数据不能为空", 0);
+        }
+    };
+
 </script>
 
 @*<div class="tools_bar leftline rightline" style="margin-bottom: 0px; margin: 1px;">

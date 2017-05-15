@@ -173,9 +173,10 @@
 
                 }
             });
-        }; 
+        };
 
-        function MemberInfo(){
+        //构件详情
+        function btn_member_info() {
             if (KeyValueId != "") {
                 var url = "/SteelMember/File/DrawingManagement?KeyValue= " + KeyValueId;
                     Dialog(url, "DrawingManagement", "构件信息", 760, 660, function (iframe) {
@@ -214,7 +215,7 @@
                 </th>
                 <td class="formValue">
                     <select id="MemberId" name="MemberId" style="width:50%"></select>
-                    <input id="btn_MemberInfo" type="button" onclick="MemberInfo()" value="构件详情" />
+                    <input id="btn_MemberInfo" type="button" onclick="btn_member_info()" value="构件详情" />
                 </td>
             </tr>
             <tr>

@@ -165,6 +165,8 @@
     <Compile Include="Areas\SteelMember\Controllers\ProjectWarehouseController.cs" />
     <Compile Include="Areas\SteelMember\Controllers\TreeController.cs" />
     <Compile Include="Areas\SteelMember\Models\AnalysisRawMaterialModel.cs" />
+    <Compile Include="Areas\SteelMember\Models\MemberMaterialModel.cs" />
+    <Compile Include="Areas\SteelMember\Models\OrderModel.cs" />
     <Compile Include="Areas\SteelMember\Models\RawMaterialLibraryModel.cs" />
     <Compile Include="Areas\SteelMember\Models\ProcessManagementModel.cs" />
     <Compile Include="Areas\SteelMember\Models\ProduceOrderModel.cs" />
@@ -234,6 +236,7 @@
     <Compile Include="Content\Report\Quotation\Quotation.aspx.designer.cs">
       <DependentUpon>Quotation.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
