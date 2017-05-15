@@ -8007,7 +8007,9 @@
     <Content Include="Content\Scripts\bootstrap\tag\bootstrap.tag.js" />
     <Content Include="Content\Scripts\bootstrap\timepicker\bootstrap.timepicker.css" />
     <Content Include="Content\Scripts\bootstrap\timepicker\bootstrap.timepicker.js" />
+    <Content Include="Content\Scripts\C3D\CanvasRenderer.js" />
     <Content Include="Content\Scripts\C3D\CSS3DRenderer.js" />
+    <Content Include="Content\Scripts\C3D\dat.gui.min.js" />
     <Content Include="Content\Scripts\C3D\flash10canvas.swf" />
     <Content Include="Content\Scripts\C3D\flashcanvas.js" />
     <Content Include="Content\Scripts\C3D\jsc3d.js" />
@@ -8015,7 +8017,10 @@
     <Content Include="Content\Scripts\C3D\jsc3d.webgl.js" />
     <Content Include="Content\Scripts\C3D\ObjectLoader.js" />
     <Content Include="Content\Scripts\C3D\OBJLoader.js" />
+    <Content Include="Content\Scripts\C3D\stats.min.js" />
     <Content Include="Content\Scripts\C3D\three.js" />
+    <Content Include="Content\Scripts\C3D\three.min.js" />
+    <Content Include="Content\Scripts\C3D\three.module.js" />
     <Content Include="Content\Scripts\C3D\WebGLRenderer.js" />
     <Content Include="Content\Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Content\Scripts\ckeditor\build-config.js" />
