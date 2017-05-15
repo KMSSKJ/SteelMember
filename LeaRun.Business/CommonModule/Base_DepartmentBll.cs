@@ -25,23 +25,23 @@ namespace LeaRun.Business
     public class Base_DepartmentBll : RepositoryFactory<Base_Department>
     {
         /// <summary>
-        /// 获取 单位、部门 列表
+        /// 获取 公司、部门 列表
         /// </summary>
         /// <returns></returns>
         public DataTable GetTree()
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append(@"SELECT  *
-                            FROM    ( SELECT    CompanyId,				--单位ID
+                            FROM    ( SELECT    CompanyId,				--公司ID
 												CompanyId AS DepartmentId ,--部门ID
                                                 Code ,					--编码
                                                 FullName ,				--名称
                                                 ParentId ,				--节点ID
                                                 SortCode,				--排序编码
                                                 'Company' AS Sort		--分类
-                                      FROM      Base_Company			--单位表
+                                      FROM      Base_Company			--公司表
                                       UNION
-                                      SELECT    CompanyId,				--单位ID
+                                      SELECT    CompanyId,				--公司ID
 												DepartmentId,			--部门ID
                                                 Code ,					--编码
                                                 FullName ,				--名称
@@ -60,17 +60,17 @@ namespace LeaRun.Business
             return Repository().FindTableBySql(strSql.ToString());
         }
         /// <summary>
-        /// 根据单位id获取部门 列表
+        /// 根据公司id获取部门 列表
         /// </summary>
-        /// <param name="CompanyId">单位ID</param>
+        /// <param name="CompanyId">公司ID</param>
         /// <returns></returns>
         public DataTable GetList(string CompanyId)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append(@"SELECT  *
                             FROM    ( SELECT    d.DepartmentId ,			--主键
-                                                c.FullName AS CompanyName ,	--所属单位
-                                                d.CompanyId ,				--所属单位Id
+                                                c.FullName AS CompanyName ,	--所属公司
+                                                d.CompanyId ,				--所属公司Id
                                                 d.Code ,					--编码
                                                 d.FullName ,				--部门名称
                                                 d.ShortName ,				--部门简称

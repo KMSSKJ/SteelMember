@@ -31,10 +31,10 @@ namespace LeaRun.Entity
         [DisplayName("用户主键")]
         public string UserId { get; set; }
         /// <summary>
-        /// 单位主键
+        /// 公司主键
         /// </summary>
         /// <returns></returns>
-        [DisplayName("单位主键")]
+        [DisplayName("公司主键")]
         public string CompanyId { get; set; }
         /// <summary>
         /// 部门主键
@@ -55,23 +55,17 @@ namespace LeaRun.Entity
         [DisplayName("用户编码")]
         public string Code { get; set; }
         /// <summary>
-        /// 账户
+        /// 登录账户
         /// </summary>
         /// <returns></returns>
-        [DisplayName("账户")]
+        [DisplayName("登录账户")]
         public string Account { get; set; }
         /// <summary>
-        /// 密码
+        /// 登录密码
         /// </summary>
         /// <returns></returns>
-        [DisplayName("密码")]
-        public string Password { get; set; } 
-        /// <summary>
-        /// 头像
-        /// </summary>
-        /// <returns></returns>
-        [DisplayName("头像")]
-        public string Avatar { get; set; }
+        [DisplayName("登录密码")]
+        public string Password { get; set; }
         /// <summary>
         /// 密码秘钥
         /// </summary>
@@ -126,6 +120,12 @@ namespace LeaRun.Entity
         /// <returns></returns>
         [DisplayName("电子邮件")]
         public string Email { get; set; }
+        /// <summary>
+        /// 负责项目
+        /// </summary>
+        /// <returns></returns>
+        [DisplayName("负责项目")]
+        public string ResponsibleProject { get; set; }
         /// <summary>
         /// 最后修改密码日期
         /// </summary>
@@ -264,8 +264,8 @@ namespace LeaRun.Entity
             this.CreateDate = DateTime.Now;
             this.CreateUserId = ManageProvider.Provider.Current().UserId;
             this.CreateUserName = ManageProvider.Provider.Current().UserName;
-            this.Secretkey = Md5Helper.MD5(CommonHelper.CreateNo(), 16).ToLower();
-            this.Password = Md5Helper.MD5(DESEncrypt.Encrypt(Md5Helper.MD5(this.Password, 32).ToLower(), this.Secretkey).ToLower(), 32).ToLower();
+            this.Secretkey = null; //Md5Helper.MD5(CommonHelper.CreateNo(), 16).ToLower();
+            this.Password = Md5Helper.MD5(this.Password);//DESEncrypt.Encrypt(Md5Helper.MD5(this.Password, 32).ToLower(), this.Secretkey).ToLower(), 32
         }
         /// <summary>
         /// 编辑调用

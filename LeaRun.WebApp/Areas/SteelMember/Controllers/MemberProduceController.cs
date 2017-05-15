@@ -19,10 +19,11 @@ using SteelMember.Models;
 using LeaRun.WebApp.Areas.SteelMember.Models;
 using System.Text;
 using LeaRun.Entity;
+using LeaRun.WebApp.Controllers;
 
 namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 {
-    public class MemberProduceController : Controller
+    public class MemberProduceController : BaseController
     {
         // GET: DocManagement/Tree
         public Base_ModuleBll Sys_modulebll = new Base_ModuleBll();
@@ -48,22 +49,115 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public ProjectWarehouseIBLL ProjectWarehouseCurrent { get; set; }
         [Inject]
         public MemberUnitIBLL MemberUnitCurrent { get; set; }
-        [Inject] 
+        [Inject]
         public AnalysisRawMaterialIBLL AnalysisRawMaterialCurrent { get; set; }
-
+        [Inject]
+        public OrderMemberIBLL OrderMemberCurrent { get; set; }
+        [Inject]
+        public MemberMaterialIBLL MemberMaterialCurrent { get; set; }
+        [Inject]
+        public MemberProcessIBLL MemberProcessCurrent { get; set; }
+        [Inject]
+        public FactoryWarehouseIBLL FactoryWarehouseCurrent { get; set; }
         public virtual ActionResult Index()
         {
             return View();
         }
-
         /// <summary>
         /// 【项目管理】返回树JONS
         /// </summary>
         /// <returns></returns>      
         public ActionResult TreeJson(string ItemId)
         {
+            int _ItemId = Convert.ToInt32(ItemId);
+            List<RMC_Tree> list = TreeCurrent.Find(t => t.ItemID == _ItemId && t.DeleteFlag != 1 && t.IsItemInfo != 1 && t.IsProduceOrder != 1).ToList();
+            List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
+            foreach (RMC_Tree item in list)
+            {
+                TreeJsonEntity tree = new TreeJsonEntity();
+                bool hasChildren = false;
+                List<RMC_Tree> childnode = list.FindAll(t => t.ParentID == item.TreeID);
+                if (childnode.Count > 0)
+                {
+                    hasChildren = true;
+                }
+                tree.id = item.TreeID.ToString();
+                tree.text = item.TreeName;
+                tree.value = item.TreeID.ToString();
+                tree.isexpand = item.State == 1 ? true : false;
+                tree.complete = true;
+                tree.hasChildren = hasChildren;
+                tree.parentId = item.ParentID.ToString();
+                //tree.iconCls = item.Icon != null ? "/Content/Images/Icon16/" + item.Icon : item.Icon;
+                TreeList.Add(tree);
+            }
+            return Content(TreeList.TreeToJson());
+        }
+
+        /// <summary>
+        /// 【项目管理】返回树JONS(生产订单)
+        /// </summary>
+        /// <returns></returns>      
+        public ActionResult TreeJsonOrder(string ItemId)
+        {
             int itemid = Convert.ToInt32(ItemId);
-            List<RMC_Tree> list = TreeCurrent.Find(t => t.ItemID == itemid && t.DeleteFlag != 1).ToList();
+
+            List<RMC_Tree> list, list1, list2;
+            list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.IsItemInfo == 0).ToList();
+            list2 = TreeCurrent.Find(t => t.ItemID == itemid && t.DeleteFlag != 1&&t.IsItemInfo!=1&&t.IsProduceOrder==1).ToList();
+
+            list = list1.Concat(list2).Distinct().ToList();
+
+            List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
+            foreach (RMC_Tree item in list)
+            {
+                TreeJsonEntity tree = new TreeJsonEntity();
+                bool hasChildren = false;
+                List<RMC_Tree> childnode = list.FindAll(t => t.ParentID == item.TreeID);
+                if (childnode.Count > 0)
+                {
+                    hasChildren = true;
+                }
+                tree.id = item.TreeID.ToString();
+                tree.text = item.TreeName;
+                tree.icon = item.Icon;
+                tree.ismenu = item.IsMenu.ToString();
+                tree.url = item.Url;
+                tree.value = item.TreeID.ToString();
+                tree.isexpand = item.State == 1 ? true : false;
+                tree.complete = true;
+                tree.hasChildren = hasChildren;
+                tree.parentId = item.ParentID.ToString();
+                //tree.iconCls = item.Icon != null ? "/Content/Images/Icon16/" + item.Icon : item.Icon;
+                TreeList.Add(tree);
+            }
+            return Content(TreeList.TreeToJson());
+        }
+
+        /// <summary>
+        /// 【项目管理】返回树JONS
+        /// </summary>
+        /// <returns></returns>      
+        public ActionResult TreeJsonProcess(string ItemId)
+        {
+            int _ItemId = Convert.ToInt32(ItemId);
+            List<RMC_Tree> list = TreeCurrent.Find(t => t.ItemID == _ItemId && t.DeleteFlag != 1 && t.IsItemInfo != 1 && t.IsProduceOrder != 1).ToList();
+            List<RMC_Tree> list1 = new List<RMC_Tree>();
+            List<RMC_ProjectOrder> OrderList = OrderManagementCurrent.Find(f => f.OrderId > 0 && f.ConfirmOrder == 1).ToList();
+            for (int i = 0; i < OrderList.Count(); i++)
+            {
+                RMC_Tree tree = new RMC_Tree();
+                tree.TreeID = OrderList[i].OrderId;
+                tree.TreeName = "订单-" + OrderList[i].OrderNumbering;
+                tree.Icon = OrderList[i].Icon;
+                tree.State = 0;
+                tree.ParentID = OrderList[i].TreeId;
+                list1.Add(tree);
+            }
+            list = list.Concat(list1).ToList();//把集合A.B合并
+                                               // List<int> Result = listA.Union(listB).ToList<int>();          //剔除重复项 
+
+
             List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
             foreach (RMC_Tree item in list)
             {
@@ -103,15 +197,32 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <param name="FolderId">文件夹ID</param>
         /// <param name="IsPublic">是否公共 1-公共、0-我的</param>
         /// <returns></returns>         
-        public ActionResult GridListJsonOrder(/*ProjectInfoViewModel model,*/ string TreeID, JqGridParam jqgridparam, string IsPublic)
+        /// 
+
+        public ActionResult GridListJsonOrder(FileViewModel model, string TreeID, JqGridParam jqgridparam, string ConfirmOrder, string Productioned, string ParameterJson)
         {
+            int _ConfirmOrder =Convert.ToInt32(ConfirmOrder);
+            int _Productioned = Convert.ToInt32(Productioned);
+            if (ParameterJson != null)
+            {
+                if (ParameterJson != "[{\"OrderNumbering\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]")
+                {
+                    List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
+                    for (int i = 0; i < query_member.Count(); i++)
+                    {
+                        model.OrderNumbering = query_member[i].OrderNumbering;
+                        model.InBeginTime = query_member[i].InBeginTime;
+                        model.InEndTime = query_member[i].InEndTime;
+                    }
+                }
+            }
             try
             {
                 int TreeId;
                 //int FolderId = Convert.ToInt32(FolderId);
                 if (TreeID == "" || TreeID == null)
                 {
-                    TreeId = 22;
+                    TreeId = 1;
                 }
                 else
                 {
@@ -120,16 +231,29 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 int total = 0;
                 Expression<Func<RMC_ProjectOrder, bool>> func = ExpressionExtensions.True<RMC_ProjectOrder>();
-                func = f => f.DeleteFlag != 1 && f.TreeId == TreeId&&f.IsSubmit==1;
+                func = f => f.DeleteFlag != 1 && f.IsSubmit == 1&&f.ConfirmOrder== _ConfirmOrder&&f.Productioned== _Productioned;
                 #region 查询条件拼接
-                //if (model.ProjectName != null && model.ProjectName != "&nbsp;")
+
+                //if (TreeId.ToString() != "" && TreeId != 0)
                 //{
-                //    func = func.And(f => f.ProjectName.Contains(model.ProjectName));
+                //    func = func.And(f => f.TreeId == TreeId);
+
                 //}
-                //if (!string.IsNullOrEmpty(model.ProjectAddress))
-                //{
-                //    func = func.And(f => f.ProjectAddress == model.ProjectAddress); /*func = func.And(f => f.FullPath.Contains(model.FilePath))*/
-                //}
+                if (model.OrderNumbering != null && model.OrderNumbering.ToString() != "")
+                {
+                    func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering));
+
+                }
+                if (model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00")
+                {
+                    func = func.And(f => f.CreateTime >= model.InBeginTime);
+
+                }
+                if (model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00")
+                {
+                    func = func.And(f => f.CreateTime <= model.InEndTime);
+                }
+
                 #endregion
 
                 DataTable ListData, ListData1;
@@ -154,19 +278,16 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     ProduceOrderModel produceorder = new ProduceOrderModel();
                     produceorder.OrderId = item.OrderId;
                     var order = OrderManagementCurrent.Find(f => f.OrderId == item.OrderId).SingleOrDefault();
-                    var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == order.ProjectDemandId).SingleOrDefault();
-                    var member = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
-                    produceorder.MemberId = member.MemberID;
-                    produceorder.MemberNumbering =member.MemberNumbering.ToString();
+                    var Tree = TreeCurrent.Find(f => f.TreeID == item.TreeId).SingleOrDefault();
+                    produceorder.TreeName = Tree.TreeName;
                     produceorder.OrderNumbering = order.OrderNumbering;
-                    produceorder.OrderNumber = order.OrderNumber;
-                    produceorder.MemberName = member.MemberName;
-                    produceorder.MemberModel = member.MemberModel;
+                    produceorder.CreateTime = order.CreateTime;
+                    produceorder.CreateMan = item.CreateMan; //order.CreateMan;
                     produceorder.IsSubmit = item.IsSubmit;
-                    produceorder.SubmitMan = "System";
+                    produceorder.SubmitMan = item.SubmitMan;
                     produceorder.SubmitTime = item.SubmitTime.ToString();
                     produceorder.ConfirmOrder = item.ConfirmOrder;
-                    produceorder.ConfirmMan = "System";
+                    produceorder.ConfirmMan = item.ConfirmMan;
                     produceorder.Description = item.Description;
                     produceorderlist.Add(produceorder);
                 }
@@ -216,7 +337,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             }
         }
 
-
         /// <summary>
         /// 表单视图
         /// </summary>
@@ -264,7 +384,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 {
                     int key_value = Convert.ToInt32(KeyValue);
                     RMC_ProjectOrder Oldentity = OrderManagementCurrent.Find(t => t.OrderId == key_value).SingleOrDefault();//获取没更新之前实体对象
-                    Oldentity.RawMaterialConsumption = entity.RawMaterialConsumption;
                     Oldentity.OrderBudget = entity.OrderBudget;
                     Oldentity.Description = entity.Description;
                     OrderManagementCurrent.Modified(Oldentity);
@@ -277,7 +396,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     RMC_ProjectOrder Oldentity = new RMC_ProjectOrder();
                     //Oldentity.OrderId = orderid;
                     Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    Oldentity.RawMaterialConsumption = entity.RawMaterialConsumption;
                     Oldentity.OrderBudget = entity.OrderBudget;
                     //OrderManagementCurrent.Add(Oldentity);
                     IsOk = 1;
@@ -323,7 +441,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// </summary>
         /// <param name="FolderId"></param>
         /// <returns></returns>
-        public ActionResult ConfirmOrder(string KeyValue, RMC_ProcessManagement Entity,RMC_AnalysisRawMaterial AnalysisRawMaterialEntity)
+        public ActionResult ConfirmOrder(string KeyValue, RMC_ProcessManagement Entity, RMC_AnalysisRawMaterial AnalysisRawMaterialEntity)
         {
             try
             {
@@ -331,33 +449,38 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 var file = OrderManagementCurrent.Find(f => f.OrderId == OrderId).First();
                 file.ModifiedTime = DateTime.Now;
                 file.ConfirmOrder = 1;
-                file.ConfirmMan = "System";
+                file.ConfirmMan =currentUser.RealName;
                 OrderManagementCurrent.Modified(file);
 
-                var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == file.ProjectDemandId).SingleOrDefault();
-                var member = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
+                // var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == file.ProjectDemandId).SingleOrDefault();
+                //  var member = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
                 AnalysisRawMaterialEntity.TreeId = file.TreeId;
-                AnalysisRawMaterialEntity.MaterialName = member.MemberName;
+                // AnalysisRawMaterialEntity.MaterialName = member.MemberName;
                 AnalysisRawMaterialEntity.OrderNumbering = file.OrderNumbering;
                 AnalysisRawMaterialEntity.OrderId = file.OrderId;
-                AnalysisRawMaterialEntity.UnitId = demand.UnitId;
+                // AnalysisRawMaterialEntity.UnitId = demand.UnitId;
                 AnalysisRawMaterialEntity.ParentId = 0;
                 AnalysisRawMaterialEntity.RawMaterialId = 0;
-                AnalysisRawMaterialEntity.Number = file.OrderNumber;
                 AnalysisRawMaterialCurrent.Add(AnalysisRawMaterialEntity);
 
-                var tree = TreeCurrent.Find(f => f.TreeName == "生产制程设计").SingleOrDefault();
-                if (tree != null)
+                List<RMC_OrderMember> OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
+                for (int i = 0; i < OrderMemberList.Count(); i++)
                 {
-                    Entity.OrderId = OrderId;
-                    Entity.OrderNumbering = file.OrderNumbering; 
-                    Entity.TreeId = tree.TreeID;
-                    Entity.Supervision = 0;
-                    Entity.QualityInspection = 0;
-                    Entity.MemberCompanyId = file.ProjectDemandId;
-                }
-                ProcessManagementCurrent.Add(Entity);
+                    int _MemberId = Convert.ToInt32(OrderMemberList[i].MemberId);
+                    var MemberProcess = MemberProcessCurrent.Find(f => f.MemberId == _MemberId).ToList();
+                    for (int i0 = 0; i0 < MemberProcess.Count(); i0++)
+                    {
+                        Entity.OrderId = OrderId;
+                        Entity.MemberId = MemberProcess[i0].MemberId;
+                        Entity.MemberProcessId = MemberProcess[i0].MemberProcessId;
+                        Entity.IsProcessStatus = 0;
+                        ProcessManagementCurrent.Add(Entity);
 
+
+                    }
+
+
+                }
                 return Content(new JsonMessage { Success = true, Code = "1", Message = "操作成功。" }.ToString());
             }
             catch (Exception ex)
@@ -386,108 +509,84 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <param name="FolderId">文件夹ID</param>
         /// <param name="IsPublic">是否公共 1-公共、0-我的</param>
         /// <returns></returns>         
-        public ActionResult TreeGridJsonAnalysisRawMaterial111(/*ProjectInfoViewModel model,*/ string TreeID, JqGridParam jqgridparam, string IsPublic)
+        public ActionResult TreeGridJsonAnalysisRawMaterial(JqGridParam jqgridparam)
         {
+            List<AnalysisRawMaterialModel> AnalysisRawMaterialModellist = new List<AnalysisRawMaterialModel>();
             try
             {
-                int TreeId;
-                //int FolderId = Convert.ToInt32(FolderId);
-                if (TreeID == "" || TreeID == null)
-                {
-                    TreeId = 29;
-                }
-                else
-                {
-                    TreeId = Convert.ToInt32(TreeID);
-                }
-                int total = 0;
-                Expression<Func<RMC_AnalysisRawMaterial, bool>> func = ExpressionExtensions.True<RMC_AnalysisRawMaterial>();
-                func = f => f.DeleteFlag != 1 && f.TreeId == TreeId;
+                List<RMC_ProjectOrder> ProjectOrderList = new List<RMC_ProjectOrder>();
+                List<RMC_OrderMember> OrderMemberList = new List<RMC_OrderMember>();
+                List<RMC_MemberMaterial> MemberMaterialList = new List<RMC_MemberMaterial>();
+                List<RMC_RawMaterialLibrary> RawMaterialLibraryList = new List<RMC_RawMaterialLibrary>();
 
-                #region 查询条件拼接
-                //if (model.ProjectName != null && model.ProjectName != "&nbsp;")
-                //{
-                //    func = func.And(f => f.ProjectName.Contains(model.ProjectName));
-                //}
-                //if (!string.IsNullOrEmpty(model.ProjectAddress))
-                //{
-                //    func = func.And(f => f.ProjectAddress == model.ProjectAddress); /*func = func.And(f => f.FullPath.Contains(model.FilePath))*/
-                //}
-                #endregion
-
-                DataTable ListData, ListData1;
-                ListData = null;
-                //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
-                //                         , jqgridparam.rows
-                //                         , func1
-                //                         , true
-                //                         , f => f.TreeID.ToString()
-                //                         , out total
-                //                         ).ToList();
-                List<RMC_AnalysisRawMaterial> listfile = AnalysisRawMaterialCurrent.FindPage<string>(jqgridparam.page
-                                         , jqgridparam.rows
-                                         , func
-                                         , true
-                                         , f => f.AnalysisTime.ToString()
-                                         , out total
-                                         ).ToList();
-                List<AnalysisRawMaterialModel> AnalysisRawMaterialModelList = new List<AnalysisRawMaterialModel>();
-                foreach (var item in listfile)
+                ProjectOrderList = OrderManagementCurrent.Find(f => f.OrderId > 0).ToList();
+                if (ProjectOrderList.Count > 0)
                 {
-                    AnalysisRawMaterialModel _AnalysisRawMaterialModel = new AnalysisRawMaterialModel();
-                    var Unit = MemberUnitCurrent.Find(f => f.UnitId == item.UnitId).SingleOrDefault();
-                    _AnalysisRawMaterialModel.UnitName = Unit.UnitName;
-                    _AnalysisRawMaterialModel.AnalysisRawMaterialId = item.AnalysisRawMaterialId;
-                    _AnalysisRawMaterialModel.MaterialName = item.MaterialName;
-                    var order = OrderManagementCurrent.Find(f=>f.OrderId==item.OrderId).SingleOrDefault();
-                    var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == order.ProjectDemandId).SingleOrDefault();
-                    var member = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
-                    _AnalysisRawMaterialModel.MemberModel = member.MemberModel;
-                    _AnalysisRawMaterialModel.Number = item.Number;
-                    _AnalysisRawMaterialModel.MaterialStandard = item.MaterialStandard;
-                    _AnalysisRawMaterialModel.UnitPrice = item.UnitPrice;
-                    _AnalysisRawMaterialModel.TreeId = item.TreeId;
-                    _AnalysisRawMaterialModel.OrderNumbering = item.OrderNumbering;
-                    _AnalysisRawMaterialModel.Description = item.Description;
-                    AnalysisRawMaterialModelList.Add(_AnalysisRawMaterialModel);
-                }
-                if (AnalysisRawMaterialModelList.Count() > 0)// && listtree.Count() > 0
-                {
-
-                    //ListData0 = ListToDataTable(listtree);
-                    ListData1 = DataHelper.ListToDataTable(AnalysisRawMaterialModelList);
-                    ListData = ListData1.Clone();
-                    object[] obj = new object[ListData.Columns.Count];
-                    ////添加DataTable0的数据
-                    //for (int i = 0; i < ListData0.Rows.Count; i++)
-                    //{
-                    //    ListData0.Rows[i].ItemArray.CopyTo(obj, 0);
-                    //    ListData.Rows.Add(obj);
-                    //}
-                    //添加DataTable1的数据
-                    for (int i = 0; i < ListData1.Rows.Count; i++)
+                    for (int i0 = 0; i0 < ProjectOrderList.Count; i0++)
                     {
-                        ListData1.Rows[i].ItemArray.CopyTo(obj, 0);
-                        ListData.Rows.Add(obj);
-                    }
+                        int OrderId = Convert.ToInt32(ProjectOrderList[i0].OrderId);
+                        OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
+                        if (OrderMemberList.Count() > 0)
+                        {
+                            for (int i1 = 0; i1 < OrderMemberList.Count(); i1++)
+                            {
+                                int MemberId = Convert.ToInt32(OrderMemberList[i1].MemberId);
+                                MemberMaterialList = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();
+                                if (MemberMaterialList.Count() > 0)
+                                {
+                                    for (int i2 = 0; i2 < MemberMaterialList.Count(); i2++)
+                                    {
+                                        AnalysisRawMaterialModel AnalysisRawMaterialModel = new AnalysisRawMaterialModel();
+                                        if (AnalysisRawMaterialModellist.Count() != 0)
+                                        {
+                                            //for (int i = 0; i < AnalysisRawMaterialModellist.Count(); i++)
+                                            // {
+                                            var a = AnalysisRawMaterialModellist.Where(w => w.RawMaterialId == MemberMaterialList[i2].RawMaterialId);
+                                            if (a.Count() != 0)
+                                            {
+                                                AnalysisRawMaterialModel.OrderProcessingNumber += MemberMaterialList[i2].MaterialNumber * OrderMemberList[i1].Qty;
 
+                                            }
+                                            else
+                                            {
+                                                AnalysisRawMaterialModel.RawMaterialId = Convert.ToInt32(MemberMaterialList[i2].RawMaterialId);
+                                                var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == AnalysisRawMaterialModel.RawMaterialId).SingleOrDefault();
+                                                AnalysisRawMaterialModel.RawMaterialName = RawMaterial.RawMaterialName;
+                                                AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
+                                                AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
+                                                AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * OrderMemberList[i1].Qty;
+                                                AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
+                                                AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
+                                            }
+
+                                            //}
+                                        }
+                                        else
+                                        {
+                                            AnalysisRawMaterialModel.RawMaterialId = Convert.ToInt32(MemberMaterialList[i2].RawMaterialId);
+                                            var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == AnalysisRawMaterialModel.RawMaterialId).SingleOrDefault();
+                                            AnalysisRawMaterialModel.RawMaterialName = RawMaterial.RawMaterialName;
+                                            AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
+                                            AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
+                                            AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * OrderMemberList[i1].Qty;
+                                            AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
+                                            AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                //else if (listtree.Count() > 0)
-                //{
-                //    ListData = ListToDataTable(listtree);
-                //}
-                else if (listfile.Count() > 0)
-                {
-                    ListData = DataHelper.ListToDataTable(AnalysisRawMaterialModelList);
-                }
-                else
-                {
-                    ListData = null;
-                }
+
+                // int total = AnalysisRawMaterialModellist.Distinct().Count();
 
                 var JsonData = new
                 {
-                    rows = ListData,
+                    total = jqgridparam.total,
+                    page = jqgridparam.page,
+                    records = jqgridparam.records,
+                    rows = AnalysisRawMaterialModellist.Distinct(),
                 };
                 return Content(JsonData.ToJson());
             }
@@ -495,104 +594,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             {
                 return Content("<script>alertDialog('" + ex.Message + "');</script>");
             }
+
         }
 
-        public ActionResult TreeGridJsonAnalysisRawMaterial(string TreeID,JqGridParam jqgridparam)
-        {
-            StringBuilder sb = new StringBuilder();
-            if (!string.IsNullOrEmpty(TreeID))
-            {
-                int TreeId;
-                //int FolderId = Convert.ToInt32(FolderId);
-                if (TreeID == "" || TreeID == null)
-                {
-                    TreeId = 29;
-                }
-                else
-                {
-                    TreeId = Convert.ToInt32(TreeID);
-                }
 
-                int total = 0;
-                Expression<Func<RMC_AnalysisRawMaterial, bool>> func = ExpressionExtensions.True<RMC_AnalysisRawMaterial>();
-                func = f => f.DeleteFlag != 1 && f.TreeId == TreeId;
-                #region 查询条件拼接
-             
-                #endregion
-
-                //DataTable ListData, ListData1;
-                //ListData = null;
-
-                //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
-                //                         , jqgridparam.rows
-                //                         , func1
-                //                         , true
-                //                         , f => f.TreeID.ToString()
-                //                         , out total
-                //                         ).ToList();
-                List<RMC_AnalysisRawMaterial> listfile = AnalysisRawMaterialCurrent.FindPage<string>(jqgridparam.page
-                                         , jqgridparam.rows
-                                         , func
-                                         , true
-                                         , f => f.RawMaterialId.ToString()
-                                         , out total
-                                         ).ToList();
-
-               List<AnalysisRawMaterialModel> AnalysisRawMaterialModellist = new List<AnalysisRawMaterialModel>();
-                foreach (var item in listfile)
-                {
-                    AnalysisRawMaterialModel _AnalysisRawMaterialModel = new AnalysisRawMaterialModel();
-                    var Unit = MemberUnitCurrent.Find(f => f.UnitId == item.UnitId).SingleOrDefault();
-                    _AnalysisRawMaterialModel.UnitName = Unit.UnitName;
-                    if (item.OrderId != 0) { 
-                    var order = OrderManagementCurrent.Find(f => f.OrderId == item.OrderId).SingleOrDefault();
-                    var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == order.ProjectDemandId).SingleOrDefault();
-                    var member = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
-                    _AnalysisRawMaterialModel.MemberModel = member.MemberModel;
-                    _AnalysisRawMaterialModel.Number = order.OrderNumber;
-                    }
-                    if (item.RawMaterialId != 0) {
-                    var RawMaterial = AnalysisRawMaterialCurrent.Find(f => f.RawMaterialId == item.RawMaterialId).SingleOrDefault();
-                        _AnalysisRawMaterialModel.UnitPrice = RawMaterial.UnitPrice;
-                        _AnalysisRawMaterialModel.MaterialBudget = RawMaterial.UnitPrice * RawMaterial.Number;
-                    }
-                    _AnalysisRawMaterialModel.OrderNumbering = item.OrderNumbering;
-                    _AnalysisRawMaterialModel.AnalysisRawMaterialId = item.AnalysisRawMaterialId;
-                    _AnalysisRawMaterialModel.ParentId = item.ParentId;
-                    _AnalysisRawMaterialModel.MaterialName = item.MaterialName;
-                    _AnalysisRawMaterialModel.Number = item.Number;
-                    _AnalysisRawMaterialModel.MaterialStandard = item.MaterialStandard;
-                    _AnalysisRawMaterialModel.TreeId = item.TreeId;
-                    _AnalysisRawMaterialModel.AnalysisMan = item.AnalysisMan;
-                    _AnalysisRawMaterialModel.Description = item.Description;
-                    AnalysisRawMaterialModellist.Add(_AnalysisRawMaterialModel);
-                }
-
-                sb.Append("{ \"rows\": [");
-                sb.Append(TreeGridJson(AnalysisRawMaterialModellist, -1));
-                sb.Append("]}");
-            }
-            return Content(sb.ToString());
-        }
-        int lft = 1, rgt = 1000000;
-        public string TreeGridJson(List<AnalysisRawMaterialModel> AnalysisRawMaterialModellist, int index, int ParentId = 0)
-        {
-            StringBuilder sb = new StringBuilder();
-            List<AnalysisRawMaterialModel> ChildNodeList = AnalysisRawMaterialModellist.FindAll(t => t.ParentId == ParentId);
-            if (ChildNodeList.Count > 0) { index++; }
-            foreach (AnalysisRawMaterialModel entity in ChildNodeList)
-            {
-                string strJson = entity.ToJson();
-                strJson = strJson.Insert(1, "\"level\":" + index + ",");
-                strJson = strJson.Insert(1, "\"isLeaf\":" + (AnalysisRawMaterialModellist.Count<AnalysisRawMaterialModel>(t => t.ParentId == entity.AnalysisRawMaterialId) == 0 ? true : false).ToString().ToLower() + ",");
-                strJson = strJson.Insert(1, "\"expanded\":true,");
-                strJson = strJson.Insert(1, "\"lft\":" + lft++ + ",");
-                strJson = strJson.Insert(1, "\"rgt\":" + rgt-- + ",");
-                sb.Append(strJson);
-                sb.Append(TreeGridJson(AnalysisRawMaterialModellist, index, entity.AnalysisRawMaterialId));
-            }
-            return sb.ToString().Replace("}{", "},{");
-        }
 
         /// <summary>
         /// 表单视图
@@ -617,7 +622,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             if (!string.IsNullOrEmpty(KeyValue))
             {
                 int key_value = Convert.ToInt32(KeyValue);
-                entity = AnalysisRawMaterialCurrent.Find(f => f.AnalysisRawMaterialId== key_value).SingleOrDefault();
+                entity = AnalysisRawMaterialCurrent.Find(f => f.AnalysisRawMaterialId == key_value).SingleOrDefault();
             }
             return Content(entity.ToJson());
             //return Json(entity);
@@ -632,7 +637,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         [HttpPost]
         [ValidateInput(false)]
         //[LoginAuthorize]
-        public virtual ActionResult SubmitAnalysisRawMaterialForm(RMC_AnalysisRawMaterial entity, string KeyValue,string OrderNumbering)
+        public virtual ActionResult SubmitAnalysisRawMaterialForm(RMC_AnalysisRawMaterial entity, string KeyValue, string OrderNumbering)
         {
             try
             {
@@ -648,6 +653,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.ParentId = key_value;
                     Oldentity.OrderId = 0;
                     Oldentity.RawMaterialId = entity.RawMaterialId;
+                    var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == entity.RawMaterialId).SingleOrDefault();
+                    Oldentity.UnitId = RawMaterial.UnitId;
                     Oldentity.MaterialClassId = entity.MaterialClassId;
                     Oldentity.Number = entity.Number;
                     Oldentity.MaterialName = entity.MaterialName;
@@ -704,10 +711,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         }
 
 
-     public ActionResult GetRawMaterialName()
+        public ActionResult GetRawMaterialName()
         {
             List<SelectListItem> List = new List<SelectListItem>();
-            List<RMC_RawMaterialLibrary> ProjectList = RawMaterialCurrent.Find(f => f.RawMaterialId> 0).ToList();
+            List<RMC_RawMaterialLibrary> ProjectList = RawMaterialCurrent.Find(f => f.RawMaterialId > 0).ToList();
             foreach (var Item in ProjectList)
             {
                 SelectListItem item = new SelectListItem();
@@ -794,7 +801,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 DataTable ListData, ListData1;
                 ListData = null;
-               
+
                 //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
                 //                         , jqgridparam.rows
                 //                         , func1
@@ -809,7 +816,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                          , f => f.RawMaterialId.ToString()
                                          , out total
                                          ).ToList();
-                
+
                 List<RawMaterialLibraryModel> RawMaterialLibraryModellist = new List<RawMaterialLibraryModel>();
                 foreach (var item in listfile)
                 {
@@ -822,10 +829,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     RawMaterialLibraryModel.RawMaterialStandard = item.RawMaterialStandard;
                     RawMaterialLibraryModel.UnitPrice = item.UnitPrice;
                     RawMaterialLibraryModel.TreeId = item.TreeId;
-                    RawMaterialLibraryModel.Description= item.Description;
+                    RawMaterialLibraryModel.Description = item.Description;
                     RawMaterialLibraryModellist.Add(RawMaterialLibraryModel);
                 }
-                 if (RawMaterialLibraryModellist.Count() > 0)// && listtree.Count() > 0
+                if (RawMaterialLibraryModellist.Count() > 0)// && listtree.Count() > 0
                 {
 
                     //ListData0 = ListToDataTable(listtree);
@@ -925,7 +932,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.RawMaterialStandard = entity.RawMaterialStandard;
                     Oldentity.UnitId = entity.UnitId;
                     Oldentity.UnitPrice = entity.UnitPrice;
-                    Oldentity.RawMaterialNumber = entity.RawMaterialNumber;
                     Oldentity.Description = entity.Description;
                     RawMaterialCurrent.Modified(Oldentity);
                     IsOk = 1;//更新实体对象
@@ -933,15 +939,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
                 else
                 {
-                    
+
                     RMC_RawMaterialLibrary Oldentity = new RMC_RawMaterialLibrary();
-                    Oldentity.TreeId =Convert.ToInt32(TreeId);
+                    Oldentity.TreeId = Convert.ToInt32(TreeId);
                     Oldentity.RawMaterialName = entity.RawMaterialName;
                     Oldentity.RawMaterialNumber = entity.RawMaterialNumber;
                     Oldentity.RawMaterialStandard = entity.RawMaterialStandard;
                     Oldentity.UnitId = entity.UnitId;
                     Oldentity.UnitPrice = entity.UnitPrice;
-                    Oldentity.RawMaterialNumber = entity.RawMaterialNumber;
                     Oldentity.Description = entity.Description;
                     RawMaterialCurrent.Add(Oldentity);
                     IsOk = 1;
@@ -983,7 +988,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         }
         #endregion
 
-        #region 构件厂生产制程设计
+        #region 构件厂生产制程管理
         public ActionResult ProcessIndex()
         {
             return View();
@@ -1005,8 +1010,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
 
                 int total = 0;
-                Expression<Func<RMC_ProcessManagement, bool>> func = ExpressionExtensions.True<RMC_ProcessManagement>();
-                func = f => f.TreeId == TreeId;
+                Expression<Func<RMC_OrderMember, bool>> func = ExpressionExtensions.True<RMC_OrderMember>();
+                func = f => f.OrderId == TreeId;
                 #region 查询条件拼接
                 //if (model.ProjectName != null && model.ProjectName != "&nbsp;")
                 //{
@@ -1027,42 +1032,30 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //                         , f => f.TreeID.ToString()
                 //                         , out total
                 //                         ).ToList();
-                List<RMC_ProcessManagement> listfile = ProcessManagementCurrent.FindPage<string>(jqgridparam.page
+                List<RMC_OrderMember> listfile = OrderMemberCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
                                          , true
-                                         , f => f.ProduceStartDate.ToString()
+                                         , f => f.OrderId.ToString()
                                          , out total
                                          ).ToList();
-                List<ProcessManagementModel> processmanagementlist = new List<ProcessManagementModel>();
+                List<ProduceOrderModel> ProduceOrderModelList = new List<ProduceOrderModel>();
                 foreach (var item in listfile)
                 {
-                    ProcessManagementModel processmanagement = new ProcessManagementModel();
-                    processmanagement.ProcessId = item.ProcessId;
-                    var Process = ProcessManagementCurrent.Find(f => f.ProcessId == item.ProcessId).SingleOrDefault();
-                    var order = OrderManagementCurrent.Find(f => f.OrderId == Process.OrderId).SingleOrDefault();
-                    var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == order.ProjectDemandId).SingleOrDefault();
-                    var member = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
-                    processmanagement.MemberNumbering = member.MemberNumbering.ToString();
-                    processmanagement.MemberName = member.MemberName;
-                    processmanagement.MemberNumber = demand.MemberNumber;
-                    processmanagement.ProduceStartDate = item.ProduceStartDate;
-                    processmanagement.ProduceEndDate = item.ProduceEndDate;
-                    processmanagement.SetUpProcessing = item.SetUpProcessing;
-                    processmanagement.SetUpProcessingDays = item.SetUpProcessingDays;
-                    processmanagement.SubmergedArcProcessing = item.SubmergedArcProcessing;
-                    processmanagement.SubmergedArcProcessingDays = item.SubmergedArcProcessingDays;
-                    processmanagement.RivetingProcessing = item.RivetingProcessing;
-                    processmanagement.RivetingProcessingDays = item.RivetingProcessingDays;
-                    processmanagement.PaintProcessing = item.PaintProcessing;
-                    processmanagement.PaintProcessingDays = item.PaintProcessingDays;
-                    processmanagement.Description = item.Description;
-                    processmanagementlist.Add(processmanagement);
+                    ProduceOrderModel _ProduceOrderModel = new ProduceOrderModel();
+                    _ProduceOrderModel.OrderId = Convert.ToInt32(item.OrderId);
+                    _ProduceOrderModel.MemberNumbering = item.MemberNumbering;
+                    _ProduceOrderModel.MemberId = item.MemberId;
+                    _ProduceOrderModel.MemberName = item.MemberName;
+                    _ProduceOrderModel.MemberNumber = item.Qty;
+                    var Order = OrderManagementCurrent.Find(f => f.OrderId == item.OrderId).SingleOrDefault();
+                    _ProduceOrderModel.Description = item.Description;
+                    ProduceOrderModelList.Add(_ProduceOrderModel);
                 }
-                if (processmanagementlist.Count() > 0)// && listtree.Count() > 0
+                if (ProduceOrderModelList.Count() > 0)// && listtree.Count() > 0
                 {
                     //ListData0 = ListToDataTable(listtree);
-                    ListData1 = DataHelper.ListToDataTable(processmanagementlist);
+                    ListData1 = DataHelper.ListToDataTable(ProduceOrderModelList);
                     ListData = ListData1.Clone();
                     object[] obj = new object[ListData.Columns.Count];
                     ////添加DataTable0的数据
@@ -1085,7 +1078,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //}
                 else if (listfile.Count() > 0)
                 {
-                    ListData = DataHelper.ListToDataTable(processmanagementlist);
+                    ListData = DataHelper.ListToDataTable(ProduceOrderModelList);
                 }
                 else
                 {
@@ -1104,6 +1097,46 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             }
         }
 
+        public ActionResult GetProcessEntryList(string MemberId, string OrderId, JqGridParam jqgridparam)
+        {
+            int _MemberId = Convert.ToInt32(MemberId);
+            int _OrderId = Convert.ToInt32(OrderId);
+            try
+            {
+                var OrderMember = OrderMemberCurrent.Find(f=>f.OrderId== _OrderId&&f.MemberId== _MemberId).SingleOrDefault();
+
+                List<ProcessManagementModel> ProcessManagementModelList = new List<ProcessManagementModel>();
+                var Proceess = ProcessManagementCurrent.Find(f => f.OrderId == _OrderId && f.MemberId == _MemberId).ToList();
+                for (int i = 0; i < Proceess.Count(); i++)
+                {
+                    int _MemberProcessId = Convert.ToInt32(Proceess[i].MemberProcessId);
+                    ProcessManagementModel ProcessManagementModel = new ProcessManagementModel();
+                    var _MemberProcess = MemberProcessCurrent.Find(f => f.MemberProcessId == _MemberProcessId).SingleOrDefault();
+                    ProcessManagementModel.ProcessId = Proceess[i].ProcessId;
+                    ProcessManagementModel.ProcessName = _MemberProcess.ProcessName;
+                    ProcessManagementModel.OperationTime =(Convert.ToDecimal(_MemberProcess.OperationTime)* Convert.ToInt32(OrderMember.Qty)).ToString();
+                    ProcessManagementModel.ProcessRequirements = _MemberProcess.ProcessRequirements;
+                    ProcessManagementModel.SortCode = _MemberProcess.SortCode;
+                    ProcessManagementModel.ProcessMan = Proceess[i].ProcessMan;
+                    ProcessManagementModel.ProcessManImge = Proceess[i].ProcessManImge;
+                    ProcessManagementModel.Description = Proceess[i].Description;
+                    ProcessManagementModel.IsProcessStatus = Proceess[i].IsProcessStatus;
+                    ProcessManagementModelList.Add(ProcessManagementModel);
+                }
+
+
+                var JsonData = new
+                {
+                    rows = ProcessManagementModelList.OrderBy(f => f.SortCode),
+                };
+                return Content(JsonData.ToJson());
+            }
+            catch (Exception ex)
+            {
+                Base_SysLogBll.Instance.WriteLog("", OperationType.Query, "-1", "异常错误：" + ex.Message);
+                return null;
+            }
+        }
         /// <summary>
         /// 表单视图
         /// </summary>
@@ -1126,8 +1159,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             RMC_ProcessManagement entity = new RMC_ProcessManagement();
             if (!string.IsNullOrEmpty(KeyValue))
             {
-                int key_value = Convert.ToInt32(KeyValue);
-                entity = ProcessManagementCurrent.Find(f => f.ProcessId == key_value).SingleOrDefault();
+                int _KeyValue = Convert.ToInt32(KeyValue);
+                entity = ProcessManagementCurrent.Find(f => f.ProcessId == _KeyValue).SingleOrDefault();
+                var MemberProcess = MemberProcessCurrent.Find(f => f.MemberProcessId == entity.MemberProcessId).SingleOrDefault();
+                entity.ProcessName = MemberProcess.ProcessName;
             }
             return Content(entity.ToJson());
             //return Json(entity);
@@ -1152,17 +1187,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 {
                     int key_value = Convert.ToInt32(KeyValue);
                     RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象
-                    //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    Oldentity.PaintProcessing = entity.PaintProcessing;
-                    Oldentity.PaintProcessingDays = entity.PaintProcessingDays;
-                    Oldentity.ProduceStartDate = entity.ProduceStartDate;
-                    Oldentity.ProduceEndDate = entity.ProduceEndDate;
-                    Oldentity.RivetingProcessing = entity.RivetingProcessing;
-                    Oldentity.RivetingProcessingDays = entity.RivetingProcessingDays;
-                    Oldentity.SetUpProcessing = entity.SetUpProcessing;
-                    Oldentity.SetUpProcessingDays = entity.SetUpProcessingDays;
-                    Oldentity.SubmergedArcProcessing = entity.SubmergedArcProcessing;
-                    Oldentity.SubmergedArcProcessingDays = entity.SubmergedArcProcessingDays;
+                    Oldentity.ProcessMan = entity.ProcessMan;
                     Oldentity.Description = entity.Description;
                     ProcessManagementCurrent.Modified(Oldentity);
                     IsOk = 1;//更新实体对象
@@ -1172,19 +1197,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 {
                     int key_value = Convert.ToInt32(KeyValue);
                     RMC_ProcessManagement Oldentity = new RMC_ProcessManagement();
-                    //Oldentity.TreeId = key_value;
-                    Oldentity.PaintProcessing = entity.PaintProcessing;
-                    Oldentity.PaintProcessingDays = entity.PaintProcessingDays;
                     Oldentity.ProduceStartDate = entity.ProduceStartDate;
                     Oldentity.ProduceEndDate = entity.ProduceStartDate;
-                    Oldentity.RivetingProcessing = entity.RivetingProcessing;
-                    Oldentity.RivetingProcessingDays = entity.RivetingProcessingDays;
-                    Oldentity.SetUpProcessing = entity.SetUpProcessing;
-                    Oldentity.SetUpProcessingDays = entity.SetUpProcessingDays;
-                    Oldentity.SubmergedArcProcessing = entity.SubmergedArcProcessing;
-                    Oldentity.SubmergedArcProcessingDays = entity.SubmergedArcProcessingDays;
-                    Oldentity.Supervision = 0;
-                    Oldentity.QualityInspection = 0;
                     Oldentity.Description = entity.Description;
                     //ProcessManagementCurrent.Add(Oldentity);
                     IsOk = 1;
@@ -1225,643 +1239,783 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             }
         }
 
+        /// <summary>
+        /// 制程状态控制
+        /// </summary>
+        /// <param name="KeyValue"></param>
+        /// <returns></returns>
+        public ActionResult Processed(string MemberId, string OrderId, string KeyValue, string IsQqualified)
+        {
+            try
+            {
+                int IsOk = 0;
+                string Message = KeyValue == "2" ? "质检通过" : "操作成功。";
+                if (!string.IsNullOrEmpty(KeyValue))
+                {
+                    int key_value = Convert.ToInt32(KeyValue);
+                    RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象赋值
+                    if (Oldentity.IsProcessStatus == 1 || Oldentity.IsProcessStatus == 2)
+                    {
+                        Message = "该工序已提交过！";
+                    }
+                    else
+                    {
+                        Oldentity.IsProcessStatus = Convert.ToInt32(IsQqualified);
+                        ProcessManagementCurrent.Modified(Oldentity);
+                        IsOk = 1;//更新实体对象
+
+                        int _MemberId = Convert.ToInt32(MemberId);
+                        int _OrderId = Convert.ToInt32(OrderId);
+
+                        if (_MemberId == 0)
+                        {
+                            _MemberId = Convert.ToInt32(Oldentity.MemberId);
+                            _OrderId = Convert.ToInt32(Oldentity.OrderId);
+                        }
+
+                        List<RMC_ProcessManagement> ProcessManagementList = ProcessManagementCurrent.Find(f => f.MemberId == _MemberId && f.OrderId == _OrderId).ToList();
+                        var Order = OrderManagementCurrent.Find(f => f.OrderId == _OrderId).SingleOrDefault();
+                        int a = 0;
+                        for (int i = 0; i < ProcessManagementList.Count(); i++)
+                        {
+                            if (ProcessManagementList[i].IsProcessStatus == 1)
+                            {
+                                a++;
+                            }
+                        }
+                        if (a == ProcessManagementList.Count())
+                        {
+                            Operating(_MemberId, _OrderId);
+                            Order.Productioned = 1;
+                        }
+                        else if (a==0)
+                        {
+                            Order.Productioned = 0;
+                        }
+                        else
+                        {
+                            Order.Productioned = 2;
+                        }
+                        OrderManagementCurrent.Modified(Order);
+                    }
+                }
+
+                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+            }
+            catch (Exception ex)
+            {
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+            }
+        }
+        /// <summary>
+        /// 生产量，工厂库存，修改发货构件显示
+        /// </summary>
+        public void Operating(int _MemberId, int _OrderId)
+        {
+            var OrderMember = OrderMemberCurrent.Find(f => f.MemberId == _MemberId&&f.OrderId== _OrderId).SingleOrDefault();
+            var Member = MemberLibraryCurrent.Find(f => f.MemberID == _MemberId).SingleOrDefault();
+            RMC_ProjectDemand _MemberDemend = new RMC_ProjectDemand();
+            _MemberDemend = ProjectManagementCurrent.Find(f => f.MemberId == _MemberId).SingleOrDefault();
+            _MemberDemend.Productioned = Convert.ToInt32(_MemberDemend.Productioned) + Convert.ToInt32(OrderMember.Qty);
+            ProjectManagementCurrent.Modified(_MemberDemend);
+
+            RMC_FactoryWarehouse FactoryWarehouse = new RMC_FactoryWarehouse();
+           List<RMC_FactoryWarehouse>  FactoryWarehouseList= FactoryWarehouseCurrent.Find(f => f.MemberId == Member.MemberID).ToList();
+            if (FactoryWarehouseList.Count()== 0)
+            {
+                FactoryWarehouse.MemberId = Member.MemberID;
+                FactoryWarehouse.MemberModel = Member.MemberModel;
+                FactoryWarehouse.InStockNumber = OrderMember.Qty;
+                FactoryWarehouseCurrent.Add(FactoryWarehouse);
+            }
+            else
+            {
+                    var _FactoryWarehouse= FactoryWarehouseCurrent.Find(f => f.MemberId == Member.MemberID).SingleOrDefault();
+                    _FactoryWarehouse.InStockNumber = Convert.ToInt32(_FactoryWarehouse.InStockNumber) + Convert.ToInt32(OrderMember.Qty);
+                    FactoryWarehouseCurrent.Modified(_FactoryWarehouse);
+            }
+
+
+            RMC_ShipManagement ShipManagement = ShipManagementCurrent.Find(f => f.MemberId == _MemberDemend.MemberId).SingleOrDefault();
+            if (ShipManagement.IsPackaged == 1)
+            {
+            }
+            else
+            {
+                ShipManagement.IsPackaged = 1;
+                ShipManagement.ShipNumber= OrderMember.Qty.ToString();
+                ShipManagementCurrent.Modified(ShipManagement);
+            }
+
+        }
+
         #endregion
 
-        #region 构件厂生产制程管理
-        public ActionResult ProcessManagementIndex()
-        {
-            return View();
-        }
-        public ActionResult GridListJson( string KeyValue)
-        {
-            RMC_ProcessManagement entity = new RMC_ProcessManagement();
-            if (!string.IsNullOrEmpty(KeyValue))
-            {
-                int key_value = Convert.ToInt32(KeyValue);
-                entity = ProcessManagementCurrent.Find(f => f.TreeId == key_value).SingleOrDefault();
-            }
-            return Content(entity.ToJson());
+        #region 构件厂生产制程管理A
+        //public ActionResult ProcessManagementIndex()
+        //{
+        //    return View();
+        //}
+        //public ActionResult GridListJson(string KeyValue)
+        //{
+        //    RMC_ProcessManagement entity = new RMC_ProcessManagement();
+        //    if (!string.IsNullOrEmpty(KeyValue))
+        //    {
+        //        int key_value = Convert.ToInt32(KeyValue);
+        //        entity = ProcessManagementCurrent.Find(f => f.TreeId == key_value).SingleOrDefault();
+        //    }
+        //    return Content(entity.ToJson());
 
-        }
+        //}
 
-        public ActionResult GridListJsonProcessManagement(/*ProjectInfoViewModel model,*/ string TreeID, JqGridParam jqgridparam, string IsPublic)
-        {
-            try
-            {
-                int TreeId;
-                //int FolderId = Convert.ToInt32(FolderId);
-                if (TreeID == "" || TreeID == null)
-                {
-                    TreeId = 24;
-                }
-                else
-                {
-                    TreeId = Convert.ToInt32(TreeID);
-                }
+        //public ActionResult GridListJsonProcessManagement(/*ProjectInfoViewModel model,*/ string TreeID, JqGridParam jqgridparam, string IsPublic)
+        //{
+        //    try
+        //    {
+        //        int TreeId;
+        //        //int FolderId = Convert.ToInt32(FolderId);
+        //        if (TreeID == "" || TreeID == null)
+        //        {
+        //            TreeId = 24;
+        //        }
+        //        else
+        //        {
+        //            TreeId = Convert.ToInt32(TreeID);
+        //        }
 
-                int total = 0;
-                Expression<Func<RMC_ProcessManagement, bool>> func = ExpressionExtensions.True<RMC_ProcessManagement>();
-                func = f => f.TreeId == TreeId;
-                #region 查询条件拼接
-                //if (model.ProjectName != null && model.ProjectName != "&nbsp;")
-                //{
-                //    func = func.And(f => f.ProjectName.Contains(model.ProjectName));
-                //}
-                //if (!string.IsNullOrEmpty(model.ProjectAddress))
-                //{
-                //    func = func.And(f => f.ProjectAddress == model.ProjectAddress); /*func = func.And(f => f.FullPath.Contains(model.FilePath))*/
-                //}
-                #endregion
+        //        int total = 0;
+        //        Expression<Func<RMC_ProcessManagement, bool>> func = ExpressionExtensions.True<RMC_ProcessManagement>();
+        //        func = f => f.TreeId == TreeId;
+        //        #region 查询条件拼接
+        //        //if (model.ProjectName != null && model.ProjectName != "&nbsp;")
+        //        //{
+        //        //    func = func.And(f => f.ProjectName.Contains(model.ProjectName));
+        //        //}
+        //        //if (!string.IsNullOrEmpty(model.ProjectAddress))
+        //        //{
+        //        //    func = func.And(f => f.ProjectAddress == model.ProjectAddress); /*func = func.And(f => f.FullPath.Contains(model.FilePath))*/
+        //        //}
+        //        #endregion
 
-                DataTable ListData, ListData1;
-                ListData = null;
-                //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
-                //                         , jqgridparam.rows
-                //                         , func1
-                //                         , true
-                //                         , f => f.TreeID.ToString()
-                //                         , out total
-                //                         ).ToList();
-                List<RMC_ProcessManagement> listfile = ProcessManagementCurrent.FindPage<string>(jqgridparam.page
-                                         , jqgridparam.rows
-                                         , func
-                                         , true
-                                         , f => f.ProduceStartDate.ToString()
-                                         , out total
-                                         ).ToList();
-                List<ProcessManagementModel> processmanagementlist = new List<ProcessManagementModel>();
-                foreach (var item in listfile)
-                {
-                    ProcessManagementModel processmanagement = new ProcessManagementModel();
-                    processmanagement.ProcessId = item.ProcessId;
-                    processmanagement.OrderId = item.OrderId;
-                    var Process = ProcessManagementCurrent.Find(f => f.ProcessId == item.ProcessId).SingleOrDefault();
-                    var order = OrderManagementCurrent.Find(f => f.OrderId == Process.OrderId).SingleOrDefault();
-                    var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == order.ProjectDemandId).SingleOrDefault();
-                    var member = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
-                    processmanagement.MemberNumbering = member.MemberNumbering.ToString();
-                    processmanagement.MemberName = member.MemberName;
-                    processmanagement.MemberNumber = demand.MemberNumber;
-                    processmanagement.ProduceStartDate = item.ProduceStartDate;
-                    processmanagement.ProduceEndDate = item.ProduceEndDate;
-                    processmanagement.IsSetUpProcessingTask = item.IsSetUpProcessingTask;
-                    processmanagement.IsSetUpProcessing = item.IsSetUpProcessing;
-                    processmanagement.IsSubmergedArcProcessingTask = item.IsSubmergedArcProcessingTask;
-                    processmanagement.IsSubmergedArcProcessing = item.IsSubmergedArcProcessing;
-                    processmanagement.IsRivetingProcessingTask = item.IsRivetingProcessingTask;
-                    processmanagement.IsRivetingProcessing = item.IsRivetingProcessing;
-                    processmanagement.IsPaintProcessingTask = item.IsPaintProcessingTask;
-                    processmanagement.IsPaintProcessing = item.IsPaintProcessing;
-                    processmanagement.QualifiedNumber = item.QualifiedNumber;
-                    processmanagement.UnqualifiedNumber = item.UnqualifiedNumber;
-                    processmanagement.QualityInspection = item.QualityInspection;
-                    processmanagement.IsPacking = item.IsPacking;
-                    processmanagement.Supervision = item.Supervision;
-                    processmanagement.Description = item.Description;
-                    processmanagementlist.Add(processmanagement);
-                }
-                if (processmanagementlist.Count() > 0)// && listtree.Count() > 0
-                {
-                    //ListData0 = ListToDataTable(listtree);
-                    ListData1 = DataHelper.ListToDataTable(processmanagementlist);
-                    ListData = ListData1.Clone();
-                    object[] obj = new object[ListData.Columns.Count];
-                    ////添加DataTable0的数据
-                    //for (int i = 0; i < ListData0.Rows.Count; i++)
-                    //{
-                    //    ListData0.Rows[i].ItemArray.CopyTo(obj, 0);
-                    //    ListData.Rows.Add(obj);
-                    //}
-                    //添加DataTable1的数据
-                    for (int i = 0; i < ListData1.Rows.Count; i++)
-                    {
-                        ListData1.Rows[i].ItemArray.CopyTo(obj, 0);
-                        ListData.Rows.Add(obj);
-                    }
+        //        DataTable ListData, ListData1;
+        //        ListData = null;
+        //        //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
+        //        //                         , jqgridparam.rows
+        //        //                         , func1
+        //        //                         , true
+        //        //                         , f => f.TreeID.ToString()
+        //        //                         , out total
+        //        //                         ).ToList();
+        //        List<RMC_ProcessManagement> listfile = ProcessManagementCurrent.FindPage<string>(jqgridparam.page
+        //                                 , jqgridparam.rows
+        //                                 , func
+        //                                 , true
+        //                                 , f => f.ProduceStartDate.ToString()
+        //                                 , out total
+        //                                 ).ToList();
+        //        List<ProcessManagementModel> processmanagementlist = new List<ProcessManagementModel>();
+        //        foreach (var item in listfile)
+        //        {
+        //            ProcessManagementModel processmanagement = new ProcessManagementModel();
+        //            processmanagement.ProcessId = item.ProcessId;
+        //            processmanagement.OrderId = item.OrderId;
+        //            var Process = ProcessManagementCurrent.Find(f => f.ProcessId == item.ProcessId).SingleOrDefault();
+        //            var order = OrderManagementCurrent.Find(f => f.OrderId == Process.OrderId).SingleOrDefault();
+        //            var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == order.ProjectDemandId).SingleOrDefault();
+        //            var member = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
+        //            processmanagement.MemberId = member.MemberID;
+        //            processmanagement.MemberNumbering = member.MemberNumbering.ToString();
+        //            processmanagement.MemberName = member.MemberName;
+        //            processmanagement.MemberNumber = demand.MemberNumber;
+        //            processmanagement.ProduceStartDate = item.ProduceStartDate;
+        //            processmanagement.ProduceEndDate = item.ProduceEndDate;
+        //            processmanagement.IsSetUpProcessingTask = item.IsSetUpProcessingTask;
+        //            processmanagement.IsSetUpProcessing = item.IsSetUpProcessing;
+        //            processmanagement.IsSubmergedArcProcessingTask = item.IsSubmergedArcProcessingTask;
+        //            processmanagement.IsSubmergedArcProcessing = item.IsSubmergedArcProcessing;
+        //            processmanagement.IsRivetingProcessingTask = item.IsRivetingProcessingTask;
+        //            processmanagement.IsRivetingProcessing = item.IsRivetingProcessing;
+        //            processmanagement.IsPaintProcessingTask = item.IsPaintProcessingTask;
+        //            processmanagement.IsPaintProcessing = item.IsPaintProcessing;
+        //            processmanagement.QualifiedNumber = item.QualifiedNumber;
+        //            processmanagement.UnqualifiedNumber = item.UnqualifiedNumber;
+        //            processmanagement.QualityInspection = item.QualityInspection;
+        //            processmanagement.IsPacking = item.IsPacking;
+        //            processmanagement.Supervision = item.Supervision;
+        //            processmanagement.Description = item.Description;
+        //            processmanagementlist.Add(processmanagement);
+        //        }
+        //        if (processmanagementlist.Count() > 0)// && listtree.Count() > 0
+        //        {
+        //            //ListData0 = ListToDataTable(listtree);
+        //            ListData1 = DataHelper.ListToDataTable(processmanagementlist);
+        //            ListData = ListData1.Clone();
+        //            object[] obj = new object[ListData.Columns.Count];
+        //            ////添加DataTable0的数据
+        //            //for (int i = 0; i < ListData0.Rows.Count; i++)
+        //            //{
+        //            //    ListData0.Rows[i].ItemArray.CopyTo(obj, 0);
+        //            //    ListData.Rows.Add(obj);
+        //            //}
+        //            //添加DataTable1的数据
+        //            for (int i = 0; i < ListData1.Rows.Count; i++)
+        //            {
+        //                ListData1.Rows[i].ItemArray.CopyTo(obj, 0);
+        //                ListData.Rows.Add(obj);
+        //            }
 
-                }
-                //else if (listtree.Count() > 0)
-                //{
-                //    ListData = ListToDataTable(listtree);
-                //}
-                else if (listfile.Count() > 0)
-                {
-                    ListData = DataHelper.ListToDataTable(processmanagementlist);
-                }
-                else
-                {
-                    ListData = null;
-                }
+        //        }
+        //        //else if (listtree.Count() > 0)
+        //        //{
+        //        //    ListData = ListToDataTable(listtree);
+        //        //}
+        //        else if (listfile.Count() > 0)
+        //        {
+        //            ListData = DataHelper.ListToDataTable(processmanagementlist);
+        //        }
+        //        else
+        //        {
+        //            ListData = null;
+        //        }
 
-                var JsonData = new
-                {
-                    rows = ListData,
-                };
-                return Content(JsonData.ToJson());
-            }
-            catch (Exception ex)
-            {
-                return Content("<script>alertDialog('" + ex.Message + "');</script>");
-            }
-        }
+        //        var JsonData = new
+        //        {
+        //            rows = ListData,
+        //        };
+        //        return Content(JsonData.ToJson());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content("<script>alertDialog('" + ex.Message + "');</script>");
+        //    }
+        //}
 
-        /// <summary>
-        /// 表单视图
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult ProcessManagementForm()
-        {
-            return View();
-        }
+        ///// <summary>
+        ///// 表单视图
+        ///// </summary>
+        ///// <returns></returns>
+        //public ActionResult ProcessManagementForm()
+        //{
+        //    return View();
+        //}
 
-        /// <summary>
-        /// 【项目信息管理】返回文件夹对象JSON
-        /// </summary>
-        /// <param name="KeyValue">主键值</param>
-        /// <returns></returns>
-        [HttpPost]
-        [ValidateInput(false)]
-        //[LoginAuthorize]
-        public ActionResult SetProcessManagementForm(string KeyValue)
-        {
-            RMC_ProcessManagement entity = new RMC_ProcessManagement();
-            if (!string.IsNullOrEmpty(KeyValue))
-            {
-                int key_value = Convert.ToInt32(KeyValue);
-                entity = ProcessManagementCurrent.Find(f => f.ProcessId == key_value).SingleOrDefault();
-            }
-            return Content(entity.ToJson());
-            //return Json(entity);
-        }
+        ///// <summary>
+        ///// 【项目信息管理】返回文件夹对象JSON
+        ///// </summary>
+        ///// <param name="KeyValue">主键值</param>
+        ///// <returns></returns>
+        //[HttpPost]
+        //[ValidateInput(false)]
+        ////[LoginAuthorize]
+        //public ActionResult SetProcessManagementForm(string KeyValue)
+        //{
+        //    RMC_ProcessManagement entity = new RMC_ProcessManagement();
+        //    if (!string.IsNullOrEmpty(KeyValue))
+        //    {
+        //        int key_value = Convert.ToInt32(KeyValue);
+        //        entity = ProcessManagementCurrent.Find(f => f.ProcessId == key_value).SingleOrDefault();
+        //    }
+        //    return Content(entity.ToJson());
+        //    //return Json(entity);
+        //}
 
-        /// <summary>
-        /// 提交文件夹表单
-        /// </summary>
-        /// <param name="entity">实体对象</param>
-        /// <param name="KeyValue">主键值</param>
-        /// <returns></returns>
-        [HttpPost]
-        [ValidateInput(false)]
-        //[LoginAuthorize]
-        public virtual ActionResult SubmitProcessManagementForm(RMC_ProcessManagement entity, string KeyValue, string OrderId)
-        {
-            try
-            {
-                int IsOk = 0;
-                string Message = KeyValue == "" ? "新增成功。" : "编辑成功。";
-                if (!string.IsNullOrEmpty(KeyValue))
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象
-                    //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    Oldentity.PaintProcessing = entity.PaintProcessing;
-                    Oldentity.QualityInspection = entity.QualityInspection;
-                    Oldentity.RivetingProcessing = entity.RivetingProcessing;
-                    Oldentity.SetUpProcessing = entity.SetUpProcessing;
-                    Oldentity.SubmergedArcProcessing = entity.SubmergedArcProcessing;
-                    Oldentity.Supervision = entity.Supervision;
-                    Oldentity.Description = entity.Description;
-                    ProcessManagementCurrent.Modified(Oldentity);
-                    IsOk = 1;//更新实体对象
-                    //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
-                }
-                else
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_ProcessManagement Oldentity = new RMC_ProcessManagement();
-                    Oldentity.TreeId = key_value;
-                    Oldentity.PaintProcessing = entity.PaintProcessing;
-                    Oldentity.QualityInspection = entity.QualityInspection;
-                    Oldentity.RivetingProcessing = entity.RivetingProcessing;
-                    Oldentity.SetUpProcessing = entity.SetUpProcessing;
-                    Oldentity.SubmergedArcProcessing = entity.SubmergedArcProcessing;
-                    Oldentity.Supervision = entity.Supervision;
-                    Oldentity.Description = entity.Description;
-                    ///ProcessManagementCurrent.Add(Oldentity);
-                    IsOk = 1;
-                    //this.WriteLog(IsOk, entity, null, KeyValue, Message);
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                //this.WriteLog(-1, entity, null, KeyValue, "操作失败：" + ex.Message);
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
+        ///// <summary>
+        ///// 提交文件夹表单
+        ///// </summary>
+        ///// <param name="entity">实体对象</param>
+        ///// <param name="KeyValue">主键值</param>
+        ///// <returns></returns>
+        //[HttpPost]
+        //[ValidateInput(false)]
+        ////[LoginAuthorize]
+        //public virtual ActionResult SubmitProcessManagementForm(RMC_ProcessManagement entity, string KeyValue, string OrderId)
+        //{
+        //    try
+        //    {
+        //        int IsOk = 0;
+        //        string Message = KeyValue == "" ? "新增成功。" : "编辑成功。";
+        //        if (!string.IsNullOrEmpty(KeyValue))
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象
+        //            //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
+        //            Oldentity.PaintProcessing = entity.PaintProcessing;
+        //            Oldentity.QualityInspection = entity.QualityInspection;
+        //            Oldentity.RivetingProcessing = entity.RivetingProcessing;
+        //            Oldentity.SetUpProcessing = entity.SetUpProcessing;
+        //            Oldentity.SubmergedArcProcessing = entity.SubmergedArcProcessing;
+        //            Oldentity.Supervision = entity.Supervision;
+        //            Oldentity.Description = entity.Description;
+        //            ProcessManagementCurrent.Modified(Oldentity);
+        //            IsOk = 1;//更新实体对象
+        //            //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
+        //        }
+        //        else
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_ProcessManagement Oldentity = new RMC_ProcessManagement();
+        //            Oldentity.TreeId = key_value;
+        //            Oldentity.PaintProcessing = entity.PaintProcessing;
+        //            Oldentity.QualityInspection = entity.QualityInspection;
+        //            Oldentity.RivetingProcessing = entity.RivetingProcessing;
+        //            Oldentity.SetUpProcessing = entity.SetUpProcessing;
+        //            Oldentity.SubmergedArcProcessing = entity.SubmergedArcProcessing;
+        //            Oldentity.Supervision = entity.Supervision;
+        //            Oldentity.Description = entity.Description;
+        //            ///ProcessManagementCurrent.Add(Oldentity);
+        //            IsOk = 1;
+        //            //this.WriteLog(IsOk, entity, null, KeyValue, Message);
+        //        }
+        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //this.WriteLog(-1, entity, null, KeyValue, "操作失败：" + ex.Message);
+        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// 删除文件
-        /// </summary>
-        /// <param name="FolderId"></param>
-        /// <returns></returns>
-        public ActionResult DeleteProcessManagement(string KeyValue)
-        {
-            try
-            {
-                List<int> ids = new List<int>();
-                int key_value = Convert.ToInt32(KeyValue);
-                ids.Add(key_value);
-                ProcessManagementCurrent.Remove(ids);
-                return Content(new JsonMessage { Success = true, Code = "1", Message = "删除成功。" }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage
-                {
-                    Success = false,
-                    Code = "-1",
-                    Message = "操作失败：" + ex.Message
-                }.ToString());
-            }
-        }
+        ///// <summary>
+        ///// 删除文件
+        ///// </summary>
+        ///// <param name="FolderId"></param>
+        ///// <returns></returns>
+        //public ActionResult DeleteProcessManagement(string KeyValue)
+        //{
+        //    try
+        //    {
+        //        List<int> ids = new List<int>();
+        //        int key_value = Convert.ToInt32(KeyValue);
+        //        ids.Add(key_value);
+        //        ProcessManagementCurrent.Remove(ids);
+        //        return Content(new JsonMessage { Success = true, Code = "1", Message = "删除成功。" }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(new JsonMessage
+        //        {
+        //            Success = false,
+        //            Code = "-1",
+        //            Message = "操作失败：" + ex.Message
+        //        }.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// 领取组立任务
-        /// </summary>
-        /// <param name="KeyValue"></param>
-        /// <returns></returns>
-        public ActionResult SetUpProcessingTask(string KeyValue)
-        {
-            try
-            {
-                int IsOk = 0;
-                string Message = KeyValue == "" ? "成功。" : "领取成功。";
-                if (!string.IsNullOrEmpty(KeyValue))
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    if (Oldentity.IsSetUpProcessingTask == 1)
-                    {
-                        Message = "该任务已领取过";
-                    }
-                    else
-                    {
-                        Oldentity.IsSetUpProcessingTask = 1;
-                        ProcessManagementCurrent.Modified(Oldentity);
-                        IsOk = 1;//更新实体对象
-                    }
+        ///// <summary>
+        ///// 领取组立任务
+        ///// </summary>
+        ///// <param name="KeyValue"></param>
+        ///// <returns></returns>
+        //public ActionResult SetUpProcessingTask(string KeyValue)
+        //{
+        //    try
+        //    {
+        //        int IsOk = 0;
+        //        string Message = KeyValue == "" ? "成功。" : "领取成功。";
+        //        if (!string.IsNullOrEmpty(KeyValue))
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
+        //            if (Oldentity.IsSetUpProcessingTask == 1)
+        //            {
+        //                Message = "该任务已领取过";
+        //            }
+        //            else
+        //            {
+        //                Oldentity.IsSetUpProcessingTask = 1;
+        //                ProcessManagementCurrent.Modified(Oldentity);
+        //                IsOk = 1;//更新实体对象
+        //            }
 
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
+        //        }
+        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// 组立提交
-        /// </summary>
-        /// <param name="KeyValue"></param>
-        /// <returns></returns>
-        public ActionResult SetUpProcessing(string KeyValue)
-        {
-            try
-            {
-                int IsOk = 0;
-                string Message = KeyValue == "" ? "成功。" : "提交成功。";
-                if (!string.IsNullOrEmpty(KeyValue))
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    if (Oldentity.IsSetUpProcessing == 1)
-                    {
-                        Message = "该工序已提交过！";
-                    }
-                    else
-                    {
-                        Oldentity.IsSetUpProcessing = 1;
-                        ProcessManagementCurrent.Modified(Oldentity);
-                        IsOk = 1;//更新实体对象
-                    }
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
+        ///// <summary>
+        ///// 组立提交
+        ///// </summary>
+        ///// <param name="KeyValue"></param>
+        ///// <returns></returns>
+        //public ActionResult SetUpProcessing(string KeyValue)
+        //{
+        //    try
+        //    {
+        //        int IsOk = 0;
+        //        string Message = KeyValue == "" ? "成功。" : "提交成功。";
+        //        if (!string.IsNullOrEmpty(KeyValue))
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
+        //            if (Oldentity.IsSetUpProcessing == 1)
+        //            {
+        //                Message = "该工序已提交过！";
+        //            }
+        //            else
+        //            {
+        //                Oldentity.IsSetUpProcessing = 1;
+        //                ProcessManagementCurrent.Modified(Oldentity);
+        //                IsOk = 1;//更新实体对象
+        //            }
+        //        }
+        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// 领取埋弧任务
-        /// </summary>
-        /// <param name="KeyValue"></param>
-        /// <returns></returns>
-        public ActionResult SubmergedArcProcessingTask(string KeyValue)
-        {
-            try
-            {
-                int IsOk = 0;
-                string Message = KeyValue == "" ? "成功。" : "领取成功。";
-                if (!string.IsNullOrEmpty(KeyValue))
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    if (Oldentity.IsSubmergedArcProcessingTask == 1)
-                    {
-                        Message = "该任务已领取过";
-                    }
-                    else
-                    {
-                        Oldentity.IsSubmergedArcProcessingTask = 1;
-                        ProcessManagementCurrent.Modified(Oldentity);
-                        IsOk = 1;//更新实体对象
-                    }
+        ///// <summary>
+        ///// 领取埋弧任务
+        ///// </summary>
+        ///// <param name="KeyValue"></param>
+        ///// <returns></returns>
+        //public ActionResult SubmergedArcProcessingTask(string KeyValue)
+        //{
+        //    try
+        //    {
+        //        int IsOk = 0;
+        //        string Message = KeyValue == "" ? "成功。" : "领取成功。";
+        //        if (!string.IsNullOrEmpty(KeyValue))
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
+        //            if (Oldentity.IsSubmergedArcProcessingTask == 1)
+        //            {
+        //                Message = "该任务已领取过";
+        //            }
+        //            else
+        //            {
+        //                Oldentity.IsSubmergedArcProcessingTask = 1;
+        //                ProcessManagementCurrent.Modified(Oldentity);
+        //                IsOk = 1;//更新实体对象
+        //            }
 
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
+        //        }
+        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// 埋弧提交
-        /// </summary>
-        /// <param name="KeyValue"></param>
-        /// <returns></returns>
-        public ActionResult SubmergedArcProcessing(string KeyValue)
-        {
-            try
-            {
-                int IsOk = 0;
-                string Message = KeyValue == "" ? "成功。" : "提交成功。";
-                if (!string.IsNullOrEmpty(KeyValue))
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    if (Oldentity.IsSubmergedArcProcessing == 1)
-                    {
-                        Message = "该工序已提交过！";
-                    }
-                    else
-                    {
-                        Oldentity.IsSubmergedArcProcessing = 1;
-                        ProcessManagementCurrent.Modified(Oldentity);
-                        IsOk = 1;//更新实体对象
-                    }
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
+        ///// <summary>
+        ///// 埋弧提交
+        ///// </summary>
+        ///// <param name="KeyValue"></param>
+        ///// <returns></returns>
+        //public ActionResult SubmergedArcProcessing(string KeyValue)
+        //{
+        //    try
+        //    {
+        //        int IsOk = 0;
+        //        string Message = KeyValue == "" ? "成功。" : "提交成功。";
+        //        if (!string.IsNullOrEmpty(KeyValue))
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
+        //            if (Oldentity.IsSubmergedArcProcessing == 1)
+        //            {
+        //                Message = "该工序已提交过！";
+        //            }
+        //            else
+        //            {
+        //                Oldentity.IsSubmergedArcProcessing = 1;
+        //                ProcessManagementCurrent.Modified(Oldentity);
+        //                IsOk = 1;//更新实体对象
+        //            }
+        //        }
+        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// 领取铆焊任务
-        /// </summary>
-        /// <param name="KeyValue"></param>
-        /// <returns></returns>
-        public ActionResult RivetingProcessingTask(string KeyValue)
-        {
-            try
-            {
-                int IsOk = 0;
-                string Message = KeyValue == "" ? "成功。" : "领取成功。";
-                if (!string.IsNullOrEmpty(KeyValue))
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    if (Oldentity.IsRivetingProcessingTask == 1)
-                    {
-                        Message = "该任务已领取过";
-                    }
-                    else
-                    {
-                        Oldentity.IsRivetingProcessingTask = 1;
-                        ProcessManagementCurrent.Modified(Oldentity);
-                        IsOk = 1;//更新实体对象
-                    }
+        ///// <summary>
+        ///// 领取铆焊任务
+        ///// </summary>
+        ///// <param name="KeyValue"></param>
+        ///// <returns></returns>
+        //public ActionResult RivetingProcessingTask(string KeyValue)
+        //{
+        //    try
+        //    {
+        //        int IsOk = 0;
+        //        string Message = KeyValue == "" ? "成功。" : "领取成功。";
+        //        if (!string.IsNullOrEmpty(KeyValue))
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
+        //            if (Oldentity.IsRivetingProcessingTask == 1)
+        //            {
+        //                Message = "该任务已领取过";
+        //            }
+        //            else
+        //            {
+        //                Oldentity.IsRivetingProcessingTask = 1;
+        //                ProcessManagementCurrent.Modified(Oldentity);
+        //                IsOk = 1;//更新实体对象
+        //            }
 
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
+        //        }
+        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// 铆焊提交
-        /// </summary>
-        /// <param name="KeyValue"></param>
-        /// <returns></returns>
-        public ActionResult RivetingProcessing(string KeyValue)
-        {
-            try
-            {
-                int IsOk = 0;
-                string Message = KeyValue == "" ? "成功。" : "提交成功。";
-                if (!string.IsNullOrEmpty(KeyValue))
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    if (Oldentity.IsRivetingProcessing == 1)
-                    {
-                        Message = "该工序已提交过！";
-                    }
-                    else
-                    {
-                        Oldentity.IsRivetingProcessing = 1;
-                        ProcessManagementCurrent.Modified(Oldentity);
-                        IsOk = 1;//更新实体对象
-                    }
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
+        ///// <summary>
+        ///// 铆焊提交
+        ///// </summary>
+        ///// <param name="KeyValue"></param>
+        ///// <returns></returns>
+        //public ActionResult RivetingProcessing(string KeyValue)
+        //{
+        //    try
+        //    {
+        //        int IsOk = 0;
+        //        string Message = KeyValue == "" ? "成功。" : "提交成功。";
+        //        if (!string.IsNullOrEmpty(KeyValue))
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
+        //            if (Oldentity.IsRivetingProcessing == 1)
+        //            {
+        //                Message = "该工序已提交过！";
+        //            }
+        //            else
+        //            {
+        //                Oldentity.IsRivetingProcessing = 1;
+        //                ProcessManagementCurrent.Modified(Oldentity);
+        //                IsOk = 1;//更新实体对象
+        //            }
+        //        }
+        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// 领取油漆任务
-        /// </summary>
-        /// <param name="KeyValue"></param>
-        /// <returns></returns>
-        public ActionResult PaintProcessingTask(string KeyValue)
-        {
-            try
-            {
-                int IsOk = 0;
-                string Message = KeyValue == "" ? "成功。" : "领取成功。";
-                if (!string.IsNullOrEmpty(KeyValue))
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    if (Oldentity.IsPaintProcessingTask == 1)
-                    {
-                        Message = "该任务已领取过";
-                    }
-                    else
-                    {
-                        Oldentity.IsPaintProcessingTask = 1;
-                        ProcessManagementCurrent.Modified(Oldentity);
-                        IsOk = 1;//更新实体对象
-                    }
+        ///// <summary>
+        ///// 领取油漆任务
+        ///// </summary>
+        ///// <param name="KeyValue"></param>
+        ///// <returns></returns>
+        //public ActionResult PaintProcessingTask(string KeyValue)
+        //{
+        //    try
+        //    {
+        //        int IsOk = 0;
+        //        string Message = KeyValue == "" ? "成功。" : "领取成功。";
+        //        if (!string.IsNullOrEmpty(KeyValue))
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
+        //            if (Oldentity.IsPaintProcessingTask == 1)
+        //            {
+        //                Message = "该任务已领取过";
+        //            }
+        //            else
+        //            {
+        //                Oldentity.IsPaintProcessingTask = 1;
+        //                ProcessManagementCurrent.Modified(Oldentity);
+        //                IsOk = 1;//更新实体对象
+        //            }
 
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
+        //        }
+        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// 油漆提交
-        /// </summary>
-        /// <param name="KeyValue"></param>
-        /// <returns></returns>
-        public ActionResult PaintProcessing(string KeyValue)
-        {
-            try
-            {
-                int IsOk = 0;
-                string Message = KeyValue == "" ? "成功。" : "提交成功。";
-                if (!string.IsNullOrEmpty(KeyValue))
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    if (Oldentity.IsPaintProcessing == 1)
-                    {
-                        Message = "该工序已提交过！";
-                    }
-                    else
-                    {
-                        Oldentity.IsPaintProcessing = 1;
-                        ProcessManagementCurrent.Modified(Oldentity);
-                        IsOk = 1;//更新实体对象
-                    }
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
+        ///// <summary>
+        ///// 油漆提交
+        ///// </summary>
+        ///// <param name="KeyValue"></param>
+        ///// <returns></returns>
+        //public ActionResult PaintProcessing(string KeyValue)
+        //{
+        //    try
+        //    {
+        //        int IsOk = 0;
+        //        string Message = KeyValue == "" ? "成功。" : "提交成功。";
+        //        if (!string.IsNullOrEmpty(KeyValue))
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
+        //            if (Oldentity.IsPaintProcessing == 1)
+        //            {
+        //                Message = "该工序已提交过！";
+        //            }
+        //            else
+        //            {
+        //                Oldentity.IsPaintProcessing = 1;
+        //                ProcessManagementCurrent.Modified(Oldentity);
+        //                IsOk = 1;//更新实体对象
+        //            }
+        //        }
+        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// 质检提交
-        /// </summary>
-        /// <param name="KeyValue"></param>
-        /// <returns></returns>
-        public ActionResult QualityInspection(string KeyValue, string QualityInspection)
-        {
-            try
-            {
-                int IsOk = 0;
-                string Message = QualityInspection == "2" ? "产品驳回！" : "质检通过。";
-                if (!string.IsNullOrEmpty(KeyValue))
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    if (Oldentity.QualityInspection == 1|| Oldentity.QualityInspection ==2)
-                    {
-                        Message = "该工序已提交过！";
-                    }
-                    else
-                    {
-                        Oldentity.QualityInspection =Convert.ToInt32(QualityInspection);
-                        ProcessManagementCurrent.Modified(Oldentity);
-                        IsOk = 1;//更新实体对象
-                    }
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
+        ///// <summary>
+        ///// 质检提交
+        ///// </summary>
+        ///// <param name="KeyValue"></param>
+        ///// <returns></returns>
+        //public ActionResult QualityInspection(string KeyValue, string QualityInspection)
+        //{
+        //    try
+        //    {
+        //        int IsOk = 0;
+        //        string Message = QualityInspection == "2" ? "产品驳回！" : "质检通过。";
+        //        if (!string.IsNullOrEmpty(KeyValue))
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
+        //            if (Oldentity.QualityInspection == 1 || Oldentity.QualityInspection == 2)
+        //            {
+        //                Message = "该工序已提交过！";
+        //            }
+        //            else
+        //            {
+        //                Oldentity.QualityInspection = Convert.ToInt32(QualityInspection);
+        //                ProcessManagementCurrent.Modified(Oldentity);
+        //                IsOk = 1;//更新实体对象
+        //            }
+        //        }
+        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// 监理提交
-        /// </summary>
-        /// <param name="KeyValue"></param>
-        /// <returns></returns>
-        public ActionResult Supervision(string KeyValue,string Supervision)
-        {
-            try
-            {
-                int IsOk = 0;
-                string Message = KeyValue == "2" ? "成功。" : "质检通过。";
-                if (!string.IsNullOrEmpty(KeyValue))
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    if (Oldentity.Supervision == 1|| Oldentity.Supervision==2)
-                    {
-                        Message = "该工序已提交过！";
-                    }
-                    else
-                    {
-                        Oldentity.Supervision =Convert.ToInt32(Supervision);
-                        ProcessManagementCurrent.Modified(Oldentity);
-                        IsOk = 1;//更新实体对象
-                    }
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
+        ///// <summary>
+        ///// 监理提交
+        ///// </summary>
+        ///// <param name="KeyValue"></param>
+        ///// <returns></returns>
+        //public ActionResult Supervision(string KeyValue, string Supervision)
+        //{
+        //    try
+        //    {
+        //        int IsOk = 0;
+        //        string Message = KeyValue == "2" ? "成功。" : "质检通过。";
+        //        if (!string.IsNullOrEmpty(KeyValue))
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
+        //            if (Oldentity.Supervision == 1 || Oldentity.Supervision == 2)
+        //            {
+        //                Message = "该工序已提交过！";
+        //            }
+        //            else
+        //            {
+        //                Oldentity.Supervision = Convert.ToInt32(Supervision);
+        //                ProcessManagementCurrent.Modified(Oldentity);
+        //                IsOk = 1;//更新实体对象
+        //            }
+        //        }
+        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// 打包
-        /// </summary>
-        /// <param name="KeyValue"></param>
-        /// <returns></returns>
-        public ActionResult Packing(string KeyValue,RMC_ShipManagement Entity)
-        {
-            try
-            {
-                int IsOk = 0;
-                string Message = KeyValue == "" ? "新增成功。" : "编辑成功。";
-                if (!string.IsNullOrEmpty(KeyValue))
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_ProcessManagement ProManagement = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
-                    RMC_ProjectDemand Demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProManagement.OrderId).SingleOrDefault();
-                    RMC_ShipManagement ShipManagement = ShipManagementCurrent.Find(f => f.MemberId == Demand.MemberId).SingleOrDefault();
-                    if (ProManagement.IsPacking ==1)
-                    {
-                        Message = "该工序已提交过！";
-                    }
-                    else
-                    {
-                        ProManagement.IsPacking =1;
-                        ProcessManagementCurrent.Modified(ProManagement);
-                        ShipManagement.IsPackaged = 1;
-                        ShipManagementCurrent.Modified(ShipManagement);
-                        IsOk = 1;//更新实体对象
+        ///// <summary>
+        ///// 打包
+        ///// </summary>
+        ///// <param name="KeyValue"></param>
+        ///// <returns></returns>
+        //public ActionResult Packing(string KeyValue, RMC_ShipManagement Entity)
+        //{
+        //    try
+        //    {
+        //        int IsOk = 0;
+        //        string Message = KeyValue == "" ? "新增成功。" : "编辑成功。";
+        //        if (!string.IsNullOrEmpty(KeyValue))
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_ProcessManagement ProManagement = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象                                                                                                              //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
+        //            RMC_ProjectDemand Demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProManagement.OrderId).SingleOrDefault();
+        //            RMC_ShipManagement ShipManagement = ShipManagementCurrent.Find(f => f.MemberId == Demand.MemberId).SingleOrDefault();
+        //            if (ProManagement.IsPacking == 1)
+        //            {
+        //                Message = "该工序已提交过！";
+        //            }
+        //            else
+        //            {
+        //                ProManagement.IsPacking = 1;
+        //                ProcessManagementCurrent.Modified(ProManagement);
+        //                ShipManagement.IsPackaged = 1;
+        //                ShipManagementCurrent.Modified(ShipManagement);
+        //                IsOk = 1;//更新实体对象
 
-                    }
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
+        //            }
+        //        }
+        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+        //    }
+        //}
 
         #endregion
 
         #region 二维码解析，生成，打印
+
+        public ActionResult IsPrint(string KeyValue, string OrderId)
+        {
+            int _KeyValue = Convert.ToInt32(KeyValue);
+            int _OrderId = Convert.ToInt32(OrderId);
+            string Message;
+            List<RMC_ProcessManagement> ProcessManagementList = ProcessManagementCurrent.Find(f => f.MemberId == _KeyValue && f.OrderId == _OrderId).ToList();
+            int a = 0;
+            for (int i = 0; i < ProcessManagementList.Count(); i++)
+            {
+                if (ProcessManagementList[i].IsProcessStatus == 1)
+                {
+                    a++;
+                }
+            }
+            if (a== ProcessManagementList.Count())
+            {
+                Message = "1";
+            }
+            else {
+                Message = "存在未做制程或存在不合格构件！";
+        }
+        
+            return Content(Message);
+        }
+            
+
+
+
         /// <summary>
         /// 表单
         /// </summary>
@@ -1874,18 +2028,29 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
         public ActionResult SetQRCodeForm(string KeyValue, string OrderId, QRCodeModel EntityModel)
         {
-            //long key_value = Convert.ToInt64(KeyValue);
-            int order_id = Convert.ToInt32(OrderId);
-            var Member = MemberLibraryCurrent.Find(f => f.MemberNumbering == KeyValue).SingleOrDefault();
-            var Order = OrderManagementCurrent.Find(f => f.OrderId == order_id).SingleOrDefault();
-            var MemberDemend = ProjectManagementCurrent.Find(f => f.ProjectDemandId == Order.ProjectDemandId).SingleOrDefault();
-            var Project = ProjectInfoCurrent.Find(f => f.ProjectId == MemberDemend.ProjectId).SingleOrDefault();
-            EntityModel.MemberName = Member.MemberName;
-            EntityModel.MemberNumbering = Member.MemberNumbering;
-            EntityModel.MemberModel = Member.MemberModel;
-            EntityModel.TheoreticalWeight = Member.TheoreticalWeight;
-            EntityModel.ProjectName = Project.ProjectName;
-            return Content(EntityModel.ToJson());
+            try
+            {
+                int _KeyValue = Convert.ToInt32(KeyValue);
+                int _OrderId = Convert.ToInt32(OrderId);
+                var Member = MemberLibraryCurrent.Find(f => f.MemberID == _KeyValue).SingleOrDefault();
+                var MemberDemend = ProjectManagementCurrent.Find(f => f.MemberId == Member.MemberID).SingleOrDefault();
+                //var Project = ProjectInfoCurrent.Find(f => f.ProjectId == MemberDemend.ProjectId).SingleOrDefault();
+                EntityModel.MemberName = Member.MemberName;
+                EntityModel.MemberNumbering = Member.MemberNumbering;
+                EntityModel.MemberModel = Member.MemberModel;
+                EntityModel.TheoreticalWeight = Member.TheoreticalWeight;
+               // EntityModel.ProjectName = Project.ProjectName;
+                return Content(EntityModel.ToJson());
+            }
+            catch (Exception ex)
+            {
+                return Content(new JsonMessage
+                {
+                    Success = false,
+                    Code = "-1",
+                    Message = "操作失败：" + ex.Message
+                }.ToString());
+            }
         }
 
 
@@ -1960,7 +2125,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             //文字生成图片
             Image image = qrCodeEncoder.Encode(strData);
             string filename = DateTime.Now.ToString("yyyymmddhhmmssfff").ToString() + ".jpg";
-            string virtualPath = this.Server.MapPath("~") + "~/Resource/Document/NetworkDisk/QRCode";
+            string virtualPath = this.Server.MapPath("~") + "Resource/Document/NetworkDisk/QRCode";
             string filepath = virtualPath + "/" + filename;
             //string filepath = Server.MapPath(@"~\Upload") + "\\" + filename;
             if (Directory.Exists(virtualPath))
@@ -2013,15 +2178,35 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             return View();
         }
-        public ActionResult GridListJsonShipManagement(/*ProjectInfoViewModel model,*/ string TreeID, JqGridParam jqgridparam, string IsPublic)
+
+        public ActionResult QueryPage()
         {
+            return View();
+        }
+
+        public ActionResult GridListJsonShipManagement(FileViewModel model, string TreeID, JqGridParam jqgridparam, string IsPublic, string ParameterJson)
+        {
+
+            if (ParameterJson != null)
+            {
+                if (ParameterJson != "[{\"MemberModel\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]")
+                {
+                    List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
+                    for (int i = 0; i < query_member.Count(); i++)
+                    {
+                        model.MemberModel = query_member[i].MemberModel;
+                        model.InBeginTime = query_member[i].InBeginTime;
+                        model.InEndTime = query_member[i].InEndTime;
+                    }
+                }
+            }
             try
             {
                 int TreeId;
                 //int FolderId = Convert.ToInt32(FolderId);
                 if (TreeID == "" || TreeID == null)
                 {
-                    TreeId = 24;
+                    TreeId = 1;
                 }
                 else
                 {
@@ -2030,16 +2215,23 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 int total = 0;
                 Expression<Func<RMC_ShipManagement, bool>> func = ExpressionExtensions.True<RMC_ShipManagement>();
-                func = f => f.TreeId == TreeId&&f.IsPackaged==1;
+                func = f => f.ShipId > 0 && f.IsPackaged == 1;
                 #region 查询条件拼接
-                //if (model.ProjectName != null && model.ProjectName != "&nbsp;")
-                //{
-                //    func = func.And(f => f.ProjectName.Contains(model.ProjectName));
-                //}
-                //if (!string.IsNullOrEmpty(model.ProjectAddress))
-                //{
-                //    func = func.And(f => f.ProjectAddress == model.ProjectAddress); /*func = func.And(f => f.FullPath.Contains(model.FilePath))*/
-                //}
+
+                if (model.OrderNumbering != null && model.OrderNumbering.ToString() != "")
+                {
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel));
+
+                }
+                if (model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00")
+                {
+                    func = func.And(f => f.ShipDate >= model.InBeginTime);
+
+                }
+                if (model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00")
+                {
+                    func = func.And(f => f.ShipDate <= model.InEndTime);
+                }
                 #endregion
 
                 DataTable ListData, ListData1;
@@ -2064,9 +2256,11 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     if (!string.IsNullOrEmpty(item.MemberId.ToString()))
                     {
                         var member = MemberLibraryCurrent.Find(f => f.MemberID == item.MemberId).SingleOrDefault();
+                        var FactoryWarehouse = FactoryWarehouseCurrent.Find(f=>f.MemberId==item.MemberId).SingleOrDefault();
                         item.MemberName = member.MemberName;
                         item.MemberModel = member.MemberModel;
                         item.MemberNumbering = member.MemberNumbering;
+                        item.LibraryNumber = FactoryWarehouse.InStockNumber;
                         item.UnitPrice = member.UnitPrice;
                         string a = member.UnitPrice;
                         char[] b = a.ToArray();
@@ -2163,11 +2357,13 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             {
                 int key_value = Convert.ToInt32(KeyValue);
                 entity = ShipManagementCurrent.Find(f => f.ShipId == key_value).SingleOrDefault();
+                var FactoryWarehouse = FactoryWarehouseCurrent.Find(f => f.MemberId == entity.MemberId).SingleOrDefault();
+                entity.LibraryNumber = FactoryWarehouse.InStockNumber;
+                entity.MemberModel = FactoryWarehouse.MemberModel;
             }
             return Content(entity.ToJson());
             //return Json(entity);
         }
-
         /// <summary>
         /// 提交文件表单
         /// </summary>
@@ -2190,9 +2386,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
                     Oldentity.Description = entity.Description;
                     Oldentity.LogisticsStatus = entity.LogisticsStatus;
-                    Oldentity.ShipMan = entity.ShipMan;
-                    Oldentity.MemberClassId = entity.MemberClassId;
-                    Oldentity.MemberId = entity.MemberId;
+                    Oldentity.ShipMan =currentUser.RealName;
+                    //Oldentity.ShipDate =Convert.ToDateTime(DateTime.Now.ToString("yyyy-mm-dd hh:MM:ss"));
                     Oldentity.ShipNumber = entity.ShipNumber;
                     Oldentity.ShippingAddress = entity.ShippingAddress;
                     Oldentity.ShippingMan = entity.ShippingMan;
@@ -2208,11 +2403,11 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.TreeId = TreeID;
                     Oldentity.MemberId = entity.MemberId;
                     Oldentity.Description = entity.Description;
-                    Oldentity.LogisticsStatus ="0";
+                    Oldentity.LogisticsStatus = "0";
                     Oldentity.ShipMan = entity.ShipMan;
                     Oldentity.MemberClassId = entity.MemberClassId;
                     Oldentity.MemberId = entity.MemberId;
-                    Oldentity.ShipNumber ="0";
+                    Oldentity.ShipNumber = "0";
                     Oldentity.ShippingAddress = entity.ShippingAddress;
                     Oldentity.ShippingMan = entity.ShippingMan;
                     Oldentity.ShippingTEL = entity.ShippingTEL;
@@ -2282,8 +2477,13 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     }
                     shipnumber = Convert.ToInt32(ShipNumber);
 
+                    RMC_FactoryWarehouse FactoryWarehouse = FactoryWarehouseCurrent.Find(f => f.MemberId == Oldentity.MemberId).SingleOrDefault();
+                    FactoryWarehouse.InStockNumber =Convert.ToInt32(FactoryWarehouse.InStockNumber) - Convert.ToInt32(Oldentity.ShipNumber);
+                    FactoryWarehouseCurrent.Modified(FactoryWarehouse);
+
+
                     RMC_ProjectWarehouse OldEntity = ProjectWarehouseCurrent.Find(f => f.ProjectWarehouseId == ProjectWarehouse.ProjectWarehouseId).SingleOrDefault();
-                    if (ProjectWarehouse.InStock != null|| ProjectWarehouse.InStock.ToString()!="")
+                    if (ProjectWarehouse.InStock != null || ProjectWarehouse.InStock.ToString() != "")
                     {
                         ProjectWarehouse.InStock = ProjectWarehouse.InStock + shipnumber;
                     }
@@ -2293,7 +2493,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         ProjectWarehouse.InStock = ProjectWarehouse.InStock + shipnumber;
                     }
                     ProjectWarehouse.ModifyTime = DateTime.Now;
-                    ProjectWarehouse.IsShiped =1;
+                    ProjectWarehouse.IsShiped = 1;
                     ProjectWarehouse.Class = "入库".Trim();
                     ProjectWarehouseCurrent.Modified(ProjectWarehouse);
                 }

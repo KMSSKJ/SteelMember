@@ -28,6 +28,8 @@ namespace LeaRun.Utilities
                     strJson.Append("\"id\":\"" + entity.id + "\",");
                     strJson.Append("\"text\":\"" + entity.text.Replace("&nbsp;", "") + "\",");
                     strJson.Append("\"value\":\"" + entity.value + "\",");
+                    strJson.Append("\"ismenu\":\"" + entity.ismenu + "\",");
+                    strJson.Append("\"url\":\"" + entity.url + "\",");
                     if (entity.Attribute != null && !string.IsNullOrEmpty(entity.Attribute))
                     {
                         strJson.Append("\"" + entity.Attribute + "\":\"" + entity.AttributeValue + "\",");
@@ -76,7 +78,7 @@ namespace LeaRun.Utilities
         public string id { get; set; }
         public string text { get; set; }
         public string value { get; set; }
-
+        public string itemId { get; set; }
         public string icon { get; set; }
         public string ismenu { get; set; }
         public string url { get; set; }

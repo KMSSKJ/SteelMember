@@ -63,7 +63,7 @@ v\:group,v\:rect,v\:imagedata,v\:oval,v\:line,v\:polyline,v\:stroke,v\:textbox {
     margin:0px;
 }
 .GooFlow_item:hover{
-	border:#4A5B79 1px solid;
+	border:#1e71b1 1px solid;
     box-shadow:2px 2px 19px #444;
     opacity:0.9;
 }
@@ -101,14 +101,14 @@ v\:group,v\:rect,v\:imagedata,v\:oval,v\:line,v\:polyline,v\:stroke,v\:textbox {
 	filter:Alpha(Opacity=60);-moz-opacity:0.6;opacity: 0.6;z-index:10;border-radius:10px;
 }
 .GooFlow .item_focus{
-    border:#4A5B79 1px solid;
+    border:#1e71b1 1px solid;
     box-shadow:2px 2px 19px #444;
     opacity:0.9;
     cursor:pointer;
 }
 .GooFlow .item_mark{border:#ff3300 1px solid}
 .GooFlow .item_mark td{cursor:crosshair}
-.GooFlow textarea{position:absolute;border:#4A5B79 1px solid;display:none;font-size:12px;overflow-y:visible;width:100px;z-index:10001}
+.GooFlow textarea{position:absolute;border:#1e71b1 1px solid;display:none;font-size:12px;overflow-y:visible;width:100px;z-index:10001}
 
 .GooFlow .GooFlow_line_oper{
 	width:70px;height:15px;background-color:#D8E8FC;border:#ccc 1px solid;position:absolute;

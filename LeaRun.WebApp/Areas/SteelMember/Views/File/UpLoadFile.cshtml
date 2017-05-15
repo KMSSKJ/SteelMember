@@ -15,6 +15,8 @@
         UploadFile();
     });
     var KeyValue = GetQuery('KeyValue');
+    var Images = GetQuery('Images');
+    var Icon = GetQuery('Icon');
     var CAD = GetQuery('CAD');
     var Model = GetQuery('Model');
     var Background = GetQuery('Background');
@@ -39,6 +41,8 @@
             fileTypeExts: '*.*',  //上传的文件后缀过滤器
             formData: {//向uploader指定的后台传递数据
                 KeyValue: KeyValue,
+                Images:Images,
+                Icon:Icon,
                 CAD: CAD,
                 Model: Model,
                 Logo:Logo,
@@ -62,16 +66,16 @@
                 var html = "";
                 html += '<tr>';
                 if (DataJson.NetworkFile.Icon == "new") {
-                    html += '<td style="width: 16px;"><img src="@Url.Content("~/Content/Images/Icon32/page_white.png")" /></td>';
+                    html += '<td style="width: 16px;"><img src="@Url.Content("../../Content/Images/Icon32/page_white.png")" /></td>';
                 } else {
-                    html += '<td style="width: 16px;"><img src="~/Content/Images/Icon32/file_extension_' + DataJson.NetworkFile.Icon + '.png" /></td>';
+                    html += '<td style="width: 16px;"><img src="../../Content/Images/Icon32/file_extension_' + DataJson.NetworkFile.Icon + '.png" /></td>';
                 }
                 html += '<td style="width: 320px;"><div id="divFileName">' + DataJson.NetworkFile.MemberName + '</div></td>';
                 html += '<td style="width: 70px;">' + DataJson.NetworkFile.FileSize + '</td>';
                 if (DataJson.Status > 0) {
-                    html += '<td title="上传成功" style="width: 26px;"><img src="@Url.Content("~/Content/Images/Icon16/accept.png")" /></td>';
+                    html += '<td title="上传成功" style="width: 26px;"><img src="@Url.Content("../../Content/Images/Icon16/accept.png")" /></td>';
                 } else {
-                    html += '<td title=' + DataJson.Status + ' style="width: 26px;"><img src="@Url.Content("~/Content/Images/Icon16/delete.png")" /></td>';
+                    html += '<td title=' + DataJson.Status + ' style="width: 26px;"><img src="@Url.Content("../../Content/Images/Icon16/delete.png")" /></td>';
                 }
                 html += '</tr>';
                 $("#grid tbody").prepend(html);

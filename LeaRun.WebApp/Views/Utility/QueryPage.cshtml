@@ -311,7 +311,7 @@
                 } else {
                     NextDefault = "";
                 }
-                $("#Project_Menu ul").append('<li id=' + QueryRecordId + ' ConditionJson=' + ConditionJson + '><div class="main_menu ' + NextDefault + '" ><img src="@Url.Content("~/Content/Images/Icon16/application_form_magnify.png")">' + FullName + '</div></li>');
+                $("#Project_Menu ul").append('<li id=' + QueryRecordId + ' ConditionJson=' + ConditionJson + '><div class="main_menu ' + NextDefault + '" ><img src="@Url.Content("../../Content/Images/Icon16/application_form_magnify.png")">' + FullName + '</div></li>');
             });
         });
         readyIndex();
@@ -410,20 +410,20 @@
     <div class="layoutPanel layout-west" style="overflow: hidden">
         <div class="tools_bar_icon" style="margin-bottom: 1px;">
             <div class="icon-botton" title="保存" onclick="SaveProject();">
-                <img src="~/Content/Images/Icon16/save_as.png" />
+                <img src="../../Content/Images/Icon16/save_as.png" />
             </div>
             <div class="icon-botton" title="删除" onclick="DeleteProject();">
-                <img src="~/Content/Images/Icon16/DeleteRed.png" />
+                <img src="../../Content/Images/Icon16/DeleteRed.png" />
             </div>
             <div class="icon-botton" title="默认下次已本方案自动进入" onclick="DefaultProject()">
-                <img src="~/Content/Images/Icon16/color_picker_default.png" />
+                <img src="../../Content/Images/Icon16/color_picker_default.png" />
             </div>
         </div>
         <div id="Project_Menu" class="main_menu topline" style="float: left;">
             <ul>
                 <li>
                     <div class="main_menu leftselected">
-                        <img src="~/Content/Images/Icon16/application_form_magnify.png">默认方案
+                        <img src="../../Content/Images/Icon16/application_form_magnify.png">默认方案
                     </div>
                 </li>
             </ul>
@@ -460,10 +460,10 @@
                     <div style="float: right;">
                         <div class="tools_bar_icon">
                             <div class="icon-botton" title="插入行" onclick="InsetGridRow()">
-                                <img src="~/Content/Images/Icon16/table_row_insert.png" />
+                                <img src="../../Content/Images/Icon16/table_row_insert.png" />
                             </div>
                             <div class="icon-botton" title="清空行" onclick="EmptyGridRow()">
-                                <img src="~/Content/Images/Icon16/table_row_delete.png" />
+                                <img src="../../Content/Images/Icon16/table_row_delete.png" />
                             </div>
                         </div>
                     </div>

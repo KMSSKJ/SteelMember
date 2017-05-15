@@ -29,7 +29,7 @@ namespace LeaRun.Business
         /// 获取用户列表
         /// </summary>
         /// <param name="keyword">模块查询</param>
-        /// <param name="CompanyId">单位ID</param>
+        /// <param name="CompanyId">公司ID</param>
         /// <param name="DepartmentId">部门ID</param>
         /// <param name="jqgridparam">分页条件</param>
         /// <returns></returns>
@@ -41,17 +41,17 @@ namespace LeaRun.Business
                             FROM    ( SELECT    u.UserId ,					--用户ID
                                                 u.Code ,					--用户编码
                                                 u.Account ,					--登录账户
-                                                u.Avatar,                   --用户头像
                                                 u.RealName ,				--姓名
                                                 u.Spell,                    --拼音
                                                 u.Gender ,					--性别
                                                 u.Mobile ,					--手机
                                                 u.Telephone ,				--电话
                                                 u.Email ,					--电子邮箱
-                                                u.CompanyId ,			    --所属单位ID
-                                                c.FullName AS CompanyName ,	--所属单位
-                                                u.DepartmentId,				--所属部门ID
-                                                d.FullName AS DepartmentName,--所属部门
+                                                u.ResponsibleProject,       --负责项目
+                                                u.CompanyId ,			    --所在公司ID
+                                                c.FullName AS CompanyName ,	--所在公司
+                                                u.DepartmentId,				--所在部门ID
+                                                d.FullName AS DepartmentName,--所在部门
                                                 e.Duty,                     --职务
                                                 u.Enabled ,					--是否有效
                                                 u.LogOnCount ,				--登录次数
@@ -126,7 +126,7 @@ namespace LeaRun.Business
             {
                 if (entity.Enabled == 1)
                 {
-                    string dbPassword = Md5Helper.MD5(DESEncrypt.Encrypt(Password.ToLower(), entity.Secretkey).ToLower(), 32).ToLower();
+                    string dbPassword = Md5Helper.MD5(Password);
                     if (dbPassword == entity.Password)
                     {
                         DateTime PreviousVisit = CommonHelper.GetDateTime(entity.LastVisit);
@@ -156,7 +156,7 @@ namespace LeaRun.Business
         /// <summary>
         /// 获取用户角色列表
         /// </summary>
-        /// <param name="CompanyId">单位ID</param>
+        /// <param name="CompanyId">公司ID</param>
         /// <param name="UserId">用户Id</param>
         /// <returns></returns>
         public DataTable UserRoleList(string CompanyId, string UserId)
@@ -199,7 +199,6 @@ namespace LeaRun.Business
                                         u.UserId ,
                                         u.Account ,
                                         u.code,
-                                        u.Avatar, 
                                         u.RealName ,
                                         u.DepartmentId ,
                                         d.FullName AS DepartmentName,
@@ -249,7 +248,6 @@ namespace LeaRun.Business
                                         u.UserId ,
                                         u.Account ,
                                         u.code ,
-                                        u.Avatar,
                                         u.RealName ,
                                         u.DepartmentId ,
                                         d.FullName AS DepartmentName ,

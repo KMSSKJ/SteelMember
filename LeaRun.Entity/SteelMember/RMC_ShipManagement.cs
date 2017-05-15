@@ -33,5 +33,6 @@ namespace LeaRun.Entity.SteelMember
         public string ShippingTEL { get; set; }
         public string ShippingMan { get; set; }
         public string Description { get; set; }
+        public Nullable<int> LibraryNumber { get; set; }
     }
 }

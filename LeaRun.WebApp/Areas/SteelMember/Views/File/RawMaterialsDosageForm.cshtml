@@ -1,0 +1,168 @@
+﻿@{
+    ViewBag.Title = "项目信息管理/构件信息表单";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+<head>
+    <script type="text/javascript">
+        var KeyValue = GetQuery('KeyValue');
+        var MemberID = GetQuery('MemberID');
+        var ItemId = 3;
+        var Data;
+        $(function () {
+            document.getElementById("MemberId").value = MemberID;
+            LoadMaterialClass();
+            InitControl();
+            LoadMaterialName();
+          
+
+        })
+        //得到一个对象实体
+        function InitControl() {
+            if (!!KeyValue) {
+            AjaxJson("/SteelMember/File/SetDataForm", { KeyValue: KeyValue }, function (data) {
+                SetWebControls(data);
+                Data = data;
+            });
+            }// else {
+            //    tipDialog('请选择文件夹!', 3); //,data.Code
+            //}
+            //(!!FolderId){
+            //    tipDialog('请选择文件夹!', 3); //,data.Code
+            //    ////显示顺序
+            //    //AjaxJson("/SysManagement/Module/SortCode", {}, function (Data) {
+            //    //    $("#SortCode").val(Data);
+            //    //})
+            //    $("#ParentID").val(GetQuery('FolderId'));
+            //    //$("#IsPublic").val(GetQuery('IsPublic'));
+        }
+        //保存事件
+        function AcceptClick() {
+            if (!CheckDataValid('#form2')) {
+                return false;
+            }
+            Loading(true, "正在提交数据...");
+            window.setTimeout(function () {
+                var postData = GetWebControls("#form2");
+                AjaxJson("/SteelMember/File/SubmitDataForm?KeyValue=" + KeyValue, postData, function (data) {//+ '&ItemID=' + ItemID
+                    tipDialog(data.Message, 3, data.Code);
+                    top.frames[tabiframeId()].windowload();
+                    closeDialog();
+                });
+            }, 200);
+        };
+
+        //加载上级模块
+        function LoadMaterialClass() {
+            $("#RawMaterialClassName").focus(function () {
+                var objId = this.id;
+                comboBoxTree(objId, "200px");
+                var itemtree = {
+                    onnodeclick: function (item) {
+                        $("#RawMaterialClassId").val(item.id);
+                        $('#RawMaterialClassName').val(item.text);
+                        GetMaterialName(item.id);
+                    },
+                    url: "@Url.Content("/SteelMember/File/TreeJson")?TreeId=" + ItemId
+                };
+                $("#comboBoxTree" + objId).treeview(itemtree);
+                //移除Id上级元素
+                $("#comboBoxTree" + objId + "_" + GetQuery('KeyValue').replace(/-/g, '_')).parent('li').remove();
+            })
+        };
+
+     
+        //获取获取名称
+        function GetMaterialName(treeid) {
+            $.ajax({
+                url: '/SteelMember/File/GetMaterialName',
+                type: 'post',
+                datatype: 'Json',
+                data: { MaterialClassId: treeid },
+                success: function (data) {
+                    if (data) {
+                        var projectname_sel = [];
+                        // projectname_sel.push('<option value="" selected>请选择</option>')
+                        for (var i = 0, len = data.length; i < len; i++) {
+                            var projectname = data[i];
+                            projectname_sel.push('<option value="' + projectname.RawMaterialId + '">' + projectname.RawMaterialName + '</option>')
+                        }
+                        $("#RawMaterialId").html(projectname_sel.join(' '));
+                        ////编辑时获取值
+                        //$("#RawMaterialId  option[value='" + data.RawMaterialId + "']").attr("selected", true);
+                    }
+                },
+                error: function () {
+                    alert('查询异常');
+                }
+            });
+        };
+
+        //载入材料名称
+        function  LoadMaterialName() {
+            $.ajax({
+                url: '/SteelMember/File/GetMaterialName',
+                type: 'post',
+                datatype: 'Json',
+                data: { MaterialClassId: Data.RawMaterialClassId },
+                success: function (data) {
+                    if (data) {
+                        var projectname_sel = [];
+                        // projectname_sel.push('<option value="" selected>请选择</option>')
+                        for (var i = 0, len = data.length; i < len; i++) {
+                            var projectname = data[i];
+                            projectname_sel.push('<option value="' + projectname.RawMaterialId + '">' + projectname.RawMaterialName + '</option>')
+                        }
+                        $("#RawMaterialId").html(projectname_sel.join(' '));
+                        //编辑时获取值
+                        $("#RawMaterialId  option[value='" + Data.RawMaterialId + "']").attr("selected", true);
+                    }
+                },
+                error: function () {
+                    alert('查询异常');
+                }
+            });
+        };
+
+    </script>
+
+</head>
+<form id="form2" style="margin: 25px; margin-left: 40px; margin-right: 40px;">
+    <input id="MemberId"type="hidden" />
+    <div>
+        <table class="form">
+            <tr>
+                <th class="formTitle">
+                    材料类型：
+                </th>
+                <td class="formValue">
+                    <input id="RawMaterialClassId" name="RawMaterialClassId" type="hidden" />
+                    <input id="RawMaterialClassName" type="text" class="txt icontree" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">
+                    材料名称：
+                </th>
+                <td class="formValue">
+                    <select id="RawMaterialId" name="RawMaterialId"></select>
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">
+                   材料用量：
+                </th>
+                <td class="formValue">
+                    <input id="MaterialNumber" type="text" class="txt" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">
+                    备注：
+                </th>
+                <td class="formValue">
+                    <textarea id="Description" name="Description" maxlength="200" class="txtArea" rows="5"></textarea>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>

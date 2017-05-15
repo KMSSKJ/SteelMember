@@ -37,8 +37,8 @@
                 { label: '负责人', name: 'manager', index: "manager", width: 80, align: "center" },
                 { label: '电话', name: 'phone', index: "phone", width: 100, align: "center" },
                 { label: '传真', name: 'fax', index: "fax", width: 100, align: "center" },
-                { label: '所属单位Id', name: 'companyid', index: 'companyid', hidden: true },
-                { label: '所属单位', name: 'companyname', index: "companyname", width: 120 },
+                { label: '所属公司Id', name: 'companyid', index: 'companyid', hidden: true },
+                { label: '所属公司', name: 'companyname', index: "companyname", width: 120 },
                 {
                     label: '有效', name: 'enabled', index: 'enabled', width: 45, align: 'center',
                     formatter: function (cellvalue, options, rowObject) {
@@ -66,7 +66,7 @@
                 top.frames[iframe].AcceptClick()
             });
         } else {
-            alertDialog("请选择左边单位", 0);
+            alertDialog("请选择左边公司", 0);
         }
     }
     //编辑
@@ -97,7 +97,7 @@
     <div class="layoutPanel layout-west">
         <div class="btnbartitle">
             <div>
-                单位目录
+                公司目录
             </div>
         </div>
         <div class="ScrollBar" id="ItemsTree"></div>

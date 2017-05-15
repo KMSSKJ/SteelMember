@@ -4,7 +4,7 @@
 }
 <script type="text/javascript">
     $(function () {
-        //$(".ScrollBar").height($(window).height() - 112);
+        $(".ScrollBar").height($(window).height() - 112);
         InitControl();
         RoleUserTree();
         ModulePermissionTree();
@@ -100,7 +100,7 @@
                 <div id="TabViewPermission" class="tab_list bd" onclick="Tabchange('ViewPermission')">视图权限</div>
             </div>
         </div>
-        <div class="ScrollBar" style="height: 380px;">
+        <div class="ScrollBar">
             <div id="RoleUser" class="tabPanel">
                 <ul class="sys_spec_text">
                 </ul>

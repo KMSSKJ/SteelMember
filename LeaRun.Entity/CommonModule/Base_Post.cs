@@ -31,10 +31,10 @@ namespace LeaRun.Entity
         [DisplayName("岗位主键")]
         public string PostId { get; set; }
         /// <summary>
-        /// 单位主键
+        /// 公司主键
         /// </summary>
         /// <returns></returns>
-        [DisplayName("单位主键")]
+        [DisplayName("公司主键")]
         public string CompanyId { get; set; }
         /// <summary>
         /// 部门主键

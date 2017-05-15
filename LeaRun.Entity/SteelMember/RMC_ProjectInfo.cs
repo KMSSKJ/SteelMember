@@ -18,18 +18,29 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<int> ParentId { get; set; }
         public Nullable<int> TreeID { get; set; }
         public string ProjectName { get; set; }
+        public string ProjectSystemTitel { get; set; }
+        public string ProjectLogo { get; set; }
+        public string ProjectBackground { get; set; }
         public Nullable<int> State { get; set; }
         public string ProjectAddress { get; set; }
         public Nullable<int> ConstructionPermitId { get; set; }
         public string ConstructionUnit { get; set; }
+        public string ConstructionPrincipal { get; set; }
+        public string ConstructionPrincipalTEL { get; set; }
         public string DesignUnit { get; set; }
+        public string DesignPrincipal { get; set; }
+        public string DesignPrincipalTEL { get; set; }
         public string SupervisionUnit { get; set; }
+        public string SupervisionPrincipal { get; set; }
+        public string SupervisionPrincipalTEL { get; set; }
         public string GeneralContractor { get; set; }
+        public string GeneralContractorPrincipal { get; set; }
+        public string GeneralContractorPrincipalTEL { get; set; }
         public string ProfessionalContractor { get; set; }
+        public string ProfessionalContractorPrincipal { get; set; }
+        public string ProfessionalContractorPrincipalTEL { get; set; }
         public Nullable<int> DeleteFlag { get; set; }
         public Nullable<System.DateTime> ModifiedTime { get; set; }
-        public string ProjectLogo { get; set; }
-        public string ProjectBackground { get; set; }
         public string Description { get; set; }
     }
 }

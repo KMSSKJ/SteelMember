@@ -14,9 +14,9 @@
             onnodeclick: function (item) {
                 if (item.Type == "Company") {
                     DepartmentId = "";
-                    CompanyId = item.CompanyId;     //单位ID
+                    CompanyId = item.CompanyId;     //公司ID
                 } else if (item.Type == "Department") {
-                    CompanyId = item.CompanyId;     //单位ID
+                    CompanyId = item.CompanyId;     //公司ID
                     DepartmentId = item.id;         //部门ID
                     DepartmentName = item.text;     //部门名称
                 }
@@ -40,7 +40,7 @@
                 { label: "主键", name: "groupuserid", index: "groupuserid", hidden: true },
                 { label: "编码", name: "code", index: "code", width: 80 },
                 { label: "用户组", name: "fullname", index: "fullname", width: 150 },
-                { label: "所属单位", name: "companyname", index: "companyname", width: 150 },
+                { label: "所属公司", name: "companyname", index: "companyname", width: 150 },
                 { label: "所属部门Id", name: "departmentid", index: "departmentid", hidden: true },
                 { label: "所属部门", name: "departmentname", index: "departmentname", width: 150 },
                 {

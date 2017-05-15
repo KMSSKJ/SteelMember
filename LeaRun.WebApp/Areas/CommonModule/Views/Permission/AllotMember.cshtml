@@ -3,8 +3,8 @@
     Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
 <script>
-    var CompanyId = GetQuery('CompanyId');                //单位主键
-    var CompanyName = unescape(GetQuery('CompanyName'));  //单位名称
+    var CompanyId = GetQuery('CompanyId');                //公司主键
+    var CompanyName = unescape(GetQuery('CompanyName'));  //公司名称
     var ObjectId = GetQuery('ObjectId');                  //对象主键
     var Category = GetQuery('Category');                  //分类
     $(function () {
@@ -18,7 +18,7 @@
         GetTree();
         GetList();
     })
-    //加载根据单位ID查询 部门信息
+    //加载根据公司ID查询 部门信息
     function GetTree() {
         var root = {
             "id": "",

@@ -1,6 +1,7 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "项目订单管理";
-        Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
 
 <script type="text/javascript">
@@ -13,12 +14,13 @@
     //加载左边树
     //注意 FolderId 默认等于1 这样就可以加载一级目录下的子节点文件夹
     var TreeId = "";//16
-    var ItemId=2;
+    var ItemId = 2;
+    var TreeName = "";
     //ItemId = GetQuery("ItemID"), ProjectName = "", IsPublic = "1";
     function GetTree() {
         var itemtree = {
             onnodeclick: function (node) {
-                TreeId = node.id;           
+                TreeId = node.id;
                 TreeName = node.text;
                 GridFolderEvent(TreeId);
             },
@@ -31,7 +33,7 @@
     function GridFolderEvent(TreeId) {
         TreeId = TreeId;
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/ProjectOrder/GridListJson")?TreeId=" + TreeId, page: 1
+            url: "@Url.Content("/SteelMember/ProjectOrder/GridListJson")?TreeID=" + TreeId, page: 1
         }).trigger('reloadGrid');
     }
 
@@ -47,26 +49,18 @@
                     { label: '主键', name: "OrderId", index: "OrderId", hidden: true },
                     { label: '外键', name: "ProjectDemandId", hidden: true },
                     { label: '外键', name: "MemberId", hidden: true },
-                    //{ label: '构件名', name: "MemberName", index: "MemberName", width: 6 },
-                    //{ label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", width: 12 },
-                    //{ label: '构件型号', name: "MemberModel", index: "MemberModel", width: 6 },
-                    //{ label: "单价", name: "UnitPrice", index: "UnitPrice", width: 16 },
-                    //{ label: '数量', name: "MemberNumber", index: "MemberNumber", width: 12 },
-                    //{ label: '总价', name: "CostBudget", index: "CostBudget", width: 16 },
                     { label: '订单编号', name: "OrderNumbering", index: "OrderNumbering", width: 12 },
-                    { label: '构件型号', name: "MemberModel", index: "MemberModel", width: 6 },
-                    { label: "单价", name: "UnitPrice", index: "UnitPrice", width: 12 },
-                    { label: '数量', name: "OrderNumber", index: "OrderNumber", width: 12 },
-                    { label: '总价', name: "CostBudget", index: "CostBudget", width: 12 },
                     {
                         label: '创建时间', name: "CreateTime", index: "CreateTime", width: 12,
                         formatter: function (cellvalue, options, rowObject) {
-                            return formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
-                        }},
+                            return formatDate(cellvalue, 'yyyy-MM-dd');
+                        }
+                    },
                     { label: '制单人', name: "CreateMan", index: "CreateMan", width: 12 },
+                    { label: '生产优先级', name: "Priority", index: "Priority", width: 12 },
                     {
                         label: '审核状态', name: 'IsReview', index: 'IsReview', width: 12,
-                        formatter: function (cellvalue,value, row, index) {
+                        formatter: function (cellvalue, value, row, index) {
                             var isreview = cellvalue;
                             if (isreview != "" || isreview != null) {
                                 if (isreview == 1) {
@@ -95,6 +89,21 @@
                             }
                         }
                     },
+                     {
+                         label: '生产状态', name: 'Description', width: 12,
+                         formatter: function (cellvalue, value, row, index) {
+                             var issubmit = cellvalue;
+                             if (issubmit != "" || issubmit != null) {
+                                 if (issubmit == 1) {
+                                     return "<img src='../../Content/Images/checkokmark.gif'/>";
+                                 } else {
+                                     return "<img src='../../Content/Images/checknomark.gif'/>";
+                                 }
+                             } else {
+                                 return "";
+                             }
+                         }
+                     },
                     { label: '备注', name: 'Description', index: 'Description', width: 12 },
             ],
             rowNum: 30,
@@ -105,9 +114,32 @@
             rownumbers: true,
             gridview: true,
             footerrow: true,
+            subGrid: true,
+            subGridRowExpanded: function (subgrid_id, row_id) {
+                var OrderId = GetJqGridValue("#gridTable", row_id, "OrderId");
+                var subgrid_table_id = subgrid_id + "_t";
+                $("#" + subgrid_id).html("<table id='" + subgrid_table_id + "'></table>");
+                $("#" + subgrid_table_id).jqGrid({
+                    url: "@Url.Content("~/SteelMember/ProjectOrder/GetOrderEntryList")?OrderId=" + OrderId,
+                    datatype: "json",
+                    colModel: [
+                        { label: '主键', name: "MemberId", width: 200, sortable: false, hidden: true },
+                        { label: '构件编号', name: "MemberNumbering", width: 200, sortable: false },
+                        { label: '构件名称', name: "MemberName", width: 150, sortable: false },
+                        { label: '构件型号', name: "MemberModel", width: 80, sortable: false, align: 'center' },
+                        { label: '单位', name: "MemberUnit", width: 80, sortable: false, align: 'center' },
+                        { label: '数量', name: 'Qty', width: 80, sortable: false, align: 'center' },
+                        { label: '单价', name: 'Price', width: 80, sortable: false, align: 'center' },
+                        { label: '金额', name: 'PriceAmount', width: 80, sortable: false, align: 'center' },
+                        { label: '说明', name: 'Description', width: 200, sortable: false }
+                    ],
+                    width: "1227",
+                    rowNum: "all"
+                });
+            },
             rowList: [15, 30, 50, 100, 500, 1000],
             ondblClickRow: function (TreeId) {
-              
+
                 //表格行样式
                 var rowData = $("#gridTable").getRowData(TreeId);  //根据ID拿到一行的数据
                 if (rowData.Icon == '-1') {
@@ -176,13 +208,13 @@
     //编辑树节点(得到实体)
     function btn_editfolder() {
         var KeyValue = TreeId;
-            if (IsChecked(KeyValue)) {
-                var url = "/SteelMember/Tree/FolderForm?KeyValue= " + KeyValue;
-                openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
-                    top.frames[iframe].AcceptClick();
-                });
-            }
-      
+        if (IsChecked(KeyValue)) {
+            var url = "/SteelMember/Tree/FolderForm?KeyValue= " + KeyValue;
+            openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
+        }
+
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
@@ -197,6 +229,7 @@
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
+
     //新增信息
     function btn_add() {
         //var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
@@ -209,35 +242,60 @@
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
+    //创建订单
+    function btn_create_order() {
+        if (IsDelData(TreeId)) {
+            AddTabMenu("OrderForm", "@Url.Content("/SteelMember/ProjectOrder/CreateOrderForm")?TreeId=" + TreeId + "&TreeName=" + TreeName, "新增订单", "page_white_add.png", true, true, true);
+            //var url = "/SteelMember/ProjectManagement/CreateOrderForm?KeyValue= " + KeyValue + "&MemberNumber=" + MemberNumber + "&MemberModel=" + MemberModel;
+            //openDialog(url, "Form", "创建订单", 600, 400, function (iframe) {
+            //    top.frames[iframe].AcceptClick();
+            //});
+        }
+    }
+
     //变更订单信息(得到实体)
     function btn_edit() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "ProjectDemandId");
-        var IsSubmit = GetJqGridRowValue("#gridTable", "IsSubmit");
+        var KeyValue = GetJqGridRowValue("#gridTable", "OrderId");
+        var IsReview = GetJqGridRowValue("#gridTable", "IsReview");
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
-            var IsSubmit1 = IsSubmit.replace(/"/, "'").replace(/"/, "'");
-            if (IsSubmit1 != "<img src='../../Content/Images/checkokmark.gif'>") {
-                var url = "/SteelMember/ProjectManagement/Form?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
-                openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
-                    top.frames[iframe].AcceptClick();
-                });
+            if (IsReview.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
+                AddTabMenu("OrderForm", "@Url.Content("/SteelMember/ProjectOrder/OrderForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId, "变更订单", "page_white_add.png", true, true, true);
+                //var url = "/SteelMember/ProjectManagement/OrderForm?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
+                //openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
+                //    top.frames[iframe].AcceptClick();
+                //});
             } else {
 
-                tipDialog('该订单已提交，不允许修改！');
+                tipDialog('该订单已审核，不允许修改！');
             }
-            }
+        }
+        $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
+
+    //订单详细信息(得到实体)
+    function btn_detail() {
+        var KeyValue = GetJqGridRowValue("#gridTable", "OrderId");
+        var ItemID = 1;
+        if (IsChecked(KeyValue)) {
+            AddTabMenu("DetailForm", "@Url.Content("/SteelMember/ProjectOrder/DetailForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId, "订单详细", "page_white_add.png", true, true, true);
+            //var url = "/SteelMember/ProjectManagement/OrderForm?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
+            //openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
+            //    top.frames[iframe].AcceptClick();
+            //});
+        }
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
     //删除信息
     function btn_delete() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "ProjectDemandId");
+        var KeyValue = GetJqGridRowValue("#gridTable", "OrderId");
         var Prompt = "您确实要删除此文件吗？";
         if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/ProjectOrder/DeleteProjectDemand', { KeyValue: KeyValue }, Prompt);
+            delConfirm('/SteelMember/ProjectOrder/DeleteProjectOrder', { KeyValue: KeyValue }, Prompt);
             $("#gridTable").trigger("reloadGrid"); //重新载入
         }
-       
+
     }
 
     //构件图纸/模型管理
@@ -245,10 +303,10 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "MemberId");
         var Sort = GetJqGridRowValue("#gridTable", "Sort");
         if (IsChecked(KeyValue)) {
-                var url = '/SteelMember/File/DrawingManagement?KeyValue=' + KeyValue;
-                Dialog(url, "DrawingManagement", "文件管理", 900, 890, function (iframe) {
-                    top.frames[iframe].AcceptClick()
-                });
+            var url = '/SteelMember/File/DrawingManagement?KeyValue=' + KeyValue;
+            Dialog(url, "DrawingManagement", "文件管理", 900, 890, function (iframe) {
+                top.frames[iframe].AcceptClick()
+            });
         }
     }
 
@@ -262,6 +320,7 @@
         }
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
+
     //审核订单（不通过）
     function btn_not_review() {
         var KeyValue = GetJqGridRowValue("#gridTable", "OrderId");
@@ -273,17 +332,17 @@
     }
 
     //提交订单
-    function btn_SubmitOrder() {
+    function btn_submit_order() {
         var KeyValue = GetJqGridRowValue("#gridTable", "OrderId");
         var IsReview = GetJqGridRowValue("#gridTable", "IsReview");
         //var MemberNumber = GetJqGridRowValue("#gridTable", "MemberNumber");
         var MemberId = GetJqGridRowValue("#gridTable", "MemberId");
         var IsReview1 = IsReview.replace(/"/, "'").replace(/"/, "'");
         if (IsReview1 == "<img src='../../Content/Images/checkokmark.gif'>") {
-        var Prompt = "您确实要提交此文件吗？";
-        if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/ProjectOrder/SubmitProjectOrder', { KeyValue: KeyValue, MemberId: MemberId }, Prompt);
-        }
+            var Prompt = "您确实要提交此文件吗？";
+            if (IsDelData(KeyValue)) {
+                delConfirm('/SteelMember/ProjectOrder/SubmitProjectOrder', { KeyValue: KeyValue, MemberId: MemberId }, Prompt);
+            }
         } else {
             tipDialog('该订单未审核或未通过审核！', 4, 'warning');
         }
@@ -298,6 +357,38 @@
         })
     }
 
+    //要打印数据源，子页面调用的函数
+    function PrintDataSource() {
+        var columnModel = $("#gridTable").jqGrid('getGridParam', 'colModel');
+        var dataModel = $("#gridTable").jqGrid("getRowData");
+        var footerData = $("#gridTable").jqGrid("footerData");
+        var JsonData = {
+            columnModel: columnModel,
+            dataModel: dataModel,
+            footerData: footerData,
+        }
+        return JsonData;
+    }
+
+    //点击打印报表
+    function btn_Print() {
+        PrintDialog("/SteelMember/File/PrintPage", "PrintPage", "打印当前页", 1200, 500, function (iframe) {
+            top.frames[iframe].SubmitPrint()
+        });
+    }
+
+    //查询
+    var QueryParamJson = "";
+    function btn_query() {
+        QueryDialog("/SteelMember/MemberSettlement/QueryPage", "QueryPage", "查询", 540, 30, function (iframe) {
+            top.frames[iframe].QueryClick(function (JsonData) {
+                QueryParamJson = JsonData;
+                $("#gridTable").jqGrid('setGridParam', {
+                    url: "@Url.Content("/SteelMember/ProjectOrder/GridListJson")?ParameterJson=" + escape(JsonData) + "&TreeID=" + TreeId, page: 1
+                }).trigger('reloadGrid');
+            });
+        });
+    }
 
     /*视图begin=========================================================================*/
     //切换到列表/视图
@@ -328,7 +419,7 @@
                         icon = "Folder";
                     }
                     html += '<div class="filelist-item">';
-                    html += '<div><img src="~/Content/Images/fileType/' + icon + '_72.png" /></div>';
+                    html += '<div><img src="../../Content/Images/fileType/' + icon + '_72.png" /></div>';
                     html += '<div title="' + data[i].fullname + '" class="filelist-text">' + data[i].fullname + '</div>';
                     html += '</div>';
                 }
