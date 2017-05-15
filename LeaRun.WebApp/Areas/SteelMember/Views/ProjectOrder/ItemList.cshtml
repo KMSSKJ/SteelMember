@@ -99,10 +99,10 @@
                         $parentobj.$("#gridTable tbody tr:eq(" + index + ")").find('input').removeAttr('disabled');
                         $parentobj.$("#gridTable").find('.disabled').attr("disabled", "disabled");
                         $parentobj.$("#MemberNumbering➩" + index).focus();
-                        closeDialog();
                     } else {
                         top.TipMsg("构件已存在,不能重复添加", 4000, "error");
                     }
+                    closeDialog();
                 }
               
             },
