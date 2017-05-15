@@ -157,6 +157,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\CommonModule\Controllers\UserController.cs" />
     <Compile Include="Areas\SteelMember\Controllers\FileController.cs" />
     <Compile Include="Areas\SteelMember\Controllers\MemberProduceController.cs" />
     <Compile Include="Areas\SteelMember\Controllers\MemberSettlementController.cs" />
@@ -187,7 +188,6 @@
     <Compile Include="Areas\CommonModule\Controllers\ExcelImportController.cs" />
     <Compile Include="Areas\CommonModule\Controllers\PermissionController.cs" />
     <Compile Include="Areas\CommonModule\Controllers\SystemSetupController.cs" />
-    <Compile Include="Areas\CommonModule\Controllers\UserController.cs" />
     <Compile Include="Areas\CommonModule\Controllers\RolesController.cs" />
     <Compile Include="Areas\CommonModule\Controllers\PostController.cs" />
     <Compile Include="Areas\CommonModule\Controllers\GroupUserController.cs" />
@@ -8673,7 +8673,6 @@
     <Content Include="Areas\Thirdparty\Views\Ckediter\Index.cshtml" />
     <Content Include="Areas\Thirdparty\Views\UEditor\Index.cshtml" />
     <Content Include="Areas\Thirdparty\Views\Lodop\Index.cshtml" />
-    <Content Include="Areas\CommonModule\Views\User\PersonCenter.cshtml" />
     <Content Include="Areas\ExampleModule\Views\Report\RdlcMoneyDemo.cshtml" />
     <Content Include="Areas\ExampleModule\Views\Hadoop\TestTableMegaIndex.cshtml" />
     <Content Include="Areas\CommonModule\Views\Post\Detail.cshtml" />
@@ -8747,6 +8746,7 @@
     <Content Include="Areas\SteelMember\Views\ProjectInfo\HomePage.cshtml" />
     <Content Include="Areas\SteelMember\Views\ProjectInfo\ManIndex.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberSettlement\QueryPage.cshtml" />
+    <Content Include="Areas\CommonModule\Views\User\PersonCenter.cshtml" />
     <None Include="Properties\PublishProfiles\LR-FDMS.pubxml" />
     <Content Include="Views\Home\SkinIndex.cshtml" />
     <Content Include="Views\Login\Default.cshtml" />

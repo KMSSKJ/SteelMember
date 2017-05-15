@@ -120,6 +120,8 @@ namespace LeaRun.Entity
         /// <returns></returns>
         [DisplayName("电子邮件")]
         public string Email { get; set; }
+
+        public string Avatar { get; set; }
         /// <summary>
         /// 负责项目
         /// </summary>

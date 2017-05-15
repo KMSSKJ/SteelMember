@@ -653,3 +653,4 @@ D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\RdlCompile.cache
 D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\RdlCompile.compiled
 D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.pdb
+D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Web.Mvc.resources.dll
