@@ -186,8 +186,11 @@ D:\Source\Repos\SteelMember\LeaRun.Business\bin\Debug\Newtonsoft.Json.dll
 D:\Source\Repos\SteelMember\LeaRun.Business\bin\Debug\LeaRun.Cache.pdb
 D:\Source\Repos\SteelMember\LeaRun.Business\bin\Debug\LeaRun.DataAccess.pdb
 D:\Source\Repos\SteelMember\LeaRun.Business\bin\Debug\LeaRun.Entity.pdb
+D:\Source\Repos\SteelMember\LeaRun.Business\bin\Debug\LeaRun.Entity.dll.config
 D:\Source\Repos\SteelMember\LeaRun.Business\bin\Debug\LeaRun.Repository.pdb
+D:\Source\Repos\SteelMember\LeaRun.Business\bin\Debug\LeaRun.Repository.dll.config
 D:\Source\Repos\SteelMember\LeaRun.Business\bin\Debug\LeaRun.Utilities.pdb
+D:\Source\Repos\SteelMember\LeaRun.Business\bin\Debug\LeaRun.Utilities.dll.config
 D:\Source\Repos\SteelMember\LeaRun.Business\bin\Debug\EntityFramework.xml
 D:\Source\Repos\SteelMember\LeaRun.Business\bin\Debug\Ninject.xml
 D:\Source\Repos\SteelMember\LeaRun.Business\bin\Debug\zh-Hans\EntityFramework.resources.dll

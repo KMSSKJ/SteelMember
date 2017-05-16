@@ -143,7 +143,9 @@ D:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\SharpZipLib.dll
 D:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\Newtonsoft.Json.dll
 D:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\LeaRun.DataAccess.pdb
 D:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\LeaRun.Entity.pdb
+D:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\LeaRun.Entity.dll.config
 D:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\LeaRun.Utilities.pdb
+D:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\LeaRun.Utilities.dll.config
 D:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\EntityFramework.xml
 D:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\Ninject.xml
 D:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\zh-Hans\EntityFramework.resources.dll

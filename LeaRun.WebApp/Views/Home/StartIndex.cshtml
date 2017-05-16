@@ -35,6 +35,7 @@
         //ShortcutsList();
         setIframeH();
         initStartMenu();
+        LoadLogo();
         //var interval = setInterval("IconSong('icon_message')", 400);
         //$("#div_icon_message").click(function () {
         //    clearInterval(interval);
@@ -137,6 +138,22 @@
             });
             return count;
         }
+
+        //获取系统Logo
+        var Data;
+        var filename
+        var project_system_titel;
+        function LoadLogo() {
+            AjaxJson("/SteelMember/ProjectInfo/SetDataForm", { KeyValue: 10 }, function (data) {
+                Data = data;
+                filename = Data.ProjectLogo;
+                filename = filename.substring(0, filename.lastIndexOf('.'));//获取文件名称，去除后缀名
+                filename = "../../Resource/Document/NetworkDisk/System/Project/" + filename + "/" + Data.ProjectLogo;
+
+                $("p").html(Data.ProjectSystemTitel);
+                document.getElementById("project_logo").src = filename;
+            });
+        };
     </script>
 </head>
 <body onbeforeunload="PageClose()" onselectstart="return false;" style="-moz-user-select: none; overflow: hidden;">
@@ -146,7 +163,8 @@
     <!-- header -->
     <div class="header">
         <div class="logo fleft">
-            <img src="~/Content/Images/loginlogo.png" />
+            <div style="margin-left:35px;margin-top:7px; float:left"><img id="project_logo" src="" style="width:32px;height:32px;" /></div>
+            <div style="float:left; margin-left:5px;"><p style="font-size:24pt; color:white"></p></div>
         </div>
         <div id="Headermenu">
             <ul id="topnav">
@@ -192,11 +210,11 @@
                         <span class="c5"></span>个人中心
                     </a>
                 </li>
-                <li id="metnav_2" class="list" onclick="SkinIndex()">
+                @*<li id="metnav_2" class="list" onclick="SkinIndex()">
                     <a id="nav_2">
                         <span class="c2"></span>切换皮肤
                     </a>
-                </li>
+                </li>*@
 
                 <li id="metnav_4" class="list" onclick="IndexOut();">
                     <a id="nav_4">
@@ -256,9 +274,10 @@
             </div>
             <div id="overlay_startmenu"></div>
         </div>
+
         <div class="number" style="width: 40%; text-align: center; float: left;">
-            技术支持：<a href="http://www.learun.cn/fdms/index.html" target="_blank" style="color: white;">信息技术有限公司</a>
-            &nbsp; &nbsp;技术交流群：<a href="http://shang.qq.com/wpa/qunwpa?idkey=3ba0bad8da1b48fcd8a17cbdd4a67ac202f74b8864d6c94488a1aaec5add856d" title="点击加入QQ群" target="_blank" style="color: white;">2368429</a>
+            &nbsp;欢迎 @ViewBag.Account 登录系统
+            &nbsp; &nbsp;   CopyRight © 2017 <a href="http://www.baidu.com" target="_blank" style="color: white;">昆明双石科技有限公司</a>
         </div>
         <div style="width: 30%; text-align: right; float: right;">
             <div style="padding-right: 2px;">
@@ -278,6 +297,7 @@
         </div>
         <div class="clear"></div>
     </div>
+
     <!--载进度条start-->
     <div id="loading_background" class="loading_background" style="display: none;"></div>
     <div id="loading" onclick="Loading(false);">

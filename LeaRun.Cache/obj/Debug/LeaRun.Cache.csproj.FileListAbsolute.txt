@@ -6,4 +6,3 @@ D:\Source\Repos\SteelMember\LeaRun.Cache\bin\Debug\LeaRun.Cache.dll
 D:\Source\Repos\SteelMember\LeaRun.Cache\bin\Debug\LeaRun.Cache.pdb
 D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.dll
 D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.pdb
-D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.csprojResolveAssemblyReference.cache

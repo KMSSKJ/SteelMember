@@ -200,10 +200,14 @@ D:\Source\Repos\SteelMember\LeaRun.WebService\bin\Ninject.dll
 D:\Source\Repos\SteelMember\LeaRun.WebService\bin\SharpZipLib.dll
 D:\Source\Repos\SteelMember\LeaRun.WebService\bin\Newtonsoft.Json.dll
 D:\Source\Repos\SteelMember\LeaRun.WebService\bin\LeaRun.Business.pdb
+D:\Source\Repos\SteelMember\LeaRun.WebService\bin\LeaRun.Business.dll.config
 D:\Source\Repos\SteelMember\LeaRun.WebService\bin\LeaRun.DataAccess.pdb
 D:\Source\Repos\SteelMember\LeaRun.WebService\bin\LeaRun.Entity.pdb
+D:\Source\Repos\SteelMember\LeaRun.WebService\bin\LeaRun.Entity.dll.config
 D:\Source\Repos\SteelMember\LeaRun.WebService\bin\LeaRun.Repository.pdb
+D:\Source\Repos\SteelMember\LeaRun.WebService\bin\LeaRun.Repository.dll.config
 D:\Source\Repos\SteelMember\LeaRun.WebService\bin\LeaRun.Utilities.pdb
+D:\Source\Repos\SteelMember\LeaRun.WebService\bin\LeaRun.Utilities.dll.config
 D:\Source\Repos\SteelMember\LeaRun.WebService\bin\LeaRun.Cache.pdb
 D:\Source\Repos\SteelMember\LeaRun.WebService\bin\EntityFramework.xml
 D:\Source\Repos\SteelMember\LeaRun.WebService\bin\Ninject.xml
