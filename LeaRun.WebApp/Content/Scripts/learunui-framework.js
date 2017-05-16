@@ -1088,25 +1088,6 @@ function delConfig(url, parm, count) {
         }
     });
 }
-function subConfirm(url, parm, msg) {
-    confirmDialog("系统提示", msg, function (r) {
-        if (r) {
-            Loading(true, "正在提交数据...");
-            window.setTimeout(function () {
-                AjaxJson(url, parm, function (data) {
-                    tipDialog(data.Message, 3, data.Code);
-                    if (data.Code > 0) {
-                        windowload();
-                    }
-                });
-            }, 200);
-        }
-    });
-}
-
-
-
-
 /*公共导出Excel，将表格数据取出来。在导出Excel
 obj:表格对象ID
 fileName：导出Excel文件名

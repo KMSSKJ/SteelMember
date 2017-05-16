@@ -45,12 +45,8 @@
                     { label: '构件名', name: "MemberName", index: "MemberName", width: 10 },
                     { label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", width: 10 },
                     { label: '生产数量', name: "MemberNumber", index: "MemberNumber", width: 10 },
-                     {
-                         label: '交货时间', name: "VeliveryTime", index: "VeliveryTime", width: 12,
-                         formatter: function (cellvalue, options, rowObject) {
-                             return formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
-                         }
-                     },
+                    { label: '已生产量', name: 'Productioned', index: 'Productioned', width: 6 },
+
                     //{ label: '开始时间', name: "ProduceStartDate", index: "ProduceStartDate", width: 10 },
                     //{ label: "结束时间", name: "ProduceEndDate", index: "ProduceEndDate", width: 10 },
                     //{ label: '组立', name: 'SetUpProcessing', index: 'SetUpProcessing', width: 10 },
@@ -83,8 +79,8 @@
                         { label: '主键', name: "ProcessId", width: 1, sortable: false, hidden: true },
                         { label: '外键', name: "OrderId", width: 100, sortable: false, hidden: true },
                         { label: '制程名称', name: "ProcessName", width: 150, sortable: false },
-                        { label: '作业时间(小时)', name: "OperationTime", width: 80, sortable: false, align: 'center' },
                         { label: '工艺要求', name: "ProcessRequirements", width: 80, sortable: false, align: 'center' },
+                        { label: '工艺完成量', name: "OperationTime", width: 80, sortable: false, align: 'center' },
                         {
                             label: '制程状态', name: 'IsProcessStatus', width: 80, sortable: false, align: 'center',
                             formatter: function (cellvalue, value, row, index) {
