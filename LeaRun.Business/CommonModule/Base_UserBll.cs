@@ -48,7 +48,7 @@ namespace LeaRun.Business
                                                 u.Telephone ,				--电话
                                                 u.Email ,					--电子邮箱
                                                 u.ResponsibleProject,       --负责项目
-                                                u.Avatar                    --头像
+                                                u.Avatar,                    --头像
                                                 u.CompanyId ,			    --所在公司ID
                                                 c.FullName AS CompanyName ,	--所在公司
                                                 u.DepartmentId,				--所在部门ID

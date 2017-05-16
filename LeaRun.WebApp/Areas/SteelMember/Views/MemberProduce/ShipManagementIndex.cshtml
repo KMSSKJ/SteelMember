@@ -6,17 +6,31 @@
 <script type="text/javascript">
     $(document).ready(function () {
         GetGrid();
+        GetTree();
     });
 
-    //var ItemId = 1;
-    var TreeId="";
+    var TreeId = "";//16
+    var ItemId = 2;
+    function GetTree() {
+        var itemtree = {
+            onnodeclick: function (node) {
+                TreeId = node.id;
+                TreeName = node.text;
+                GridFolderEvent(TreeId);
+            },
+            url: "@Url.Content("/SteelMember/MemberProduce/TreeJsonShip")?ItemId=" + ItemId
+        };
+        $("#ItemsTree").treeview(itemtree);
+    };
+
     //表格文件夹点击事件
-    @*function GridFolderEvent(TreeID) {
+    function GridFolderEvent(TreeID) {
         TreeId = TreeID;
         $("#gridTable").jqGrid('setGridParam', {
             url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonShipManagement")?TreeID=" + TreeId, page: 1
     }).trigger('reloadGrid');
-    };*@
+    };
+
     //加载表格
     function GetGrid() {
         var SelectRowIndx;
@@ -32,8 +46,8 @@
                     { label: '构件型号', name: 'MemberModel', index: 'MemberModel', width: 10 },
                     { label: '库存量', name: 'LibraryNumber', index: 'LibraryNumber', width: 10 },
                     { label: '发货量', name: 'ShipNumber', index: 'ShipNumber', width: 10 },
-                    { label: '单价', name: 'UnitPrice', index: 'UnitPrice', width: 10 },
-                    { label: '总价', name: 'TotalPrice', index: 'TotalPrice', width: 10 },
+                    //{ label: '单价', name: 'UnitPrice', index: 'UnitPrice', width: 10 },
+                    //{ label: '总价', name: 'TotalPrice', index: 'TotalPrice', width: 10 },
                     { label: '发货日期', name: 'ShipDate', index: 'ShipDate', width: 10 },
                     { label: '发货人', name: 'ShipMan', index: 'ShipMan', width: 10 },
                     {
@@ -204,12 +218,12 @@
     }
 
 </script>
-@*<div id="layout" class="layout">
+<div id="layout" class="layout">
    
     <div class="layoutPanel layout-west">
         <div class="btnbartitle">
             <div>
-                目录信息
+                生产状态
             </div>
         </div>
         <div class="ScrollBar" id="ItemsTree"></div>
@@ -218,7 +232,7 @@
     <div class="layoutPanel layout-center">
         <div class="btnbartitle">
             <div>
-                项目信息<span id="CenterTitle"></span>
+                发货信息<span id="CenterTitle"></span>
             </div>
         </div>
         <div class="tools_bar" style="border-top: none; margin-bottom: 0px;">
@@ -227,14 +241,15 @@
             </div>
         </div>
         <table id="gridTable"></table>
+        <div id="gridPager"></div>
     </div>
-</div>*@
+</div>
 
-<div class="tools_bar leftline rightline" style="margin-bottom: 0px; margin: 1px;">
+@*<div class="tools_bar leftline rightline" style="margin-bottom: 0px; margin: 1px;">
     <div class="PartialButton">
         @Html.Partial("_PartialButton")
     </div>
 </div>
 <div class="rightline" style="margin: 1px; margin-top: -1px;">
     <table id="gridTable"></table>
-</div>
+</div>*@

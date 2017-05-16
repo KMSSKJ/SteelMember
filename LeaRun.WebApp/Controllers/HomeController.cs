@@ -1,6 +1,7 @@
 ﻿using LeaRun.Business;
 using LeaRun.DataAccess;
 using LeaRun.Entity;
+using LeaRun.Repository;
 using LeaRun.Utilities;
 using System;
 using System.Collections;
@@ -54,6 +55,7 @@ namespace LeaRun.WebApp.Controllers
         }
 
         #region 后台首页-开始菜单
+        public readonly RepositoryFactory<Base_User> repositoryfactory = new RepositoryFactory<Base_User>();
         /// <summary>
         /// 开始菜单UI
         /// </summary>
@@ -61,10 +63,13 @@ namespace LeaRun.WebApp.Controllers
         [LoginAuthorize]
         public ActionResult StartIndex()
         {
+            var user = ManageProvider.Provider.Current();
+            ViewBag.Account = user.Account + "（" + user.UserName + "）";
             string ObjectId = ManageProvider.Provider.Current().ObjectId;
             Base_Module model = base_modulepermissionbll.GetModuleList(ObjectId).FindAll(t => t.ParentId.Trim() == "0" && t.Enabled == 1).SingleOrDefault();
             ViewBag.Account = ManageProvider.Provider.Current().Account + "（" + ManageProvider.Provider.Current().UserName + "）";
             ViewBag.ModuleId = model.ModuleId.ToString();
+            ViewBag.Avatar = repositoryfactory.Repository().FindEntity(user.UserId).Avatar;
             return View();
         }
         /// <summary>
