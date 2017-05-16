@@ -69,9 +69,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <returns></returns>      
         public ActionResult TreeJson(string ItemId)
         {
-            int _ItemId = Convert.ToInt32(ItemId);
-            List<RMC_Tree> list = TreeCurrent.Find(t => t.ItemID == _ItemId && t.DeleteFlag != 1 && t.IsItemInfo != 1 && t.IsProduceOrder != 1).ToList();
-            List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
+            List<RMC_Tree> list, list1, list2;
+            list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemClass == 0).ToList();
+            list2 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemClass == 3).ToList();
+            list = list1.Concat(list2).Distinct().ToList();
+
+            List <TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
             foreach (RMC_Tree item in list)
             {
                 TreeJsonEntity tree = new TreeJsonEntity();
@@ -103,8 +106,9 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             int itemid = Convert.ToInt32(ItemId);
 
             List<RMC_Tree> list, list1, list2;
-            list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.IsItemInfo == 0).ToList();
-            list2 = TreeCurrent.Find(t => t.ItemID == itemid && t.DeleteFlag != 1&&t.IsItemInfo!=1&&t.IsProduceOrder==1).ToList();
+            list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemClass == 0).ToList();
+            list2 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemClass == 3).ToList();
+            list = list1.Concat(list2).Distinct().ToList();
 
             list = list1.Concat(list2).Distinct().ToList();
 
@@ -141,8 +145,13 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public ActionResult TreeJsonProcess(string ItemId)
         {
             int _ItemId = Convert.ToInt32(ItemId);
-            List<RMC_Tree> list = TreeCurrent.Find(t => t.ItemID == _ItemId && t.DeleteFlag != 1 && t.IsItemInfo != 1 && t.IsProduceOrder != 1).ToList();
-            List<RMC_Tree> list1 = new List<RMC_Tree>();
+            List<RMC_Tree> list, list1, list2;
+            list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemClass == 0).ToList();
+            list2 = TreeCurrent.Find(t => t.DeleteFlag != 1 &&t.ItemID== _ItemId && t.ItemClass == 2).ToList();
+            list = list1.Concat(list2).Distinct().ToList();
+
+            List<RMC_Tree> lists = new List<RMC_Tree>();
+
             List<RMC_ProjectOrder> OrderList = OrderManagementCurrent.Find(f => f.OrderId > 0 && f.ConfirmOrder == 1).ToList();
             for (int i = 0; i < OrderList.Count(); i++)
             {
@@ -152,9 +161,9 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 tree.Icon = OrderList[i].Icon;
                 tree.State = 0;
                 tree.ParentID = OrderList[i].TreeId;
-                list1.Add(tree);
+                lists.Add(tree);
             }
-            list = list.Concat(list1).ToList();//把集合A.B合并
+            list = list.Concat(lists).ToList();//把集合A.B合并
                                                // List<int> Result = listA.Union(listB).ToList<int>();          //剔除重复项 
 
 
@@ -1556,7 +1565,11 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public ActionResult TreeJsonShip(string ItemId)
         {
             int _ItemId = Convert.ToInt32(ItemId);
-            List<RMC_Tree> list = TreeCurrent.Find(t => t.ItemID == _ItemId && t.DeleteFlag != 1 && t.IsItemInfo != 1 && t.IsProduceOrder != 1).ToList();
+            List<RMC_Tree> list, list1, list2;
+            list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemClass == 0).ToList();
+            list2 = TreeCurrent.Find(t => t.DeleteFlag != 1 &&t.ItemID== _ItemId&& t.ItemClass == 4).ToList();
+            list = list1.Concat(list2).Distinct().ToList();
+
             List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
             foreach (RMC_Tree item in list)
             {

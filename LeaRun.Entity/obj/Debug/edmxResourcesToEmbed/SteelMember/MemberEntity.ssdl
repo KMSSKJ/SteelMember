@@ -191,6 +191,7 @@
     <Property Name="IsProcessStatus" Type="int" />
     <Property Name="ProcessManImge" Type="nvarchar" MaxLength="30" />
     <Property Name="ProcessName" Type="nvarchar" MaxLength="20" />
+    <Property Name="ProcessNumbered" Type="int" />
   </EntityType>
   <EntityType Name="RMC_ProjectDemand">
     <Key>
@@ -347,7 +348,8 @@
     <Property Name="ParentID" Type="int" />
     <Property Name="ItemID" Type="int" />
     <Property Name="IsItem" Type="int" />
-    <Property Name="IsItemInfo" Type="int" />
+    <Property Name="ItemClass" Type="int" />
+    <Property Name="ItemClassRemark" Type="int" />
     <Property Name="TreeName" Type="nvarchar" MaxLength="20" />
     <Property Name="Url" Type="nvarchar" MaxLength="80" />
     <Property Name="Icon" Type="nvarchar" MaxLength="10" />
@@ -362,7 +364,6 @@
     <Property Name="Description" Type="nvarchar" MaxLength="500" />
     <Property Name="IsReview" Type="int" />
     <Property Name="FileType" Type="nvarchar" MaxLength="20" />
-    <Property Name="IsProduceOrder" Type="int" />
   </EntityType>
   <EntityContainer Name="kskfModelStoreContainer">
     <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="Self.RMC_AnalysisRawMaterial" Schema="dbo" store:Type="Tables" />

@@ -12,6 +12,7 @@
     <!--框架必需end-->
     <script>
         $(function () {
+
             var Index = $.cookie('UItheme');
             if (Index) {
                 $("#theme").val(Index);
@@ -50,10 +51,10 @@
                             });
                         }, 200);
                     }
-                },
-                {
-                    name: '取消'
-                }
+                    },
+                    {
+                        name: '取消'
+                    }
                 ]
             });
         }

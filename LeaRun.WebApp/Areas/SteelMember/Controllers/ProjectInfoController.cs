@@ -59,11 +59,11 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <returns></returns>      
         public ActionResult TreeJson(string ItemId)
         {
-            //int itemid = Convert.ToInt32(ItemId);
+            int itemid = Convert.ToInt32(ItemId);
             List<RMC_Tree> list, list1, list2;
-            list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.IsItemInfo == 0).ToList();
-            list2 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.IsItemInfo == 1&& t.IsProduceOrder!= 1).ToList();
-            list= list1.Concat(list2).Distinct().ToList();
+            list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemClass == 0).ToList();
+            list2 = TreeCurrent.Find(t => t.ItemID == itemid && t.DeleteFlag != 1 && t.ItemClass == 1).ToList();
+            list = list1.Concat(list2).Distinct().ToList();
 
             List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
             foreach (RMC_Tree item in list)

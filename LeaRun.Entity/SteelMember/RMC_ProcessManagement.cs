@@ -27,5 +27,6 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<int> IsProcessStatus { get; set; }
         public string ProcessManImge { get; set; }
         public string ProcessName { get; set; }
+        public Nullable<int> ProcessNumbered { get; set; }
     }
 }

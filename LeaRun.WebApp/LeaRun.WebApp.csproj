@@ -275,6 +275,7 @@
     <Content Include="Content\Images\dispose.png" />
     <Content Include="Content\Images\dropdown-icon.png" />
     <Content Include="Content\Images\error-bg.png" />
+    <Content Include="Content\Images\favicon.ico" />
     <Content Include="Content\Images\fileType\css_24.png" />
     <Content Include="Content\Images\fileType\css_72.png" />
     <Content Include="Content\Images\fileType\doc_24.png" />
@@ -7955,7 +7956,6 @@
     <Content Include="Content\Images\required-bg.png" />
     <Content Include="Content\Images\scroll_pane_tree.png" />
     <Content Include="Content\Images\splitLine_bg.gif" />
-    <Content Include="Content\Images\favicon.ico" />
     <Content Include="Content\Images\start_menu.png" />
     <Content Include="Content\Images\Support.jpg" />
     <Content Include="Content\Images\Support_qq.png" />
