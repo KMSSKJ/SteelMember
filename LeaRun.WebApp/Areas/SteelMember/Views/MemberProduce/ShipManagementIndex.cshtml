@@ -209,9 +209,10 @@
     });
     }
 
+    var JsonData1 = "";
     //导出文件
     function btn_derive() {
-        SetDeriveExcel("#gridTable", "发货信息表");
+        SetDeriveExcel("#gridTable", "构件发货单", "云南公投澄川高速", JsonData1);
         openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "信息导出", 900, 500, function (iframe) {
             top.frames[iframe].AcceptClick();
         })

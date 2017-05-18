@@ -53,6 +53,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Microsoft.ReportViewer.WebForms.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.SqlServer.Types, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\rdlc报表要引用的dll\Microsoft.SqlServer.Types.dll</HintPath>
@@ -72,6 +76,11 @@
     <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net40-full\Ninject.Web.Mvc.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>bin\office.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -153,6 +162,7 @@
     <Compile Include="Areas\CommonModule\Controllers\UserController.cs" />
     <Compile Include="Areas\SteelMember\Controllers\FileController.cs" />
     <Compile Include="Areas\SteelMember\Controllers\MemberProduceController.cs" />
+    <Compile Include="Areas\SteelMember\Controllers\CollarManagementController.cs" />
     <Compile Include="Areas\SteelMember\Controllers\MemberSettlementController.cs" />
     <Compile Include="Areas\SteelMember\Controllers\ProjectManagementController.cs" />
     <Compile Include="Areas\SteelMember\Controllers\ProjectOrderController.cs" />
@@ -9076,6 +9086,7 @@
     <Content Include="Areas\SteelMember\Views\ProjectInfo\ManIndex.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberSettlement\QueryPage.cshtml" />
     <Content Include="Areas\CommonModule\Views\User\PersonCenter.cshtml" />
+    <Content Include="Areas\SteelMember\Views\CollarManagement\Index.cshtml" />
     <None Include="Properties\PublishProfiles\LR-FDMS.pubxml" />
     <Content Include="Views\Home\SkinIndex.cshtml" />
     <Content Include="Views\Login\Default.cshtml" />

@@ -672,6 +672,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         //    }
 
         //}
+        #endregion
 
         /// <summary>
         /// 【控制测量文档管理】返回树JONS
@@ -861,7 +862,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }.ToString());
             }
         }
-        #endregion
 
         #region 数据查询与呈现
         public ActionResult Index()
@@ -1182,47 +1182,49 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
             DataTable data = new DataTable();
             string fileName = "导入构件模板.xlsx";
+            //string TableHeader = "构件模板";
             string DataColumn = "型号 | 截面面积/cm²| 外表面积/(m²/m)|理论重量/(㎏/m)|";
             DataColumn += "h|B|b|D|d| t|r|r1|Ix | Ix0 | Ix1 | Iy | Iy0 | Iy1 | Iu | ix |";
-            DataColumn += " iy | ix0 | iy0 | iu | Wx | Wy | Wx0 | Wy0 | Wu | Z0 | X0 | Yu|单价|图纸|模型";
+            DataColumn += " iy | ix0 | iy0 | iu | Wx | Wy | Wx0 | Wy0 | Wu | Z0 | X0 | Yu|单价|图纸|模型|图标";
             DeriveExcel.DataTableToExcel(data, DataColumn.Split('|'), fileName);
         }
 
-        /// <summary>                                                                                            
-        /// 获取要导出表头字段                                                                                   
-        /// </summary>                                                                                          
-        /// <returns></returns>                                                                                 
-        public ActionResult GetDeriveExcelColumn()
-        {
-            string JsonColumn = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonColumn_DeriveExcel"));
-            return Content(JsonColumn);
-        }
-        /// <summary>                                                                                            
-        /// 导出Excel                                                                                            
-        /// </summary>                                                                                           
-        /// <param name="ExportField">要导出字段</param>                                                         
-        public void GetDeriveExcel(string ExportField)
-        {
-            string JsonColumn = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonColumn_DeriveExcel"));
-            string JsonData = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonData_DeriveExcel"));
-            string JsonFooter = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonFooter_DeriveExcel"));
-            string fileName = GZipHelper.Uncompress(CookieHelper.GetCookie("FileName_DeriveExcel"));
-            DeriveExcel.JqGridToExcel(JsonColumn, JsonData, ExportField, fileName);
-        }
-        /// <summary>
-        /// 写入数据到Cookie
-        /// </summary>
-        /// <param name="JsonColumn">表头</param>
-        /// <param name="JsonData">数据</param>
-        /// <param name="JsonFooter">底部合计</param>
-        [ValidateInput(false)]
-        public void SetDeriveExcel(string JsonColumn, string JsonData, string JsonFooter, string FileName)
-        {
-            CookieHelper.WriteCookie("JsonColumn_DeriveExcel", GZipHelper.Compress(JsonColumn));
-            CookieHelper.WriteCookie("JsonData_DeriveExcel", GZipHelper.Compress(JsonData));
-            CookieHelper.WriteCookie("JsonFooter_DeriveExcel", GZipHelper.Compress(JsonFooter));
-            CookieHelper.WriteCookie("FileName_DeriveExcel", GZipHelper.Compress(FileName));
-        }
+        ///// <summary>                                                                                            
+        ///// 获取要导出表头字段                                                                                   
+        ///// </summary>                                                                                          
+        ///// <returns></returns>                                                                                 
+        //public ActionResult GetDeriveExcelColumn()
+        //{
+        //    string JsonColumn = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonColumn_DeriveExcel"));
+        //    return Content(JsonColumn);
+        //}
+        ///// <summary>                                                                                            
+        ///// 导出Excel                                                                                            
+        ///// </summary>                                                                                           
+        ///// <param name="ExportField">要导出字段</param>                                                         
+        //public void GetDeriveExcel(string ExportField)
+        //{
+        //    string JsonColumn = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonColumn_DeriveExcel"));
+        //    string JsonData = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonData_DeriveExcel"));
+        //    string JsonFooter = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonFooter_DeriveExcel"));
+        //    string fileName = GZipHelper.Uncompress(CookieHelper.GetCookie("FileName_DeriveExcel"));
+        //    DeriveExcel.JqGridToExcel(JsonColumn, JsonData, ExportField, fileName);
+        //}
+        ///// <summary>
+        ///// 写入数据到Cookie
+        ///// </summary>
+        ///// <param name="JsonColumn">表头</param>
+        ///// <param name="JsonData">数据</param>
+        ///// <param name="JsonFooter">底部合计</param>
+        //[ValidateInput(false)]
+        //public void SetDeriveExcel(string JsonColumn, string JsonData, string JsonFooter, string FileName,string TableHeader)
+        //{
+        //    CookieHelper.WriteCookie("JsonColumn_DeriveExcel", GZipHelper.Compress(JsonColumn));
+        //    CookieHelper.WriteCookie("JsonData_DeriveExcel", GZipHelper.Compress(JsonData));
+        //    CookieHelper.WriteCookie("JsonFooter_DeriveExcel", GZipHelper.Compress(JsonFooter));
+        //    CookieHelper.WriteCookie("FileName_DeriveExcel", GZipHelper.Compress(FileName));
+        //    CookieHelper.WriteCookie("TabelHeader_DeriveExcel", GZipHelper.Compress(TableHeader));
+        //}
 
         /// <summary>
         /// 导出Excel

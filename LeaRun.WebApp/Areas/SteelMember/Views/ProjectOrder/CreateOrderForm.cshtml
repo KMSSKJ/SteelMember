@@ -97,14 +97,14 @@
                 });
             }
         });
-        //表头合并
-        $("#gridTable").jqGrid('setGroupHeaders', {
-            useColSpanStyle: true,
-            groupHeaders: [
-              { startColumnName: 'ItemCode', numberOfColumns: 4, titleText: '构件信息' },
-              { startColumnName: 'Qty', numberOfColumns: 7, titleText: '价格信息' }
-            ]
-        });
+        ////表头合并
+        //$("#gridTable").jqGrid('setGroupHeaders', {
+        //    useColSpanStyle: true,
+        //    groupHeaders: [
+        //      { startColumnName: 'ItemCode', numberOfColumns: 4, titleText: '构件信息' },
+        //      { startColumnName: 'Qty', numberOfColumns: 7, titleText: '价格信息' }
+        //    ]
+        //});
         //默认添加30行 空行
         for (var i = 1; i < 31; i++) {
             var rowdata = {

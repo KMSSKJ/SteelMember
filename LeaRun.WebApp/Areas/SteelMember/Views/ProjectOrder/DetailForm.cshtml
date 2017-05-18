@@ -6,9 +6,9 @@
 <script type="text/javascript">
     var KeyValue = GetQuery('KeyValue');
     var TreeId = GetQuery('TreeId');
+    var JsonData1="";
     $(function () {
         GetGrid();
-
         if (!!KeyValue) {
             //主表信息
             AjaxJson("/SteelMember/ProjectOrder/SetDataForm", { KeyValue: KeyValue }, function (data) {
@@ -17,9 +17,9 @@
             var rowindex = 1;
             //明细信息
             AjaxJson("/SteelMember/ProjectOrder/GetOrderEntryList", { OrderId: KeyValue }, function (data) {
-                var JsonData = data.rows;
-                $.each(JsonData, function (i) {
-                    var rowData = JsonData[i];
+               JsonData1 = data.rows;
+                $.each(JsonData1, function (i) {
+                    var rowData = JsonData1[i];
                     $("#MemberID➩" + rowindex).val(rowData.MemberID);
                     $("#MemberNumbering➩" + rowindex).val(rowData.MemberNumbering);
                     $("#MemberName➩" + rowindex).val(rowData.MemberName);
@@ -86,17 +86,17 @@
                 });
             }
         });
-
+     
         columnModelData("#gridTable");
 
-        //表头合并
-        $("#gridTable").jqGrid('setGroupHeaders', {
-            useColSpanStyle: true,
-            groupHeaders: [
-              { startColumnName: 'ItemCode', numberOfColumns: 4, titleText: '构件信息' },
-              { startColumnName: 'Qty', numberOfColumns: 7, titleText: '价格信息' }
-            ]
-        });
+        ////表头合并
+        //$("#gridTable").jqGrid('setGroupHeaders', {
+        //    useColSpanStyle: true,
+        //    groupHeaders: [
+        //        { startColumnName: 'MemberNumbering', numberOfColumns: 4, titleText: '构件信息' },
+        //      { startColumnName: 'Qty', numberOfColumns: 3, titleText: '价格信息' }
+        //    ]
+        //});
         //默认添加30行 空行
         for (var i = 1; i < 31; i++) {
             var rowdata = {
@@ -222,7 +222,7 @@
 
     //导出文件
     function btn_derive() {
-        SetDeriveExcel("#gridTable", "构件订单表");
+        SetDeriveExcel("#gridTable", "构件订单表", "云南公投澄川高速", JsonData1,);
         openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "信息导出", 900, 500, function (iframe) {
             top.frames[iframe].AcceptClick();
         })
@@ -232,6 +232,7 @@
     function PrintDataSource() {
         var columnModel = $("#gridTable").jqGrid('getGridParam', 'colModel');
         var dataModel = $("#gridTable").jqGrid("getRowData");
+        //var dataModel = JsonData0;
         var footerData = $("#gridTable").jqGrid("footerData");
         var JsonData = {
             columnModel: columnModel,

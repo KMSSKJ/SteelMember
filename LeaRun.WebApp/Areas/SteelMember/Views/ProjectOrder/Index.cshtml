@@ -89,21 +89,20 @@
                             }
                         }
                     },
-                     {
-                         label: '生产状态', name: 'Description', width: 12,
-                         formatter: function (cellvalue, value, row, index) {
-                             var issubmit = cellvalue;
-                             if (issubmit != "" || issubmit != null) {
-                                 if (issubmit == 1) {
-                                     return "<img src='../../Content/Images/checkokmark.gif'/>";
-                                 } else {
-                                     return "<img src='../../Content/Images/checknomark.gif'/>";
-                                 }
-                             } else {
-                                 return "";
-                             }
-                         }
-                     },
+
+                        {
+                            label: '订单状态', name: "Productioned", index: "Productioned", width: 12,
+                            formatter: function (cellvalue, options, rowObject) {
+                                var Productioned = cellvalue;
+                                if (Productioned == 0) {
+                                    return "未生产"
+                                } else if (Productioned == 1) {
+                                    return "生产完成"
+                                } else {
+                                    return "正在生产"
+                                }
+                            }
+                        },
                     { label: '备注', name: 'Description', index: 'Description', width: 12 },
             ],
             rowNum: 30,
@@ -351,7 +350,7 @@
 
     //导出文件
     function btn_derive() {
-        SetDeriveExcel("#gridTable", "项目订单表");
+        SetDeriveExcel("#gridTable","构件订单表", "云南公投澄川高速");
         openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "信息导出", 900, 500, function (iframe) {
             top.frames[iframe].AcceptClick();
         })

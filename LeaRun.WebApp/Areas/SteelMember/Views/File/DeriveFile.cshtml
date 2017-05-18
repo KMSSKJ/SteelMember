@@ -5,7 +5,7 @@
 <script src="~/Content/Scripts/cookie/jquery.cookie.js"></script>
 <script>
     $(function () {
-        getAjax("/SteelMember/File/GetDeriveExcelColumn", {}, function (data) {
+        getAjax("/Utility/GetDeriveExcelColumn", {}, function (data) {
             var JsonData = eval("(" + data + ")");
             $.each(JsonData, function (i) {
                 var label = JsonData[i].label;
@@ -46,7 +46,7 @@
         var SelectedField = ""; $('#AccessView .selected a').each(function () { SelectedField += $(this).attr('id') + ","; });
         Loading(true, "正在处理要导出数据...");
         window.setTimeout(function () {
-            location.href = "/SteelMember/File/GetDeriveExcel?ExportField=" + escape(SelectedField);
+            location.href = "/Utility/GetDeriveExcel?ExportField=" + escape(SelectedField);
             Loading(false);
         }, 200);
     }

@@ -165,7 +165,7 @@ function GetJqGridRowValue(jgrid, code) {
     var selectedRowIds = $(jgrid).jqGrid("getGridParam", "selarrrow");
     if (selectedRowIds != "") {
         var len = selectedRowIds.length;
-        for (var i = 0; i < len ; i++) {
+        for (var i = 0; i < len; i++) {
             var rowData = $(jgrid).jqGrid('getRowData', selectedRowIds[i]);
             KeyValue += rowData[code] + ",";
         }
@@ -431,9 +431,9 @@ function FormatCurrency(num) {
     num = Math.floor(num / 100).toString();
     if (cents < 10)
         cents = "0" + cents;
-    for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3) ; i++)
+    for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
         num = num.substring(0, num.length - (4 * i + 3)) + '' +
-                num.substring(num.length - (4 * i + 3));
+            num.substring(num.length - (4 * i + 3));
     return (((sign) ? '' : '-') + num + '.' + cents);
 }
 //保留两位小数    
@@ -804,7 +804,7 @@ function LoadrightMenu(element) {
                 showTimer = setTimeout(function () {
                     for (i = 0; i < oThis.parentNode.children.length; i++) {
                         oThis.parentNode.children[i].getElementsByTagName("ul")[0] &&
-						(oThis.parentNode.children[i].getElementsByTagName("ul")[0].style.display = "none");
+                            (oThis.parentNode.children[i].getElementsByTagName("ul")[0].style.display = "none");
                     }
                     oUl[0].style.display = "block";
                     oUl[0].style.top = oThis.offsetTop + "px";
@@ -831,7 +831,7 @@ function LoadrightMenu(element) {
             hideTimer = setTimeout(function () {
                 for (i = 0; i < oThis.parentNode.children.length; i++) {
                     oThis.parentNode.children[i].getElementsByTagName("ul")[0] &&
-					(oThis.parentNode.children[i].getElementsByTagName("ul")[0].style.display = "none");
+                        (oThis.parentNode.children[i].getElementsByTagName("ul")[0].style.display = "none");
                 }
             }, 300);
         };
@@ -874,16 +874,16 @@ jQuery.fn.customInput = function () {
             input.bind('updateState', function () {
                 input.is(':checked') ? label.addClass('checked') : label.removeClass('checked checkedHover checkedFocus');
             })
-			.trigger('updateState')
-			.click(function () {
-			    input.is(':checked') ? input.attr("checked", 'checked') : input.removeAttr("checked");
-			    $('input[name=' + $(this).attr('name') + ']').trigger('updateState');
-			})
-			.focus(function () {
-			    label.addClass('focus');
-			    if (input.is(':checked')) { $(this).addClass('checkedFocus'); }
-			})
-			.blur(function () { label.removeClass('focus checkedFocus'); });
+                .trigger('updateState')
+                .click(function () {
+                    input.is(':checked') ? input.attr("checked", 'checked') : input.removeAttr("checked");
+                    $('input[name=' + $(this).attr('name') + ']').trigger('updateState');
+                })
+                .focus(function () {
+                    label.addClass('focus');
+                    if (input.is(':checked')) { $(this).addClass('checkedFocus'); }
+                })
+                .blur(function () { label.removeClass('focus checkedFocus'); });
         }
     });
 };
@@ -1171,15 +1171,21 @@ function FieldExist(id, tablename, keyfield, Msg) {
 obj:表格对象ID
 fileName：导出Excel文件名
 */
-function SetDeriveExcel(obj, fileName) {
+function SetDeriveExcel(obj, fileName, TableHeader, JsonData1) {
+    var footerData;
+    if (JsonData1 != "") {
+        dataModel = JsonData1;
+    } else {
+        dataModel = $(obj).jqGrid("getRowData");
+    }
     var columnModel = $(obj).jqGrid('getGridParam', 'colModel');
-    var dataModel = $(obj).jqGrid("getRowData");
     var footerData = $(obj).jqGrid("footerData");
     var JsonData = {
         JsonColumn: JSON.stringify(columnModel),
         JsonData: JSON.stringify(dataModel),
         JsonFooter: JSON.stringify(footerData),
-        FileName: fileName
+        FileName: fileName,
+        TableHeader: TableHeader,
     }
     getAjax("/Utility/SetDeriveExcel", JsonData, function (data) { })
 }
