@@ -643,6 +643,7 @@ D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Web.WebPages.Razor.
 D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.csprojResolveAssemblyReference.cache
 D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.pdb
+<<<<<<< HEAD
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\Microsoft.SharePoint.Client.Runtime.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Web.Mvc.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\Microsoft.ReportViewer.Common.dll
@@ -657,3 +658,8 @@ D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\pt\Microsoft.SqlServer.Types.resou
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\ru\Microsoft.SqlServer.Types.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\Microsoft.SqlServer.Types.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hant\Microsoft.SqlServer.Types.resources.dll
+=======
+D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\Microsoft.Office.Client.Education.dll
+D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\Microsoft.SharePoint.Client.Runtime.dll
+D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Web.Mvc.resources.dll
+>>>>>>> 3f04aec3efbb928cd0bbbb79d9ed5338a784b9d7
