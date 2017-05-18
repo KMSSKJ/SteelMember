@@ -37,6 +37,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public OrderManagementIBLL OrderManagementCurrent { get; set; }
         [Inject]
         public ProjectWarehouseIBLL ProjectWarehouseCurrent { get; set; }
+
         public ActionResult Index()
         {
             return View();
@@ -48,43 +49,41 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <returns></returns>      
         public ActionResult TreeJson(string ItemId)
         {
-            
-            int _ItemId = Convert.ToInt32(ItemId);
-            List<RMC_Tree> list, list1, list2, list3;
-            list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemClass == 0).ToList();
-            list2 = TreeCurrent.Find(t => t.ItemID == _ItemId && t.DeleteFlag != 1 && t.ItemClass == 2).ToList();
-            list3 = TreeCurrent.Find(t => t.ItemID == _ItemId && t.DeleteFlag != 1 && t.ItemClass == 5).ToList();
-            list = list1.Concat(list2).Concat(list3).Distinct().ToList();
-
-            List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
-            foreach (RMC_Tree item in list)
-            {
-                TreeJsonEntity tree = new TreeJsonEntity();
-                bool hasChildren = false;
-                List<RMC_Tree> childnode = list.FindAll(t => t.ParentID == item.TreeID);
-                if (childnode.Count > 0)
+                //var userid = 1;
+                //List<DOC_R_Tree_Role> TRR = new List<DOC_R_Tree_Role>();
+                //var userrole = UserRoleRepository.Find(ur => ur.UserID == userid).SingleOrDefault();
+                //TRR = TreeRoleRepository.Find(tr => tr.RoleID == userrole.RoleID).ToList();
+                int _ItemId = Convert.ToInt32(ItemId);
+                List<RMC_Tree> list = TreeCurrent.Find(t => t.ItemID == _ItemId).ToList();
+                List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
+                foreach (RMC_Tree item in list)
                 {
-                    hasChildren = true;
+                    TreeJsonEntity tree = new TreeJsonEntity();
+                    bool hasChildren = false;
+                    List<RMC_Tree> childnode = list.FindAll(t => t.ParentID == item.TreeID);
+                    if (childnode.Count > 0)
+                    {
+                        hasChildren = true;
+                    }
+                    tree.id = item.TreeID.ToString();
+                    tree.text = item.TreeName;
+                    tree.value = item.TreeID.ToString();
+                    tree.isexpand = item.State == 1 ? true : false;
+                    tree.complete = true;
+                    tree.hasChildren = hasChildren;
+                    tree.parentId = item.ParentID.ToString();
+                    //tree.iconCls = item.Icon != null ? "/Content/Images/Icon16/" + item.Icon : item.Icon;
+                    TreeList.Add(tree);
                 }
-                tree.id = item.TreeID.ToString();
-                tree.text = item.TreeName;
-                tree.value = item.TreeID.ToString();
-                tree.isexpand = item.State == 1 ? true : false;
-                tree.complete = true;
-                tree.hasChildren = hasChildren;
-                tree.parentId = item.ParentID.ToString();
-                //tree.iconCls = item.Icon != null ? "/Content/Images/Icon16/" + item.Icon : item.Icon;
-                TreeList.Add(tree);
+                return Content(TreeList.TreeToJson());
             }
-            return Content(TreeList.TreeToJson());
-        }
 
-        #region 项目仓库管理
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult QueryPage()
+            #region 项目仓库管理
+            /// <summary>
+            /// 查询
+            /// </summary>
+            /// <returns></returns>
+            public ActionResult QueryPage()
         {
             return View();
         }

@@ -213,13 +213,14 @@ namespace LeaRun.WebApp.Controllers
         /// 导出Excel
         /// </summary>
         /// <param name="ExportField">要导出字段</param>
-        public void GetDeriveExcel(string ExportField)
+        public void GetDeriveExcel(string ExportField) 
         {
             string JsonColumn = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonColumn_DeriveExcel"));
             string JsonData = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonData_DeriveExcel"));
             string JsonFooter = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonFooter_DeriveExcel"));
             string fileName = GZipHelper.Uncompress(CookieHelper.GetCookie("FileName_DeriveExcel"));
-            DeriveExcel.JqGridToExcel(JsonColumn, JsonData, ExportField, fileName);
+            string TableHeader = GZipHelper.Uncompress(CookieHelper.GetCookie("TableHeader_DeriveExcel"));
+            DeriveExcel.JqGridToExcel(JsonColumn, JsonData, ExportField, fileName, TableHeader);
 
 
             //CookieHelper.DelCookie("JsonColumn_DeriveExcel");
@@ -234,12 +235,13 @@ namespace LeaRun.WebApp.Controllers
         /// <param name="JsonData">数据</param>
         /// <param name="JsonFooter">底部合计</param>
         [ValidateInput(false)]
-        public void SetDeriveExcel(string JsonColumn, string JsonData, string JsonFooter, string FileName)
+        public void SetDeriveExcel(string JsonColumn, string JsonData, string JsonFooter, string FileName,string TableHeader)
         {
             CookieHelper.WriteCookie("JsonColumn_DeriveExcel", GZipHelper.Compress(JsonColumn));
             CookieHelper.WriteCookie("JsonData_DeriveExcel", GZipHelper.Compress(JsonData));
             CookieHelper.WriteCookie("JsonFooter_DeriveExcel", GZipHelper.Compress(JsonFooter));
             CookieHelper.WriteCookie("FileName_DeriveExcel", GZipHelper.Compress(FileName));
+            CookieHelper.WriteCookie("TableHeader_DeriveExcel", GZipHelper.Compress(TableHeader));
         }
         #endregion
 

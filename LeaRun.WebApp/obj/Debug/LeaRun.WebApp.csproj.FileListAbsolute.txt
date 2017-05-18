@@ -582,7 +582,6 @@ D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\LeaRun.DataAccess.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\LeaRun.Entity.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\LeaRun.Repository.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\LeaRun.Utilities.dll
-D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\Microsoft.SqlServer.Types.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\Microsoft.Web.Infrastructure.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\Newtonsoft.Json.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\Ninject.dll
@@ -631,16 +630,6 @@ D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\System.Web.WebPages.Deployment.xml
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\System.Web.WebPages.Razor.xml
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\LeaRun.Cache.pdb
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\EntityFramework.resources.dll
-D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\de\Microsoft.SqlServer.Types.resources.dll
-D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\es\Microsoft.SqlServer.Types.resources.dll
-D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\fr\Microsoft.SqlServer.Types.resources.dll
-D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\it\Microsoft.SqlServer.Types.resources.dll
-D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\ja\Microsoft.SqlServer.Types.resources.dll
-D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\ko\Microsoft.SqlServer.Types.resources.dll
-D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\pt\Microsoft.SqlServer.Types.resources.dll
-D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\ru\Microsoft.SqlServer.Types.resources.dll
-D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\Microsoft.SqlServer.Types.resources.dll
-D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hant\Microsoft.SqlServer.Types.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Net.Http.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Net.Http.Formatting.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Net.Http.WebRequest.resources.dll
@@ -654,3 +643,6 @@ D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Web.WebPages.Razor.
 D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.csprojResolveAssemblyReference.cache
 D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.dll
 D:\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.pdb
+D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\Microsoft.Office.Client.Education.dll
+D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\Microsoft.SharePoint.Client.Runtime.dll
+D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Web.Mvc.resources.dll

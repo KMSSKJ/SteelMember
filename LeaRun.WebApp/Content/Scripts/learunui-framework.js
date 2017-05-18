@@ -84,7 +84,7 @@ function Loading(bool, text) {
 /* 
 请求Ajax 带返回值
 */
-function getAjax(url, postData, callBack) {
+function getAjax(url, postData,callBack) {
     $.ajax({
         type: 'post',
         dataType: "text",
@@ -1171,7 +1171,7 @@ function FieldExist(id, tablename, keyfield, Msg) {
 obj:表格对象ID
 fileName：导出Excel文件名
 */
-function SetDeriveExcel(obj, fileName) {
+function SetDeriveExcel(obj, fileName, TableHeader) {
     var columnModel = $(obj).jqGrid('getGridParam', 'colModel');
     var dataModel = $(obj).jqGrid("getRowData");
     var footerData = $(obj).jqGrid("footerData");
@@ -1179,7 +1179,8 @@ function SetDeriveExcel(obj, fileName) {
         JsonColumn: JSON.stringify(columnModel),
         JsonData: JSON.stringify(dataModel),
         JsonFooter: JSON.stringify(footerData),
-        FileName: fileName
+        FileName: fileName,
+        TableHeader: TableHeader,
     }
     getAjax("/Utility/SetDeriveExcel", JsonData, function (data) { })
 }
