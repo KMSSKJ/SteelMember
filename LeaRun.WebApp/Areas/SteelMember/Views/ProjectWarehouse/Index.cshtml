@@ -13,7 +13,7 @@
     //加载左边树
     //注意 FolderId 默认等于1 这样就可以加载一级目录下的子节点文件夹
     var TreeId ="";//1
-    var ItemId = 2;
+    var ItemId = 1;
     //ItemId = GetQuery("ItemID"), ProjectName = "", IsPublic = "1";
     function GetTree() {
         var itemtree = {
@@ -46,13 +46,14 @@
             colModel: [
                     { label: '主键', name: "ProjectWarehouseId", hidden: true },
                     { label: '构件名', name: "MemberName", index: "MemberName", width: 6 },
-                    { label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", width: 12 },
+                    //{ label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", width: 12 },
                     { label: '构件型号', name: "MemberModel", index: "MemberModel", width: 6 },
-                    { label: '库存量', name: "InStock", index: "InStock", width: 12 },
+                    { label: '库存数量', name: "InStock", index: "InStock", width: 12 },
                     { label: '损伤程度', name: "Damage", index: "Damage", width: 16 },
-                    { label: '类型', name: "Class", index: "Class", width: 16 },
+                    { label: '可调配量', name: "Damage", index: "Damage", width: 16 },
+                    { label: '入库量', name: "Class", index: "Class", width: 16 },
+                    { label: '出库量', name: "Class", index: "Class", width: 16 },
                     { label: '库管员', name: "Librarian", index: "Librarian", width: 16 },
-                    { label: '领用人', name: "Leader", index: "Leader", width: 16 },
                     { label: '备注', name: 'Description', index: 'Description', width: 12 },
             ],
             rowNum: 30,
