@@ -68,10 +68,8 @@
                         { label: '主键', name: "ProcessId", width: 1, sortable: false, hidden: true },
                         { label: '外键', name: "OrderId", width: 100, sortable: false, hidden: true },
                         { label: '制程名称', name: "ProcessName", width: 150, sortable: false },
-                        { label: '工艺要求', name: "ProcessRequirements", width: 80, sortable: false, align: 'center' },
-                        { label: '工艺完成量', name: "OperationTime", width: 80, sortable: false, align: 'center' },
                         {
-                            label: '制程状态', name: 'IsProcessStatus', width: 80, sortable: false, align: 'center',
+                            label: '制程任务状态', name: 'IsProcessStatus', width: 80, sortable: false, align: 'center',
                             formatter: function (cellvalue, value, row, index) {
                                 var IsProcessStatus = cellvalue;
                                 if (IsProcessStatus == "" || IsProcessStatus == null) {
@@ -83,6 +81,21 @@
                                 }
                             }
                         },
+                        {
+                            label: '制程完成状态', name: 'IsProcessStatus', width: 80, sortable: false, align: 'center',
+                            formatter: function (cellvalue, value, row, index) {
+                                var IsProcessStatus = cellvalue;
+                                if (IsProcessStatus == "" || IsProcessStatus == null) {
+                                    return "<img src='../../Content/Images/checknomark.gif'/>";
+                                } else if (IsProcessStatus == 1) {
+                                    return "<img src='../../Content/Images/checkokmark.gif'/>";
+                                } else if (IsProcessStatus == 2) {
+                                    return "<img src='../../Content/Images/checkerrormark.gif'/>";
+                                }
+                            }
+                        },
+                        { label: '工艺完成量', name: "OperationTime", width: 80, sortable: false, align: 'center' },
+                        { label: '工艺要求', name: "ProcessRequirements", width: 80, sortable: false, align: 'center' },
                         { label: '负责人', name: "ProcessMan", width: 80, sortable: false, align: 'center' },
                         { label: '图片', name: "ProcessManImage", width: 80, sortable: false, align: 'center' },
                         { label: '不合格量', name: "UnqualifiedNumber", width: 12, align: 'center', },
@@ -135,7 +148,7 @@
 
     //刷新表格 树
     function btn_reload() {
-      
+
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
@@ -200,12 +213,21 @@
         var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
         var MemberId = GetJqGridRowValue("#gridTable", "MemberId");
         var OrderId = GetJqGridRowValue("#gridTable", "OrderId");
-        var Prompt = "您确实要提交信息吗？";
-        var IsQqualified = 1;
-        if (IsDelData(KeyValue)) {
-            subConfirm('/SteelMember/MemberProduce/Processed', { MemberId: MemberId, OrderId: OrderId, KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
-            $("#gridTable").trigger("reloadGrid"); //重新载入
+        if (IsChecked(KeyValue)) {
+            var url = "/SteelMember/MemberProduce/NumberForm?KeyValue= " + KeyValue + "&MemberId=" + MemberId + "&OrderId="+OrderId;
+            openDialog(url, "NumberForm", "编辑信息", 600, 400, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
         }
+        //var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
+        //var MemberId = GetJqGridRowValue("#gridTable", "MemberId");
+        //var OrderId = GetJqGridRowValue("#gridTable", "OrderId");
+        //var Prompt = "您确实要提交信息吗？";
+        //var IsQqualified = 1;
+        //if (IsDelData(KeyValue)) {
+        //    subConfirm('/SteelMember/MemberProduce/Processed', { MemberId: MemberId, OrderId: OrderId, KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
+        //    $("#gridTable").trigger("reloadGrid"); //重新载入
+        //}
     };
 
     //质检提交
@@ -263,7 +285,7 @@
         //var KeyValue = GetJqGridRowValue("#gridTable", "ProcessId");
         var KeyValue = GetJqGridRowValue("#gridTable", "MemberId");
         var OrderId = GetJqGridRowValue("#gridTable", "OrderId")
-        var Data="";
+        var Data = "";
         if (IsDelData(KeyValue)) {
             AjaxJson("/SteelMember/MemberProduce/IsPrint", { KeyValue: KeyValue, OrderId: OrderId }, function (data) {
                 Data = data;

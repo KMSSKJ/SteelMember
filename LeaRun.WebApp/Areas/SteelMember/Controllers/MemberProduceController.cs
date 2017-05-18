@@ -63,6 +63,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             return View();
         }
+
         /// <summary>
         /// 【项目管理】返回树JONS
         /// </summary>
@@ -999,6 +1000,11 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
         #region 构件厂生产制程管理
         public ActionResult ProcessIndex()
+        {
+            return View();
+        }
+
+        public ActionResult NumberForm()
         {
             return View();
         }

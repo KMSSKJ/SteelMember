@@ -9054,7 +9054,6 @@
     <Content Include="Areas\SteelMember\Views\File\PrintPage.cshtml" />
     <Content Include="Areas\SteelMember\Views\File\QueryPage.cshtml" />
     <Content Include="Areas\SteelMember\Views\File\UpLoadFile.cshtml" />
-    <Content Include="Areas\SteelMember\Views\MemberProduce\Form.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\Index.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\OrderForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\PrintPage.cshtml" />
@@ -9093,6 +9092,7 @@
     <Content Include="Areas\SteelMember\Views\MemberSettlement\QueryPage.cshtml" />
     <Content Include="Areas\CommonModule\Views\User\PersonCenter.cshtml" />
     <Content Include="Areas\SteelMember\Views\CollarManagement\Index.cshtml" />
+    <Content Include="Areas\SteelMember\Views\MemberProduce\NumberForm.cshtml" />
     <None Include="Properties\PublishProfiles\LR-FDMS.pubxml" />
     <Content Include="Views\Home\SkinIndex.cshtml" />
     <Content Include="Views\Login\Default.cshtml" />
