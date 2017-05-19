@@ -143,19 +143,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="RMC_MemberProcess">
-      <EntityTypeMapping TypeName="kskfModel.RMC_MemberProcess">
-        <MappingFragment StoreEntitySet="RMC_MemberProcess">
-          <ScalarProperty Name="SortCode" ColumnName="SortCode" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="ProcessRequirements" ColumnName="ProcessRequirements" />
-          <ScalarProperty Name="OperationTime" ColumnName="OperationTime" />
-          <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
-          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-          <ScalarProperty Name="MemberProcessId" ColumnName="MemberProcessId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="RMC_MemberUnit">
       <EntityTypeMapping TypeName="kskfModel.RMC_MemberUnit">
         <MappingFragment StoreEntitySet="RMC_MemberUnit">
@@ -380,6 +367,21 @@
           <ScalarProperty Name="OrderId" ColumnName="OrderId" />
           <ScalarProperty Name="MemberId" ColumnName="MemberId" />
           <ScalarProperty Name="ProjectWarehouseId" ColumnName="ProjectWarehouseId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RMC_MemberProcess">
+      <EntityTypeMapping TypeName="kskfModel.RMC_MemberProcess">
+        <MappingFragment StoreEntitySet="RMC_MemberProcess">
+          <ScalarProperty Name="SortCode" ColumnName="SortCode" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ProcessRequirements" ColumnName="ProcessRequirements" />
+          <ScalarProperty Name="OperationTime" ColumnName="OperationTime" />
+          <ScalarProperty Name="ProcessManImge" ColumnName="ProcessManImge" />
+          <ScalarProperty Name="ProcessMan" ColumnName="ProcessMan" />
+          <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="MemberProcessId" ColumnName="MemberProcessId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

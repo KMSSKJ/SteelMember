@@ -91,6 +91,7 @@ namespace LeaRun.Business
             }
             return Repository().FindTablePageBySql(strSql.ToString(), parameter.ToArray(), ref jqgridparam);
         }
+
         /// <summary>
         /// 判断是否连接服务器
         /// </summary>

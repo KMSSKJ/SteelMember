@@ -12,6 +12,7 @@
         $(function () {
             document.getElementById("MemberId").value = MemberID;
             InitControl();
+            GetMemberName();
         })
         //得到一个对象实体
         function InitControl() {
@@ -22,6 +23,40 @@
             });
             }
         }
+
+        //获取用户
+        function GetMemberName() {
+            $.ajax({
+                url: '/SteelMember/File/GetUserName',
+                type: 'post',
+                datatype: 'Json',
+                data: {},
+                success: function (data) {
+                    if (data) {
+                        var projectname_sel = [];
+                        // projectname_sel.push('<option value="" selected>请选择</option>')
+                        for (var i = 0, len = data.length; i < len; i++) {
+                            var projectname = data[i];
+                            projectname_sel.push('<option value="' + projectname.RealName+ '">' + projectname.RealName + '</option>')
+                        }
+                        $("#ProcessMan").html(projectname_sel.join(' '));
+                        $('#ProcessMan')[0].selectedIndex = 0;//select下拉框的第二个元素为当前选中值
+                        var checkValue = $("#ProcessMan").val();  //获取Select选择的Value
+                        $("#ProcessMan").change(function () {//code...});   //为Select添加事件，当选择其中一项时触发
+                            var checkValue = $("#ProcessMan").val();  //获取Select选择的Value
+                            //var checkText = $("#MemberId").find("option:selected").text();  //获取Select选择的Text
+                            //var checkIndex = $("#MemberId ").get(0).selectedIndex;  //获取Select选择的索引值
+                            //var maxIndex = $("#MemberId option:last").attr("index");  //获取Select最大的索引值
+                        })
+
+                    } 
+                },
+                error: function () {
+                    alert('查询异常');
+                }
+            });
+        };
+
 
         //保存事件
         function AcceptClick() {
@@ -80,10 +115,10 @@
             </tr>
             <tr>
                 <th class="formTitle">
-                    作业时间：
+                    负责人：
                 </th>
                 <td class="formValue">
-                    <input id="OperationTime" type="text" class="txt" value="时间为小时" onfocus="if (this.value == '时间为小时') this.value = ''" />
+                    <select id="ProcessMan" name="ProcessMan" style="width:50%"></select>
                 </td>
             </tr>
             <tr>

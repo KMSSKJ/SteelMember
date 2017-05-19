@@ -17,6 +17,8 @@ namespace LeaRun.Entity.SteelMember
         public int MemberProcessId { get; set; }
         public Nullable<int> MemberId { get; set; }
         public string ProcessName { get; set; }
+        public string ProcessMan { get; set; }
+        public string ProcessManImge { get; set; }
         public string OperationTime { get; set; }
         public string ProcessRequirements { get; set; }
         public string Description { get; set; }

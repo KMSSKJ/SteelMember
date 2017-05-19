@@ -10,7 +10,6 @@
         <EntityTypeShape EntityType="kskfModel.RMC_FactoryWarehouse" Width="1.5" PointX="4.75" PointY="0.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_MemberLibrary" Width="1.5" PointX="4.75" PointY="3.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_MemberMaterial" Width="1.5" PointX="6.75" PointY="0.75" />
-        <EntityTypeShape EntityType="kskfModel.RMC_MemberProcess" Width="1.5" PointX="6.75" PointY="3.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_MemberUnit" Width="1.5" PointX="6.75" PointY="7.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_OrderMember" Width="1.5" PointX="8.75" PointY="0.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_ProjectDemand" Width="1.5" PointX="8.75" PointY="4.75" />
@@ -21,6 +20,7 @@
         <EntityTypeShape EntityType="kskfModel.RMC_Tree" Width="1.5" PointX="12.75" PointY="10.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_ProcessManagement" Width="1.5" PointX="0.75" PointY="8.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_ProjectWarehouse" Width="1.5" PointX="7.375" PointY="11.75" />
+        <EntityTypeShape EntityType="kskfModel.RMC_MemberProcess" Width="1.5" PointX="0.75" PointY="13.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -144,6 +144,8 @@
     <Property Name="MemberProcessId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="MemberId" Type="int" />
     <Property Name="ProcessName" Type="nvarchar" MaxLength="15" />
+    <Property Name="ProcessMan" Type="nvarchar" MaxLength="15" />
+    <Property Name="ProcessManImge" Type="nvarchar" MaxLength="100" />
     <Property Name="OperationTime" Type="nvarchar" MaxLength="5" />
     <Property Name="ProcessRequirements" Type="nvarchar" MaxLength="200" />
     <Property Name="Description" Type="nvarchar" MaxLength="200" />
@@ -290,6 +292,7 @@
     <Property Name="MemberId" Type="int" />
     <Property Name="OrderId" Type="int" />
     <Property Name="DeleteFlag" Type="int" />
+    <Property Name="MemberTreeId" Type="int" />
     <Property Name="TreeId" Type="int" />
     <Property Name="InStock" Type="int" />
     <Property Name="Damage" Type="int" />
@@ -299,7 +302,6 @@
     <Property Name="Librarian" Type="nvarchar" MaxLength="50" />
     <Property Name="Leader" Type="nvarchar" MaxLength="50" />
     <Property Name="Description" Type="nvarchar" MaxLength="200" />
-    <Property Name="MemberTreeId" Type="int" />
   </EntityType>
   <EntityType Name="RMC_RawMaterialLibrary">
     <Key>

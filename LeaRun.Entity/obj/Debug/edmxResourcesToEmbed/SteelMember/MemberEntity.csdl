@@ -6,7 +6,6 @@
     <EntitySet Name="RMC_FactoryWarehouse" EntityType="kskfModel.RMC_FactoryWarehouse" />
     <EntitySet Name="RMC_MemberLibrary" EntityType="kskfModel.RMC_MemberLibrary" />
     <EntitySet Name="RMC_MemberMaterial" EntityType="kskfModel.RMC_MemberMaterial" />
-    <EntitySet Name="RMC_MemberProcess" EntityType="kskfModel.RMC_MemberProcess" />
     <EntitySet Name="RMC_MemberUnit" EntityType="kskfModel.RMC_MemberUnit" />
     <EntitySet Name="RMC_OrderMember" EntityType="kskfModel.RMC_OrderMember" />
     <EntitySet Name="RMC_ProjectDemand" EntityType="kskfModel.RMC_ProjectDemand" />
@@ -17,6 +16,7 @@
     <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
     <EntitySet Name="RMC_ProcessManagement" EntityType="kskfModel.RMC_ProcessManagement" />
     <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
+    <EntitySet Name="RMC_MemberProcess" EntityType="kskfModel.RMC_MemberProcess" />
   </EntityContainer>
   <EntityType Name="RMC_AnalysisRawMaterial">
     <Key>
@@ -154,18 +154,6 @@
     <Property Name="RawMaterialClassId" Type="Int32" />
     <Property Name="MaterialNumber" Type="Int32" />
     <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="RMC_MemberProcess">
-    <Key>
-      <PropertyRef Name="MemberProcessId" />
-    </Key>
-    <Property Name="MemberProcessId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="MemberId" Type="Int32" />
-    <Property Name="ProcessName" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="OperationTime" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-    <Property Name="ProcessRequirements" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="SortCode" Type="Int32" />
   </EntityType>
   <EntityType Name="RMC_MemberUnit">
     <Key>
@@ -383,5 +371,19 @@
     <Property Name="Leader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="MemberTreeId" Type="Int32" />
+  </EntityType>
+  <EntityType Name="RMC_MemberProcess">
+    <Key>
+      <PropertyRef Name="MemberProcessId" />
+    </Key>
+    <Property Name="MemberProcessId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MemberId" Type="Int32" />
+    <Property Name="ProcessName" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="ProcessMan" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="ProcessManImge" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="OperationTime" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="ProcessRequirements" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="SortCode" Type="Int32" />
   </EntityType>
 </Schema>

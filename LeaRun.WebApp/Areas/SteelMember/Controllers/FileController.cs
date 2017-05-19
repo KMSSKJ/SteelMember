@@ -24,6 +24,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
     using Utilities;
     using Models;
     using WebApp.Controllers;
+    using LeaRun.Repository;
+    using LeaRun.Entity;
 
     public class FileController : BaseController
     {
@@ -2062,7 +2064,16 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
         }
 
+        public readonly RepositoryFactory<Base_User> repositoryfactory = new RepositoryFactory<Base_User>();
+        public ActionResult GetUserName()
+        {
 
+           List<Base_User> entity = repositoryfactory.Repository().FindListTop(25);
+            //string JsonData = entity.ToJson();
+            ////自定义
+            //JsonData = JsonData.Insert(1, Sys_FormAttributeBll.Instance.GetBuildForm(KeyValue));
+            return Json(entity);
+        }
         //表单
         public ActionResult MemberProcessForm()
         {
@@ -2102,6 +2113,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.ProcessName = entity.ProcessName;
                     Oldentity.ProcessRequirements = entity.ProcessRequirements;
                     Oldentity.SortCode = entity.SortCode;
+                    Oldentity.ProcessMan = entity.ProcessMan;
                     Oldentity.Description = entity.Description;
                     MemberProcessCurrent.Modified(Oldentity);
                     IsOk = 1;//更新实体对象

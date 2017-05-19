@@ -149,6 +149,8 @@
           <Property Name="MemberProcessId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MemberId" Type="int" />
           <Property Name="ProcessName" Type="nvarchar" MaxLength="15" />
+          <Property Name="ProcessMan" Type="nvarchar" MaxLength="15" />
+          <Property Name="ProcessManImge" Type="nvarchar" MaxLength="100" />
           <Property Name="OperationTime" Type="nvarchar" MaxLength="5" />
           <Property Name="ProcessRequirements" Type="nvarchar" MaxLength="200" />
           <Property Name="Description" Type="nvarchar" MaxLength="200" />
@@ -295,6 +297,7 @@
           <Property Name="MemberId" Type="int" />
           <Property Name="OrderId" Type="int" />
           <Property Name="DeleteFlag" Type="int" />
+          <Property Name="MemberTreeId" Type="int" />
           <Property Name="TreeId" Type="int" />
           <Property Name="InStock" Type="int" />
           <Property Name="Damage" Type="int" />
@@ -304,7 +307,6 @@
           <Property Name="Librarian" Type="nvarchar" MaxLength="50" />
           <Property Name="Leader" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar" MaxLength="200" />
-          <Property Name="MemberTreeId" Type="int" />
         </EntityType>
         <EntityType Name="RMC_RawMaterialLibrary">
           <Key>
@@ -399,7 +401,6 @@
           <EntitySet Name="RMC_FactoryWarehouse" EntityType="kskfModel.RMC_FactoryWarehouse" />
           <EntitySet Name="RMC_MemberLibrary" EntityType="kskfModel.RMC_MemberLibrary" />
           <EntitySet Name="RMC_MemberMaterial" EntityType="kskfModel.RMC_MemberMaterial" />
-          <EntitySet Name="RMC_MemberProcess" EntityType="kskfModel.RMC_MemberProcess" />
           <EntitySet Name="RMC_MemberUnit" EntityType="kskfModel.RMC_MemberUnit" />
           <EntitySet Name="RMC_OrderMember" EntityType="kskfModel.RMC_OrderMember" />
           <EntitySet Name="RMC_ProjectDemand" EntityType="kskfModel.RMC_ProjectDemand" />
@@ -410,6 +411,7 @@
           <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
           <EntitySet Name="RMC_ProcessManagement" EntityType="kskfModel.RMC_ProcessManagement" />
           <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
+          <EntitySet Name="RMC_MemberProcess" EntityType="kskfModel.RMC_MemberProcess" />
         </EntityContainer>
         <EntityType Name="RMC_AnalysisRawMaterial">
           <Key>
@@ -547,18 +549,6 @@
           <Property Name="RawMaterialClassId" Type="Int32" />
           <Property Name="MaterialNumber" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="RMC_MemberProcess">
-          <Key>
-            <PropertyRef Name="MemberProcessId" />
-          </Key>
-          <Property Name="MemberProcessId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MemberId" Type="Int32" />
-          <Property Name="ProcessName" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="OperationTime" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="ProcessRequirements" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="SortCode" Type="Int32" />
         </EntityType>
         <EntityType Name="RMC_MemberUnit">
           <Key>
@@ -777,6 +767,20 @@
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="MemberTreeId" Type="Int32" />
         </EntityType>
+        <EntityType Name="RMC_MemberProcess">
+          <Key>
+            <PropertyRef Name="MemberProcessId" />
+          </Key>
+          <Property Name="MemberProcessId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MemberId" Type="Int32" />
+          <Property Name="ProcessName" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessMan" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessManImge" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OperationTime" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessRequirements" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SortCode" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -922,19 +926,6 @@
                 <ScalarProperty Name="MemberId" ColumnName="MemberId" />
                 <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
                 <ScalarProperty Name="MemberMaterialId" ColumnName="MemberMaterialId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RMC_MemberProcess">
-            <EntityTypeMapping TypeName="kskfModel.RMC_MemberProcess">
-              <MappingFragment StoreEntitySet="RMC_MemberProcess">
-                <ScalarProperty Name="SortCode" ColumnName="SortCode" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ProcessRequirements" ColumnName="ProcessRequirements" />
-                <ScalarProperty Name="OperationTime" ColumnName="OperationTime" />
-                <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
-                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-                <ScalarProperty Name="MemberProcessId" ColumnName="MemberProcessId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1162,6 +1153,21 @@
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="MemberId" ColumnName="MemberId" />
                 <ScalarProperty Name="ProjectWarehouseId" ColumnName="ProjectWarehouseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMC_MemberProcess">
+            <EntityTypeMapping TypeName="kskfModel.RMC_MemberProcess">
+              <MappingFragment StoreEntitySet="RMC_MemberProcess">
+                <ScalarProperty Name="SortCode" ColumnName="SortCode" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ProcessRequirements" ColumnName="ProcessRequirements" />
+                <ScalarProperty Name="OperationTime" ColumnName="OperationTime" />
+                <ScalarProperty Name="ProcessManImge" ColumnName="ProcessManImge" />
+                <ScalarProperty Name="ProcessMan" ColumnName="ProcessMan" />
+                <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="MemberProcessId" ColumnName="MemberProcessId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

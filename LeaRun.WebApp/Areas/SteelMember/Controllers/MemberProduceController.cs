@@ -1125,18 +1125,20 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 for (int i = 0; i < Proceess.Count(); i++)
                 {
                     int _MemberProcessId = Convert.ToInt32(Proceess[i].MemberProcessId);
-                    ProcessManagementModel ProcessManagementModel = new ProcessManagementModel();
+                    ProcessManagementModel ProcessManagement = new ProcessManagementModel();
                     var _MemberProcess = MemberProcessCurrent.Find(f => f.MemberProcessId == _MemberProcessId).SingleOrDefault();
-                    ProcessManagementModel.ProcessId = Proceess[i].ProcessId;
-                    ProcessManagementModel.ProcessName = _MemberProcess.ProcessName;
-                    ProcessManagementModel.ProcessRequirements = _MemberProcess.ProcessRequirements;
-                    ProcessManagementModel.SortCode = _MemberProcess.SortCode;
-                    ProcessManagementModel.ProcessMan = Proceess[i].ProcessMan;
-                    ProcessManagementModel.ProcessManImge = Proceess[i].ProcessManImge;
-                    ProcessManagementModel.Description = Proceess[i].Description;
-                    ProcessManagementModel.IsProcessTask = Proceess[i].IsProcessTask;
-                    ProcessManagementModel.IsProcessStatus = Proceess[i].IsProcessStatus;
-                    ProcessManagementModelList.Add(ProcessManagementModel);
+                    ProcessManagement.ProcessId = Proceess[i].ProcessId;
+                    ProcessManagement.ProcessName = _MemberProcess.ProcessName;
+                    ProcessManagement.ProcessRequirements = _MemberProcess.ProcessRequirements;
+                    ProcessManagement.SortCode = _MemberProcess.SortCode;
+                    ProcessManagement.ProcessMan = _MemberProcess.ProcessMan;
+                    ProcessManagement.ProcessManImge = _MemberProcess.ProcessManImge;
+                    ProcessManagement.ProcessNumbered = Proceess[i].ProcessNumbered;
+                    ProcessManagement.UnqualifiedNumber = Proceess[i].UnqualifiedNumber;
+                    ProcessManagement.Description = Proceess[i].Description;
+                    ProcessManagement.IsProcessTask = Proceess[i].IsProcessTask;
+                    ProcessManagement.IsProcessStatus = Proceess[i].IsProcessStatus;
+                    ProcessManagementModelList.Add(ProcessManagement);
                 }
 
 
@@ -1285,7 +1287,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// </summary>
         /// <param name="KeyValue"></param>
         /// <returns></returns>
-        public ActionResult Processed(RMC_ProcessManagement Process, string MemberId, string OrderId, string KeyValue, string IsQqualified)
+        public ActionResult Processed(RMC_ProcessManagement Process, string KeyValue, string MemberId, string OrderId, string IsQqualified)
         {
             try
             {
@@ -1306,7 +1308,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                         Oldentity.UnqualifiedNumber = Process.UnqualifiedNumber;
                         Oldentity.ProcessNumbered = Process.ProcessNumbered;
-                        var OrderMember = OrderMemberCurrent.Find(f=>f.OrderId == _OrderId).SingleOrDefault();
+                        var OrderMember = OrderMemberCurrent.Find(f=>f.OrderId == _OrderId&&f.MemberId== _MemberId).SingleOrDefault();
                         if(OrderMember.Qty >= Oldentity.ProcessNumbered)
                         {
                             Oldentity.IsProcessStatus = Convert.ToInt32(IsQqualified);

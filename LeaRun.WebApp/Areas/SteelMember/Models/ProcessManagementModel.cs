@@ -15,6 +15,8 @@ namespace SteelMember.Models
         public int? IsProcessStatus { get; set; }
         public string ProcessMan { get; set; }
         public string ProcessManImge { get; set; }
+        public int? ProcessNumbered { get; set; }
+        public int? UnqualifiedNumber { get; set; }
         public int? SortCode { get; set; }
         public int? MemberId { get; set; }
         public string MemberNumbering { get; set; }//Nullable<long>MemberNumbering

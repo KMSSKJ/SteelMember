@@ -31,6 +31,8 @@
         }).trigger('reloadGrid');
     };
 
+    var MemberId;
+    var OrderId;
     //加载表格
     function GetGrid() {
         var SelectRowIndx;
@@ -57,8 +59,8 @@
             gridview: true,
             subGrid: true,
             subGridRowExpanded: function (subgrid_id, row_id) {
-                var MemberId = GetJqGridValue("#gridTable", row_id, "MemberId");
-                var OrderId = GetJqGridValue("#gridTable", row_id, "OrderId");
+                 MemberId = GetJqGridValue("#gridTable", row_id, "MemberId");
+                 OrderId = GetJqGridValue("#gridTable", row_id, "OrderId");
                 subgrid_table_id = subgrid_id + "_t";
                 $("#" + subgrid_id).html("<table id='" + subgrid_table_id + "'></table>");
                 $("#" + subgrid_table_id).jqGrid({
@@ -97,8 +99,8 @@
                         { label: '工艺完成量', name: "ProcessNumbered", width: 80, sortable: false, align: 'center' },
                         { label: '工艺要求', name: "ProcessRequirements", width: 80, sortable: false, align: 'center' },
                         { label: '负责人', name: "ProcessMan", width: 80, sortable: false, align: 'center' },
-                        { label: '图片', name: "ProcessManImage", width: 80, sortable: false, align: 'center' },
-                        { label: '不合格量', name: "UnqualifiedNumber", width: 12, align: 'center', },
+                        //{ label: '图片', name: "ProcessManImage", width: 80, sortable: false, align: 'center' },
+                        { label: '不合格量', name: "UnqualifiedNumber", width: 80, align: 'center', },
                         { label: '说明', name: 'Description', width: 200, sortable: false }
                     ],
                     width: "1227",
@@ -166,16 +168,13 @@
     }
     //编辑信息(得到实体)
     function btn_edit() {
-        if (IsChecked(subgrid_table_id)) {
-            var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
-            var ItemID = 1;
-            if (IsChecked(KeyValue)) {
-                var url = "/SteelMember/MemberProduce/ProcessForm?KeyValue= " + KeyValue;
-                openDialog(url, "OrderForm", "编辑信息", 600, 400, function (iframe) {
-                    top.frames[iframe].AcceptClick();
-                });
-            }
-            $("#gridTable").trigger("reloadGrid"); //重新载入
+        //var MemberId = GetJqGridRowValue("#gridTable", "MemberId");
+        //var OrderId = GetJqGridRowValue("#gridTable", "OrderId");
+        if (IsChecked(MemberId)) {
+            var url = "/SteelMember/File/MemberProcessIndex?MemberID= " + MemberId + "&OrderId=" + OrderId;
+            Dialog(url, "MemberProcessIndex", "构件制程", 900, 435, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
         }
     }
 
@@ -247,7 +246,7 @@
                         } else {
 
                             var url = "/SteelMember/MemberProduce/NumberForm?KeyValue= " + KeyValue + "&MemberId=" + MemberId + "&OrderId=" + OrderId + "&IsQqualified=" + IsQqualified;
-                            openDialog(url, "NumberForm", "编辑信息", 360, 260, function (iframe) {
+                            openDialog(url, "NumberForm", "信息填报", 360, 260, function (iframe) {
                                 top.frames[iframe].AcceptClick();
                             });
 

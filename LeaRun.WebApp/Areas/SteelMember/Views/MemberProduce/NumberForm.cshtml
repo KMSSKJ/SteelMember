@@ -17,7 +17,7 @@
             Loading(true, "正在提交数据...");
             window.setTimeout(function () {
                 var postData = GetWebControls("#form2");
-                AjaxJson("/SteelMember/MemberProduce/Processed?KeyValue=" + KeyValue + "&MemberId=" + MemberId + "&OrderId=" + OrderId + "&IsQqualified" + IsQqualified, postData, function (data) {
+                AjaxJson("/SteelMember/MemberProduce/Processed?KeyValue=" + KeyValue + "&MemberId=" + MemberId + "&OrderId=" + OrderId + "&IsQqualified=" + IsQqualified, postData, function (data) {
                     tipDialog(data.Message, 3, data.Code);
                     top.frames[tabiframeId()].windowload();
                     closeDialog();
