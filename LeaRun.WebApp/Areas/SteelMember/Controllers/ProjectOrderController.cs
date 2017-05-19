@@ -734,6 +734,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         RMC_ProjectWarehouse projectwarehouse = new RMC_ProjectWarehouse();
                         projectwarehouse.OrderId = OrderId;
                         projectwarehouse.MemberId = item.MemberId;
+                        var Member = MemberLibraryCurrent.Find(f => f.MemberID == item.MemberId).SingleOrDefault();
+                        projectwarehouse.MemberTreeId = Member.TreeID;
                         projectwarehouse.TreeId = file.TreeId;
                         projectwarehouse.IsShiped = 0;
                         ProjectWarehouseCurrent.Add(projectwarehouse);

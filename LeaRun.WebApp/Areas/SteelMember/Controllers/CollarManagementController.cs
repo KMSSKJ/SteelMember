@@ -27,7 +27,9 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public MemberMaterialIBLL MemberMaterialCurrent { get; set; }
         [Inject]
         public RawMaterialIBLL RawMaterialCurrent { get; set; }
-        
+        [Inject]
+        public FileIBLL MemberLibraryCurrent { get; set; }
+
         public ActionResult Index()
         {
             return View();
@@ -115,9 +117,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     projectdemand.OrderNumbering = item.OrderNumbering;
                     var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == item.OrderId).ToList();
                     int Number=0;
+                    int? Numbers = 0;//
+                    string Use = "";
+                    int MemberId = 0;
                     for (int i = 0; i < OrderMember.Count(); i++)
                     {
-                        int MemberId =Convert.ToInt32(OrderMember[i].MemberId);
+                        Numbers = 5;//
+                        Use = "一号隧道";
+                        MemberId =Convert.ToInt32(OrderMember[i].MemberId);
                         var MemberMaterial = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();
                         for (int i0 = 0; i0 < MemberMaterial.Count(); i0++)
                         {
@@ -126,7 +133,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                             Number += Convert.ToInt32(MemberMaterial[i0].MaterialNumber) * Convert.ToInt32(Material.UnitPrice) * Convert.ToInt32(OrderMember[i].Qty);
                         }
                     }
-
+                    var Member = MemberLibraryCurrent.Find(f => f.MemberID == MemberId).SingleOrDefault();//
+                    projectdemand.MemberName = Member.MemberName;//
+                    projectdemand.MemberModel = Member.MemberModel;//
+                    projectdemand.LeaderNumber = Numbers;
+                    projectdemand.Use = Use;
+                    projectdemand.LeaderTime = item.CreateTime;
                     projectdemand.CostBudget = Number.ToString();
                     projectdemand.ReviewMan =item.ReviewMan;
                     projectdemand.CreateTime = item.CreateTime;

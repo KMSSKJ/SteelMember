@@ -18,7 +18,11 @@ namespace SteelMember.Models
         public string MemberName{ get; set; }
         public string MemberCompany { get; set; }
         public Nullable<int> MemberNumber { get; set; }
+        public Nullable<int> LeaderNumber { get; set; }
         public Nullable<int> OrderNumber { get; set; }
+        public string Use { get; set; }
+        public DateTime? LeaderTime { get; set; }
+        public string LeaderMan { get; set; }
         public string MemberModel { get; set; }
         public string MemberNumbering { get; set; }//Nullable<long>
         public string OrderNumbering { get; set; }

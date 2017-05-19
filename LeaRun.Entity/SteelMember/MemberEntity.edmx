@@ -304,6 +304,7 @@
           <Property Name="Librarian" Type="nvarchar" MaxLength="50" />
           <Property Name="Leader" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="MemberTreeId" Type="int" />
         </EntityType>
         <EntityType Name="RMC_RawMaterialLibrary">
           <Key>
@@ -404,11 +405,11 @@
           <EntitySet Name="RMC_ProjectDemand" EntityType="kskfModel.RMC_ProjectDemand" />
           <EntitySet Name="RMC_ProjectInfo" EntityType="kskfModel.RMC_ProjectInfo" />
           <EntitySet Name="RMC_ProjectOrder" EntityType="kskfModel.RMC_ProjectOrder" />
-          <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
           <EntitySet Name="RMC_RawMaterialLibrary" EntityType="kskfModel.RMC_RawMaterialLibrary" />
           <EntitySet Name="RMC_ShipManagement" EntityType="kskfModel.RMC_ShipManagement" />
           <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
           <EntitySet Name="RMC_ProcessManagement" EntityType="kskfModel.RMC_ProcessManagement" />
+          <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
         </EntityContainer>
         <EntityType Name="RMC_AnalysisRawMaterial">
           <Key>
@@ -673,24 +674,6 @@
           <Property Name="Priority" Type="Int32" />
           <Property Name="EngineeringPosition" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="RMC_ProjectWarehouse">
-          <Key>
-            <PropertyRef Name="ProjectWarehouseId" />
-          </Key>
-          <Property Name="ProjectWarehouseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MemberId" Type="Int32" />
-          <Property Name="OrderId" Type="Int32" />
-          <Property Name="DeleteFlag" Type="Int32" />
-          <Property Name="TreeId" Type="Int32" />
-          <Property Name="InStock" Type="Int32" />
-          <Property Name="Damage" Type="Int32" />
-          <Property Name="Class" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsShiped" Type="Int32" />
-          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
-          <Property Name="Librarian" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Leader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="RMC_RawMaterialLibrary">
           <Key>
             <PropertyRef Name="RawMaterialId" />
@@ -774,6 +757,25 @@
           <Property Name="ProcessManImge" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="ProcessName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ProcessNumbered" Type="Int32" />
+        </EntityType>
+        <EntityType Name="RMC_ProjectWarehouse">
+          <Key>
+            <PropertyRef Name="ProjectWarehouseId" />
+          </Key>
+          <Property Name="ProjectWarehouseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MemberId" Type="Int32" />
+          <Property Name="OrderId" Type="Int32" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="TreeId" Type="Int32" />
+          <Property Name="InStock" Type="Int32" />
+          <Property Name="Damage" Type="Int32" />
+          <Property Name="Class" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsShiped" Type="Int32" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="Librarian" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Leader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="MemberTreeId" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1055,25 +1057,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RMC_ProjectWarehouse">
-            <EntityTypeMapping TypeName="kskfModel.RMC_ProjectWarehouse">
-              <MappingFragment StoreEntitySet="RMC_ProjectWarehouse">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Leader" ColumnName="Leader" />
-                <ScalarProperty Name="Librarian" ColumnName="Librarian" />
-                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
-                <ScalarProperty Name="IsShiped" ColumnName="IsShiped" />
-                <ScalarProperty Name="Class" ColumnName="Class" />
-                <ScalarProperty Name="Damage" ColumnName="Damage" />
-                <ScalarProperty Name="InStock" ColumnName="InStock" />
-                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-                <ScalarProperty Name="ProjectWarehouseId" ColumnName="ProjectWarehouseId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="RMC_RawMaterialLibrary">
             <EntityTypeMapping TypeName="kskfModel.RMC_RawMaterialLibrary">
               <MappingFragment StoreEntitySet="RMC_RawMaterialLibrary">
@@ -1159,6 +1142,26 @@
                 <ScalarProperty Name="MemberId" ColumnName="MemberId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMC_ProjectWarehouse">
+            <EntityTypeMapping TypeName="kskfModel.RMC_ProjectWarehouse">
+              <MappingFragment StoreEntitySet="RMC_ProjectWarehouse">
+                <ScalarProperty Name="MemberTreeId" ColumnName="MemberTreeId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Leader" ColumnName="Leader" />
+                <ScalarProperty Name="Librarian" ColumnName="Librarian" />
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="IsShiped" ColumnName="IsShiped" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="Damage" ColumnName="Damage" />
+                <ScalarProperty Name="InStock" ColumnName="InStock" />
+                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="ProjectWarehouseId" ColumnName="ProjectWarehouseId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

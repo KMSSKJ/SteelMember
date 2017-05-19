@@ -27,5 +27,6 @@ namespace LeaRun.Entity.SteelMember
         public string Librarian { get; set; }
         public string Leader { get; set; }
         public string Description { get; set; }
+        public Nullable<int> MemberTreeId { get; set; }
     }
 }

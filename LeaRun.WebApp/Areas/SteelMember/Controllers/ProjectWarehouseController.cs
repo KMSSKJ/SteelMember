@@ -117,9 +117,9 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 Expression<Func<RMC_ProjectWarehouse, bool>> func = ExpressionExtensions.True<RMC_ProjectWarehouse>();
                 func = f => f.DeleteFlag != 1&&f.IsShiped==1;
                 #region 查询条件拼接
-                if (model.TreeID != 0 && model.MemberModel != "")
+                if (model.TreeID != 0 && model.TreeID.ToString() != "")
                 {
-                    func = func.And(f => f.TreeId == model.TreeID);
+                    func = func.And(f => f.MemberTreeId == model.TreeID);
                 }
                 if (model.MemberModel != null && model.MemberModel != "")
                 {

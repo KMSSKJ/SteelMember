@@ -275,25 +275,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="RMC_ProjectWarehouse">
-      <EntityTypeMapping TypeName="kskfModel.RMC_ProjectWarehouse">
-        <MappingFragment StoreEntitySet="RMC_ProjectWarehouse">
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Leader" ColumnName="Leader" />
-          <ScalarProperty Name="Librarian" ColumnName="Librarian" />
-          <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
-          <ScalarProperty Name="IsShiped" ColumnName="IsShiped" />
-          <ScalarProperty Name="Class" ColumnName="Class" />
-          <ScalarProperty Name="Damage" ColumnName="Damage" />
-          <ScalarProperty Name="InStock" ColumnName="InStock" />
-          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
-          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-          <ScalarProperty Name="ProjectWarehouseId" ColumnName="ProjectWarehouseId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="RMC_RawMaterialLibrary">
       <EntityTypeMapping TypeName="kskfModel.RMC_RawMaterialLibrary">
         <MappingFragment StoreEntitySet="RMC_RawMaterialLibrary">
@@ -379,6 +360,26 @@
           <ScalarProperty Name="MemberId" ColumnName="MemberId" />
           <ScalarProperty Name="OrderId" ColumnName="OrderId" />
           <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RMC_ProjectWarehouse">
+      <EntityTypeMapping TypeName="kskfModel.RMC_ProjectWarehouse">
+        <MappingFragment StoreEntitySet="RMC_ProjectWarehouse">
+          <ScalarProperty Name="MemberTreeId" ColumnName="MemberTreeId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Leader" ColumnName="Leader" />
+          <ScalarProperty Name="Librarian" ColumnName="Librarian" />
+          <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+          <ScalarProperty Name="IsShiped" ColumnName="IsShiped" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="Damage" ColumnName="Damage" />
+          <ScalarProperty Name="InStock" ColumnName="InStock" />
+          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="ProjectWarehouseId" ColumnName="ProjectWarehouseId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

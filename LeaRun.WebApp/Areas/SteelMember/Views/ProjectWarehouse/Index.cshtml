@@ -29,9 +29,8 @@
 
     //表格文件夹点击事件
     function GridFolderEvent(TreeId) {
-        TreeId = TreeId;
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/ProjectWarehouse/GridListJson")?TreeId=" + TreeId, page: 1
+            url: "@Url.Content("/SteelMember/ProjectWarehouse/GridListJson")?TreeID=" + TreeId, page: 1
         }).trigger('reloadGrid');
     }
 
@@ -51,8 +50,8 @@
                     { label: '库存数量', name: "InStock", index: "InStock", width: 12 },
                     { label: '损伤程度', name: "Damage", index: "Damage", width: 16 },
                     { label: '可调配量', name: "Damage", index: "Damage", width: 16 },
-                    { label: '入库量', name: "Class", index: "Class", width: 16 },
-                    { label: '出库量', name: "Class", index: "Class", width: 16 },
+                    //{ label: '入库量', name: "Class", index: "Class", width: 16 },
+                    //{ label: '出库量', name: "Class", index: "Class", width: 16 },
                     { label: '库管员', name: "Librarian", index: "Librarian", width: 16 },
                     { label: '备注', name: 'Description', index: 'Description', width: 12 },
             ],

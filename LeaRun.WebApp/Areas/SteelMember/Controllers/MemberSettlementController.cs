@@ -27,7 +27,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public MemberMaterialIBLL MemberMaterialCurrent { get; set; }
         [Inject]
         public RawMaterialIBLL RawMaterialCurrent { get; set; }
-        
+        [Inject]
+        public FileIBLL MemberLibraryCurrent { get; set; }
         public ActionResult Index()
         {
             return View();
@@ -111,22 +112,27 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 foreach (var item in listfile)
                 {
                     ProjectDemandModel projectdemand = new ProjectDemandModel();
-                    projectdemand.OrderId = item.OrderId;
-                    projectdemand.OrderNumbering = item.OrderNumbering;
                     var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == item.OrderId).ToList();
                     int Number=0;
+                    int MemberId=0;//
+                    int? Numbers = 0;//
                     for (int i = 0; i < OrderMember.Count(); i++)
                     {
-                        int MemberId =Convert.ToInt32(OrderMember[i].MemberId);
+                         MemberId =Convert.ToInt32(OrderMember[i].MemberId);
                         var MemberMaterial = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();
                         for (int i0 = 0; i0 < MemberMaterial.Count(); i0++)
                         {
+                            Numbers = MemberMaterial[i0].MaterialNumber;
                             int RawMaterialId =Convert.ToInt32(MemberMaterial[i0].RawMaterialId);
                             var Material= RawMaterialCurrent.Find(f => f.RawMaterialId == RawMaterialId).SingleOrDefault();
                             Number += Convert.ToInt32(MemberMaterial[i0].MaterialNumber) * Convert.ToInt32(Material.UnitPrice) * Convert.ToInt32(OrderMember[i].Qty);
                         }
                     }
-
+                    var Member = MemberLibraryCurrent.Find(f => f.MemberID == MemberId).SingleOrDefault();//
+                    projectdemand.MemberName = Member.MemberName;//
+                    projectdemand.MemberModel = Member.MemberModel;//
+                    projectdemand.UnitPrice = Member.UnitPrice;//
+                    projectdemand.MemberNumber = Numbers;//
                     projectdemand.CostBudget = Number.ToString();
                     projectdemand.ReviewMan =item.ReviewMan;
                     projectdemand.CreateTime = item.CreateTime;

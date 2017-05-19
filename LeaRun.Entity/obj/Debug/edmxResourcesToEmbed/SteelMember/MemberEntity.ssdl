@@ -299,6 +299,7 @@
     <Property Name="Librarian" Type="nvarchar" MaxLength="50" />
     <Property Name="Leader" Type="nvarchar" MaxLength="50" />
     <Property Name="Description" Type="nvarchar" MaxLength="200" />
+    <Property Name="MemberTreeId" Type="int" />
   </EntityType>
   <EntityType Name="RMC_RawMaterialLibrary">
     <Key>

@@ -1183,7 +1183,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             //return Json(entity);
         }
 
-        public ActionResult ReceiveProcessed(RMC_ProcessManagement entity, string KeyValue)
+        public ActionResult ReceiveProcessed( string KeyValue)
         {
             try
             {
