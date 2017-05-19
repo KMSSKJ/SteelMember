@@ -176,8 +176,7 @@
         var IsReview = GetJqGridRowValue("#gridTable", "IsReview");
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
-            var IsReview1 = IsReview.replace(/"/, "'").replace(/"/, "'");
-            if (IsReview1 != "<img src='../../Content/Images/checkokmark.gif'>") {
+            if (IsReview.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
                 var url = "/SteelMember/ProjectManagement/Form?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
                 openDialog(url, "Form", "编辑信息", 500, 500, function (iframe) {
                     top.frames[iframe].AcceptClick();

@@ -1129,12 +1129,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     var _MemberProcess = MemberProcessCurrent.Find(f => f.MemberProcessId == _MemberProcessId).SingleOrDefault();
                     ProcessManagementModel.ProcessId = Proceess[i].ProcessId;
                     ProcessManagementModel.ProcessName = _MemberProcess.ProcessName;
-                    ProcessManagementModel.OperationTime =(Convert.ToDecimal(_MemberProcess.OperationTime)* Convert.ToInt32(OrderMember.Qty)).ToString();
                     ProcessManagementModel.ProcessRequirements = _MemberProcess.ProcessRequirements;
                     ProcessManagementModel.SortCode = _MemberProcess.SortCode;
                     ProcessManagementModel.ProcessMan = Proceess[i].ProcessMan;
                     ProcessManagementModel.ProcessManImge = Proceess[i].ProcessManImge;
                     ProcessManagementModel.Description = Proceess[i].Description;
+                    ProcessManagementModel.IsProcessTask = Proceess[i].IsProcessTask;
                     ProcessManagementModel.IsProcessStatus = Proceess[i].IsProcessStatus;
                     ProcessManagementModelList.Add(ProcessManagementModel);
                 }
@@ -1160,7 +1160,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             return View();
         }
-
+      
         /// <summary>
         /// 【项目信息管理】返回文件夹对象JSON
         /// </summary>
@@ -1181,6 +1181,32 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             }
             return Content(entity.ToJson());
             //return Json(entity);
+        }
+
+        public ActionResult ReceiveProcessed(RMC_ProcessManagement entity, string KeyValue)
+        {
+            try
+            {
+                int IsOk = 0;
+                //string Message = KeyValue == "" ? "新增成功。" : "编辑成功。";
+                string Message ="操作成功";
+                if (!string.IsNullOrEmpty(KeyValue))
+                {
+                    int key_value = Convert.ToInt32(KeyValue);
+                    RMC_ProcessManagement Oldentity = ProcessManagementCurrent.Find(t => t.ProcessId == key_value).SingleOrDefault();//获取没更新之前实体对象
+                    Oldentity.IsProcessTask = 1;
+                    ProcessManagementCurrent.Modified(Oldentity);
+                    IsOk = 1;//更新实体对象
+                    //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
+                }
+              
+                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+            }
+            catch (Exception ex)
+            {
+                //this.WriteLog(-1, entity, null, KeyValue, "操作失败：" + ex.Message);
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+            }
         }
 
         /// <summary>
@@ -1259,7 +1285,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// </summary>
         /// <param name="KeyValue"></param>
         /// <returns></returns>
-        public ActionResult Processed(string MemberId, string OrderId, string KeyValue, string IsQqualified)
+        public ActionResult Processed(RMC_ProcessManagement Process, string MemberId, string OrderId, string KeyValue, string IsQqualified)
         {
             try
             {
@@ -1275,12 +1301,21 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     }
                     else
                     {
-                        Oldentity.IsProcessStatus = Convert.ToInt32(IsQqualified);
-                        ProcessManagementCurrent.Modified(Oldentity);
-                        IsOk = 1;//更新实体对象
-
                         int _MemberId = Convert.ToInt32(MemberId);
                         int _OrderId = Convert.ToInt32(OrderId);
+
+                        Oldentity.UnqualifiedNumber = Process.UnqualifiedNumber;
+                        Oldentity.ProcessNumbered = Process.ProcessNumbered;
+                        var OrderMember = OrderMemberCurrent.Find(f=>f.OrderId == _OrderId).SingleOrDefault();
+                        if(OrderMember.Qty >= Oldentity.ProcessNumbered)
+                        {
+                            Oldentity.IsProcessStatus = Convert.ToInt32(IsQqualified);
+                            Oldentity.ProcessNumbered = OrderMember.Qty;
+                        }
+                        ProcessManagementCurrent.Modified(Oldentity);//修改完成工艺量
+                        IsOk = 1;
+
+                      
 
                         if (_MemberId == 0)
                         {

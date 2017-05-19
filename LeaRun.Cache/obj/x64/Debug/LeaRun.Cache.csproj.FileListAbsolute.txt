@@ -1,0 +1,6 @@
+E:\Source\Repos\SteelMember\LeaRun.Cache\bin\x64\Debug\LeaRun.Cache.dll
+E:\Source\Repos\SteelMember\LeaRun.Cache\bin\x64\Debug\LeaRun.Cache.pdb
+E:\Source\Repos\SteelMember\LeaRun.Cache\obj\x64\Debug\LeaRun.Cache.Properties.Resources.resources
+E:\Source\Repos\SteelMember\LeaRun.Cache\obj\x64\Debug\LeaRun.Cache.csproj.GenerateResource.Cache
+E:\Source\Repos\SteelMember\LeaRun.Cache\obj\x64\Debug\LeaRun.Cache.dll
+E:\Source\Repos\SteelMember\LeaRun.Cache\obj\x64\Debug\LeaRun.Cache.pdb

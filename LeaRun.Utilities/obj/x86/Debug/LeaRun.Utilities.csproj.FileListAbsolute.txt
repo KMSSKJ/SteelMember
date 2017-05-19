@@ -1,0 +1,14 @@
+E:\Source\Repos\SteelMember\LeaRun.Utilities\bin\x86\Debug\LeaRun.Utilities.dll.config
+E:\Source\Repos\SteelMember\LeaRun.Utilities\bin\x86\Debug\LeaRun.Utilities.dll
+E:\Source\Repos\SteelMember\LeaRun.Utilities\bin\x86\Debug\LeaRun.Utilities.pdb
+E:\Source\Repos\SteelMember\LeaRun.Utilities\bin\x86\Debug\LeaRun.DataAccess.dll
+E:\Source\Repos\SteelMember\LeaRun.Utilities\bin\x86\Debug\log4net.dll
+E:\Source\Repos\SteelMember\LeaRun.Utilities\bin\x86\Debug\Newtonsoft.Json.dll
+E:\Source\Repos\SteelMember\LeaRun.Utilities\bin\x86\Debug\SharpZipLib.dll
+E:\Source\Repos\SteelMember\LeaRun.Utilities\bin\x86\Debug\Oracle.DataAccess.dll
+E:\Source\Repos\SteelMember\LeaRun.Utilities\bin\x86\Debug\MySql.Data.dll
+E:\Source\Repos\SteelMember\LeaRun.Utilities\bin\x86\Debug\System.Data.SQLite.dll
+E:\Source\Repos\SteelMember\LeaRun.Utilities\bin\x86\Debug\LeaRun.DataAccess.pdb
+E:\Source\Repos\SteelMember\LeaRun.Utilities\obj\x86\Debug\LeaRun.Utilities.csprojResolveAssemblyReference.cache
+E:\Source\Repos\SteelMember\LeaRun.Utilities\obj\x86\Debug\LeaRun.Utilities.dll
+E:\Source\Repos\SteelMember\LeaRun.Utilities\obj\x86\Debug\LeaRun.Utilities.pdb

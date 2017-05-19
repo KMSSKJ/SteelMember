@@ -1,0 +1,12 @@
+E:\Source\Repos\SteelMember\LeaRun.Resource\bin\x86\Debug\LeaRun.Resource.dll
+E:\Source\Repos\SteelMember\LeaRun.Resource\bin\x86\Debug\LeaRun.Resource.pdb
+E:\Source\Repos\SteelMember\LeaRun.Resource\bin\x86\Debug\zh-CN\LeaRun.Resource.resources.dll
+E:\Source\Repos\SteelMember\LeaRun.Resource\bin\x86\Debug\zh-TW\LeaRun.Resource.resources.dll
+E:\Source\Repos\SteelMember\LeaRun.Resource\obj\x86\Debug\LeaRun.Resource.CommonResource.resources
+E:\Source\Repos\SteelMember\LeaRun.Resource\obj\x86\Debug\LeaRun.Resource.CommonResource.zh-CN.resources
+E:\Source\Repos\SteelMember\LeaRun.Resource\obj\x86\Debug\LeaRun.Resource.CommonResource.zh-TW.resources
+E:\Source\Repos\SteelMember\LeaRun.Resource\obj\x86\Debug\LeaRun.Resource.csproj.GenerateResource.Cache
+E:\Source\Repos\SteelMember\LeaRun.Resource\obj\x86\Debug\zh-CN\LeaRun.Resource.resources.dll
+E:\Source\Repos\SteelMember\LeaRun.Resource\obj\x86\Debug\zh-TW\LeaRun.Resource.resources.dll
+E:\Source\Repos\SteelMember\LeaRun.Resource\obj\x86\Debug\LeaRun.Resource.dll
+E:\Source\Repos\SteelMember\LeaRun.Resource\obj\x86\Debug\LeaRun.Resource.pdb

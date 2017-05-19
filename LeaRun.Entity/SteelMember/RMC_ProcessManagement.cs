@@ -22,8 +22,8 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<System.DateTime> ProduceEndDate { get; set; }
         public string ProcessMan { get; set; }
         public Nullable<int> UnqualifiedNumber { get; set; }
-        public Nullable<int> QualifiedNumber { get; set; }
         public string Description { get; set; }
+        public Nullable<int> IsProcessTask { get; set; }
         public Nullable<int> IsProcessStatus { get; set; }
         public string ProcessManImge { get; set; }
         public string ProcessName { get; set; }

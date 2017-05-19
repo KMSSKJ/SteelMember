@@ -183,26 +183,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="RMC_ProcessManagement">
-      <EntityTypeMapping TypeName="kskfModel.RMC_ProcessManagement">
-        <MappingFragment StoreEntitySet="RMC_ProcessManagement">
-          <ScalarProperty Name="ProcessNumbered" ColumnName="ProcessNumbered" />
-          <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
-          <ScalarProperty Name="ProcessManImge" ColumnName="ProcessManImge" />
-          <ScalarProperty Name="IsProcessStatus" ColumnName="IsProcessStatus" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="QualifiedNumber" ColumnName="QualifiedNumber" />
-          <ScalarProperty Name="UnqualifiedNumber" ColumnName="UnqualifiedNumber" />
-          <ScalarProperty Name="ProcessMan" ColumnName="ProcessMan" />
-          <ScalarProperty Name="ProduceEndDate" ColumnName="ProduceEndDate" />
-          <ScalarProperty Name="ProduceStartDate" ColumnName="ProduceStartDate" />
-          <ScalarProperty Name="MemberProcessId" ColumnName="MemberProcessId" />
-          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-          <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="RMC_ProjectDemand">
       <EntityTypeMapping TypeName="kskfModel.RMC_ProjectDemand">
         <MappingFragment StoreEntitySet="RMC_ProjectDemand">
@@ -379,6 +359,26 @@
           <ScalarProperty Name="ItemID" ColumnName="ItemID" />
           <ScalarProperty Name="ParentID" ColumnName="ParentID" />
           <ScalarProperty Name="TreeID" ColumnName="TreeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RMC_ProcessManagement">
+      <EntityTypeMapping TypeName="kskfModel.RMC_ProcessManagement">
+        <MappingFragment StoreEntitySet="RMC_ProcessManagement">
+          <ScalarProperty Name="ProcessNumbered" ColumnName="ProcessNumbered" />
+          <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
+          <ScalarProperty Name="ProcessManImge" ColumnName="ProcessManImge" />
+          <ScalarProperty Name="IsProcessStatus" ColumnName="IsProcessStatus" />
+          <ScalarProperty Name="IsProcessTask" ColumnName="IsProcessTask" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="UnqualifiedNumber" ColumnName="UnqualifiedNumber" />
+          <ScalarProperty Name="ProcessMan" ColumnName="ProcessMan" />
+          <ScalarProperty Name="ProduceEndDate" ColumnName="ProduceEndDate" />
+          <ScalarProperty Name="ProduceStartDate" ColumnName="ProduceStartDate" />
+          <ScalarProperty Name="MemberProcessId" ColumnName="MemberProcessId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

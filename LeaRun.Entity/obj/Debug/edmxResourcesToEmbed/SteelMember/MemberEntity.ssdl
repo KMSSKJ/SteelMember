@@ -186,8 +186,8 @@
     <Property Name="ProduceEndDate" Type="datetime" />
     <Property Name="ProcessMan" Type="nvarchar" MaxLength="15" />
     <Property Name="UnqualifiedNumber" Type="int" />
-    <Property Name="QualifiedNumber" Type="int" />
     <Property Name="Description" Type="nvarchar" MaxLength="500" />
+    <Property Name="IsProcessTask" Type="int" />
     <Property Name="IsProcessStatus" Type="int" />
     <Property Name="ProcessManImge" Type="nvarchar" MaxLength="30" />
     <Property Name="ProcessName" Type="nvarchar" MaxLength="20" />

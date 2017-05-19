@@ -69,14 +69,14 @@
                         { label: '外键', name: "OrderId", width: 100, sortable: false, hidden: true },
                         { label: '制程名称', name: "ProcessName", width: 150, sortable: false },
                         {
-                            label: '制程任务状态', name: 'IsProcessStatus', width: 80, sortable: false, align: 'center',
+                            label: '制程任务状态', name: 'IsProcessTask', width: 80, sortable: false, align: 'center',
                             formatter: function (cellvalue, value, row, index) {
-                                var IsProcessStatus = cellvalue;
-                                if (IsProcessStatus == "" || IsProcessStatus == null) {
+                                var IsProcessTask = cellvalue;
+                                if (IsProcessTask == "" || IsProcessTask == null || IsProcessTask == 0) {
                                     return "<img src='../../Content/Images/checknomark.gif'/>";
-                                } else if (IsProcessStatus == 1) {
+                                } else if (IsProcessTask == 1) {
                                     return "<img src='../../Content/Images/checkokmark.gif'/>";
-                                } else if (IsProcessStatus == 2) {
+                                } else if (IsProcessTask == 2) {
                                     return "<img src='../../Content/Images/checkerrormark.gif'/>";
                                 }
                             }
@@ -94,7 +94,7 @@
                                 }
                             }
                         },
-                        { label: '工艺完成量', name: "OperationTime", width: 80, sortable: false, align: 'center' },
+                        { label: '工艺完成量', name: "ProcessNumbered", width: 80, sortable: false, align: 'center' },
                         { label: '工艺要求', name: "ProcessRequirements", width: 80, sortable: false, align: 'center' },
                         { label: '负责人', name: "ProcessMan", width: 80, sortable: false, align: 'center' },
                         { label: '图片', name: "ProcessManImage", width: 80, sortable: false, align: 'center' },
@@ -166,7 +166,11 @@
     }
     //编辑信息(得到实体)
     function btn_edit() {
-        var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
+        var subgrid_table_id = 0;
+        var KeyValue="";
+        if(subgrid_table_id!=0){
+            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
+        }
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
             var url = "/SteelMember/MemberProduce/ProcessForm?KeyValue= " + KeyValue;
@@ -207,76 +211,165 @@
             top.frames[iframe].AcceptClick();
         })
     }
+    //领取制程任务
+    function btn_receive_task() {
+        var subgrid_table_id = 0;
+        var KeyValue = "";
+        if (subgrid_table_id != 0) {
+            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
+        }
+        //var MemberId = GetJqGridRowValue("#gridTable", "MemberId");
+        //var OrderId = GetJqGridRowValue("#gridTable", "OrderId");
+        var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
+        var Prompt = "您确实要提交信息吗？";
+        var IsQqualified = 1;
+        if (IsDelData(KeyValue)) {
+            if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
+                subConfirm('/SteelMember/MemberProduce/ReceiveProcessed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
+                $("#gridTable").trigger("reloadGrid"); //重新载入
+
+            } else {
+                alertDialog("不能重复提交", 0);
+            }
+        }
+    }
 
     //制程完成
     function btn_processed() {
-        var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
+        var subgrid_table_id = 0;
+        var KeyValue = "";
+        if (subgrid_table_id != 0) {
+            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
+        }
+        var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
+        var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
+        var strObj = GetJqGridRowValue("#" + subgrid_table_id, "ProcessName");
         var MemberId = GetJqGridRowValue("#gridTable", "MemberId");
         var OrderId = GetJqGridRowValue("#gridTable", "OrderId");
+        var IsQqualified = 1;
+        var subString = "质检";
         if (IsChecked(KeyValue)) {
-            var url = "/SteelMember/MemberProduce/NumberForm?KeyValue= " + KeyValue + "&MemberId=" + MemberId + "&OrderId="+OrderId;
-            openDialog(url, "NumberForm", "编辑信息", 600, 400, function (iframe) {
-                top.frames[iframe].AcceptClick();
-            });
+            if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checknomark.gif'>") {
+                if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
+                    if (strObj.indexOf(subString) > 0) {
+                        alertDialog("请点击质检项按钮", 0);
+                    } else {
+
+                        var url = "/SteelMember/MemberProduce/NumberForm?KeyValue= " + KeyValue + "&MemberId=" + MemberId + "&OrderId=" + OrderId + "&IsQqualified=" + IsQqualified;
+                        openDialog(url, "NumberForm", "编辑信息", 600, 400, function (iframe) {
+                            top.frames[iframe].AcceptClick();
+                        });
+
+                    }
+                } else {
+                    alertDialog("任务未领取，请领取对应任务", 0);
+                }
+            } else {
+                alertDialog("不能重复提交", 0);
+            }
         }
-        //var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
-        //var MemberId = GetJqGridRowValue("#gridTable", "MemberId");
-        //var OrderId = GetJqGridRowValue("#gridTable", "OrderId");
-        //var Prompt = "您确实要提交信息吗？";
-        //var IsQqualified = 1;
-        //if (IsDelData(KeyValue)) {
-        //    subConfirm('/SteelMember/MemberProduce/Processed', { MemberId: MemberId, OrderId: OrderId, KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
-        //    $("#gridTable").trigger("reloadGrid"); //重新载入
-        //}
     };
 
     //质检提交
     function btn_quality_inspection() {
-        var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
         var Prompt = "您确实要提交信息吗？";
         var IsQqualified = 1;
+        var subgrid_table_id = 0;
+        var KeyValue = "";
+        if (subgrid_table_id != 0) {
+            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
+        }
+        var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
+        var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
         if (IsDelData(KeyValue)) {
-            subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
-            $("#gridTable").trigger("reloadGrid"); //重新载入
+            if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
+                if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checknomark.gif'>") {
+                    subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
+                    $("#gridTable").trigger("reloadGrid"); //重新载入
+                } else {
+                    alertDialog("不能重复提交", 0);
+                }
+            } else {
+                alertDialog("任务未领取，请领取对应任务", 0);
+            }
         }
     };
 
     //质检提交
     function btn_not_quality_inspection() {
-        var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
         var Prompt = "您确实要提交信息吗？";
         var IsQqualified = 2;
+        var subgrid_table_id = 0;
+        var KeyValue = "";
+        if (subgrid_table_id != 0) {
+            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
+        }
+        var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
+        var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
         if (IsDelData(KeyValue)) {
-            subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
-            $("#gridTable").trigger("reloadGrid"); //重新载入
+            if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
+                if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checknomark.gif'>") {
+                    subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
+                    $("#gridTable").trigger("reloadGrid"); //重新载入
+
+                } else {
+                    alertDialog("不能重复提交", 0);
+                }
+            } else {
+                alertDialog("任务未领取，请领取对应任务", 0);
+            }
         }
     };
 
 
     //监理提交
     function btn_supervision() {
-        var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
         var Prompt = "您确实要提交信息吗？";
         var IsQqualified = 1;
+        var subgrid_table_id = 0;
+        var KeyValue = "";
+        if (subgrid_table_id != 0) {
+            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
+        }
+        var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
+        var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
         if (IsDelData(KeyValue)) {
-            subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
-            $("#gridTable").trigger("reloadGrid"); //重新载入
+            if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
+                if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
+                    subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
+                    $("#gridTable").trigger("reloadGrid"); //重新载入
+                } else {
+                    alertDialog("不能重复提交", 0);
+                }
+            } else {
+                alertDialog("任务未领取，请领取对应任务", 0);
+            }
         }
     };
 
     //监理提交
     function btn_not_supervision() {
-        var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
         var Prompt = "您确实要提交信息吗？";
         var Supervision = 2;
-        if (IsDelData(KeyValue)) {
-            // if (QualityInspection.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
-            subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
-            $("#gridTable").trigger("reloadGrid"); //重新载入
+        var subgrid_table_id = 0;
+        var KeyValue = "";
+        if (subgrid_table_id != 0) {
+            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
         }
-        else {
-            //    alertDialog("工厂未质检！", 0);
-            //}
+        var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
+        var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
+        if (IsDelData(KeyValue)) {
+            if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
+                if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checknomark.gif'>") {
+                    subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
+                    $("#gridTable").trigger("reloadGrid"); //重新载入
+
+                } else {
+                    alertDialog("不能重复提交", 0);
+                }
+            } else {
+                alertDialog("任务未领取，请领取对应任务", 0);
+            }
         }
     };
 

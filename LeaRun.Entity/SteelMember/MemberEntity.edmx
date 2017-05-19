@@ -191,8 +191,8 @@
           <Property Name="ProduceEndDate" Type="datetime" />
           <Property Name="ProcessMan" Type="nvarchar" MaxLength="15" />
           <Property Name="UnqualifiedNumber" Type="int" />
-          <Property Name="QualifiedNumber" Type="int" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsProcessTask" Type="int" />
           <Property Name="IsProcessStatus" Type="int" />
           <Property Name="ProcessManImge" Type="nvarchar" MaxLength="30" />
           <Property Name="ProcessName" Type="nvarchar" MaxLength="20" />
@@ -401,7 +401,6 @@
           <EntitySet Name="RMC_MemberProcess" EntityType="kskfModel.RMC_MemberProcess" />
           <EntitySet Name="RMC_MemberUnit" EntityType="kskfModel.RMC_MemberUnit" />
           <EntitySet Name="RMC_OrderMember" EntityType="kskfModel.RMC_OrderMember" />
-          <EntitySet Name="RMC_ProcessManagement" EntityType="kskfModel.RMC_ProcessManagement" />
           <EntitySet Name="RMC_ProjectDemand" EntityType="kskfModel.RMC_ProjectDemand" />
           <EntitySet Name="RMC_ProjectInfo" EntityType="kskfModel.RMC_ProjectInfo" />
           <EntitySet Name="RMC_ProjectOrder" EntityType="kskfModel.RMC_ProjectOrder" />
@@ -409,6 +408,7 @@
           <EntitySet Name="RMC_RawMaterialLibrary" EntityType="kskfModel.RMC_RawMaterialLibrary" />
           <EntitySet Name="RMC_ShipManagement" EntityType="kskfModel.RMC_ShipManagement" />
           <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
+          <EntitySet Name="RMC_ProcessManagement" EntityType="kskfModel.RMC_ProcessManagement" />
         </EntityContainer>
         <EntityType Name="RMC_AnalysisRawMaterial">
           <Key>
@@ -584,25 +584,6 @@
           <Property Name="PriceAmount" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="RMC_ProcessManagement">
-          <Key>
-            <PropertyRef Name="ProcessId" />
-          </Key>
-          <Property Name="ProcessId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrderId" Type="Int32" />
-          <Property Name="MemberId" Type="Int32" />
-          <Property Name="MemberProcessId" Type="Int32" />
-          <Property Name="ProduceStartDate" Type="DateTime" Precision="3" />
-          <Property Name="ProduceEndDate" Type="DateTime" Precision="3" />
-          <Property Name="ProcessMan" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="UnqualifiedNumber" Type="Int32" />
-          <Property Name="QualifiedNumber" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsProcessStatus" Type="Int32" />
-          <Property Name="ProcessManImge" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="ProcessName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="ProcessNumbered" Type="Int32" />
-        </EntityType>
         <EntityType Name="RMC_ProjectDemand">
           <Key>
             <PropertyRef Name="ProjectDemandId" />
@@ -774,6 +755,25 @@
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="IsReview" Type="Int32" />
           <Property Name="FileType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RMC_ProcessManagement">
+          <Key>
+            <PropertyRef Name="ProcessId" />
+          </Key>
+          <Property Name="ProcessId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" />
+          <Property Name="MemberId" Type="Int32" />
+          <Property Name="MemberProcessId" Type="Int32" />
+          <Property Name="ProduceStartDate" Type="DateTime" Precision="3" />
+          <Property Name="ProduceEndDate" Type="DateTime" Precision="3" />
+          <Property Name="ProcessMan" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="UnqualifiedNumber" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsProcessTask" Type="Int32" />
+          <Property Name="IsProcessStatus" Type="Int32" />
+          <Property Name="ProcessManImge" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessNumbered" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -963,26 +963,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RMC_ProcessManagement">
-            <EntityTypeMapping TypeName="kskfModel.RMC_ProcessManagement">
-              <MappingFragment StoreEntitySet="RMC_ProcessManagement">
-                <ScalarProperty Name="ProcessNumbered" ColumnName="ProcessNumbered" />
-                <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
-                <ScalarProperty Name="ProcessManImge" ColumnName="ProcessManImge" />
-                <ScalarProperty Name="IsProcessStatus" ColumnName="IsProcessStatus" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="QualifiedNumber" ColumnName="QualifiedNumber" />
-                <ScalarProperty Name="UnqualifiedNumber" ColumnName="UnqualifiedNumber" />
-                <ScalarProperty Name="ProcessMan" ColumnName="ProcessMan" />
-                <ScalarProperty Name="ProduceEndDate" ColumnName="ProduceEndDate" />
-                <ScalarProperty Name="ProduceStartDate" ColumnName="ProduceStartDate" />
-                <ScalarProperty Name="MemberProcessId" ColumnName="MemberProcessId" />
-                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-                <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="RMC_ProjectDemand">
             <EntityTypeMapping TypeName="kskfModel.RMC_ProjectDemand">
               <MappingFragment StoreEntitySet="RMC_ProjectDemand">
@@ -1159,6 +1139,26 @@
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="TreeID" ColumnName="TreeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMC_ProcessManagement">
+            <EntityTypeMapping TypeName="kskfModel.RMC_ProcessManagement">
+              <MappingFragment StoreEntitySet="RMC_ProcessManagement">
+                <ScalarProperty Name="ProcessNumbered" ColumnName="ProcessNumbered" />
+                <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
+                <ScalarProperty Name="ProcessManImge" ColumnName="ProcessManImge" />
+                <ScalarProperty Name="IsProcessStatus" ColumnName="IsProcessStatus" />
+                <ScalarProperty Name="IsProcessTask" ColumnName="IsProcessTask" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="UnqualifiedNumber" ColumnName="UnqualifiedNumber" />
+                <ScalarProperty Name="ProcessMan" ColumnName="ProcessMan" />
+                <ScalarProperty Name="ProduceEndDate" ColumnName="ProduceEndDate" />
+                <ScalarProperty Name="ProduceStartDate" ColumnName="ProduceStartDate" />
+                <ScalarProperty Name="MemberProcessId" ColumnName="MemberProcessId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

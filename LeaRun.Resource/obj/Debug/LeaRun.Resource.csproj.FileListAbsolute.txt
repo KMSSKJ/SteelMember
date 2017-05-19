@@ -35,3 +35,4 @@ E:\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\zh-CN\LeaRun.Resource.reso
 E:\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\zh-TW\LeaRun.Resource.resources.dll
 E:\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\LeaRun.Resource.dll
 E:\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\LeaRun.Resource.pdb
+E:\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\LeaRun.Resource.csprojResolveAssemblyReference.cache

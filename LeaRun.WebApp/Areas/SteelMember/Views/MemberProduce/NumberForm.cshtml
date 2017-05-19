@@ -5,9 +5,9 @@
 <head>
     <script type="text/javascript">
         var KeyValue = GetQuery('KeyValue');
-        var MemberId = GetQuery('OrderId');
+        var MemberId = GetQuery('MemberId');
         var OrderId = GetQuery('OrderId');
-        var IsQqualified = 1;
+        var IsQqualified = GetQuery('IsQqualified');
 
         //保存事件
         function AcceptClick() {
@@ -32,18 +32,19 @@
         <table class="form">
             <tr>
                 <th class="formTitle">
-                    原材料用量分析：
+                    工艺完成量：
                 </th>
                 <td class="formValue">
-                    <input id="RawMaterialConsumption" type="text" class="txt" />
+                    <input id="ProcessNumbered" type="text" class="txt" />
                 </td>
             </tr>
             <tr>
                 <th class="formTitle">
-                    成本估算：
+                    检测不合格量：
                 </th>
                 <td class="formValue">
-                    <textarea id="OrderBudget" name="OrderBudget" maxlength="200" class="txtArea" rows="5"></textarea>
+                    <input id="UnqualifiedNumber" type="text" class="txt" />
+                    @*<textarea id="UnqualifiedNumber" name="UnqualifiedNumber" maxlength="200" class="txtArea" rows="5"></textarea>*@
                 </td>
             </tr>
             <tr>

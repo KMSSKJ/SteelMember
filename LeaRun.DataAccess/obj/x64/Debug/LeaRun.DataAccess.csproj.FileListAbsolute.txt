@@ -1,0 +1,12 @@
+E:\Source\Repos\SteelMember\LeaRun.DataAccess\bin\x64\Debug\LeaRun.DataAccess.dll
+E:\Source\Repos\SteelMember\LeaRun.DataAccess\bin\x64\Debug\LeaRun.DataAccess.pdb
+E:\Source\Repos\SteelMember\LeaRun.DataAccess\bin\x64\Debug\EntityFramework.dll
+E:\Source\Repos\SteelMember\LeaRun.DataAccess\bin\x64\Debug\LeaRun.Cache.dll
+E:\Source\Repos\SteelMember\LeaRun.DataAccess\bin\x64\Debug\log4net.dll
+E:\Source\Repos\SteelMember\LeaRun.DataAccess\bin\x64\Debug\MySql.Data.dll
+E:\Source\Repos\SteelMember\LeaRun.DataAccess\bin\x64\Debug\Oracle.DataAccess.dll
+E:\Source\Repos\SteelMember\LeaRun.DataAccess\bin\x64\Debug\System.Data.SQLite.dll
+E:\Source\Repos\SteelMember\LeaRun.DataAccess\bin\x64\Debug\LeaRun.Cache.pdb
+E:\Source\Repos\SteelMember\LeaRun.DataAccess\obj\x64\Debug\LeaRun.DataAccess.csprojResolveAssemblyReference.cache
+E:\Source\Repos\SteelMember\LeaRun.DataAccess\obj\x64\Debug\LeaRun.DataAccess.dll
+E:\Source\Repos\SteelMember\LeaRun.DataAccess\obj\x64\Debug\LeaRun.DataAccess.pdb
