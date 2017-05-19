@@ -166,11 +166,7 @@
     }
     //编辑信息(得到实体)
     function btn_edit() {
-        var subgrid_table_id = 0;
-        var KeyValue="";
-        if(subgrid_table_id!=0){
-            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
-        }
+        var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
             var url = "/SteelMember/MemberProduce/ProcessForm?KeyValue= " + KeyValue;
@@ -185,7 +181,7 @@
     function btn_delete() {
         var KeyValue = GetJqGridRowValue("#gridTable", "OrderId");
         var Prompt = "您确实要删除此文件吗？";
-        if (IsDelData(KeyValue)) {
+        if (IsChecked(KeyValue)) {
             delConfirm('/SteelMember/MemberProduce/DeleteProcess', { KeyValue: KeyValue }, Prompt);
             $("#gridTable").trigger("reloadGrid"); //重新载入
         }
@@ -213,17 +209,13 @@
     }
     //领取制程任务
     function btn_receive_task() {
-        var subgrid_table_id = 0;
-        var KeyValue = "";
-        if (subgrid_table_id != 0) {
-            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
-        }
+        var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
         //var MemberId = GetJqGridRowValue("#gridTable", "MemberId");
         //var OrderId = GetJqGridRowValue("#gridTable", "OrderId");
         var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
         var Prompt = "您确实要提交信息吗？";
         var IsQqualified = 1;
-        if (IsDelData(KeyValue)) {
+        if (IsChecked(KeyValue)) {
             if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
                 subConfirm('/SteelMember/MemberProduce/ReceiveProcessed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
                 $("#gridTable").trigger("reloadGrid"); //重新载入
@@ -236,11 +228,7 @@
 
     //制程完成
     function btn_processed() {
-        var subgrid_table_id = 0;
-        var KeyValue = "";
-        if (subgrid_table_id != 0) {
-            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
-        }
+        var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
         var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
         var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
         var strObj = GetJqGridRowValue("#" + subgrid_table_id, "ProcessName");
@@ -275,13 +263,10 @@
         var Prompt = "您确实要提交信息吗？";
         var IsQqualified = 1;
         var subgrid_table_id = 0;
-        var KeyValue = "";
-        if (subgrid_table_id != 0) {
-            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
-        }
+        var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
         var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
         var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
-        if (IsDelData(KeyValue)) {
+        if (IsChecked(KeyValue)) {
             if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
                 if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checknomark.gif'>") {
                     subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
@@ -300,13 +285,10 @@
         var Prompt = "您确实要提交信息吗？";
         var IsQqualified = 2;
         var subgrid_table_id = 0;
-        var KeyValue = "";
-        if (subgrid_table_id != 0) {
-            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
-        }
+        var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
         var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
         var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
-        if (IsDelData(KeyValue)) {
+        if (IsChecked(KeyValue)) {
             if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
                 if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checknomark.gif'>") {
                     subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
@@ -327,13 +309,10 @@
         var Prompt = "您确实要提交信息吗？";
         var IsQqualified = 1;
         var subgrid_table_id = 0;
-        var KeyValue = "";
-        if (subgrid_table_id != 0) {
-            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
-        }
+        var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
         var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
         var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
-        if (IsDelData(KeyValue)) {
+        if (IsChecked(KeyValue)) {
             if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
                 if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
                     subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
@@ -352,13 +331,10 @@
         var Prompt = "您确实要提交信息吗？";
         var Supervision = 2;
         var subgrid_table_id = 0;
-        var KeyValue = "";
-        if (subgrid_table_id != 0) {
-            KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
-        }
+        var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
         var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
         var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
-        if (IsDelData(KeyValue)) {
+        if (IsChecked(KeyValue)) {
             if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
                 if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checknomark.gif'>") {
                     subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
@@ -379,7 +355,7 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "MemberId");
         var OrderId = GetJqGridRowValue("#gridTable", "OrderId")
         var Data = "";
-        if (IsDelData(KeyValue)) {
+        if (IsChecked(KeyValue)) {
             AjaxJson("/SteelMember/MemberProduce/IsPrint", { KeyValue: KeyValue, OrderId: OrderId }, function (data) {
                 Data = data;
             });
@@ -398,13 +374,12 @@
 
     //构件详情
     function btn_member_info() {
-        if (KeyValueId != "") {
-            var url = "/SteelMember/File/DrawingManagement?KeyValue= " + KeyValueId;
+        var KeyValue = GetJqGridRowValue("#gridTable", "MemberId");
+        if (IsChecked(KeyValue)) {
+            var url = "/SteelMember/File/DrawingManagement?KeyValue= " + KeyValue;
             Dialog(url, "DrawingManagement", "构件信息", 760, 660, function (iframe) {
                 top.frames[iframe].AcceptClick();
             });
-        } else {
-            alertDialog("数据不能为空", 0);
         }
     };
 

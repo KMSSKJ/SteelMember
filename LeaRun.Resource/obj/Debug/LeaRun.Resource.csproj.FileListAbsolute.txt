@@ -22,7 +22,6 @@ D:\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\zh-CN\LeaRun.Resource.reso
 D:\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\zh-TW\LeaRun.Resource.resources.dll
 D:\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\LeaRun.Resource.dll
 D:\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\LeaRun.Resource.pdb
-D:\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\LeaRun.Resource.csprojResolveAssemblyReference.cache
 E:\Source\Repos\SteelMember\LeaRun.Resource\bin\Debug\LeaRun.Resource.dll
 E:\Source\Repos\SteelMember\LeaRun.Resource\bin\Debug\LeaRun.Resource.pdb
 E:\Source\Repos\SteelMember\LeaRun.Resource\bin\Debug\zh-CN\LeaRun.Resource.resources.dll
