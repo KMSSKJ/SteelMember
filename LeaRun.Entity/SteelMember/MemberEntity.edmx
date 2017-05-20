@@ -27,6 +27,23 @@
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="Description" Type="nvarchar" MaxLength="200" />
         </EntityType>
+        <EntityType Name="RMC_Collar">
+          <Key>
+            <PropertyRef Name="CollarId" />
+          </Key>
+          <Property Name="CollarId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TreeId" Type="int" />
+          <Property Name="MemberId" Type="int" />
+          <Property Name="MemberName" Type="nvarchar" MaxLength="15" />
+          <Property Name="MemberModel" Type="nvarchar" MaxLength="15" />
+          <Property Name="MemberUnit" Type="nvarchar" MaxLength="10" />
+          <Property Name="CollarNumber" Type="int" />
+          <Property Name="Use" Type="nvarchar" MaxLength="40" />
+          <Property Name="CollarTime" Type="datetime" />
+          <Property Name="Librarian" Type="nvarchar" MaxLength="10" />
+          <Property Name="CollarMan" Type="nvarchar" MaxLength="10" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="RMC_Company">
           <Key>
             <PropertyRef Name="MemberCompanyId" />
@@ -375,6 +392,7 @@
         </EntityType>
         <EntityContainer Name="kskfModelStoreContainer">
           <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="Self.RMC_AnalysisRawMaterial" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RMC_Collar" EntityType="Self.RMC_Collar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMC_Company" EntityType="Self.RMC_Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMC_FactoryWarehouse" EntityType="Self.RMC_FactoryWarehouse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMC_MemberLibrary" EntityType="Self.RMC_MemberLibrary" Schema="dbo" store:Type="Tables" />
@@ -412,6 +430,7 @@
           <EntitySet Name="RMC_ProcessManagement" EntityType="kskfModel.RMC_ProcessManagement" />
           <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
           <EntitySet Name="RMC_MemberProcess" EntityType="kskfModel.RMC_MemberProcess" />
+          <EntitySet Name="RMC_Collar" EntityType="kskfModel.RMC_Collar" />
         </EntityContainer>
         <EntityType Name="RMC_AnalysisRawMaterial">
           <Key>
@@ -780,6 +799,23 @@
           <Property Name="ProcessRequirements" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="SortCode" Type="Int32" />
+        </EntityType>
+        <EntityType Name="RMC_Collar">
+          <Key>
+            <PropertyRef Name="CollarId" />
+          </Key>
+          <Property Name="CollarId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TreeId" Type="Int32" />
+          <Property Name="MemberId" Type="Int32" />
+          <Property Name="MemberName" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="MemberModel" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="MemberUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CollarNumber" Type="Int32" />
+          <Property Name="Use" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="CollarTime" Type="DateTime" Precision="3" />
+          <Property Name="Librarian" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CollarMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1168,6 +1204,24 @@
                 <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
                 <ScalarProperty Name="MemberId" ColumnName="MemberId" />
                 <ScalarProperty Name="MemberProcessId" ColumnName="MemberProcessId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMC_Collar">
+            <EntityTypeMapping TypeName="kskfModel.RMC_Collar">
+              <MappingFragment StoreEntitySet="RMC_Collar">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CollarMan" ColumnName="CollarMan" />
+                <ScalarProperty Name="Librarian" ColumnName="Librarian" />
+                <ScalarProperty Name="CollarTime" ColumnName="CollarTime" />
+                <ScalarProperty Name="Use" ColumnName="Use" />
+                <ScalarProperty Name="CollarNumber" ColumnName="CollarNumber" />
+                <ScalarProperty Name="MemberUnit" ColumnName="MemberUnit" />
+                <ScalarProperty Name="MemberModel" ColumnName="MemberModel" />
+                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+                <ScalarProperty Name="CollarId" ColumnName="CollarId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -41,5 +41,6 @@ namespace LeaRun.Entity.SteelMember
         public virtual DbSet<RMC_ProcessManagement> RMC_ProcessManagement { get; set; }
         public virtual DbSet<RMC_ProjectWarehouse> RMC_ProjectWarehouse { get; set; }
         public virtual DbSet<RMC_MemberProcess> RMC_MemberProcess { get; set; }
+        public virtual DbSet<RMC_Collar> RMC_Collar { get; set; }
     }
 }

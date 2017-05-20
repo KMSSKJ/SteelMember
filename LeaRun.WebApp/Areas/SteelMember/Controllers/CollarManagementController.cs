@@ -29,6 +29,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public RawMaterialIBLL RawMaterialCurrent { get; set; }
         [Inject]
         public FileIBLL MemberLibraryCurrent { get; set; }
+        [Inject]
+        public CollarIBLL CollarCurrent { get; set; }
 
         public ActionResult Index()
         {
@@ -68,131 +70,134 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
 
                 int total = 0;
-                Expression<Func<RMC_ProjectOrder, bool>> func = ExpressionExtensions.True<RMC_ProjectOrder>();
-                func = f => f.DeleteFlag != 1 &&f.IsSubmit==1;
+                Expression<Func<RMC_Collar, bool>> func = ExpressionExtensions.True<RMC_Collar>();
+                //func = f => f.DeleteFlag != 1 &&f.IsSubmit==1;
                 #region 查询条件拼接
                 if(TreeId.ToString() != "" && TreeId != 0)
                 {
                     func = func.And(f => f.TreeId == TreeId);
 
                 }
-                if (model.OrderNumbering != null && model.OrderNumbering.ToString() != "")
-                {
-                    func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering));
+                //if (model.OrderNumbering != null && model.OrderNumbering.ToString() != "")
+                //{
+                //    func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering));
 
-                }
+                //}
                 if (model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00")
                 {
-                    func = func.And(f => f.CreateTime >= model.InBeginTime);
+                    func = func.And(f => f.CollarTime >= model.InBeginTime);
 
                 }
                 if (model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00")
                 {
-                    func = func.And(f => f.CreateTime <= model.InEndTime);
+                    func = func.And(f => f.CollarTime <= model.InEndTime);
                 }
 
                 #endregion
 
-                DataTable ListData, ListData1;
-                ListData = null;
-                //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
-                //                         , jqgridparam.rows
-                //                         , func1
-                //                         , true
-                //                         , f => f.TreeID.ToString()
-                //                         , out total
-                //                         ).ToList();
-                List<RMC_ProjectOrder> listfile = OrderManagementCurrent.FindPage<string>(jqgridparam.page
+                //DataTable ListData, ListData1;
+                //ListData = null;
+              
+                List<RMC_Collar> listfile = CollarCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
                                          , true
-                                         , f => f.TreeId.ToString()
+                                         , f => f.CollarTime.ToString()
                                          , out total
                                          ).ToList();
-                List<ProjectDemandModel> projectdemandlist = new List<ProjectDemandModel>();
-                foreach (var item in listfile)
-                {
-                    ProjectDemandModel projectdemand = new ProjectDemandModel();
-                    projectdemand.OrderId = item.OrderId;
-                    projectdemand.OrderNumbering = item.OrderNumbering;
-                    var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == item.OrderId).ToList();
-                    int Number=0;
-                    int? Numbers = 0;//
-                    string Use = "";
-                    int MemberId = 0;
-                    for (int i = 0; i < OrderMember.Count(); i++)
-                    {
-                        Numbers = 5;//
-                        Use = "一号隧道";
-                        MemberId =Convert.ToInt32(OrderMember[i].MemberId);
-                        var MemberMaterial = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();
-                        for (int i0 = 0; i0 < MemberMaterial.Count(); i0++)
-                        {
-                            int RawMaterialId =Convert.ToInt32(MemberMaterial[i0].RawMaterialId);
-                            var Material= RawMaterialCurrent.Find(f => f.RawMaterialId == RawMaterialId).SingleOrDefault();
-                            Number += Convert.ToInt32(MemberMaterial[i0].MaterialNumber) * Convert.ToInt32(Material.UnitPrice) * Convert.ToInt32(OrderMember[i].Qty);
-                        }
-                    }
-                    var Member = MemberLibraryCurrent.Find(f => f.MemberID == MemberId).SingleOrDefault();//
-                    projectdemand.MemberName = Member.MemberName;//
-                    projectdemand.MemberModel = Member.MemberModel;//
-                    projectdemand.LeaderNumber = Numbers;
-                    projectdemand.Use = Use;
-                    projectdemand.LeaderTime = item.CreateTime;
-                    projectdemand.CostBudget = Number.ToString();
-                    projectdemand.ReviewMan =item.ReviewMan;
-                    projectdemand.CreateTime = item.CreateTime;
-                    projectdemand.CreateMan = item.CreateMan;
-                    projectdemand.Productioned = Convert.ToInt32(item.Productioned);
-                    projectdemand.Description = item.Description;
-                    projectdemandlist.Add(projectdemand);
-                }
-                if (projectdemandlist.Count() > 0)// && listtree.Count() > 0
-                {
-
-                    //ListData0 = ListToDataTable(listtree);
-                    ListData1 = DataHelper.ListToDataTable(projectdemandlist);
-                    ListData = ListData1.Clone();
-                    object[] obj = new object[ListData.Columns.Count];
-                    ////添加DataTable0的数据
-                    //for (int i = 0; i < ListData0.Rows.Count; i++)
-                    //{
-                    //    ListData0.Rows[i].ItemArray.CopyTo(obj, 0);
-                    //    ListData.Rows.Add(obj);
-                    //}
-                    //添加DataTable1的数据
-                    for (int i = 0; i < ListData1.Rows.Count; i++)
-                    {
-                        ListData1.Rows[i].ItemArray.CopyTo(obj, 0);
-                        ListData.Rows.Add(obj);
-                    }
-
-                }
-                //else if (listtree.Count() > 0)
+                //List<ProjectDemandModel> projectdemandlist = new List<ProjectDemandModel>();
+                //foreach (var item in listfile)
                 //{
-                //    ListData = ListToDataTable(listtree);
+                //    ProjectDemandModel projectdemand = new ProjectDemandModel();
+                //    projectdemand.OrderId = item.OrderId;
+                //    projectdemand.OrderNumbering = item.OrderNumbering;
+                //    var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == item.OrderId).ToList();
+                //    int Number=0;
+                //    int? Numbers = 0;//
+                //    string Use = "";
+                //    int MemberId = 0;
+                //    for (int i = 0; i < OrderMember.Count(); i++)
+                //    {
+                //        Numbers = 5;//
+                //        Use = "一号隧道";
+                //        MemberId =Convert.ToInt32(OrderMember[i].MemberId);
+                //        var MemberMaterial = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();
+                //        for (int i0 = 0; i0 < MemberMaterial.Count(); i0++)
+                //        {
+                //            int RawMaterialId =Convert.ToInt32(MemberMaterial[i0].RawMaterialId);
+                //            var Material= RawMaterialCurrent.Find(f => f.RawMaterialId == RawMaterialId).SingleOrDefault();
+                //            Number += Convert.ToInt32(MemberMaterial[i0].MaterialNumber) * Convert.ToInt32(Material.UnitPrice) * Convert.ToInt32(OrderMember[i].Qty);
+                //        }
+                //    }
+                //    var Member = MemberLibraryCurrent.Find(f => f.MemberID == MemberId).SingleOrDefault();//
+                //    projectdemand.MemberName = Member.MemberName;//
+                //    projectdemand.MemberModel = Member.MemberModel;//
+                //    projectdemand.LeaderNumber = Numbers;
+                //    projectdemand.Use = Use;
+                //    projectdemand.LeaderTime = item.CreateTime;
+                //    projectdemand.CostBudget = Number.ToString();
+                //    projectdemand.ReviewMan =item.ReviewMan;
+                //    projectdemand.CreateTime = item.CreateTime;
+                //    projectdemand.CreateMan = item.CreateMan;
+                //    projectdemand.Productioned = Convert.ToInt32(item.Productioned);
+                //    projectdemand.Description = item.Description;
+                //    projectdemandlist.Add(projectdemand);
                 //}
-                else if (listfile.Count() > 0)
-                {
-                    ListData = DataHelper.ListToDataTable(listfile);
-                }
-                else
-                {
-                    ListData = null;
-                }
+                //if (projectdemandlist.Count() > 0)// && listtree.Count() > 0
+                //{
 
-                var JsonData = new
-                {
-                    rows = ListData,
-                };
-                return Content(JsonData.ToJson());
+                //    //ListData0 = ListToDataTable(listtree);
+                //    ListData1 = DataHelper.ListToDataTable(projectdemandlist);
+                //    ListData = ListData1.Clone();
+                //    object[] obj = new object[ListData.Columns.Count];
+                //    ////添加DataTable0的数据
+                //    //for (int i = 0; i < ListData0.Rows.Count; i++)
+                //    //{
+                //    //    ListData0.Rows[i].ItemArray.CopyTo(obj, 0);
+                //    //    ListData.Rows.Add(obj);
+                //    //}
+                //    //添加DataTable1的数据
+                //    for (int i = 0; i < ListData1.Rows.Count; i++)
+                //    {
+                //        ListData1.Rows[i].ItemArray.CopyTo(obj, 0);
+                //        ListData.Rows.Add(obj);
+                //    }
+
+                //}
+                ////else if (listtree.Count() > 0)
+                ////{
+                ////    ListData = ListToDataTable(listtree);
+                ////}
+                //else if (listfile.Count() > 0)
+                //{
+                //    ListData = DataHelper.ListToDataTable(listfile);
+                //}
+                //else
+                //{
+                //    ListData = null;
+                //}
+
+                //var JsonData = new
+                //{
+                //    rows = ListData,
+                //};
+                return Content(listfile.ToJson());
             }
             catch (Exception ex)
             {
                 return Content("<script>alertDialog('" + ex.Message + "');</script>");
             }
         }
-
-
+        
+        /// <summary>
+        /// 创建领用单
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult CreateCollarForm()
+        {
+            ViewBag.CollarNumbering = "LYD" + DateTime.Now.ToString("yyyyMMddhhmmss");
+            ViewData["Librarian"] = currentUser.RealName;
+            return View();
+        }
     }
 }

@@ -25,8 +25,6 @@
             AjaxJson("/SteelMember/ProjectManagement/SetDataForm", { KeyValue: KeyValue }, function (data) {
                 SetWebControls(data);
                 Data = data;
-                $("#ProjectName").focus();
-                $("#ProjectName").select();
             });
             //} else {
             //    tipDialog('请选择文件夹!', 3); //,data.Code

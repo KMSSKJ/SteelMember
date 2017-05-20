@@ -44,15 +44,12 @@
             height: $(window).height() - 154,
             autowidth: true,
             colModel: [
-                { label: '主键', name: "ProjectWarehouseId", hidden: true },
-                { label: '构件名', name: "MemberName", index: "MemberName", width: 6 },
-                { label: '型号', name: "MemberModel", index: "MemberModel", width: 6 },
-                { label: '数量', name: "LeaderNumber", index: "LeaderNumber", width: 12 },
-                { label: '用途', name: "Use", index: "Use", width: 12 },
-                { label: '领用时间', name: "LeaderTime", index: "LeaderTime", width: 16 },
-                { label: '领用人', name: "LeaderMan", index: "LeaderMan", width: 16 },
-                { label: '库管签字', name: "Librarian", index: "Librarian", width: 16 },
-                { label: '备注', name: 'Description', index: 'Description', width: 12 },
+                { label: '主键', name: "CollarId", hidden: true },
+                { label: '领用单编号', name: "CollarNumbering", index: "CollarNumbering", width: 6 },
+                { label: '用于工程', name: "Use", index: "Use", width: 12 },
+                { label: '领用时间', name: "CollarTime", index: "LeaderTime", width: 16 },
+                { label: '库管', name: "Librarian", index: "Librarian", width: 16 },
+                { label: '领用人签字', name: "CollarMan", index: "CollarMan", width: 16 },
             ],
             rowNum: 30,
             sortname: 'SortCode',
@@ -62,6 +59,26 @@
             rownumbers: true,
             gridview: true,
             footerrow: true,
+            subGrid: true,
+            subGridRowExpanded: function (subgrid_id, row_id) {
+                var CollarId = GetJqGridValue("#gridTable", row_id, "CollarId");
+                var subgrid_table_id = subgrid_id + "_t";
+                $("#" + subgrid_id).html("<table id='" + subgrid_table_id + "'></table>");
+                $("#" + subgrid_table_id).jqGrid({
+                    url: "@Url.Content("~/SteelMember/CollarManagement/GetOrderEntryList")?OrderId=" + OrderId,
+                    datatype: "json",
+                    colModel: [
+                        { label: '主键', name: "MemberId", hidden: true },
+                        { label: '构件名', name: "MemberName", index: "MemberName", width: 6 },
+                        { label: '型号', name: "MemberModel", index: "MemberModel", width: 6 },
+                        { label: '数量', name: "CollarNumber", index: "LeaderNumber", width: 12 },
+                        { label: '单位', name: "MemberUnit", index: "MemberUnit", width: 6 },
+                        { label: '备注', name: 'Description', index: 'Description', width: 12 },
+                    ],
+                    width: "1227",
+                    rowNum: "all"
+                });
+            },
             rowList: [15, 30, 50, 100, 500, 1000],
             ondblClickRow: function (TreeId) {
 
@@ -157,8 +174,9 @@
     //新增信息
     function btn_add() {
         //var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
+        var ItemId = 2;
         if (IsChecked(TreeId)) {
-            var url = "/SteelMember/ProjectOrder/Form?TreeId= " + TreeId;
+            var url = "/SteelMember/ProjectOrder/Form?TreeId= " + TreeId + "&ItemId=" + ItemId;
             openDialog(url, "Form", "新增信息", 500, 400, function (iframe) {
                 top.frames[iframe].AcceptClick();
             });

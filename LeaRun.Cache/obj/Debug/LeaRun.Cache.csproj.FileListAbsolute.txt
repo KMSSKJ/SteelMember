@@ -8,9 +8,3 @@ E:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.Properties.Resou
 E:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.csproj.GenerateResource.Cache
 E:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.dll
 E:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.pdb
-D:\Source\Repos\SteelMember\LeaRun.Cache\bin\Debug\LeaRun.Cache.dll
-D:\Source\Repos\SteelMember\LeaRun.Cache\bin\Debug\LeaRun.Cache.pdb
-D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.Properties.Resources.resources
-D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.csproj.GenerateResource.Cache
-D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.dll
-D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.pdb

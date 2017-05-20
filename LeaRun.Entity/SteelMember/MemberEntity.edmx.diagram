@@ -21,6 +21,7 @@
         <EntityTypeShape EntityType="kskfModel.RMC_ProcessManagement" Width="1.5" PointX="0.75" PointY="8.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_ProjectWarehouse" Width="1.5" PointX="7.375" PointY="11.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_MemberProcess" Width="1.5" PointX="0.75" PointY="13.75" />
+        <EntityTypeShape EntityType="kskfModel.RMC_Collar" Width="1.5" PointX="9.375" PointY="13.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
