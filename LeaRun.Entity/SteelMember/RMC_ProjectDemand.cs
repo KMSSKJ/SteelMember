@@ -38,5 +38,6 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<System.DateTime> CreateTime { get; set; }
         public Nullable<System.DateTime> ModifiedTime { get; set; }
         public Nullable<int> CollarNumbered { get; set; }
+        public string CreateMan { get; set; }
     }
 }

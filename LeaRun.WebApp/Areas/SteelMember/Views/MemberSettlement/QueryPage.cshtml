@@ -8,11 +8,11 @@
     function GetConditionJson() {
         var JsonData = [];
         $("#grid_condition tbody tr").each(function () {
-            var OrderNumbering = $(this).find('td:eq(0)').find('input').val();
+            var CollarNumbering = $(this).find('td:eq(0)').find('input').val();
             var InBeginTime = $(this).find('td:eq(1)').find('input').val();
             var InEndTime = $(this).find('td:eq(2)').find('input').val();
                 var tdData = {
-                    OrderNumbering: OrderNumbering,
+                    CollarNumbering: CollarNumbering,
                     InBeginTime: InBeginTime,
                     InEndTime: InEndTime,
                 }
@@ -32,7 +32,7 @@
     <tr>
         <th>订单编号：</th>
         <td>
-            <input id="OrderNumbering" class="txt" style="width:120px;" />
+            <input id="CollarNumbering" class="txt" style="width:120px;" />
         </td>
         <th>创建时间：</th>
         <td>

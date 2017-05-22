@@ -50,24 +50,24 @@
                     { label: '构件名', name: "MemberName", index: "MemberName", width: 6 },
                     { label: '构件型号', name: "MemberModel", index: "MemberModel", width: 6 },
                     { label: "单价", name: "UnitPrice", index: "UnitPrice", width: 16 },
-                    { label: '数量', name: "MemberNumber", index: "MemberNumber", width: 12 },
+                    { label: '数量', name: "LeaderNumber", index: "LeaderNumber", width: 12 },
                     //{ label: '构件型号', name: "MemberModel", index: "MemberModel", width: 6 },
                     //{ label: "单价", name: "UnitPrice", index: "UnitPrice", width: 12 },
                     //{ label: '数量', name: "OrderNumber", index: "OrderNumber", width: 12 },
                  
                        { label: '总价', name: "CostBudget", index: "CostBudget", width: 12 },
                        {
-                           label: '创建时间', name: "CreateTime", index: "CreateTime", width: 12,
+                           label: '创建时间', name: "LeaderTime", index: "LeaderTime", width: 12,
                            formatter: function (cellvalue, options, rowObject) {
                                return formatDate(cellvalue, 'yyyy-MM-dd ');
                            }
                        },
-                        {
-                          label: '结算时间', name: "CreateTime", index: "CreateTime", width: 12,
-                          formatter: function (cellvalue, options, rowObject) {
-                              return formatDate(cellvalue, 'yyyy-MM-dd ');
-                          }
-                      },
+                      //  {
+                      //      label: '结算时间', name: "LeaderTime", index: "LeaderTime", width: 12,
+                      //    formatter: function (cellvalue, options, rowObject) {
+                      //        return formatDate(cellvalue, 'yyyy-MM-dd ');
+                      //    }
+                      //},
                     { label: '施工现场人', name: "CreateMan", index: "CreateMan", width: 12 },
                     { label: '结算人', name: "ReviewMan", index: "ReviewMan", width: 16 },
                     { label: '备注', name: 'Description', index: 'Description', width: 12 },

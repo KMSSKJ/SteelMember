@@ -19,16 +19,20 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         //
         // GET: /SteelMember/MemberSettlement/
         [Inject]
-        public OrderManagementIBLL OrderManagementCurrent { get; set; }
+        public FileIBLL MemberLibraryCurrent { get; set; }
         [Inject]
-        public OrderMemberIBLL OrderMemberCurrent { get; set; }
+        public CollarMemberIBLL CollarMemberCurrent { get; set; }
 
         [Inject]
         public MemberMaterialIBLL MemberMaterialCurrent { get; set; }
         [Inject]
         public RawMaterialIBLL RawMaterialCurrent { get; set; }
+
         [Inject]
-        public FileIBLL MemberLibraryCurrent { get; set; }
+        public ProjectManagementIBLL ProjectManagementCurrent { get; set; }
+
+        [Inject]
+        public CollarIBLL CollarManagementCurrent { get; set; }
         public ActionResult Index()
         {
             return View();
@@ -37,17 +41,17 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             return View();
         }
-        public ActionResult GridListJson(FileViewModel model, string TreeID, JqGridParam jqgridparam, string IsPublic,string ParameterJson)
+        public ActionResult GridListJson(FileViewModel model, string TreeID, JqGridParam jqgridparam, string IsPublic, string ParameterJson)
         {
 
             if (ParameterJson != null)
             {
-                if (ParameterJson != "[{\"OrderNumbering\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]")
+                if (ParameterJson != "[{\"CollarNumbering\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]")
                 {
                     List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
                     for (int i = 0; i < query_member.Count(); i++)
                     {
-                        model.OrderNumbering = query_member[i].OrderNumbering;
+                        model.CollarNumbering = query_member[i].CollarNumbering;
                         model.InBeginTime = query_member[i].InBeginTime;
                         model.InEndTime = query_member[i].InEndTime;
                     }
@@ -67,27 +71,27 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
 
                 int total = 0;
-                Expression<Func<RMC_ProjectOrder, bool>> func = ExpressionExtensions.True<RMC_ProjectOrder>();
-                func = f => f.DeleteFlag != 1 &&f.IsSubmit==1;
+                Expression<Func<RMC_Collar, bool>> func = ExpressionExtensions.True<RMC_Collar>();
+                //func = f => f.DeleteFlag != 1 &&f.IsSubmit==1;
                 #region 查询条件拼接
-                if(TreeId.ToString() != "" && TreeId != 0)
+                if (TreeId.ToString() != "" && TreeId != 0)
                 {
                     func = func.And(f => f.TreeId == TreeId);
 
                 }
-                if (model.OrderNumbering != null && model.OrderNumbering.ToString() != "")
+                if (model.CollarNumbering != null && model.CollarNumbering.ToString() != "")
                 {
-                    func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering));
+                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering));
 
                 }
                 if (model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00")
                 {
-                    func = func.And(f => f.CreateTime >= model.InBeginTime);
+                    func = func.And(f => f.CollarTime >= model.InBeginTime);
 
                 }
                 if (model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00")
                 {
-                    func = func.And(f => f.CreateTime <= model.InEndTime);
+                    func = func.And(f => f.CollarTime <= model.InEndTime);
                 }
 
                 #endregion
@@ -101,7 +105,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //                         , f => f.TreeID.ToString()
                 //                         , out total
                 //                         ).ToList();
-                List<RMC_ProjectOrder> listfile = OrderManagementCurrent.FindPage<string>(jqgridparam.page
+                List<RMC_Collar> listfile = CollarManagementCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
                                          , true
@@ -112,32 +116,38 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 foreach (var item in listfile)
                 {
                     ProjectDemandModel projectdemand = new ProjectDemandModel();
-                    var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == item.OrderId).ToList();
-                    int Number=0;
-                    int MemberId=0;//
-                    int? Numbers = 0;//
-                    for (int i = 0; i < OrderMember.Count(); i++)
+                    var CollarMember = CollarMemberCurrent.Find(f => f.CollarId == item.CollarId).ToList();
+                    int Number =0;
+                    int UnitPrice = 0;
+                    int CostBudget = 0;
+                    var MemberId = 0;
+                    int ProjectDemandId = 0;
+                    for (int i = 0; i < CollarMember.Count(); i++)
                     {
-                         MemberId =Convert.ToInt32(OrderMember[i].MemberId);
+                        MemberId = Convert.ToInt32(CollarMember[i].MemberId);
+                        ProjectDemandId = Convert.ToInt32(CollarMember[i].ProjectDemandId);
                         var MemberMaterial = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();
                         for (int i0 = 0; i0 < MemberMaterial.Count(); i0++)
                         {
-                            Numbers = MemberMaterial[i0].MaterialNumber;
-                            int RawMaterialId =Convert.ToInt32(MemberMaterial[i0].RawMaterialId);
-                            var Material= RawMaterialCurrent.Find(f => f.RawMaterialId == RawMaterialId).SingleOrDefault();
-                            Number += Convert.ToInt32(MemberMaterial[i0].MaterialNumber) * Convert.ToInt32(Material.UnitPrice) * Convert.ToInt32(OrderMember[i].Qty);
+                            //Numbers = MemberMaterial[i0].MaterialNumber;
+                            int RawMaterialId = Convert.ToInt32(MemberMaterial[i0].RawMaterialId);
+                            var Material = RawMaterialCurrent.Find(f => f.RawMaterialId == RawMaterialId).SingleOrDefault();
+                            CostBudget += Convert.ToInt32(MemberMaterial[i0].MaterialNumber) * Convert.ToInt32(Material.UnitPrice) * Convert.ToInt32(CollarMember[i].Qty);
+                            UnitPrice += Convert.ToInt32(MemberMaterial[i0].MaterialNumber) * Convert.ToInt32(Material.UnitPrice);
+                            Number = Convert.ToInt32(CollarMember[i].Qty);
+                        
                         }
                     }
-                    var Member = MemberLibraryCurrent.Find(f => f.MemberID == MemberId).SingleOrDefault();//
-                    projectdemand.MemberName = Member.MemberName;//
-                    projectdemand.MemberModel = Member.MemberModel;//
-                    projectdemand.UnitPrice = Member.UnitPrice;//
-                    projectdemand.MemberNumber = Numbers;//
-                    projectdemand.CostBudget = Number.ToString();
-                    projectdemand.ReviewMan =item.ReviewMan;
-                    projectdemand.CreateTime = item.CreateTime;
-                    projectdemand.CreateMan = item.CreateMan;
-                    projectdemand.Productioned = Convert.ToInt32(item.Productioned);
+                    var Member = MemberLibraryCurrent.Find(f => f.MemberID == MemberId).SingleOrDefault();
+                    var ProjectDemand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).SingleOrDefault();    
+                    projectdemand.MemberName = Member.MemberName;
+                    projectdemand.MemberModel = Member.MemberModel;
+                    projectdemand.UnitPrice = UnitPrice.ToString();
+                    projectdemand.LeaderNumber = Number;
+                    projectdemand.CostBudget = CostBudget.ToString();
+                    projectdemand.LeaderTime = item.CollarTime;
+                    projectdemand.CreateMan = ProjectDemand.CreateMan;
+                    projectdemand.ReviewMan = currentUser.RealName;
                     projectdemand.Description = item.Description;
                     projectdemandlist.Add(projectdemand);
                 }

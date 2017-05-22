@@ -252,6 +252,7 @@
     <Property Name="CreateTime" Type="datetime" />
     <Property Name="ModifiedTime" Type="datetime" />
     <Property Name="CollarNumbered" Type="int" />
+    <Property Name="CreateMan" Type="nvarchar" MaxLength="15" />
   </EntityType>
   <EntityType Name="RMC_ProjectInfo">
     <Key>

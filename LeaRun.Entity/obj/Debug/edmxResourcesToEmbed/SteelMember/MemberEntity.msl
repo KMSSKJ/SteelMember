@@ -170,36 +170,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="RMC_ProjectDemand">
-      <EntityTypeMapping TypeName="kskfModel.RMC_ProjectDemand">
-        <MappingFragment StoreEntitySet="RMC_ProjectDemand">
-          <ScalarProperty Name="CollarNumbered" ColumnName="CollarNumbered" />
-          <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
-          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-          <ScalarProperty Name="Productioned" ColumnName="Productioned" />
-          <ScalarProperty Name="OrderQuantityed" ColumnName="OrderQuantityed" />
-          <ScalarProperty Name="MemberNumber" ColumnName="MemberNumber" />
-          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="IsSubmit" ColumnName="IsSubmit" />
-          <ScalarProperty Name="IsDemandSubmit" ColumnName="IsDemandSubmit" />
-          <ScalarProperty Name="ReviewMan" ColumnName="ReviewMan" />
-          <ScalarProperty Name="IsReview" ColumnName="IsReview" />
-          <ScalarProperty Name="CostBudget" ColumnName="CostBudget" />
-          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
-          <ScalarProperty Name="MemberWeight" ColumnName="MemberWeight" />
-          <ScalarProperty Name="UnitId" ColumnName="UnitId" />
-          <ScalarProperty Name="MemberClassId" ColumnName="MemberClassId" />
-          <ScalarProperty Name="MemberCompanyId" ColumnName="MemberCompanyId" />
-          <ScalarProperty Name="MemberModel" ColumnName="MemberModel" />
-          <ScalarProperty Name="MemberNumbering" ColumnName="MemberNumbering" />
-          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-          <ScalarProperty Name="TreeName" ColumnName="TreeName" />
-          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
-          <ScalarProperty Name="ProjectDemandId" ColumnName="ProjectDemandId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="RMC_ProjectInfo">
       <EntityTypeMapping TypeName="kskfModel.RMC_ProjectInfo">
         <MappingFragment StoreEntitySet="RMC_ProjectInfo">
@@ -414,6 +384,37 @@
           <ScalarProperty Name="OrderId" ColumnName="OrderId" />
           <ScalarProperty Name="MemberId" ColumnName="MemberId" />
           <ScalarProperty Name="ProjectWarehouseId" ColumnName="ProjectWarehouseId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RMC_ProjectDemand">
+      <EntityTypeMapping TypeName="kskfModel.RMC_ProjectDemand">
+        <MappingFragment StoreEntitySet="RMC_ProjectDemand">
+          <ScalarProperty Name="CreateMan" ColumnName="CreateMan" />
+          <ScalarProperty Name="CollarNumbered" ColumnName="CollarNumbered" />
+          <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="Productioned" ColumnName="Productioned" />
+          <ScalarProperty Name="OrderQuantityed" ColumnName="OrderQuantityed" />
+          <ScalarProperty Name="MemberNumber" ColumnName="MemberNumber" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IsSubmit" ColumnName="IsSubmit" />
+          <ScalarProperty Name="IsDemandSubmit" ColumnName="IsDemandSubmit" />
+          <ScalarProperty Name="ReviewMan" ColumnName="ReviewMan" />
+          <ScalarProperty Name="IsReview" ColumnName="IsReview" />
+          <ScalarProperty Name="CostBudget" ColumnName="CostBudget" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="MemberWeight" ColumnName="MemberWeight" />
+          <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+          <ScalarProperty Name="MemberClassId" ColumnName="MemberClassId" />
+          <ScalarProperty Name="MemberCompanyId" ColumnName="MemberCompanyId" />
+          <ScalarProperty Name="MemberModel" ColumnName="MemberModel" />
+          <ScalarProperty Name="MemberNumbering" ColumnName="MemberNumbering" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="TreeName" ColumnName="TreeName" />
+          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+          <ScalarProperty Name="ProjectDemandId" ColumnName="ProjectDemandId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
