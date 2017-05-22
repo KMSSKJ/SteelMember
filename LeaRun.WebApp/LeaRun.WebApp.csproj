@@ -176,6 +176,7 @@
     <Compile Include="Areas\SteelMember\Controllers\TreeController.cs" />
     <Compile Include="Areas\SteelMember\Models\AnalysisRawMaterialModel.cs" />
     <Compile Include="Areas\SteelMember\Models\MemberMaterialModel.cs" />
+    <Compile Include="Areas\SteelMember\Models\CollarModel.cs" />
     <Compile Include="Areas\SteelMember\Models\OrderModel.cs" />
     <Compile Include="Areas\SteelMember\Models\RawMaterialLibraryModel.cs" />
     <Compile Include="Areas\SteelMember\Models\ProcessManagementModel.cs" />
@@ -9099,7 +9100,7 @@
     <Content Include="Areas\SteelMember\Views\CollarManagement\CreateCollarForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\CollarManagement\DetailForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\CollarManagement\ItemList.cshtml" />
-    <Content Include="Areas\SteelMember\Views\CollarManagement\OrderForm.cshtml" />
+    <Content Include="Areas\SteelMember\Views\CollarManagement\CollarForm.cshtml" />
     <None Include="Properties\PublishProfiles\LR-FDMS.pubxml" />
     <Content Include="Views\Home\SkinIndex.cshtml" />
     <Content Include="Views\Login\Default.cshtml" />

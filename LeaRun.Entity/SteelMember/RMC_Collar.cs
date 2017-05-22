@@ -15,16 +15,13 @@ namespace LeaRun.Entity.SteelMember
     public partial class RMC_Collar
     {
         public int CollarId { get; set; }
+        public string CollarNumbering { get; set; }
         public Nullable<int> TreeId { get; set; }
-        public Nullable<int> MemberId { get; set; }
-        public string MemberName { get; set; }
-        public string MemberModel { get; set; }
-        public string MemberUnit { get; set; }
-        public Nullable<int> CollarNumber { get; set; }
         public string Use { get; set; }
-        public Nullable<System.DateTime> CollarTime { get; set; }
         public string Librarian { get; set; }
         public string CollarMan { get; set; }
+        public Nullable<System.DateTime> CollarTime { get; set; }
+        public string Borrow { get; set; }
         public string Description { get; set; }
     }
 }

@@ -7,15 +7,23 @@ namespace SteelMember.Models
 {
     public class ProjectDemandModel
     {
+        //领用开始
+        public string CollarNumbering { get; set; }
+        public int? CollarId { get; set; }
+        public DateTime? CollarTime { get; set; }
+        public string CollarMan { get; set; }
+        public string Librarian { get; set; }
+        //领用结束
+
         public int ProjectDemandId { get; set; }
         public int OrderId { get; set; }
         public Nullable<int> MemberClassId { get; set; }
-        public string MemberClassName{ get; set; }
+        public string MemberClassName { get; set; }
         public string ProjectName { get; set; }
         public Nullable<int> MemberId { get; set; }
         public Nullable<int> UnitId { get; set; }
         public string MemberUnit { get; set; }
-        public string MemberName{ get; set; }
+        public string MemberName { get; set; }
         public string MemberCompany { get; set; }
         public Nullable<int> MemberNumber { get; set; }
         public Nullable<int> LeaderNumber { get; set; }

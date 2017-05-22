@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "订单管理》表单页面";
+    ViewBag.Title = "领用管理》表单页面";
     Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
 @*<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>*@
@@ -8,15 +8,16 @@
     var TreeId = GetQuery('TreeId');
     var KeyValue = GetQuery('KeyValue');
     var TreeName = "";
+   
     $(function () {
         GetGrid();
-
+        GetCollarMan();
         AjaxJson("/SteelMember/ProjectOrder/TreeName", { TreeId: TreeId }, function (data) {
             //SetWebControls(data);
             TreeName=data.TreeName;
             document.getElementById("Use").value = TreeName;
         });
-       
+
         if (!!KeyValue) {
             //主表信息
             AjaxJson("/SteelMember/CollarManagement/SetDataForm", { KeyValue: KeyValue }, function (data) {
@@ -28,6 +29,7 @@
                 var JsonData = data.rows;
                 $.each(JsonData, function (i) {
                     var rowData = JsonData[i];
+                    $("#ProjectDemandId➩" + rowindex).val(rowData.ProjectDemandId);
                     $("#MemberID➩" + rowindex).val(rowData.MemberID);
                     $("#MemberNumbering➩" + rowindex).val(rowData.MemberNumbering);
                     $("#MemberName➩" + rowindex).val(rowData.MemberName);
@@ -55,6 +57,39 @@
             }
         }
     })
+
+    //领用人
+    function GetCollarMan() {
+      $.ajax({
+                url: '/SteelMember/File/GetUserName',
+                type: 'post',
+                datatype: 'Json',
+                data: {},
+                success: function (data) {
+                    if (data) {
+                        var projectname_sel = [];
+                        // projectname_sel.push('<option value="" selected>请选择</option>')
+                        for (var i = 0, len = data.length; i < len; i++) {
+                            var projectname = data[i];
+                            projectname_sel.push('<option value="' + projectname.RealName+ '">' + projectname.RealName + '</option>')
+                        }
+                        $("#CollarMan").html(projectname_sel.join(' '));
+                        $('#CollarMan')[0].selectedIndex = 0;//select下拉框的第二个元素为当前选中值
+                        var checkValue = $("#CollarMan").val();  //获取Select选择的Value
+                        $("#CollarMan").change(function () {//code...});   //为Select添加事件，当选择其中一项时触发
+                            var checkValue = $("#CollarMan").val();  //获取Select选择的Value
+                            //var checkText = $("#MemberId").find("option:selected").text();  //获取Select选择的Text
+                            //var checkIndex = $("#MemberId ").get(0).selectedIndex;  //获取Select选择的索引值
+                            //var maxIndex = $("#MemberId option:last").attr("index");  //获取Select最大的索引值
+                        })
+                    }
+                },
+                error: function () {
+                    alert('查询异常');
+                }
+            });
+    }
+
     /*明细begin=======================================*/
     //领用分录
     function GetGrid() {
@@ -63,7 +98,7 @@
             height: $(window).height() - 290,
             autowidth: true,
             colModel: [
-                //{ label: '构件编号[<font face="宋体">*</font>]', name: "MemberNumbering", width: 200, sortable: false },
+                { label: '构件编号[<font face="宋体">*</font>]', name: "MemberNumbering", width: 200, sortable: false },
                 { label: '构件名称', name: "MemberName", width: 180, sortable: false },
                 { label: '构件型号', name: "MemberModel", width: 100, sortable: false, align: 'center' },
                 { label: '数量[<font face="宋体">*</font>]', name: 'Qty', width: 100, sortable: false, align: 'center' },
@@ -74,19 +109,20 @@
                 //{ label: '含税金额[<font face="宋体">*</font>]', name: 'PlusPriceAmount', width: 70, sortable: false, align: 'center' },
                 { label: '说明', name: 'Description', width: 400, sortable: false },
                 { label: '构件ID', name: 'MemberID', width: 1, sortable: false, hidden: true },
+                { label: '需求ID', name: 'ProjectDemandId', width: 1, sortable: false, hidden: true }
             ],
             pager: false,
             rownumbers: true,
             shrinkToFit: false,
             gridview: true,
-            footerrow: true,
+            footerrow: false,
             gridComplete: function () {
                 //合计
                 $(this).footerData("set", {
                     "MemberNumbering": "合计",
                     "Qty": "<span id='TotalQty'>0</span>",
-                    "Price": "<span id='TotalPrice'>0.00</span>",
-                    "PriceAmount": "<span id='TotalPriceAmount'>0.00</span>",
+                    //"Price": "<span id='TotalPrice'>0.00</span>",
+                    //"PriceAmount": "<span id='TotalPriceAmount'>0.00</span>",
                     //"PlusPrice": "<span id='TotalPlusPrice'>0.00</span>",
                     //"CESSAmount": "<span id='TotalCESSAmount'>0.00</span>",
                     //"PlusPriceAmount": "<span id='TotalPlusPriceAmount'>0.00</span>"
@@ -109,8 +145,8 @@
                 MemberModel: '<input id="MemberModel➩' + i + '" class="editable disabled center" type="text" />',
                 MemberUnit: '<input id="MemberUnit➩' + i + '" class="editable disabled center" type="text" />',
                 Qty: '<input id="Qty➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="数量" checkexpession="Double" />',
-                Price: '<input id="Price➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="单价" checkexpession="Double" />',
-                PriceAmount: '<input id="PriceAmount➩' + i + '" class="editable decimal center" type="text" datacol="No" err="金额" checkexpession="Double" />',
+                //Price: '<input id="Price➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="单价" checkexpession="Double" />',
+                //PriceAmount: '<input id="PriceAmount➩' + i + '" class="editable decimal center" type="text" datacol="No" err="金额" checkexpession="Double" />',
                 //PlusPrice: '<input id="PlusPrice➩' + i + '" class="editable disabled center" type="text" />',
                 //CESS: '<input id="CESS➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="税率(%)" checkexpession="Double" />',
                 //CESSAmount: '<input id="CESSAmount➩' + i + '" class="editable decimal disabled center" type="text" />',
@@ -134,7 +170,7 @@
                 return false;
             }
             var index = $(this).attr('id').split('➩')[1];
-            var url = "/SteelMember/ProjectOrder/ItemList?index=" + index+"&TreeId="+TreeId;
+            var url = "/SteelMember/CollarManagement/ItemList?index=" + index+"&TreeId="+TreeId;
             Dialog(url, "ItemList", "选取<"+TreeName+">构件（点击表格添加）", 900, 440);
         });
         //价格信息文本框点击事件
@@ -151,17 +187,17 @@
             return true;
         }
     }
-    //采购订单明细换算+合计
+    //领用单明细换算+合计
     function Conversion(index) {
         var Qty = $("#Qty➩" + index).val();                                //数量
-        var Price = $("#Price➩" + index).val();                            //单价
-        var PriceAmount = $("#PriceAmount➩" + index).val();                //金额
+        //var Price = $("#Price➩" + index).val();                            //单价
+        //var PriceAmount = $("#PriceAmount➩" + index).val();                //金额
         //var PlusPrice = $("#PlusPrice➩" + index).val();                    //含税单价
         //var CESS = $("#CESS➩" + index).val();                              //税率(%)
         //var CESSAmount = $("#CESSAmount➩" + index).val();                  //税额
         //var PlusPriceAmount = $("#PlusPriceAmount➩" + index).val();        //含税金额
         //数量*单价=金额
-        $("#PriceAmount➩" + index).val(FormatCurrency(Qty * Price));
+       // $("#PriceAmount➩" + index).val(FormatCurrency(Qty * Price));
         ////单价 * (1 + (税率 / 100))=含税单价
         //$("#PlusPrice➩" + index).val(FormatCurrency(Price * (1 + (CESS / 100))));
         ////(含税单价-单价)*数量=税额
@@ -197,8 +233,8 @@
             }
         });
         $("#TotalQty").text(TotalQty);
-        $("#TotalPrice").text(FormatCurrency(TotalPrice));
-        $("#TotalPriceAmount").text(FormatCurrency(TotalPriceAmount));
+        //$("#TotalPrice").text(FormatCurrency(TotalPrice));
+        //$("#TotalPriceAmount").text(FormatCurrency(TotalPriceAmount));
         //$("#TotalPlusPrice").text(FormatCurrency(TotalPlusPrice));
         //$("#TotalCESSAmount").text(FormatCurrency(TotalCESSAmount));
         //$("#TotalPlusPriceAmount").text(FormatCurrency(TotalPlusPriceAmount));
@@ -215,7 +251,7 @@
                 window.setTimeout(function () {
                     var postData = GetWebControls("#tb_POOrderFrom");
                     postData["POOrderEntryJson"] = GetTableDataJson("#gridTable");
-                    AjaxJson("/SteelMember/ProjectOrder/SubmitOrderForm?TreeId=" + TreeId, postData, function (data) {
+                    AjaxJson("/SteelMember/CollarManagement/SubmitCollarForm?TreeId=" + TreeId, postData, function (data) {
                         tipDialog(data.Message, 3, data.Code);
                         ThisCloseTab();
                     });
@@ -251,7 +287,7 @@
                     领用单编号[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    <input readonly id="CollarNumbering" type="text" class="txt" datacol="yes" err="制单编号" checkexpession="NotNull" value="@ViewBag.OrderNumbering" style="width: 95%" />
+                    <input readonly id="CollarNumbering" type="text" class="txt" datacol="yes" err="制单编号" checkexpession="NotNull" value="@ViewBag.CollarNumbering" style="width: 95%" />
                 </td>
                 <th>
                     制单(库管)员：
@@ -263,7 +299,7 @@
                     制单日期[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    <input id="CreateTime" type="text" class="txt" datacol="yes" err="制单日期" checkexpession="NotNull" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 95%" />
+                    <input id="CollarTime" type="text" class="txt" datacol="yes" err="制单日期" checkexpession="NotNull" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 95%" />
                 </td>
             </tr>
             <tr>
@@ -283,6 +319,17 @@
                         <option value="有">有</option>
                     </select>
                 </td>
+                <th>
+                    领用人[<font face="宋体" color="red">*</font>]：
+                </th>
+                <td>
+                    @*<input id="Priority" type="text" class="txt" datacol="yes" err="生产优先级" checkexpession="NotNull" style="width: 95%" />*@
+                    <select id="CollarMan" datacol="yes" err="领用人" checkexpession="NotNull" style="width: 60%">
+                    </select>
+                    签字：
+                </td>
+            </tr>
+            <tr>
                 <th>
                     备注：
                 </th>

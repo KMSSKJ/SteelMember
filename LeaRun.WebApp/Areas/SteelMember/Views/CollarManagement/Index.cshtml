@@ -65,13 +65,13 @@
                 var subgrid_table_id = subgrid_id + "_t";
                 $("#" + subgrid_id).html("<table id='" + subgrid_table_id + "'></table>");
                 $("#" + subgrid_table_id).jqGrid({
-                    url: "@Url.Content("~/SteelMember/CollarManagement/GetOrderEntryList")?OrderId=" + OrderId,
+                    url: "@Url.Content("~/SteelMember/CollarManagement/GetCollarEntryList")?CollarId=" + CollarId,
                     datatype: "json",
                     colModel: [
                         { label: '主键', name: "MemberId", hidden: true },
                         { label: '构件名', name: "MemberName", index: "MemberName", width: 6 },
                         { label: '型号', name: "MemberModel", index: "MemberModel", width: 6 },
-                        { label: '数量', name: "CollarNumber", index: "LeaderNumber", width: 12 },
+                        { label: '数量', name: "Qty", index: "Qty", width: 12 },
                         { label: '单位', name: "MemberUnit", index: "MemberUnit", width: 6 },
                         { label: '备注', name: 'Description', index: 'Description', width: 12 },
                     ],
@@ -95,11 +95,11 @@
             },
             gridComplete: function () {
                 //合计
-                $(this).footerData("set", {
-                    "OrderNumbering": "合计",
-                    "MemberNumber": $(this).getCol("MemberNumber", false, "sum"),
-                    "CostBudget": $(this).getCol("CostBudget", false, "sum"),
-                });
+                //$(this).footerData("set", {
+                //    "OrderNumbering": "合计",
+                //    "MemberNumber": $(this).getCol("MemberNumber", false, "sum"),
+                //    "CostBudget": $(this).getCol("CostBudget", false, "sum"),
+                //});
 
                 //表格行样式
                 var ids = $("#gridTable").getDataIDs();
@@ -176,43 +176,53 @@
         //var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
         var ItemId = 2;
         if (IsChecked(TreeId)) {
-            var url = "/SteelMember/ProjectOrder/Form?TreeId= " + TreeId + "&ItemId=" + ItemId;
-            openDialog(url, "Form", "新增信息", 500, 400, function (iframe) {
-                top.frames[iframe].AcceptClick();
-            });
+            AddTabMenu("CreateCollarForm", "@Url.Content("/SteelMember/CollarManagement/CreateCollarForm")?TreeId=" + TreeId + "&TreeName=" + TreeName, "新增订单", "page_white_add.png", true, true, true);
+            //var url = "/SteelMember/CollarManagement/CreateCollarForm?TreeId= " + TreeId + "&ItemId=" + ItemId;
+            //openDialog(url, "Form", "新增信息", 700, 700, function (iframe) {
+            //    top.frames[iframe].AcceptClick();
+            //});
         }
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
-    //变更订单信息(得到实体)
+    //变更领用信息(得到实体)
     function btn_edit() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "ProjectDemandId");
-        var IsSubmit = GetJqGridRowValue("#gridTable", "IsSubmit");
+        var KeyValue = GetJqGridRowValue("#gridTable", "CollarId");
+        //var IsReview = GetJqGridRowValue("#gridTable", "IsReview");
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
-            var IsSubmit1 = IsSubmit.replace(/"/, "'").replace(/"/, "'");
-            if (IsSubmit1 != "<img src='../../Content/Images/checkokmark.gif'>") {
-                var url = "/SteelMember/ProjectManagement/Form?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
-                openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
-                    top.frames[iframe].AcceptClick();
-                });
-            } else {
-
-                tipDialog('该订单已提交，不允许修改！');
-            }
-            }
+            AddTabMenu("CollarForm", "@Url.Content("/SteelMember/CollarManagement/CollarForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId + "&motionType="+ItemID, "变更领用单", "page_white_add.png", true, true, true);
+                //var url = "/SteelMember/ProjectManagement/OrderForm?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
+                //openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
+                //    top.frames[iframe].AcceptClick();
+                //});
+        }
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
-    //删除信息
+    //删除单据
     function btn_delete() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "ProjectDemandId");
+        var KeyValue = GetJqGridRowValue("#gridTable", "CollarId");
         var Prompt = "您确实要删除此文件吗？";
         if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/ProjectOrder/DeleteProjectDemand', { KeyValue: KeyValue }, Prompt);
+            delConfirm('/SteelMember/CollarManagement/DeleteProjectCollar', { KeyValue: KeyValue }, Prompt);
             $("#gridTable").trigger("reloadGrid"); //重新载入
         }
 
+    }
+
+      //详细信息(得到实体)
+    function btn_detail() {
+        var KeyValue = GetJqGridRowValue("#gridTable", "CollarId");
+        var ItemID = 1;
+        if (IsChecked(KeyValue)) {
+            AddTabMenu("DetailForm", "@Url.Content("/SteelMember/CollarManagement/DetailForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId, "领用单详细", "page_white_add.png", true, true, true);
+            //var url = "/SteelMember/ProjectManagement/OrderForm?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
+            //openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
+            //    top.frames[iframe].AcceptClick();
+            //});
+        }
+        $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
     //构件图纸/模型管理

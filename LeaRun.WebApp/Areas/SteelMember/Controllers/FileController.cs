@@ -993,7 +993,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             }
             catch (Exception ex)
             {
-                return Content("<script>alertDialog('" + ex.Message + "');</script>");
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
         }
         #endregion

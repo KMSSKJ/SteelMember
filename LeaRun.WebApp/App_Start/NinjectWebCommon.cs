@@ -83,6 +83,7 @@ namespace LeaRun.WebApp.App_Start
             kernel.Bind<MemberMaterialIBLL>().To<MemberMaterialBLL>();
             kernel.Bind<MemberProcessIBLL>().To<MemberProcessBLL>();
             kernel.Bind<CollarIBLL>().To<CollarBLL>();
+            kernel.Bind<CollarMemberIBLL>().To<CollarMemberBLL>();
 
             kernel.Bind<FactoryWarehouseIDAL>().To<FactoryWarehouseDAL>();
             kernel.Bind<CompanyIDAL>().To<CompanyDAL>();
@@ -101,6 +102,7 @@ namespace LeaRun.WebApp.App_Start
             kernel.Bind<MemberMaterialIDAL>().To<MemberMaterialDAL>();
             kernel.Bind<MemberProcessIDAL>().To<MemberProcessDAL>();
             kernel.Bind<CollarIDAL>().To<CollarDAL>();
+            kernel.Bind<CollarMemberIDAL>().To<CollarMemberDAL>();
         }        
     }
 }

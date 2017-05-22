@@ -1,25 +1,38 @@
 ﻿@{
-    ViewBag.Title = "订单管理》表单页面";
+    ViewBag.Title = "领用管理》表单页面";
     Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
-
+@*<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>*@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-    var KeyValue = GetQuery('KeyValue');
     var TreeId = GetQuery('TreeId');
-    var JsonData1="";
+    var KeyValue = GetQuery('KeyValue');
+    var TreeName = "";
+    var Data = "";
+    var JsonData1;
     $(function () {
         GetGrid();
+        GetCollarMan();
+
+        AjaxJson("/SteelMember/ProjectOrder/TreeName", { TreeId: TreeId }, function (data) {
+            //SetWebControls(data);
+            TreeName = data.TreeName;
+            document.getElementById("Use").value = TreeName;
+        });
+
         if (!!KeyValue) {
             //主表信息
-            AjaxJson("/SteelMember/ProjectOrder/SetDataForm", { KeyValue: KeyValue }, function (data) {
+            AjaxJson("/SteelMember/CollarManagement/SetDataForm", { KeyValue: KeyValue }, function (data) {
                 SetWebControls(data);
+                Data = data;
             });
             var rowindex = 1;
             //明细信息
-            AjaxJson("/SteelMember/ProjectOrder/GetOrderEntryList", { OrderId: KeyValue }, function (data) {
-               JsonData1 = data.rows;
+            AjaxJson("/SteelMember/CollarManagement/GetCollarEntryList", { CollarId: KeyValue }, function (data) {
+                JsonData1 = data.rows;
                 $.each(JsonData1, function (i) {
                     var rowData = JsonData1[i];
+                    $("#ProjectDemandId➩" + rowindex).val(rowData.ProjectDemandId);
                     $("#MemberID➩" + rowindex).val(rowData.MemberID);
                     $("#MemberNumbering➩" + rowindex).val(rowData.MemberNumbering);
                     $("#MemberName➩" + rowindex).val(rowData.MemberName);
@@ -27,7 +40,7 @@
                     $("#MemberUnit➩" + rowindex).val(rowData.MemberUnit);
                     //$("#UnitId➩" + rowindex).val(rowData.UnitId);
                     $("#Qty➩" + rowindex).val(rowData.Qty);
-                    $("#Price➩" + rowindex).val(rowData.Price);
+                    //$("#Price➩" + rowindex).val(rowData.Price);
                     //$("#PriceAmount➩" + rowindex).val(rowData.PriceAmount);
                     //$("#PlusPrice➩" + rowindex).val(rowData.PlusPrice);
                     //$("#CESS➩" + rowindex).val(rowData.CESS);
@@ -47,54 +60,89 @@
             }
         }
     })
+
+    //领用人
+    function GetCollarMan() {
+        $.ajax({
+            url: '/SteelMember/File/GetUserName',
+            type: 'post',
+            datatype: 'Json',
+            data: {},
+            success: function (data) {
+                if (data) {
+                    var projectname_sel = [];
+                    // projectname_sel.push('<option value="" selected>请选择</option>')
+                    for (var i = 0, len = data.length; i < len; i++) {
+                        var projectname = data[i];
+                        projectname_sel.push('<option value="' + projectname.RealName + '">' + projectname.RealName + '</option>')
+                    }
+                    $("#CollarMan").html(projectname_sel.join(' '));
+                    $('#CollarMan')[0].selectedIndex = 0;//select下拉框的第二个元素为当前选中值
+                    var checkValue = $("#CollarMan").val();  //获取Select选择的Value
+                    $("#CollarMan").change(function () {//code...});   //为Select添加事件，当选择其中一项时触发
+                        var checkValue = $("#CollarMan").val();  //获取Select选择的Value
+                        //var checkText = $("#MemberId").find("option:selected").text();  //获取Select选择的Text
+                        //var checkIndex = $("#MemberId ").get(0).selectedIndex;  //获取Select选择的索引值
+                        //var maxIndex = $("#MemberId option:last").attr("index");  //获取Select最大的索引值
+                    })
+                    if (!!KeyValue) {
+                        //编辑时获取值
+                        $("#CollarMan  option[value='" + Data.CollarMan + "']").attr("selected", true);
+                    }
+
+                }
+            },
+            error: function () {
+                alert('查询异常');
+            }
+        });
+    }
+
     /*明细begin=======================================*/
-    //采购订单分录
+    //领用分录
     function GetGrid() {
         $("#gridTable").jqGrid({
             datatype: "local",
             height: $(window).height() - 290,
             autowidth: true,
             colModel: [
-                { label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", width: 200, sortable: false },
-                { label: '构件名称', name: "MemberName", index: "MemberName", width: 180, sortable: false },
-                { label: '构件型号', name: "MemberModel", index: "MemberModel", width: 100, sortable: false, align: 'center' },
-                { label: '单位', name: "MemberUnit", index: "MemberUnit", width: 100, sortable: false, align: 'center' },
-                { label: '数量', name: 'Qty', index: "Qty", width: 100, sortable: false, align: 'center' },
-                { label: '单价', name: 'Price', index: "Price", width: 100, sortable: false, align: 'center' },
-                { label: '金额', name: 'PriceAmount', index: "PriceAmount", width: 200, sortable: false, align: 'center' },
+                { label: '构件编号[<font face="宋体">*</font>]', name: "MemberNumbering", width: 200, sortable: false },
+                { label: '构件名称', name: "MemberName", width: 180, sortable: false },
+                { label: '构件型号', name: "MemberModel", width: 100, sortable: false, align: 'center' },
+                { label: '数量[<font face="宋体">*</font>]', name: 'Qty', width: 100, sortable: false, align: 'center' },
+                { label: '单位', name: "MemberUnit", width: 100, sortable: false, align: 'center' },
                 //{ label: '含税单价[<font face="宋体">*</font>]', name: 'PlusPrice', width: 70, sortable: false, align: 'center' },
                 //{ label: '税率(%)[<font face="宋体">*</font>]', name: 'CESS', width: 70, sortable: false, align: 'center' },
                 //{ label: '税额', name: 'CESSAmount', width: 70, sortable: false, align: 'center' },
                 //{ label: '含税金额[<font face="宋体">*</font>]', name: 'PlusPriceAmount', width: 70, sortable: false, align: 'center' },
-                { label: '说明', name: 'Description', index: "Description", width: 400, sortable: false }
+                { label: '说明', name: 'Description', width: 400, sortable: false },
+                { label: '构件ID', name: 'MemberID', width: 1, sortable: false, hidden: true },
+                { label: '需求ID', name: 'ProjectDemandId', width: 1, sortable: false, hidden: true }
             ],
             pager: false,
             rownumbers: true,
             shrinkToFit: false,
             gridview: true,
-            footerrow: true,
+            footerrow: false,
             gridComplete: function () {
                 //合计
                 $(this).footerData("set", {
                     "MemberNumbering": "合计",
                     "Qty": "<span id='TotalQty'>0</span>",
-                    "Price": "<span id='TotalPrice'>0.00</span>",
-                    "PriceAmount": "<span id='TotalPriceAmount'>0.00</span>",
+                    //"Price": "<span id='TotalPrice'>0.00</span>",
+                    //"PriceAmount": "<span id='TotalPriceAmount'>0.00</span>",
                     //"PlusPrice": "<span id='TotalPlusPrice'>0.00</span>",
                     //"CESSAmount": "<span id='TotalCESSAmount'>0.00</span>",
                     //"PlusPriceAmount": "<span id='TotalPlusPriceAmount'>0.00</span>"
                 });
             }
         });
-     
-        columnModelData("#gridTable");
-
         ////表头合并
         //$("#gridTable").jqGrid('setGroupHeaders', {
         //    useColSpanStyle: true,
         //    groupHeaders: [
-        //        { startColumnName: 'MemberNumbering', numberOfColumns: 4, titleText: '构件信息' },
-        //      { startColumnName: 'Qty', numberOfColumns: 3, titleText: '价格信息' }
+        //      { startColumnName: 'ItemCode', numberOfColumns: 4, titleText: '构件信息' },
+        //      { startColumnName: 'Qty', numberOfColumns: 7, titleText: '价格信息' }
         //    ]
         //});
         //默认添加30行 空行
@@ -105,13 +153,15 @@
                 MemberModel: '<input id="MemberModel➩' + i + '" class="editable disabled center" type="text" />',
                 MemberUnit: '<input id="MemberUnit➩' + i + '" class="editable disabled center" type="text" />',
                 Qty: '<input id="Qty➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="数量" checkexpession="Double" />',
-                Price: '<input id="Price➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="单价" checkexpession="Double" />',
-                PriceAmount: '<input id="PriceAmount➩' + i + '" class="editable decimal center" type="text" datacol="No" err="金额" checkexpession="Double" />',
+                //Price: '<input id="Price➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="单价" checkexpession="Double" />',
+                //PriceAmount: '<input id="PriceAmount➩' + i + '" class="editable decimal center" type="text" datacol="No" err="金额" checkexpession="Double" />',
                 //PlusPrice: '<input id="PlusPrice➩' + i + '" class="editable disabled center" type="text" />',
                 //CESS: '<input id="CESS➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="税率(%)" checkexpession="Double" />',
                 //CESSAmount: '<input id="CESSAmount➩' + i + '" class="editable decimal disabled center" type="text" />',
                 //PlusPriceAmount: '<input id="PlusPriceAmount➩' + i + '" class="editable decimal center" type="text" datacol="No" err="含税金额" checkexpession="Double" />',
-                Description: '<input id="Description➩' + i + '" class="editable" type="text" />',
+                Description: '<input id="Description➩' + i + '" class="editable decimal center" type="text" />',
+                MemberID: '<input id="MemberID➩' + i + '" class="editable " type="hidden" />',
+                ProjectDemandId: '<input id="ProjectDemandId➩' + i + '" class="editable" type="hidden" />',
             }
             $('#gridTable').jqGrid('addRowData', i, rowdata);
         }
@@ -128,15 +178,14 @@
                 return false;
             }
             var index = $(this).attr('id').split('➩')[1];
-            var url = "/SteelMember/ProjectOrder/ItemList?index=" + index;
-            Dialog(url, "ItemList", "选取构件信息（双击表格添加）", 960, 400);
+            var url = "/SteelMember/CollarManagement/ItemList?index=" + index + "&TreeId=" + TreeId;
+            Dialog(url, "ItemList", "选取<" + TreeName + ">构件（点击表格添加）", 900, 440);
         });
         //价格信息文本框点击事件
         $("#gridTable").find('.decimal').click(function () {
             $(this).select();
         });
     }
-
     var array = new Array();
     function IsExistItem(index, code) {
         if (!ArrayExists(array, code)) {
@@ -146,17 +195,17 @@
             return true;
         }
     }
-    //采购订单明细换算+合计
+    //领用单明细换算+合计
     function Conversion(index) {
         var Qty = $("#Qty➩" + index).val();                                //数量
-        var Price = $("#Price➩" + index).val();                            //单价
-        var PriceAmount = $("#PriceAmount➩" + index).val();                //金额
+        //var Price = $("#Price➩" + index).val();                            //单价
+        //var PriceAmount = $("#PriceAmount➩" + index).val();                //金额
         //var PlusPrice = $("#PlusPrice➩" + index).val();                    //含税单价
         //var CESS = $("#CESS➩" + index).val();                              //税率(%)
         //var CESSAmount = $("#CESSAmount➩" + index).val();                  //税额
         //var PlusPriceAmount = $("#PlusPriceAmount➩" + index).val();        //含税金额
         //数量*单价=金额
-        $("#PriceAmount➩" + index).val(FormatCurrency(Qty * Price));
+        // $("#PriceAmount➩" + index).val(FormatCurrency(Qty * Price));
         ////单价 * (1 + (税率 / 100))=含税单价
         //$("#PlusPrice➩" + index).val(FormatCurrency(Price * (1 + (CESS / 100))));
         ////(含税单价-单价)*数量=税额
@@ -192,14 +241,13 @@
             }
         });
         $("#TotalQty").text(TotalQty);
-        $("#TotalPrice").text(FormatCurrency(TotalPrice));
-        $("#TotalPriceAmount").text(FormatCurrency(TotalPriceAmount));
+        //$("#TotalPrice").text(FormatCurrency(TotalPrice));
+        //$("#TotalPriceAmount").text(FormatCurrency(TotalPriceAmount));
         //$("#TotalPlusPrice").text(FormatCurrency(TotalPlusPrice));
         //$("#TotalCESSAmount").text(FormatCurrency(TotalCESSAmount));
         //$("#TotalPlusPriceAmount").text(FormatCurrency(TotalPlusPriceAmount));
     }
     /*明细end=======================================*/
-
     //保存事件
     function SubmitOrderForm() {
         if (!CheckDataValid('#form1')) {
@@ -211,7 +259,7 @@
                 window.setTimeout(function () {
                     var postData = GetWebControls("#tb_POOrderFrom");
                     postData["POOrderEntryJson"] = GetTableDataJson("#gridTable");
-                    AjaxJson("/SteelMember/ProjectOrder/SubmitOrderForm?TreeId=" + TreeId + "&KeyValue=" + KeyValue, postData, function (data) {
+                    AjaxJson("/SteelMember/CollarManagement/SubmitCollarForm?TreeId=" + TreeId, postData, function (data) {
                         tipDialog(data.Message, 3, data.Code);
                         ThisCloseTab();
                     });
@@ -222,7 +270,7 @@
 
     //导出文件
     function btn_derive() {
-        SetDeriveExcel("#gridTable", "构件订单表", "云南公投澄川高速", JsonData1,);
+        SetDeriveExcel("#gridTable", "构件领用表", "云南公投澄川高速", JsonData1, );
         openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "信息导出", 900, 500, function (iframe) {
             top.frames[iframe].AcceptClick();
         })
@@ -259,71 +307,66 @@
                 <a id="button_next_bills" title="后面单单" onclick="next_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_next.png")) 50% 4px no-repeat;">后单</b></span></a>
                 <a id="button_last_bills" title="最后面单据" onclick="last_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_last.png")) 50% 4px no-repeat;">最后</b></span></a>*@
             <a id="button_Commit_Save" title="保存单据" onclick="SubmitOrderForm()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/disk.png")) 50% 4px no-repeat;">保存</b></span></a>
-            <a id="lr-print" title="打印单据" onclick="btn_print()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/printer.png")) 50% 4px no-repeat;">打印</b></span></a>
             <a id="lr-print" title="导出数据" onclick="btn_derive()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/excel_exports.png")) 50% 4px no-repeat;">导出</b></span></a>
-              <div class="tools_separator"></div>
+            <div class="tools_separator"></div>
             <a title="关闭当前窗口(Esc)" onclick="ThisCloseTab()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/back.png")) 50% 4px no-repeat;">离开</b></span></a>
         </div>
         <table id="tb_POOrderFrom" class="form-bill">
             <tr>
                 <td align="center" colspan="8">
                     <div style="font-family: 华文楷体; font-size: x-large; height: 60px; line-height: 60px;">
-                        构件订单&nbsp;
-                        @*<img src="../../Content/Images/billstatis1.png" style="vertical-align: middle;" />*@
+                        构件领用单&nbsp;
+                        <img src="../../Content/Images/billstatis1.png" style="vertical-align: middle;" />
                     </div>
                 </td>
             </tr>
             <tr>
                 <th>
-                    订单编号[<font face="宋体" color="red">*</font>]：
+                    领用单编号[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    <input readonly id="OrderNumbering" type="text" class="txt" datacol="yes" err="制单编号" checkexpession="NotNull" value="@ViewBag.OrderNumbering" style="width: 95%" />
+                    <input readonly id="CollarNumbering" type="text" class="txt" datacol="yes" err="制单编号" checkexpession="NotNull" value="@ViewBag.CollarNumbering" style="width: 95%" />
                 </td>
                 <th>
-                    制单员：
+                    制单(库管)员：
                 </th>
                 <td>
-                    <input readonly id="SubmitMan" type="text" class="txt" style="width: 95%" value="@ViewBag.SubmitMan" />
+                    <input readonly id="Librarian" type="text" class="txt" style="width: 95%" value="@ViewData["Librarian"] " />
                 </td>
                 <th>
                     制单日期[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    <input id="CreateTime" type="text" class="txt" datacol="yes" err="制单日期" checkexpession="NotNull" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 95%" />
+                    <input id="CollarTime" type="text" class="txt" datacol="yes" err="制单日期" checkexpession="NotNull" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 95%" />
                 </td>
             </tr>
             <tr>
                 <th>
-                    收货部门：
+                    工程部位[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    <input readonly id="SubmitMan" type="text" class="txt" style="width: 95%" value="@ViewBag.SubmitMan" />
+                    <input readonly id="Use" type="text" class="txt" style="width: 95%" />
                 </td>
                 <th>
-                    审核人：
-                </th>
-                <td>
-                    <input id="ReviewMan" type="text" class="txt" style="width: 95%" value="@ViewBag.ReviewMan" />
-                </td>
-                <th>
-                    审核日期：
-                </th>
-                <td>
-                    <input readonly id="ReviewTime" type="text" class="txt" style="width: 95%" value="@ViewBag.ReviewTime" />
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    生产优先级[<font face="宋体" color="red">*</font>]：
+                    借用状态[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
                     @*<input id="Priority" type="text" class="txt" datacol="yes" err="生产优先级" checkexpession="NotNull" style="width: 95%" />*@
-                    <select id="Priority" datacol="yes" err="生产优先级" checkexpession="NotNull" style="width: 60%">
-                        <option value="0">正常</option>
-                        <option value="1">加急</option>
+                    <select id="Borrow" datacol="yes" err="借用状态" checkexpession="NotNull" style="width: 60%">
+                        <option value="无">无</option>
+                        <option value="有">有</option>
                     </select>
                 </td>
+                <th>
+                    领用人[<font face="宋体" color="red">*</font>]：
+                </th>
+                <td>
+                    @*<input id="Priority" type="text" class="txt" datacol="yes" err="生产优先级" checkexpession="NotNull" style="width: 95%" />*@
+                    <select id="CollarMan" datacol="yes" err="领用人" checkexpession="NotNull" style="width: 60%"></select>
+                    签字：
+                </td>
+            </tr>
+            <tr>
                 <th>
                     备注：
                 </th>

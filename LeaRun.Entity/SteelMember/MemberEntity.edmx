@@ -32,16 +32,28 @@
             <PropertyRef Name="CollarId" />
           </Key>
           <Property Name="CollarId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CollarNumbering" Type="nvarchar" MaxLength="50" />
           <Property Name="TreeId" Type="int" />
-          <Property Name="MemberId" Type="int" />
-          <Property Name="MemberName" Type="nvarchar" MaxLength="15" />
-          <Property Name="MemberModel" Type="nvarchar" MaxLength="15" />
-          <Property Name="MemberUnit" Type="nvarchar" MaxLength="10" />
-          <Property Name="CollarNumber" Type="int" />
-          <Property Name="Use" Type="nvarchar" MaxLength="40" />
-          <Property Name="CollarTime" Type="datetime" />
+          <Property Name="Use" Type="nvarchar" MaxLength="30" />
           <Property Name="Librarian" Type="nvarchar" MaxLength="10" />
           <Property Name="CollarMan" Type="nvarchar" MaxLength="10" />
+          <Property Name="CollarTime" Type="datetime" />
+          <Property Name="Borrow" Type="nvarchar" MaxLength="5" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="RMC_CollarMember">
+          <Key>
+            <PropertyRef Name="CollarMemberId" />
+          </Key>
+          <Property Name="CollarMemberId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CollarId" Type="int" />
+          <Property Name="MemberId" Type="int" />
+          <Property Name="ProjectDemandId" Type="int" />
+          <Property Name="MemberNumbering" Type="nvarchar" MaxLength="50" />
+          <Property Name="MemberName" Type="nvarchar" MaxLength="30" />
+          <Property Name="MemberModel" Type="nvarchar" MaxLength="30" />
+          <Property Name="Qty" Type="int" />
+          <Property Name="MemberUnit" Type="nvarchar" MaxLength="10" />
           <Property Name="Description" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="RMC_Company">
@@ -315,6 +327,7 @@
           <Property Name="OrderId" Type="int" />
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="MemberTreeId" Type="int" />
+          <Property Name="ProjectDemandId" Type="int" />
           <Property Name="TreeId" Type="int" />
           <Property Name="InStock" Type="int" />
           <Property Name="Damage" Type="int" />
@@ -393,6 +406,7 @@
         <EntityContainer Name="kskfModelStoreContainer">
           <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="Self.RMC_AnalysisRawMaterial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMC_Collar" EntityType="Self.RMC_Collar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RMC_CollarMember" EntityType="Self.RMC_CollarMember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMC_Company" EntityType="Self.RMC_Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMC_FactoryWarehouse" EntityType="Self.RMC_FactoryWarehouse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMC_MemberLibrary" EntityType="Self.RMC_MemberLibrary" Schema="dbo" store:Type="Tables" />
@@ -428,9 +442,10 @@
           <EntitySet Name="RMC_ShipManagement" EntityType="kskfModel.RMC_ShipManagement" />
           <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
           <EntitySet Name="RMC_ProcessManagement" EntityType="kskfModel.RMC_ProcessManagement" />
-          <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
           <EntitySet Name="RMC_MemberProcess" EntityType="kskfModel.RMC_MemberProcess" />
+          <EntitySet Name="RMC_CollarMember" EntityType="kskfModel.RMC_CollarMember" />
           <EntitySet Name="RMC_Collar" EntityType="kskfModel.RMC_Collar" />
+          <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
         </EntityContainer>
         <EntityType Name="RMC_AnalysisRawMaterial">
           <Key>
@@ -767,25 +782,6 @@
           <Property Name="ProcessName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ProcessNumbered" Type="Int32" />
         </EntityType>
-        <EntityType Name="RMC_ProjectWarehouse">
-          <Key>
-            <PropertyRef Name="ProjectWarehouseId" />
-          </Key>
-          <Property Name="ProjectWarehouseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MemberId" Type="Int32" />
-          <Property Name="OrderId" Type="Int32" />
-          <Property Name="DeleteFlag" Type="Int32" />
-          <Property Name="TreeId" Type="Int32" />
-          <Property Name="InStock" Type="Int32" />
-          <Property Name="Damage" Type="Int32" />
-          <Property Name="Class" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsShiped" Type="Int32" />
-          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
-          <Property Name="Librarian" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Leader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="MemberTreeId" Type="Int32" />
-        </EntityType>
         <EntityType Name="RMC_MemberProcess">
           <Key>
             <PropertyRef Name="MemberProcessId" />
@@ -800,21 +796,53 @@
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="SortCode" Type="Int32" />
         </EntityType>
+        <EntityType Name="RMC_CollarMember">
+          <Key>
+            <PropertyRef Name="CollarMemberId" />
+          </Key>
+          <Property Name="CollarMemberId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CollarId" Type="Int32" />
+          <Property Name="MemberId" Type="Int32" />
+          <Property Name="ProjectDemandId" Type="Int32" />
+          <Property Name="MemberNumbering" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MemberName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="MemberModel" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="MemberUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="RMC_Collar">
           <Key>
             <PropertyRef Name="CollarId" />
           </Key>
           <Property Name="CollarId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CollarNumbering" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TreeId" Type="Int32" />
-          <Property Name="MemberId" Type="Int32" />
-          <Property Name="MemberName" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="MemberModel" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="MemberUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="CollarNumber" Type="Int32" />
-          <Property Name="Use" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="CollarTime" Type="DateTime" Precision="3" />
+          <Property Name="Use" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="Librarian" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="CollarMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CollarTime" Type="DateTime" Precision="3" />
+          <Property Name="Borrow" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RMC_ProjectWarehouse">
+          <Key>
+            <PropertyRef Name="ProjectWarehouseId" />
+          </Key>
+          <Property Name="ProjectWarehouseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MemberId" Type="Int32" />
+          <Property Name="OrderId" Type="Int32" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="MemberTreeId" Type="Int32" />
+          <Property Name="ProjectDemandId" Type="Int32" />
+          <Property Name="TreeId" Type="Int32" />
+          <Property Name="InStock" Type="Int32" />
+          <Property Name="Damage" Type="Int32" />
+          <Property Name="Class" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsShiped" Type="Int32" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="Librarian" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Leader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
@@ -1172,26 +1200,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RMC_ProjectWarehouse">
-            <EntityTypeMapping TypeName="kskfModel.RMC_ProjectWarehouse">
-              <MappingFragment StoreEntitySet="RMC_ProjectWarehouse">
-                <ScalarProperty Name="MemberTreeId" ColumnName="MemberTreeId" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Leader" ColumnName="Leader" />
-                <ScalarProperty Name="Librarian" ColumnName="Librarian" />
-                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
-                <ScalarProperty Name="IsShiped" ColumnName="IsShiped" />
-                <ScalarProperty Name="Class" ColumnName="Class" />
-                <ScalarProperty Name="Damage" ColumnName="Damage" />
-                <ScalarProperty Name="InStock" ColumnName="InStock" />
-                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-                <ScalarProperty Name="ProjectWarehouseId" ColumnName="ProjectWarehouseId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="RMC_MemberProcess">
             <EntityTypeMapping TypeName="kskfModel.RMC_MemberProcess">
               <MappingFragment StoreEntitySet="RMC_MemberProcess">
@@ -1207,21 +1215,55 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="RMC_CollarMember">
+            <EntityTypeMapping TypeName="kskfModel.RMC_CollarMember">
+              <MappingFragment StoreEntitySet="RMC_CollarMember">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MemberUnit" ColumnName="MemberUnit" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="MemberModel" ColumnName="MemberModel" />
+                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+                <ScalarProperty Name="MemberNumbering" ColumnName="MemberNumbering" />
+                <ScalarProperty Name="ProjectDemandId" ColumnName="ProjectDemandId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="CollarId" ColumnName="CollarId" />
+                <ScalarProperty Name="CollarMemberId" ColumnName="CollarMemberId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="RMC_Collar">
             <EntityTypeMapping TypeName="kskfModel.RMC_Collar">
               <MappingFragment StoreEntitySet="RMC_Collar">
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Borrow" ColumnName="Borrow" />
+                <ScalarProperty Name="CollarTime" ColumnName="CollarTime" />
                 <ScalarProperty Name="CollarMan" ColumnName="CollarMan" />
                 <ScalarProperty Name="Librarian" ColumnName="Librarian" />
-                <ScalarProperty Name="CollarTime" ColumnName="CollarTime" />
                 <ScalarProperty Name="Use" ColumnName="Use" />
-                <ScalarProperty Name="CollarNumber" ColumnName="CollarNumber" />
-                <ScalarProperty Name="MemberUnit" ColumnName="MemberUnit" />
-                <ScalarProperty Name="MemberModel" ColumnName="MemberModel" />
-                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
-                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
                 <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+                <ScalarProperty Name="CollarNumbering" ColumnName="CollarNumbering" />
                 <ScalarProperty Name="CollarId" ColumnName="CollarId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMC_ProjectWarehouse">
+            <EntityTypeMapping TypeName="kskfModel.RMC_ProjectWarehouse">
+              <MappingFragment StoreEntitySet="RMC_ProjectWarehouse">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Leader" ColumnName="Leader" />
+                <ScalarProperty Name="Librarian" ColumnName="Librarian" />
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="IsShiped" ColumnName="IsShiped" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="Damage" ColumnName="Damage" />
+                <ScalarProperty Name="InStock" ColumnName="InStock" />
+                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+                <ScalarProperty Name="ProjectDemandId" ColumnName="ProjectDemandId" />
+                <ScalarProperty Name="MemberTreeId" ColumnName="MemberTreeId" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="ProjectWarehouseId" ColumnName="ProjectWarehouseId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

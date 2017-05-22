@@ -16,7 +16,7 @@
             });
             var rowindex = 1;
             //明细信息
-            AjaxJson("/SteelMember/ProjectOrder/GetOrderEntryList", { OrderId: KeyValue }, function (data) {
+            AjaxJson("/SteelMember/ProjectOrder/GetCollarEntryList", { OrderId: KeyValue }, function (data) {
                JsonData1 = data.rows;
                 $.each(JsonData1, function (i) {
                     var rowData = JsonData1[i];

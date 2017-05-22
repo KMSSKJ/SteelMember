@@ -217,7 +217,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             }
             catch (Exception ex)
             {
-                return Content("<script>alertDialog('" + ex.Message + "');</script>");
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
         }
 
@@ -279,17 +279,17 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
                 else
                 {
-                    int treeid = Convert.ToInt32(TreeId);
-                    RMC_ProjectWarehouse Oldentity = new RMC_ProjectWarehouse();
-                    Oldentity.TreeId = treeid;
-                    Oldentity.Damage = entity.Damage;//给旧实体重新赋值
-                    Oldentity.Class = entity.Class;
-                    Oldentity.Librarian = "1";
-                    Oldentity.ModifyTime = DateTime.Now;
-                    Oldentity.Leader = entity.Leader;
-                    Oldentity.Description = entity.Description;
-                    ProjectWarehouseCurrent.Add(Oldentity);
-                    IsOk = 1;
+                    //int treeid = Convert.ToInt32(TreeId);
+                    //RMC_ProjectWarehouse Oldentity = new RMC_ProjectWarehouse();
+                    //Oldentity.TreeId = treeid;
+                    //Oldentity.Damage = entity.Damage;//给旧实体重新赋值
+                    //Oldentity.Class = entity.Class;
+                    //Oldentity.Librarian = "1";
+                    //Oldentity.ModifyTime = DateTime.Now;
+                    //Oldentity.Leader = entity.Leader;
+                    //Oldentity.Description = entity.Description;
+                    //ProjectWarehouseCurrent.Add(Oldentity);
+                    //IsOk = 1;
                     //this.WriteLog(IsOk, entity, null, KeyValue, Message);
                 }
                 return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());

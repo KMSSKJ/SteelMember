@@ -13,6 +13,7 @@ namespace LeaRun.Utilities
         public int TreeID { get; set; }
         public string MemberModel { get; set; }
         public string OrderNumbering { get; set; }
+        public string CollarNumbering { get; set; }
         public string FileType { get; set; }
         public string FilePath { get; set; }
         public int Size { get; set; }

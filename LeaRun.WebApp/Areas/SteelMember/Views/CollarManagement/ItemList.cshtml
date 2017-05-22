@@ -22,21 +22,21 @@
     function GetGrid() {
         var index = GetQuery('index');
         $("#gridTable").jqGrid({
-            url: "@Url.Content("~/SteelMember/ProjectOrder/GridListJsonDemand")?TreeID=" + GetQuery('TreeId'),
+            url: "@Url.Content("~/SteelMember/CollarManagement/GridListJsonCollar")?TreeID=" + GetQuery('TreeId'),
             datatype: "json",
             height: $(window).height() + 170,
             autowidth: true,
             colModel: [
                 { label: '构件主键', name: 'MemberId', hidden: true },
-                { label: '构件外键', name: 'ProjectDemandId', hidden: true },
+                { label: '构件外键', name: 'ProjectDemandId', hidden: true  },
                 { label: '构件编号', name: "MemberNumbering", width: 125, sortable: false },
                 { label: '构件名称', name: "MemberName", width: 125, sortable: false },
                 { label: '构件型号', name: "MemberModel", width: 100, sortable: false, align: 'center' },
                 { label: '单位', name: "MemberUnit", width: 50, sortable: false, align: 'center' },
-                { label: '单价', name: "UnitPrice", width: 50, sortable: false, align: 'center' },
-                { label: '需求量', name: "MemberNumber", width: 50, sortable: false, align: 'center' },
-                { label: '已成订单量', name: "OrderQuantityed", width: 50, sortable: false, align: 'center' },
-                { label: '说明', name: 'Remark', width: 150, sortable: false }
+                //{ label: '单价', name: "UnitPrice", width: 50, sortable: false, align: 'center' },
+                { label: '库存量', name: "InStock", width: 50, sortable: false, align: 'center' },
+                { label: '已领用量', name: "OrderQuantityed", width: 50, sortable: false, align: 'center' },
+                { label: '说明', name: 'Description', width: 150, sortable: false }
             ],
             rowNum: 30,
             sortname: 'SortCode',
@@ -58,7 +58,7 @@
                     $parentobj.$("#MemberName➩" + index).val(rowData.MemberName);
                     $parentobj.$("#MemberModel➩" + index).val(rowData.MemberModel);
                     $parentobj.$("#MemberUnit➩" + index).val(rowData.MemberUnit);
-                    $parentobj.$("#Qty➩" + index).val(rowData.MemberNumber);
+                    $parentobj.$("#Qty➩" + index).val(rowData.InStock);
                     $parentobj.$("#Price➩" + index).val(rowData.UnitPrice);
                     $parentobj.$("#PriceAmount➩" + index).val(Number(rowData.UnitPrice) * Number(rowData.MemberNumber));
                     //$parentobj.$("#PlusPrice➩" + index).val("0.00");
@@ -87,9 +87,9 @@
                         $parentobj.$("#MemberName➩" + index).val(rowData.MemberName);
                         $parentobj.$("#MemberModel➩" + index).val(rowData.MemberModel);
                         $parentobj.$("#MemberUnit➩" + index).val(rowData.MemberUnit);
-                        $parentobj.$("#Qty➩" + index).val(rowData.MemberNumber);
-                        $parentobj.$("#Price➩" + index).val(rowData.UnitPrice);
-                        $parentobj.$("#PriceAmount➩" + index).val(Number(rowData.UnitPrice) * Number(rowData.MemberNumber));
+                        $parentobj.$("#Qty➩" + index).val(rowData.InStock);
+                        //$parentobj.$("#Price➩" + index).val(rowData.UnitPrice);
+                        //$parentobj.$("#PriceAmount➩" + index).val(Number(rowData.UnitPrice) * Number(rowData.MemberNumber));
                         //$parentobj.$("#PlusPrice➩" + index).val("0.00");
                         //$parentobj.$("#CESS➩" + index).val("0.00");
                         //$parentobj.$("#CESSAmount➩" + index).val("0.00");
@@ -114,7 +114,7 @@
     function btn_Search() {
         var keywords = $("#keywords").val();
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("~/SteelMember/ProjectOrder/GridListJsonDemand")?keywords=" + escape(keywords)+"&TreeID=" + GetQuery('TreeId')
+            url: "@Url.Content("~/SteelMember/CollarManagement/GridListJsonCollar")?keywords=" + escape(keywords)+"&TreeID=" + GetQuery('TreeId')
     }).trigger('reloadGrid');
     }
 

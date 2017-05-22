@@ -18,6 +18,8 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<int> MemberId { get; set; }
         public Nullable<int> OrderId { get; set; }
         public Nullable<int> DeleteFlag { get; set; }
+        public Nullable<int> MemberTreeId { get; set; }
+        public Nullable<int> ProjectDemandId { get; set; }
         public Nullable<int> TreeId { get; set; }
         public Nullable<int> InStock { get; set; }
         public Nullable<int> Damage { get; set; }
@@ -27,6 +29,5 @@ namespace LeaRun.Entity.SteelMember
         public string Librarian { get; set; }
         public string Leader { get; set; }
         public string Description { get; set; }
-        public Nullable<int> MemberTreeId { get; set; }
     }
 }

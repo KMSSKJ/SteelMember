@@ -104,7 +104,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <returns></returns>
         public ActionResult CreateOrderForm()
         {
-            ViewBag.OrderNumbering ="DD"+ DateTime.Now.ToString("yyyyMMddhhmmss");
+            ViewBag.OrderNumbering ="DD"+ DateTime.Now.ToString("yyyyMMddhhmmssffff");
             ViewData["CreateMan"] = currentUser.RealName;
             return View();
         }
@@ -381,7 +381,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             }
             catch (Exception ex)
             {
-                return Content("<script>alertDialog('" + ex.Message + "');</script>");
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
         }
 
@@ -514,7 +514,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             }
             catch (Exception ex)
             {
-                return Content("<script>alertDialog('" + ex.Message + "');</script>");
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
         }
 
@@ -639,7 +639,11 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             return Content(entity.ToJson());
             //return Json(entity);
         }
-
+        /// <summary>
+        /// 删除订单
+        /// </summary>
+        /// <param name="KeyValue"></param>
+        /// <returns></returns>
         public ActionResult DeleteProjectOrder(string KeyValue)
         {
             try
@@ -738,6 +742,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         projectwarehouse.MemberTreeId = Member.TreeID;
                         projectwarehouse.TreeId = file.TreeId;
                         projectwarehouse.IsShiped = 0;
+                        var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == OrderId&&f.MemberId== item.MemberId).SingleOrDefault();
+                        projectwarehouse.ProjectDemandId = OrderMember.ProjectDemandId;
                         ProjectWarehouseCurrent.Add(projectwarehouse);
                     }
 
