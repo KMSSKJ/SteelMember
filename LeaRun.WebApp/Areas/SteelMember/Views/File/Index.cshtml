@@ -8,7 +8,7 @@
         GetGrid();
         SwitchListAndView();
     });
-
+    //鼠标移动放大图片
     function showBigImg(oEvent, imgPath) {
         bigImg.src = imgPath;
         var oDiv = document.getElementById("BigDiv");
@@ -19,7 +19,7 @@
     function leaveBigImg(oEvent) {
         var oDiv = document.getElementById("BigDiv");
         oDiv.style.visibility = "hidden";
-    }
+    }//鼠标移动放大图片
 
     //加载左边树
     //注意 FolderId 默认等于1 这样就可以加载一级目录下的子节点文件夹

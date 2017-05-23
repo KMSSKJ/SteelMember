@@ -259,7 +259,7 @@
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
             if (IsReview.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
-                AddTabMenu("OrderForm", "@Url.Content("/SteelMember/ProjectOrder/OrderForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId, "变更订单", "page_white_add.png", true, true, true);
+                AddTabMenu("OrderForm", "@Url.Content("/SteelMember/ProjectOrder/OrderForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId + "&motionType=" + ItemID, "变更订单", "page_white_add.png", true, true, true);
                 //var url = "/SteelMember/ProjectManagement/OrderForm?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
                 //openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
                 //    top.frames[iframe].AcceptClick();

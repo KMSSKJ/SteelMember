@@ -67,7 +67,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             int itemid = Convert.ToInt32(ItemId);
             List<RMC_Tree> list, list1, list2;
             list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemClass == 0).ToList();
-            list2 = TreeCurrent.Find(t => t.ItemID == itemid && t.DeleteFlag != 1&&t.ItemClass==2).ToList();
+            list2 = TreeCurrent.Find(t => t.ItemID == itemid && t.DeleteFlag != 1 && t.ItemClass == 2).ToList();
             list = list1.Concat(list2).Distinct().ToList();
 
             List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
@@ -132,8 +132,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     TreeId = Convert.ToInt32(TreeID);
                 }
 
-              
-              
+
+
 
 
                 int total = 0;
@@ -176,7 +176,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                          , true
                                          , f => f.CreateTime.ToString()
                                          , out total
-                                         ).OrderBy(f=>f.CreateTime).ToList();
+                                         ).OrderBy(f => f.CreateTime).ToList();
                 List<ProjectDemandModel> projectdemandlist = new List<ProjectDemandModel>();
                 foreach (var item in listfile)
                 {
@@ -186,6 +186,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     var memberlibrary = MemberLibraryCurrent.Find(f => f.MemberID == item.MemberId).SingleOrDefault();
                     projectdemand.MemberName = memberlibrary.MemberName;
                     projectdemand.MemberModel = memberlibrary.MemberModel;
+                    projectdemand.Icon = memberlibrary.Icon;
                     projectdemand.CreateTime = item.CreateTime;
                     projectdemand.MemberUnit = memberunit.UnitName;
                     projectdemand.UnitPrice = memberlibrary.UnitPrice;
@@ -207,7 +208,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 if (projectdemandlist.Count() > 0)// && listtree.Count() > 0
                 {
                     //ListData0 = ListToDataTable(listtree);
-                    ListData1 =DataHelper.ListToDataTable(projectdemandlist);
+                    ListData1 = DataHelper.ListToDataTable(projectdemandlist);
                     ListData = ListData1.Clone();
                     object[] obj = new object[ListData.Columns.Count];
                     ////添加DataTable0的数据
@@ -229,7 +230,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //}
                 else if (listfile.Count() > 0)
                 {
-                    ListData =DataHelper.ListToDataTable(projectdemandlist);
+                    ListData = DataHelper.ListToDataTable(projectdemandlist);
                 }
                 else
                 {
@@ -247,7 +248,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
         }
-    
+
         /// <summary>
         /// 表单视图
         /// </summary>
@@ -324,24 +325,24 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     ProjectManagementCurrent.Modified(Oldentity);
                     IsOk = 1;//更新实体对象
                     //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
-                }     
+                }
                 else
                 {
                     int treeid = Convert.ToInt32(TreeID);
                     RMC_ProjectDemand Oldentity = new RMC_ProjectDemand();
                     Oldentity.TreeId = treeid;
                     Oldentity.MemberClassId = entity.MemberClassId;
-                   // Oldentity.ProjectId = entity.ProjectId;//给旧实体重新赋值
+                    // Oldentity.ProjectId = entity.ProjectId;//给旧实体重新赋值
                     Oldentity.MemberId = entity.MemberId;
                     var Member = MemberLibraryCurrent.Find(f => f.MemberID == entity.MemberId).SingleOrDefault();
                     Oldentity.MemberNumbering = Member.MemberNumbering;
                     Oldentity.MemberModel = Member.MemberModel;
                     Oldentity.UnitId = entity.UnitId;
                     Oldentity.IsSubmit = 0;
-                    Oldentity.IsDemandSubmit= 0;
+                    Oldentity.IsDemandSubmit = 0;
                     Oldentity.IsReview = 0;
                     Oldentity.OrderQuantityed = 0;
-                    Oldentity.CreateTime=DateTime.Now;
+                    Oldentity.CreateTime = DateTime.Now;
                     Oldentity.MemberNumber = entity.MemberNumber;
                     Oldentity.MemberWeight = entity.MemberWeight;
                     Oldentity.MemberCompanyId = entity.MemberCompanyId;
@@ -431,10 +432,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         }
 
         /// <summary>
-            /// 获取构件图纸模型
-            /// </summary>
-            /// <param name="KeyValue"></param>
-            /// <returns></returns>
+        /// 获取构件图纸模型
+        /// </summary>
+        /// <param name="KeyValue"></param>
+        /// <returns></returns>
         public ActionResult GetMemderDrawing(string KeyValue)
         {
             ProjectDemandModel projectdemand = new ProjectDemandModel();
@@ -461,7 +462,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// </summary>
         /// <param name="KeyValue"></param>
         /// <returns></returns>
-        public ActionResult ReviewProjectDemand(string KeyValue,string IsReview)
+        public ActionResult ReviewProjectDemand(string KeyValue, string IsReview)
         {
             try
             {
@@ -470,7 +471,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 var file = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).First();
                 file.ModifiedTime = DateTime.Now;
                 file.ReviewMan = currentUser.RealName;
-                file.IsReview =Convert.ToInt32(IsReview);
+                file.IsReview = Convert.ToInt32(IsReview);
                 ProjectManagementCurrent.Modified(file);
                 return Content(new JsonMessage { Success = true, Code = "1", Message = Message }.ToString());
             }

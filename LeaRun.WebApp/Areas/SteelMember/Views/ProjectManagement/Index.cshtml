@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "工程项目管理";
-        Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
 
 <script type="text/javascript">
@@ -9,6 +9,19 @@
         GetGrid();
         SwitchListAndView();
     });
+
+    //鼠标移动放大图片
+    function showBigImg(oEvent, imgPath) {
+        bigImg.src = imgPath;
+        var oDiv = document.getElementById("BigDiv");
+        oDiv.style.visibility = "visible";
+        oDiv.style.left = oEvent.clientX + 5;
+        oDiv.style.top = oEvent.clientY + 5;
+    }
+    function leaveBigImg(oEvent) {
+        var oDiv = document.getElementById("BigDiv");
+        oDiv.style.visibility = "hidden";
+    }//鼠标移动放大图片
 
     //加载左边树
     //注意 FolderId 默认等于1 这样就可以加载一级目录下的子节点文件夹
@@ -46,8 +59,27 @@
             colModel: [
                     { label: '主键', name: "ProjectDemandId", hidden: true },
                     { label: '外键', name: "MemberId", index: "MemberId", hidden: true },
-                    { label: '构件名', name: "MemberName", index: "MemberName", width: 6 },
+                    {
+                        label: '图标', name: "Icon", hidden: false, width:5,
+                        formatter: function (cellvalue, options, rowObject) {
+                            var Icon= cellvalue;
+                            if (Icon != "" || Icon != null) {
+                                var filename = Icon.substring(0, Icon.lastIndexOf('.'));//获取文件名称，去除后缀名
+                                filename = filename + "/" + Icon;
+                                if (Icon == "1.png") {
+                                    //<div style='cursor:pointer;padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;' src='../../Content/Scripts/tree/images/folder.gif' onmouseover=\"showBigImg(event,'../../Content/Scripts/tree/images/folder.gif')\" onmouseout=\"leaveBigImg(event)\"/>"</div>
+                                    //<img style='width:32px;height:18px;padding-bottom:3px;padding-right:2px;' src='../../Resource/Document/NetworkDisk/System/Member/" + filename + "' onmouseover=\"showBigImg(event,'../../Resource/Document/NetworkDisk/System/Member/" + filename + "')\" onmouseout=\"leaveBigImg(event)\" />";
+                                    return "<img style='width:44px;height:32px;' src='../../Resource/Document/NetworkDisk/System/Member/baton.png'onmouseover=\"showBigImg(event,'../../Resource/Document/NetworkDisk/System/Member/baton.png')\"onmouseout=\"leaveBigImg(event)\"/>";
+                                } else {
+                                    return "<img style='width:44px;height:32px;' src='../../Resource/Document/NetworkDisk/System/Member/" + filename + "' onmouseover=\"showBigImg(event,'../../Resource/Document/NetworkDisk/System/Member/" + filename + "')\" onmouseout=\"leaveBigImg(event)\" />";
+                                }
+                            }else {
+                                return "";
+                            }
+                        }
+                    },
                     { label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", width: 12 },
+                    { label: '构件名', name: "MemberName", index: "MemberName", width: 6 },
                     { label: '构件型号', name: "MemberModel", index: "MemberModel", width: 6 },
                     { label: '需求量', name: "MemberNumber", index: "MemberNumber", width: 6 },
                     {
@@ -138,9 +170,13 @@
 
     }
 
-    //刷新表格 树
+    //按钮刷新表格树
     function btn_reload() {
         GetTree();
+        $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
+    //刷新
+    function windowload() {
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
@@ -223,7 +259,7 @@
         }
     }
 
-    
+
 
     //提交项目
     function btn_SubmitItem() {
@@ -247,9 +283,10 @@
         }
     }
 
+    var JsonData1 = "";
     //导出文件
     function btn_derive() {
-        SetDeriveExcel("#gridTable", "构件需求信息表");
+        SetDeriveExcel("#gridTable", "构件需求信息表","云南公投澄川高速", JsonData1);
         openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "信息导出", 900, 500, function (iframe) {
             top.frames[iframe].AcceptClick();
         })
@@ -273,23 +310,6 @@
         PrintDialog("/SteelMember/File/PrintPage", "PrintPage", "打印当前页", 1200, 500, function (iframe) {
             top.frames[iframe].SubmitPrint()
         });
-    }
-
-    //创建订单
-    function btn_create_order() {
-        var IsReview = GetJqGridRowValue("#gridTable", "IsReview");
-        var ProjectDemandId = GetJqGridRowValue("#gridTable", "ProjectDemandId");
-        if (IsDelData(ProjectDemandId)) {
-            if (IsReview.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
-                AddTabMenu("POOrderForm", "@Url.Content("/SteelMember/ProjectManagement/CreateOrderForm")?ProjectDemandId= " + ProjectDemandId + "&TreeId=" + TreeId, "新增订单", "page_white_add.png", true, true, true);
-            //var url = "/SteelMember/ProjectManagement/CreateOrderForm?KeyValue= " + KeyValue + "&MemberNumber=" + MemberNumber + "&MemberModel=" + MemberModel;
-            //openDialog(url, "Form", "创建订单", 600, 400, function (iframe) {
-            //    top.frames[iframe].AcceptClick();
-                //});
-            }else{
-                alertDialog("该需求未通过或未提交审核！");
-            }
-        }
     }
 
     //查询
@@ -365,6 +385,9 @@
             <div class="PartialButton">
                 @Html.Partial("_PartialButton")
             </div>
+        </div>
+        <div id="BigDiv" style="margin-left:50px;margin-top:160px; width:360px;height:360px; position: absolute; visibility: hidden; padding: 5px;z-index:999">
+            <img id="bigImg" src="" style="width:100%;height:100%" />
         </div>
         <table id="gridTable"></table>
     </div>

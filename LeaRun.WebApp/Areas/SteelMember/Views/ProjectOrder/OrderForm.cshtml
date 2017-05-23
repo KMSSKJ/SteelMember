@@ -22,10 +22,11 @@
                     var rowData = JsonData[i];                
                     $("#ProjectDemandId➩" + rowindex).val(rowData.ProjectDemandId);
                     $("#MemberID➩" + rowindex).val(rowData.MemberID);
+                    $("#MemberNumbering➩" + rowindex).val(rowData.MemberNumbering);
                     $("#MemberNumber➩" + rowindex).val(rowData.MemberNumber);
                     $("#MemberName➩" + rowindex).val(rowData.MemberName);
                     $("#MemberModel➩" + rowindex).val(rowData.MemberModel);
-                    $("#MemberUnit➩" + index).val(rowData.MemberUnit);
+                    $("#MemberUnit➩" + rowindex).val(rowData.MemberUnit);
                     $("#UnitId➩" + rowindex).val(rowData.UnitId);
                     $("#Qty➩" + rowindex).val(rowData.Qty);
                     $("#Price➩" + rowindex).val(rowData.Price);
@@ -281,7 +282,7 @@
                     制单员：
                 </th>
                 <td>
-                    <input readonly id="SubmitMan" type="text" class="txt" style="width: 95%" value="@ViewBag.SubmitMan" />
+                    <input readonly id="CreateMan" type="text" class="txt" style="width: 95%" value="@ViewBag.CreateMan" />
                 </td>
                 <th>
                     制单日期[<font face="宋体" color="red">*</font>]：
