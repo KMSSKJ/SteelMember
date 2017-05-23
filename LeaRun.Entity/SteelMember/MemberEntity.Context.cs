@@ -28,7 +28,6 @@ namespace LeaRun.Entity.SteelMember
         public virtual DbSet<RMC_AnalysisRawMaterial> RMC_AnalysisRawMaterial { get; set; }
         public virtual DbSet<RMC_Company> RMC_Company { get; set; }
         public virtual DbSet<RMC_FactoryWarehouse> RMC_FactoryWarehouse { get; set; }
-        public virtual DbSet<RMC_MemberLibrary> RMC_MemberLibrary { get; set; }
         public virtual DbSet<RMC_MemberMaterial> RMC_MemberMaterial { get; set; }
         public virtual DbSet<RMC_MemberUnit> RMC_MemberUnit { get; set; }
         public virtual DbSet<RMC_OrderMember> RMC_OrderMember { get; set; }
@@ -43,5 +42,6 @@ namespace LeaRun.Entity.SteelMember
         public virtual DbSet<RMC_Collar> RMC_Collar { get; set; }
         public virtual DbSet<RMC_ProjectWarehouse> RMC_ProjectWarehouse { get; set; }
         public virtual DbSet<RMC_ProjectDemand> RMC_ProjectDemand { get; set; }
+        public virtual DbSet<RMC_MemberLibrary> RMC_MemberLibrary { get; set; }
     }
 }

@@ -1027,7 +1027,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     int Maxsize = 10000 * 1024;//定义上传文件的最大空间大小为10M  
                     string FileType = ".xls,.xlsx";//定义上传文件的类型字符串  
 
-                    FileName = NoFileName + DateTime.Now.ToString("yyyyMMddhhmmss") + fileEx;
+                    FileName = NoFileName + DateTime.Now.ToString("yyyyMMddhhmmssffff") + fileEx;
                     if (!FileType.Contains(fileEx))
                     {
                         ViewBag.error = "文件类型不对，只能导入xls和xlsx格式的文件";
@@ -1088,7 +1088,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     MemberLibrary.TreeID = key_value;
                     var tree = TreeCurrent.Find(f => f.TreeID == key_value).SingleOrDefault();
                     MemberLibrary.MemberName = tree.TreeName;
-                    MemberLibrary.UploadTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"));
+                    MemberLibrary.UploadTime = DateTime.Now;
                     MemberLibrary.Sort = 1;
                     MemberLibrary.MemberModel = table.Rows[i][0].ToString();
                     string MemberModel = MemberLibrary.MemberModel;
@@ -1102,7 +1102,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         }
                     }
 
-                    MemberLibrary.MemberNumbering = (MemberNumbering + "-" + DateTime.Now.ToString("yyyyMMddhhmmssff")).ToString();
+                    MemberLibrary.MemberNumbering = (MemberNumbering + "-" + DateTime.Now.ToString("yyyyMMddhhmmssffff")).ToString();
                     MemberLibrary.SectionalArea = Convert.ToDecimal(table.Rows[i][1]);
                     MemberLibrary.SurfaceArea = Convert.ToDecimal(table.Rows[i][2]);
                     MemberLibrary.TheoreticalWeight = table.Rows[i][3].ToString();
@@ -1650,7 +1650,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                             MemberNumbering += Number[I];
                         }
                     }
-
+                    entitys.UploadTime = DateTime.Now;
                     entitys.MemberNumbering = (MemberNumbering + "-" + DateTime.Now.ToString("yyyyMMddhhmmssff")).ToString();
                     entitys.SectionalArea = entity.SectionalArea;
                     entitys.SurfaceArea = entity.SurfaceArea;

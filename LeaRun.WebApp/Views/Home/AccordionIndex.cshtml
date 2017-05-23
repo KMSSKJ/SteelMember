@@ -26,6 +26,7 @@
         /**初始化**/
         $(document).ready(function () {
             ServerCurrentTime()
+            //欢迎首页
             AddTabMenu('Imain', '@Url.Content("~/SteelMember/ProjectInfo/HomePage")', '欢迎首页', "house.png", 'false');
             GetAccordionMenu();
             InitializeImpact();
@@ -203,8 +204,8 @@
     <!-- header -->
     <div class="header">
         <div class="logo fleft">
-           <div style="margin-left:35px;margin-top:7px; float:left"><img id="project_logo" src=""style="border-radius:15%;width:40px;height:36px;" /></div>
-           <div style="float:left; margin-left:5px;margin-top:8px"><p style="letter-spacing:3px; font-size:18pt; color:white"></p></div>
+           <div style="margin-left:35px;margin-top:10px; float:left"><img id="project_logo" src=""style="border-radius:15%;width:38px;height:28px;" /></div>
+           <div style="float:left; margin-left:5px;margin-top:6px"><p style="letter-spacing:3px; font-size:20pt; color:white"></p></div>
         </div>
         <div id="Headermenu">
             <ul id="topnav">
@@ -326,10 +327,10 @@
     <!--载进度条start-->
     <div id="loading_background" class="loading_background" style="display: none;"></div>
     <div id="loading" onclick="Loading(false);">
-        <img src="../../Content/Images/loading.gif" style="vertical-align: middle;" />&nbsp;<span>正在拼了命为您加载…</span>&nbsp;
+        <img src="../../Content/Images/loading.gif" style="vertical-align: middle;" />&nbsp;<span>正在加载数据，请稍等…</span>&nbsp;
     </div>
     <div id="loadingGird">
-        <img src="../../Content/Images/loading.gif" style="vertical-align: middle;" />&nbsp;正在拼了命为您加载…&nbsp;
+        <img src="../../Content/Images/loading.gif" style="vertical-align: middle;" />&nbsp;正在加载数据，请稍等…&nbsp;
     </div>
 </body>
 </html>

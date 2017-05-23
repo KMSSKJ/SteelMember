@@ -264,13 +264,23 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     int keyvalue = Convert.ToInt32(KeyValue);
                     RMC_ProjectInfo Oldentity = ProjectInfoCurrent.Find(t => t.ProjectId == keyvalue).SingleOrDefault();//获取没更新之前实体对象
                     Oldentity.ConstructionUnit = entity.ConstructionUnit;
-                    Oldentity.Description = entity.Description;
+                    Oldentity.ConstructionPrincipal = entity.ConstructionPrincipal;
+                    Oldentity.ConstructionPrincipalTEL = entity.ConstructionPrincipalTEL;
                     Oldentity.DesignUnit = entity.DesignUnit;
+                    Oldentity.DesignPrincipal = entity.DesignPrincipal;
+                    Oldentity.DesignPrincipalTEL = entity.DesignPrincipalTEL;
                     Oldentity.GeneralContractor = entity.GeneralContractor;
-                    Oldentity.ModifiedTime = entity.ModifiedTime;
+                    Oldentity.GeneralContractorPrincipal = entity.GeneralContractorPrincipal;
+                    Oldentity.GeneralContractorPrincipalTEL = entity.GeneralContractorPrincipalTEL;
                     Oldentity.ProfessionalContractor = entity.ProfessionalContractor;
-                    Oldentity.ProjectAddress = entity.ProjectAddress;
+                    Oldentity.ProfessionalContractorPrincipal = entity.ProfessionalContractorPrincipal;
+                    Oldentity.ProfessionalContractorPrincipalTEL = entity.ProfessionalContractorPrincipalTEL;
                     Oldentity.SupervisionUnit = entity.SupervisionUnit;
+                    Oldentity.SupervisionPrincipal = entity.SupervisionPrincipal;
+                    Oldentity.SupervisionPrincipalTEL = entity.SupervisionPrincipalTEL;
+                    Oldentity.ProjectAddress = entity.ProjectAddress;
+                    Oldentity.ModifiedTime = entity.ModifiedTime;
+                    Oldentity.Description = entity.Description;
                     ProjectInfoCurrent.Modified(Oldentity);
                     IsOk = 1;//更新实体对象
                     //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
@@ -288,17 +298,22 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         RMC_ProjectInfo Oldentity = new RMC_ProjectInfo();
                         Oldentity.TreeID = treeid;
                         var tree = TreeCurrent.Find(f => f.TreeID == treeid).SingleOrDefault();
-                        Oldentity.ProjectName = tree.TreeName;
-                        Oldentity.ProjectLogo = entity.ProjectLogo;
-                        Oldentity.ProjectBackground = entity.ProjectBackground;
                         Oldentity.ConstructionUnit = entity.ConstructionUnit;
-                        Oldentity.Description = entity.Description;
+                        Oldentity.ConstructionPrincipal = entity.ConstructionPrincipal;
+                        Oldentity.ConstructionPrincipalTEL = entity.ConstructionPrincipalTEL;
                         Oldentity.DesignUnit = entity.DesignUnit;
+                        Oldentity.DesignPrincipal = entity.DesignPrincipal;
+                        Oldentity.DesignPrincipalTEL = entity.DesignPrincipalTEL;
                         Oldentity.GeneralContractor = entity.GeneralContractor;
-                        Oldentity.ModifiedTime = entity.ModifiedTime;
+                        Oldentity.GeneralContractorPrincipal = entity.GeneralContractorPrincipal;
+                        Oldentity.GeneralContractorPrincipalTEL = entity.GeneralContractorPrincipalTEL;
                         Oldentity.ProfessionalContractor = entity.ProfessionalContractor;
-                        Oldentity.ProjectAddress = entity.ProjectAddress;
+                        Oldentity.ProfessionalContractorPrincipal = entity.ProfessionalContractorPrincipal;
+                        Oldentity.ProfessionalContractorPrincipalTEL = entity.ProfessionalContractorPrincipalTEL;
                         Oldentity.SupervisionUnit = entity.SupervisionUnit;
+                        Oldentity.SupervisionPrincipal = entity.SupervisionPrincipal;
+                        Oldentity.SupervisionPrincipalTEL = entity.SupervisionPrincipalTEL;
+                        Oldentity.ProjectAddress = entity.ProjectAddress;
                         ProjectInfoCurrent.Add(Oldentity);
                         IsOk = 1;
                     }

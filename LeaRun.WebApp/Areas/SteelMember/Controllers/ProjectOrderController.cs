@@ -725,7 +725,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 var file = OrderManagementCurrent.Find(f => f.OrderId == OrderId).First();
                 file.ModifiedTime = DateTime.Now;
                 file.IsSubmit = 1;
-                file.SubmitTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"));
+                file.SubmitTime = DateTime.Now;
                 file.SubmitMan =currentUser.RealName;
                 OrderManagementCurrent.Modified(file);
 

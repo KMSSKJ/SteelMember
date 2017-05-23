@@ -432,7 +432,6 @@
           <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="kskfModel.RMC_AnalysisRawMaterial" />
           <EntitySet Name="RMC_Company" EntityType="kskfModel.RMC_Company" />
           <EntitySet Name="RMC_FactoryWarehouse" EntityType="kskfModel.RMC_FactoryWarehouse" />
-          <EntitySet Name="RMC_MemberLibrary" EntityType="kskfModel.RMC_MemberLibrary" />
           <EntitySet Name="RMC_MemberMaterial" EntityType="kskfModel.RMC_MemberMaterial" />
           <EntitySet Name="RMC_MemberUnit" EntityType="kskfModel.RMC_MemberUnit" />
           <EntitySet Name="RMC_OrderMember" EntityType="kskfModel.RMC_OrderMember" />
@@ -447,6 +446,7 @@
           <EntitySet Name="RMC_Collar" EntityType="kskfModel.RMC_Collar" />
           <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
           <EntitySet Name="RMC_ProjectDemand" EntityType="kskfModel.RMC_ProjectDemand" />
+          <EntitySet Name="RMC_MemberLibrary" EntityType="kskfModel.RMC_MemberLibrary" />
         </EntityContainer>
         <EntityType Name="RMC_AnalysisRawMaterial">
           <Key>
@@ -517,62 +517,6 @@
           <Property Name="MemberModel" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="InStockNumber" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="RMC_MemberLibrary">
-          <Key>
-            <PropertyRef Name="MemberID" />
-          </Key>
-          <Property Name="MemberID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TreeID" Type="Int32" />
-          <Property Name="MemberName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="MemberModel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MemberNumbering" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="MemberUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="EngineeringClass" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="SectionalSizeB" Type="Int32" />
-          <Property Name="SectionalSize_h" Type="Int32" />
-          <Property Name="SectionalSize_b" Type="Int32" />
-          <Property Name="SectionalSizeD" Type="Decimal" Precision="6" Scale="1" />
-          <Property Name="SectionalSize_d" Type="Int32" />
-          <Property Name="SectionalSize_t" Type="Decimal" Precision="6" Scale="1" />
-          <Property Name="SectionalSize_r" Type="Decimal" Precision="6" Scale="1" />
-          <Property Name="SectionalSize_r1" Type="Decimal" Precision="6" Scale="1" />
-          <Property Name="SectionalArea" Type="Decimal" Precision="7" Scale="3" />
-          <Property Name="SurfaceArea" Type="Decimal" Precision="7" Scale="3" />
-          <Property Name="TheoreticalWeight" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="UnitPrice" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="InertiaDistance_x" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="InertiaDistance_y" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="InertiaDistance_y1" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="InertiaDistance_x1" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="InertiaDistance_x0" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="InertiaDistance_y0" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="InertiaDistance_u" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="InertiaRadius_x" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="InertiaRadius_y" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="InertiaRadius_x0" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="InertiaRadius_y0" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="InertiaRadius_u" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="SectionalModulus_x" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="SectionalModulus_y" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="SectionalModulus_x0" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="SectionalModulus_y0" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="SectionalModulus_u" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="GravityCenterDistance_0" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="GravityCenterDistance_x0" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="GravityCenterDistance_y0" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="CAD_Drawing" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Model_Drawing" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="IsRawMaterial" Type="Int32" />
-          <Property Name="IsProcess" Type="Int32" />
-          <Property Name="Icon" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ParentID" Type="Int32" />
-          <Property Name="ModifiedTime" Type="DateTime" Precision="3" />
-          <Property Name="IsReview" Type="Int32" />
-          <Property Name="DeleteFlag" Type="Int32" />
-          <Property Name="FullPath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="UploadTime" Type="DateTime" Precision="3" />
-          <Property Name="Sort" Type="Int32" />
         </EntityType>
         <EntityType Name="RMC_MemberMaterial">
           <Key>
@@ -847,6 +791,62 @@
           <Property Name="CollarNumbered" Type="Int32" />
           <Property Name="CreateMan" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="RMC_MemberLibrary">
+          <Key>
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="MemberID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TreeID" Type="Int32" />
+          <Property Name="MemberName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MemberModel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MemberNumbering" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="MemberUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="EngineeringClass" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SectionalSizeB" Type="Int32" />
+          <Property Name="SectionalSize_h" Type="Int32" />
+          <Property Name="SectionalSize_b" Type="Int32" />
+          <Property Name="SectionalSizeD" Type="Decimal" Precision="6" Scale="1" />
+          <Property Name="SectionalSize_d" Type="Int32" />
+          <Property Name="SectionalSize_t" Type="Decimal" Precision="6" Scale="1" />
+          <Property Name="SectionalSize_r" Type="Decimal" Precision="6" Scale="1" />
+          <Property Name="SectionalSize_r1" Type="Decimal" Precision="6" Scale="1" />
+          <Property Name="SectionalArea" Type="Decimal" Precision="7" Scale="3" />
+          <Property Name="SurfaceArea" Type="Decimal" Precision="7" Scale="3" />
+          <Property Name="TheoreticalWeight" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="UnitPrice" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="InertiaDistance_x" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="InertiaDistance_y" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="InertiaDistance_y1" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="InertiaDistance_x1" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="InertiaDistance_x0" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="InertiaDistance_y0" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="InertiaDistance_u" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="InertiaRadius_x" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="InertiaRadius_y" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="InertiaRadius_x0" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="InertiaRadius_y0" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="InertiaRadius_u" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="SectionalModulus_x" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="SectionalModulus_y" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="SectionalModulus_x0" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="SectionalModulus_y0" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="SectionalModulus_u" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="GravityCenterDistance_0" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="GravityCenterDistance_x0" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="GravityCenterDistance_y0" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="CAD_Drawing" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Model_Drawing" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsRawMaterial" Type="Int32" />
+          <Property Name="IsProcess" Type="Int32" />
+          <Property Name="Icon" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="ModifiedTime" Type="DateTime" Precision="3" />
+          <Property Name="IsReview" Type="Int32" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="FullPath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UploadTime" Type="DateTime" Precision="3" />
+          <Property Name="Sort" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -923,63 +923,6 @@
                 <ScalarProperty Name="MemberModel" ColumnName="MemberModel" />
                 <ScalarProperty Name="MemberId" ColumnName="MemberId" />
                 <ScalarProperty Name="FactoryWarehouseId" ColumnName="FactoryWarehouseId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RMC_MemberLibrary">
-            <EntityTypeMapping TypeName="kskfModel.RMC_MemberLibrary">
-              <MappingFragment StoreEntitySet="RMC_MemberLibrary">
-                <ScalarProperty Name="Sort" ColumnName="Sort" />
-                <ScalarProperty Name="UploadTime" ColumnName="UploadTime" />
-                <ScalarProperty Name="FullPath" ColumnName="FullPath" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="IsReview" ColumnName="IsReview" />
-                <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
-                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
-                <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="IsProcess" ColumnName="IsProcess" />
-                <ScalarProperty Name="IsRawMaterial" ColumnName="IsRawMaterial" />
-                <ScalarProperty Name="Model_Drawing" ColumnName="Model_Drawing" />
-                <ScalarProperty Name="CAD_Drawing" ColumnName="CAD_Drawing" />
-                <ScalarProperty Name="GravityCenterDistance_y0" ColumnName="GravityCenterDistance_y0" />
-                <ScalarProperty Name="GravityCenterDistance_x0" ColumnName="GravityCenterDistance_x0" />
-                <ScalarProperty Name="GravityCenterDistance_0" ColumnName="GravityCenterDistance_0" />
-                <ScalarProperty Name="SectionalModulus_u" ColumnName="SectionalModulus_u" />
-                <ScalarProperty Name="SectionalModulus_y0" ColumnName="SectionalModulus_y0" />
-                <ScalarProperty Name="SectionalModulus_x0" ColumnName="SectionalModulus_x0" />
-                <ScalarProperty Name="SectionalModulus_y" ColumnName="SectionalModulus_y" />
-                <ScalarProperty Name="SectionalModulus_x" ColumnName="SectionalModulus_x" />
-                <ScalarProperty Name="InertiaRadius_u" ColumnName="InertiaRadius_u" />
-                <ScalarProperty Name="InertiaRadius_y0" ColumnName="InertiaRadius_y0" />
-                <ScalarProperty Name="InertiaRadius_x0" ColumnName="InertiaRadius_x0" />
-                <ScalarProperty Name="InertiaRadius_y" ColumnName="InertiaRadius_y" />
-                <ScalarProperty Name="InertiaRadius_x" ColumnName="InertiaRadius_x" />
-                <ScalarProperty Name="InertiaDistance_u" ColumnName="InertiaDistance_u" />
-                <ScalarProperty Name="InertiaDistance_y0" ColumnName="InertiaDistance_y0" />
-                <ScalarProperty Name="InertiaDistance_x0" ColumnName="InertiaDistance_x0" />
-                <ScalarProperty Name="InertiaDistance_x1" ColumnName="InertiaDistance_x1" />
-                <ScalarProperty Name="InertiaDistance_y1" ColumnName="InertiaDistance_y1" />
-                <ScalarProperty Name="InertiaDistance_y" ColumnName="InertiaDistance_y" />
-                <ScalarProperty Name="InertiaDistance_x" ColumnName="InertiaDistance_x" />
-                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
-                <ScalarProperty Name="TheoreticalWeight" ColumnName="TheoreticalWeight" />
-                <ScalarProperty Name="SurfaceArea" ColumnName="SurfaceArea" />
-                <ScalarProperty Name="SectionalArea" ColumnName="SectionalArea" />
-                <ScalarProperty Name="SectionalSize_r1" ColumnName="SectionalSize_r1" />
-                <ScalarProperty Name="SectionalSize_r" ColumnName="SectionalSize_r" />
-                <ScalarProperty Name="SectionalSize_t" ColumnName="SectionalSize_t" />
-                <ScalarProperty Name="SectionalSize_d" ColumnName="SectionalSize_d" />
-                <ScalarProperty Name="SectionalSizeD" ColumnName="SectionalSizeD" />
-                <ScalarProperty Name="SectionalSize_b" ColumnName="SectionalSize_b" />
-                <ScalarProperty Name="SectionalSize_h" ColumnName="SectionalSize_h" />
-                <ScalarProperty Name="SectionalSizeB" ColumnName="SectionalSizeB" />
-                <ScalarProperty Name="EngineeringClass" ColumnName="EngineeringClass" />
-                <ScalarProperty Name="MemberUnit" ColumnName="MemberUnit" />
-                <ScalarProperty Name="MemberNumbering" ColumnName="MemberNumbering" />
-                <ScalarProperty Name="MemberModel" ColumnName="MemberModel" />
-                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
-                <ScalarProperty Name="TreeID" ColumnName="TreeID" />
-                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1267,6 +1210,63 @@
                 <ScalarProperty Name="TreeName" ColumnName="TreeName" />
                 <ScalarProperty Name="TreeId" ColumnName="TreeId" />
                 <ScalarProperty Name="ProjectDemandId" ColumnName="ProjectDemandId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMC_MemberLibrary">
+            <EntityTypeMapping TypeName="kskfModel.RMC_MemberLibrary">
+              <MappingFragment StoreEntitySet="RMC_MemberLibrary">
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="UploadTime" ColumnName="UploadTime" />
+                <ScalarProperty Name="FullPath" ColumnName="FullPath" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="IsReview" ColumnName="IsReview" />
+                <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="IsProcess" ColumnName="IsProcess" />
+                <ScalarProperty Name="IsRawMaterial" ColumnName="IsRawMaterial" />
+                <ScalarProperty Name="Model_Drawing" ColumnName="Model_Drawing" />
+                <ScalarProperty Name="CAD_Drawing" ColumnName="CAD_Drawing" />
+                <ScalarProperty Name="GravityCenterDistance_y0" ColumnName="GravityCenterDistance_y0" />
+                <ScalarProperty Name="GravityCenterDistance_x0" ColumnName="GravityCenterDistance_x0" />
+                <ScalarProperty Name="GravityCenterDistance_0" ColumnName="GravityCenterDistance_0" />
+                <ScalarProperty Name="SectionalModulus_u" ColumnName="SectionalModulus_u" />
+                <ScalarProperty Name="SectionalModulus_y0" ColumnName="SectionalModulus_y0" />
+                <ScalarProperty Name="SectionalModulus_x0" ColumnName="SectionalModulus_x0" />
+                <ScalarProperty Name="SectionalModulus_y" ColumnName="SectionalModulus_y" />
+                <ScalarProperty Name="SectionalModulus_x" ColumnName="SectionalModulus_x" />
+                <ScalarProperty Name="InertiaRadius_u" ColumnName="InertiaRadius_u" />
+                <ScalarProperty Name="InertiaRadius_y0" ColumnName="InertiaRadius_y0" />
+                <ScalarProperty Name="InertiaRadius_x0" ColumnName="InertiaRadius_x0" />
+                <ScalarProperty Name="InertiaRadius_y" ColumnName="InertiaRadius_y" />
+                <ScalarProperty Name="InertiaRadius_x" ColumnName="InertiaRadius_x" />
+                <ScalarProperty Name="InertiaDistance_u" ColumnName="InertiaDistance_u" />
+                <ScalarProperty Name="InertiaDistance_y0" ColumnName="InertiaDistance_y0" />
+                <ScalarProperty Name="InertiaDistance_x0" ColumnName="InertiaDistance_x0" />
+                <ScalarProperty Name="InertiaDistance_x1" ColumnName="InertiaDistance_x1" />
+                <ScalarProperty Name="InertiaDistance_y1" ColumnName="InertiaDistance_y1" />
+                <ScalarProperty Name="InertiaDistance_y" ColumnName="InertiaDistance_y" />
+                <ScalarProperty Name="InertiaDistance_x" ColumnName="InertiaDistance_x" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="TheoreticalWeight" ColumnName="TheoreticalWeight" />
+                <ScalarProperty Name="SurfaceArea" ColumnName="SurfaceArea" />
+                <ScalarProperty Name="SectionalArea" ColumnName="SectionalArea" />
+                <ScalarProperty Name="SectionalSize_r1" ColumnName="SectionalSize_r1" />
+                <ScalarProperty Name="SectionalSize_r" ColumnName="SectionalSize_r" />
+                <ScalarProperty Name="SectionalSize_t" ColumnName="SectionalSize_t" />
+                <ScalarProperty Name="SectionalSize_d" ColumnName="SectionalSize_d" />
+                <ScalarProperty Name="SectionalSizeD" ColumnName="SectionalSizeD" />
+                <ScalarProperty Name="SectionalSize_b" ColumnName="SectionalSize_b" />
+                <ScalarProperty Name="SectionalSize_h" ColumnName="SectionalSize_h" />
+                <ScalarProperty Name="SectionalSizeB" ColumnName="SectionalSizeB" />
+                <ScalarProperty Name="EngineeringClass" ColumnName="EngineeringClass" />
+                <ScalarProperty Name="MemberUnit" ColumnName="MemberUnit" />
+                <ScalarProperty Name="MemberNumbering" ColumnName="MemberNumbering" />
+                <ScalarProperty Name="MemberModel" ColumnName="MemberModel" />
+                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+                <ScalarProperty Name="TreeID" ColumnName="TreeID" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

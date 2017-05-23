@@ -53,6 +53,10 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
             {
                 Stopwatch watch = CommonHelper.TimerStart();
                 DataTable ListData = base_userbll.GetPageList(keywords, CompanyId, DepartmentId, ref jqgridparam);
+                //≈≈–Ú
+                ListData.DefaultView.Sort = "Code ASC";
+                ListData = ListData.DefaultView.ToTable();//
+
                 var JsonData = new
                 {
                     total = jqgridparam.total,
@@ -61,7 +65,8 @@ namespace LeaRun.WebApp.Areas.CommonModule.Controllers
                     costtime = CommonHelper.TimerEnd(watch),
                     rows = ListData,
                 };
-                return Content(JsonData.ToJson());
+
+                return Content(JsonData .ToJson());
             }
             catch (Exception ex)
             {

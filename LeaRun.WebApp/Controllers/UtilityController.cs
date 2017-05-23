@@ -207,6 +207,7 @@ namespace LeaRun.WebApp.Controllers
         public ActionResult GetDeriveExcelColumn()
         {
             string JsonColumn = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonColumn_DeriveExcel"));
+            //JsonColumn = JsonColumn.Replace("\"name\":\"Icon\",\"hidden\":false", "\"name\":\"Icon\",\"hidden\":true");
             return Content(JsonColumn);
         }
         /// <summary>
@@ -216,10 +217,12 @@ namespace LeaRun.WebApp.Controllers
         public void GetDeriveExcel(string ExportField) 
         {
             string JsonColumn = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonColumn_DeriveExcel"));
-            string JsonData = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonData_DeriveExcel"));
             string JsonFooter = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonFooter_DeriveExcel"));
             string fileName = GZipHelper.Uncompress(CookieHelper.GetCookie("FileName_DeriveExcel"));
             string TableHeader = GZipHelper.Uncompress(CookieHelper.GetCookie("TableHeader_DeriveExcel"));
+            string JsonData = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonData_DeriveExcel"));
+            //<img style=\"width:44px;height:32px;\" src=\"工字钢GB10/工字钢GB10.jpg\" onmouseover=\"showBigImg(event,'工字钢GB10/工字钢GB10.jpg')\" onmouseout=\"leaveBigImg(event)\">
+            JsonData = JsonData.Replace("../../Resource/Document/NetworkDisk/System/Member/", "").Replace("style=\\\"width:44px;height:32px;\\\"", "").Replace("onmouseout=\\\"leaveBigImg(event)\\\"", "").Replace("onmouseover=\\\"showBigImg(event,", "");
             DeriveExcel.JqGridToExcel(JsonColumn, JsonData, ExportField, fileName, TableHeader);
 
 

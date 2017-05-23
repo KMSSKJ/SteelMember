@@ -57,17 +57,23 @@
             colModel: [
                     { label: '主键', name: "MemberID", hidden: true },
                     { label: '主键', name: "TreeID", hidden: true },
-                    { label: 'Sort', name: 'Sort', hidden: true },
+                    { label: 'Sort', name: "Sort", hidden: true },
                     {
-                        label: '图标', name: 'Icon', width: 3,
+                        label: '图标', name: "Icon", hidden: false, width:5,
                         formatter: function (cellvalue, options, rowObject) {
-                            var a = rowObject.Icon;
-                            var filename = a.substring(0, a.lastIndexOf('.'));//获取文件名称，去除后缀名
-                            filename = filename + "/" + a;
-                            if (a == "1.png") {
-                                return "<div style='cursor:pointer;padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;' src='../../Content/Scripts/tree/images/folder.gif' onmouseover=\"showBigImg(event,'../../Content/Scripts/tree/images/folder.gif')\" onmouseout=\"leaveBigImg(event)\" /></div>";
-                            } else {
-                                return "<div style='cursor:pointer;padding-top:1px;'><img style='width:32px;height:18px;padding-bottom:3px;padding-right:2px;' src='../../Resource/Document/NetworkDisk/System/Member/" + filename + "' onmouseover=\"showBigImg(event,'../../Resource/Document/NetworkDisk/System/Member/" + filename + "')\" onmouseout=\"leaveBigImg(event)\" /></div>";
+                            var Icon= cellvalue;
+                            if (Icon != "" || Icon != null) {
+                                var filename = Icon.substring(0, Icon.lastIndexOf('.'));//获取文件名称，去除后缀名
+                                filename = filename + "/" + Icon;
+                                if (Icon == "1.png") {
+                                    //<div style='cursor:pointer;padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;' src='../../Content/Scripts/tree/images/folder.gif' onmouseover=\"showBigImg(event,'../../Content/Scripts/tree/images/folder.gif')\" onmouseout=\"leaveBigImg(event)\"/>"</div>
+                                    //<img style='width:32px;height:18px;padding-bottom:3px;padding-right:2px;' src='../../Resource/Document/NetworkDisk/System/Member/" + filename + "' onmouseover=\"showBigImg(event,'../../Resource/Document/NetworkDisk/System/Member/" + filename + "')\" onmouseout=\"leaveBigImg(event)\" />";
+                                    return "<img style='width:44px;height:32px;' src='../../Resource/Document/NetworkDisk/System/Member/baton.png'onmouseover=\"showBigImg(event,'../../Resource/Document/NetworkDisk/System/Member/baton.png')\"onmouseout=\"leaveBigImg(event)\"/>";
+                                } else {
+                                    return "<img style='width:44px;height:32px;' src='../../Resource/Document/NetworkDisk/System/Member/" + filename + "' onmouseover=\"showBigImg(event,'../../Resource/Document/NetworkDisk/System/Member/" + filename + "')\" onmouseout=\"leaveBigImg(event)\" />";
+                                }
+                            }else {
+                                return "";
                             }
                         }
                     },
@@ -254,13 +260,17 @@
         }
     }
 
-    //刷新表格树
+    //按钮刷新表格树
     function btn_reload() {
         GetTree();
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
+    //刷新
+    function windowload() {
+        $("#gridTable").trigger("reloadGrid"); //重新载入 
+    }
 
-    //查询
+    @*//查询
     function Search() {
         if (!CheckDataValid('#formsearch')) {
             return false;
@@ -270,7 +280,7 @@
         $("#gridTable").jqGrid('setGridParam', {
             url: "@Url.Content("/SteelMember/File/GridListJson")?FolderId=" + FolderId, postData, page: 1
             }).trigger('reloadGrid');
-            }
+            }*@
 
     //新建树
     function btn_addfolder() {
@@ -389,15 +399,13 @@
     function btn_delete() {
         var KeyValue = GetJqGridRowValue("#gridTable", "MemberID");
         var Sort = GetJqGridRowValue("#gridTable", "Sort");
-        var Prompt = "你确定要删除此构件吗？";
         if (Sort == "1") {
             if (IsChecked(KeyValue)) {
-                delConfirm('/SteelMember/File/DeleteMember', { KeyValue: KeyValue }, Prompt);
+                delConfig('/SteelMember/File/DeleteMember', { KeyValue: KeyValue }, KeyValue.split(",").length);
             }
         } else {
             alertDialog("请选择文件！", 0);
         }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
 
@@ -459,10 +467,10 @@
             tipDialog('请选择文件夹目录。', 4, 'warning');
         }
     }
-
+    var JsonData1 = "";
     //导出文件
     function btn_derive() {
-        SetDeriveExcel("#gridTable", "构件信息");
+        SetDeriveExcel("#gridTable", "构件信息表","云南公投澄川高速",JsonData1);
         openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "构件信息导出", 900, 500, function (iframe) {
             top.frames[iframe].AcceptClick();
         })

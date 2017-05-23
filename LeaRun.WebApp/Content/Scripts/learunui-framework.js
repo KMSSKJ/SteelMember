@@ -73,7 +73,7 @@ function Loading(bool, text) {
         top.$("#loading span").html(text);
     } else {
         top.$("#loading").css("left", "42%");
-        top.$("#loading span").html("正在拼了命为您加载…");
+        top.$("#loading span").html("正在加载数据，请稍等…");
     }
     if (bool) {
         ajaxbg.show();
