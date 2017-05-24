@@ -293,6 +293,7 @@
     </Key>
     <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="TreeId" Type="int" />
+    <Property Name="TreeName" Type="nvarchar" MaxLength="20" />
     <Property Name="ProjectDemandId" Type="int" />
     <Property Name="OrderNumbering" Type="nvarchar" MaxLength="20" />
     <Property Name="Icon" Type="nvarchar" MaxLength="20" />
@@ -311,7 +312,7 @@
     <Property Name="Productioned" Type="int" />
     <Property Name="ModifiedTime" Type="datetime" />
     <Property Name="Description" Type="nvarchar" MaxLength="500" />
-    <Property Name="Priority" Type="int" />
+    <Property Name="Priority" Type="nvarchar" MaxLength="5" />
     <Property Name="EngineeringPosition" Type="nvarchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="RMC_ProjectWarehouse">

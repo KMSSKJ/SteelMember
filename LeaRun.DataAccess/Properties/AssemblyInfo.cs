@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("数据库访问核心组件")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("信息技术有限公司")]
-[assembly: AssemblyProduct("LeaRun.信息化快速开发框架")]
+[assembly: AssemblyProduct("LeaRun.快速开发框架")]
 [assembly: AssemblyCopyright("Copyright © Learun 2014")]
 [assembly: AssemblyTrademark("Learun")]
 [assembly: AssemblyCulture("")]

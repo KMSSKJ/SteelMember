@@ -29,6 +29,7 @@ namespace SteelMember.Models
         public string Icon { get; set; }
         public Nullable<int> LeaderNumber { get; set; }
         public Nullable<int> OrderNumber { get; set; }
+        public string Priority { get; set; }
         public string Use { get; set; }
         public DateTime? LeaderTime { get; set; }
         public string LeaderMan { get; set; }

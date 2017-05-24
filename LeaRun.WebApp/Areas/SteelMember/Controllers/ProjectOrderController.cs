@@ -98,18 +98,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         #region 构件订单管理
 
         /// <summary>
-        /// 创建订单表单
-        /// </summary>
-        /// <param name="FolderId"></param>
-        /// <returns></returns>
-        public ActionResult CreateOrderForm()
-        {
-            ViewBag.OrderNumbering ="DD"+ DateTime.Now.ToString("yyyyMMddhhmmssffff");
-            ViewData["CreateMan"] = currentUser.RealName;
-            return View();
-        }
-
-        /// <summary>
         ///构件列表
         /// </summary>
         /// <returns></returns>
@@ -117,7 +105,17 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             return View();
         }
-        public ActionResult OrderForm() {
+
+        /// <summary>
+        /// 订单表单
+        /// </summary>
+        /// <param name="KeyValue"></param>
+        /// <returns></returns>
+        public ActionResult OrderForm(string KeyValue) {
+            if (KeyValue == "" || KeyValue ==null) {
+            ViewBag.OrderNumbering = "DD" + DateTime.Now.ToString("yyyyMMddhhmmssffff");
+            ViewData["CreateMan"] = currentUser.RealName;
+            }
             return View();
         }
 
@@ -134,17 +132,17 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             try
             {
                 int IsOk = 0;
-                string Message = KeyValue == "" ? "变更成功。" : "新增成功。";
+                string Message = KeyValue == "" ? "新增成功。" : "变更成功。";
                 if (!string.IsNullOrEmpty(KeyValue))
                 {
                     int _OrderId = Convert.ToInt32(KeyValue);
+
                     RMC_ProjectOrder Oldentity = OrderManagementCurrent.Find(f => f.OrderId == _OrderId).SingleOrDefault();
-                    Oldentity.OrderNumbering = entity.OrderNumbering;//给旧实体重新赋值
                     Oldentity.IsSubmit = 0;
                     Oldentity.IsReview = 0;
-                    Oldentity.CreateMan =currentUser.RealName;
-                    Oldentity.CreateTime = entity.SubmitTime;
                     Oldentity.Description = entity.Description;
+                    OrderManagementCurrent.Modified(Oldentity);
+
 
                     List<int> Ids = new List<int>();
                     List<RMC_OrderMember> OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == _OrderId).ToList();
@@ -152,7 +150,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     {
                         int OrderMemberId = OrderMemberList[i].OrderMemberId;
                         Ids.Add(OrderMemberId);
-                        int ProjectDemandId =Convert.ToInt32(OrderMemberList[i].ProjectDemandId);
+                        var ProjectDemandId =Convert.ToInt32(OrderMemberList[i].ProjectDemandId);
                         var OrderMember = OrderMemberCurrent.Find(f => f.OrderMemberId == OrderMemberId).SingleOrDefault();
                         var ProjectDemand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).SingleOrDefault();
                         ProjectDemand.OrderQuantityed = ProjectDemand.OrderQuantityed - OrderMember.Qty;
@@ -170,7 +168,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                             RMC_OrderMember OrderMember = new RMC_OrderMember();
                             OrderMember.OrderId = _OrderId;
                             OrderMember.ProjectDemandId = Convert.ToInt32(poorderentry.ProjectDemandId);
-                            OrderMember.MemberId= Convert.ToInt32(poorderentry.MemberID);
+                            OrderMember.MemberId = Convert.ToInt32(poorderentry.MemberID);
                             OrderMember.Description = poorderentry.Description;
                             OrderMember.MemberNumbering = poorderentry.MemberNumbering;
                             OrderMember.MemberModel = poorderentry.MemberModel;
@@ -179,7 +177,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                             OrderMember.Price = Convert.ToDecimal(poorderentry.Price);
                             OrderMember.PriceAmount = Convert.ToDecimal(poorderentry.PriceAmount);
                             OrderMember.Qty = Convert.ToInt32(poorderentry.Qty);
-
 
                             var ProjectDemand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == OrderMember.ProjectDemandId).SingleOrDefault();
                             ProjectDemand.OrderQuantityed = ProjectDemand.OrderQuantityed +Convert.ToInt32(poorderentry.Qty);
@@ -201,6 +198,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.IsReview = 0;
                     Oldentity.ConfirmOrder = 0;
                     Oldentity.Productioned = 0;
+                    Oldentity.TreeName = entity.TreeName;
                     Oldentity.CreateMan =currentUser.RealName;
                     Oldentity.CreateTime = entity.CreateTime;
                     Oldentity.Description = entity.Description;
@@ -226,7 +224,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                             OrderMember.Price = Convert.ToDecimal(poorderentry.Price);
                             OrderMember.PriceAmount = Convert.ToDecimal(poorderentry.PriceAmount);
                             OrderMember.Qty = Convert.ToInt32(poorderentry.Qty);
-
+                           
                             var Demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == OrderMember.ProjectDemandId).SingleOrDefault();
                             Demand.OrderQuantityed = Demand.OrderQuantityed + OrderMember.Qty;
                             ProjectManagementCurrent.Modified(Demand);
@@ -330,6 +328,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 {
                     ProjectDemandModel projectdemand = new ProjectDemandModel();
                     projectdemand.OrderNumbering = item.OrderNumbering;
+                    projectdemand.Priority = item.Priority;
                     projectdemand.OrderId = item.OrderId;
                     projectdemand.IsReview = item.IsReview;
                     projectdemand.ReviewMan =item.ReviewMan;
@@ -534,6 +533,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 {
                     OrderModel OrderModel = new OrderModel();
                     OrderModel.MemberNumbering = item.MemberNumbering;
+                    OrderModel.MemberID = item.MemberId.ToString();
+                    OrderModel.ProjectDemandId = item.ProjectDemandId.ToString();
                     OrderModel.MemberName = item.MemberName;
                     OrderModel.MemberModel = item.MemberModel;
                     OrderModel.MemberUnit = item.MemberUnit;
@@ -660,9 +661,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 {
                     for (int i = 0; i < OrderMemberList.Count(); i++)
                     {
-                        ids1.Add(Convert.ToInt32(OrderMemberList[i].OrderMemberId));
+                        int OrderMemberId = Convert.ToInt32(OrderMemberList[i].OrderMemberId);
+                        ids1.Add(OrderMemberId);
 
-                        var OrderMember = OrderMemberCurrent.Find(f => f.OrderMemberId== OrderMemberList[i].OrderMemberId).SingleOrDefault();
+                        var OrderMember = OrderMemberCurrent.Find(f => f.OrderMemberId== OrderMemberId).SingleOrDefault();
                         var Demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == OrderMember.ProjectDemandId).SingleOrDefault();
                         Demand.OrderQuantityed = Demand.OrderQuantityed - OrderMemberList[i].Qty;
                         ProjectManagementCurrent.Modified(Demand);

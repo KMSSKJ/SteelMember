@@ -213,7 +213,7 @@
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
             if (IsReview.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
-                var url = "/SteelMember/ProjectManagement/Form?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
+                var url = "/SteelMember/ProjectManagement/Form?KeyValue= " + KeyValue + "&ItemID=" + ItemID + "&TreeID=" + TreeId ;
                 openDialog(url, "Form", "编辑信息", 500, 500, function (iframe) {
                     top.frames[iframe].AcceptClick();
                 });

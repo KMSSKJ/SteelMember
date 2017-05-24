@@ -177,57 +177,15 @@
 
     }
 
-    //刷新表格 树
+    //按钮刷新表格树
     function btn_reload() {
         GetTree();
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
-
-    //新建树
-    function btn_addfolder() {
-        //var FolderId = GetJqGridRowValue("#gridTable", "TreeID");
-        var ItemID = GetQuery("ItemID");
-        if (!!TreeId) {
-            var url = "/SteelMember/Tree/FolderForm?TreeId=" + TreeId + '&ItemID=' + ItemID;
-            openDialog(url, "Form", "新增信息", 500, 400, function (iframe) {
-                top.frames[iframe].AcceptClick()
-            });
-        } else if (!!ItemID) {
-            var url = "/SteelMember/Tree/FolderForm?TreeId=" + ItemID + '&ItemID=' + ItemID;
-            openDialog(url, "Form", "新增信息", 500, 400, function (iframe) {
-                top.frames[iframe].AcceptClick()
-            });
-        }
-        else {
-            tipDialog('请选择目录。', 4, 'warning');
-        }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
+    //刷新
+    function windowload() {
+        $("#gridTable").trigger("reloadGrid"); //重新载入 
     }
-
-    //编辑树节点(得到实体)
-    function btn_editfolder() {
-        var KeyValue = TreeId;
-        if (IsChecked(KeyValue)) {
-            var url = "/SteelMember/Tree/FolderForm?KeyValue= " + KeyValue;
-            openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
-                top.frames[iframe].AcceptClick();
-            });
-        }
-
-        $("#gridTable").trigger("reloadGrid"); //重新载入
-    }
-
-
-    //删除树节点
-    function btn_deletefolder() {
-        var KeyValue = TreeId;
-        var Prompt = "您确实要删除此文件吗？";
-        if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/Tree/DeleteTree', { KeyValue: KeyValue }, Prompt);
-        }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
-    }
-
 
     //新增信息
     function btn_add() {
@@ -244,29 +202,29 @@
     //创建订单
     function btn_create_order() {
         if (IsDelData(TreeId)) {
-            AddTabMenu("OrderForm", "@Url.Content("/SteelMember/ProjectOrder/CreateOrderForm")?TreeId=" + TreeId + "&TreeName=" + TreeName, "新增订单", "page_white_add.png", true, true, true);
-            //var url = "/SteelMember/ProjectManagement/CreateOrderForm?KeyValue= " + KeyValue + "&MemberNumber=" + MemberNumber + "&MemberModel=" + MemberModel;
-            //openDialog(url, "Form", "创建订单", 600, 400, function (iframe) {
-            //    top.frames[iframe].AcceptClick();
-            //});
+           // AddTabMenu("OrderForm", "Url.Content("/SteelMember/ProjectOrder/CreateOrderForm")?TreeId=" + TreeId + "&TreeName=" + TreeName, "新增订单", "page_white_add.png", true, true, true);
+            var url = "/SteelMember/ProjectOrder/OrderForm?TreeId=" + TreeId + "&TreeName=" + TreeName;
+            openDialog(url, "OrderForm", "创建订单", 1100, 600, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
         }
     }
 
     //变更订单信息(得到实体)
     function btn_edit() {
         var KeyValue = GetJqGridRowValue("#gridTable", "OrderId");
-        var IsReview = GetJqGridRowValue("#gridTable", "IsReview");
+        var IsSubmit = GetJqGridRowValue("#gridTable", "IsSubmit");
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
-            if (IsReview.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
-                AddTabMenu("OrderForm", "@Url.Content("/SteelMember/ProjectOrder/OrderForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId + "&motionType=" + ItemID, "变更订单", "page_white_add.png", true, true, true);
-                //var url = "/SteelMember/ProjectManagement/OrderForm?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
-                //openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
-                //    top.frames[iframe].AcceptClick();
-                //});
+            if (IsSubmit.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
+                @*AddTabMenu("OrderForm", "@Url.Content("/SteelMember/ProjectOrder/OrderForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId + "&motionType=" + ItemID, "变更订单", "page_white_add.png", true, true, true);*@
+                var url = "/SteelMember/ProjectOrder/OrderForm?KeyValue= " + KeyValue + "&TreeId=" + TreeId + "&motionType=" + ItemID;
+                openDialog(url, "OrderForm", "变更订单", 1100, 600, function (iframe) {
+                top.frames[iframe].AcceptClick();
+                });
             } else {
 
-                tipDialog('该订单已审核，不允许修改！');
+                tipDialog('该订单已提交，不允许修改！');
             }
         }
         $("#gridTable").trigger("reloadGrid"); //重新载入
@@ -277,11 +235,11 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "OrderId");
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
-            AddTabMenu("DetailForm", "@Url.Content("/SteelMember/ProjectOrder/DetailForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId, "订单详细", "page_white_add.png", true, true, true);
-            //var url = "/SteelMember/ProjectManagement/OrderForm?KeyValue= " + KeyValue + "&ItemID=" + ItemID;
-            //openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
-            //    top.frames[iframe].AcceptClick();
-            //});
+            @*AddTabMenu("DetailForm", "@Url.Content("/SteelMember/ProjectOrder/DetailForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId, "订单详细", "page_white_add.png", true, true, true);*@
+            var url = "/SteelMember/ProjectOrder/DetailForm?KeyValue= " + KeyValue;
+            Dialog(url, "DetailForm", "详细信息", 1100, 600, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
         }
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
@@ -291,8 +249,7 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "OrderId");
         var Prompt = "您确实要删除此文件吗？";
         if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/ProjectOrder/DeleteProjectOrder', { KeyValue: KeyValue }, Prompt);
-            $("#gridTable").trigger("reloadGrid"); //重新载入
+            delConfig('/SteelMember/ProjectOrder/DeleteProjectOrder', { KeyValue: KeyValue }, KeyValue.split(",").length);
         }
 
     }

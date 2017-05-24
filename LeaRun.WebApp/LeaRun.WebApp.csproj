@@ -9084,9 +9084,8 @@
     <Content Include="Content\Scripts\C3D\iphoneg4.obj" />
     <Content Include="Content\Scripts\C3D\SFma-B.fbx" />
     <Content Include="Content\Scripts\C3D\OBJ.mtl" />
-    <Content Include="Areas\SteelMember\Views\ProjectOrder\CreateOrderForm.cshtml" />
-    <Content Include="Areas\SteelMember\Views\ProjectOrder\ItemList.cshtml" />
     <Content Include="Areas\SteelMember\Views\ProjectOrder\OrderForm.cshtml" />
+    <Content Include="Areas\SteelMember\Views\ProjectOrder\ItemList.cshtml" />
     <Content Include="Areas\SteelMember\Views\Tree\Index.cshtml" />
     <Content Include="Areas\SteelMember\Views\ProjectInfo\DepartmentIndex.cshtml" />
     <Content Include="Areas\SteelMember\Views\ProjectInfo\HomePage.cshtml" />

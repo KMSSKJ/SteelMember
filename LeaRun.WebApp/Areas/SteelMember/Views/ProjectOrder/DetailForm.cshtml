@@ -16,7 +16,7 @@
             });
             var rowindex = 1;
             //明细信息
-            AjaxJson("/SteelMember/ProjectOrder/GetCollarEntryList", { OrderId: KeyValue }, function (data) {
+            AjaxJson("/SteelMember/ProjectOrder/GetOrderEntryList", { OrderId: KeyValue }, function (data) {
                JsonData1 = data.rows;
                 $.each(JsonData1, function (i) {
                     var rowData = JsonData1[i];
@@ -52,21 +52,21 @@
     function GetGrid() {
         $("#gridTable").jqGrid({
             datatype: "local",
-            height: $(window).height() - 290,
+            height: $(window).height() + 200,
             autowidth: true,
             colModel: [
-                { label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", width: 200, sortable: false },
-                { label: '构件名称', name: "MemberName", index: "MemberName", width: 180, sortable: false },
+                { label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", width: 180, sortable: false },
+                { label: '构件名称', name: "MemberName", index: "MemberName", width: 150, sortable: false },
                 { label: '构件型号', name: "MemberModel", index: "MemberModel", width: 100, sortable: false, align: 'center' },
-                { label: '单位', name: "MemberUnit", index: "MemberUnit", width: 100, sortable: false, align: 'center' },
-                { label: '数量', name: 'Qty', index: "Qty", width: 100, sortable: false, align: 'center' },
-                { label: '单价', name: 'Price', index: "Price", width: 100, sortable: false, align: 'center' },
-                { label: '金额', name: 'PriceAmount', index: "PriceAmount", width: 200, sortable: false, align: 'center' },
+                { label: '单位', name: "MemberUnit", index: "MemberUnit", width: 80, sortable: false, align: 'center' },
+                { label: '数量', name: 'Qty', index: "Qty", width: 80, sortable: false, align: 'center' },
+                { label: '单价', name: 'Price', index: "Price", width: 80, sortable: false, align: 'center' },
+                { label: '金额', name: 'PriceAmount', index: "PriceAmount", width: 150, sortable: false, align: 'center' },
                 //{ label: '含税单价[<font face="宋体">*</font>]', name: 'PlusPrice', width: 70, sortable: false, align: 'center' },
                 //{ label: '税率(%)[<font face="宋体">*</font>]', name: 'CESS', width: 70, sortable: false, align: 'center' },
                 //{ label: '税额', name: 'CESSAmount', width: 70, sortable: false, align: 'center' },
                 //{ label: '含税金额[<font face="宋体">*</font>]', name: 'PlusPriceAmount', width: 70, sortable: false, align: 'center' },
-                { label: '说明', name: 'Description', index: "Description", width: 400, sortable: false }
+                { label: '说明', name: 'Description', index: "Description", width: 200, sortable: false }
             ],
             pager: false,
             rownumbers: true,
@@ -258,7 +258,7 @@
                 <a id="button_prev_bills" title="前面单单" onclick="prev_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_previous.png")) 50% 4px no-repeat;">前单</b></span></a>
                 <a id="button_next_bills" title="后面单单" onclick="next_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_next.png")) 50% 4px no-repeat;">后单</b></span></a>
                 <a id="button_last_bills" title="最后面单据" onclick="last_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_last.png")) 50% 4px no-repeat;">最后</b></span></a>*@
-            <a id="button_Commit_Save" title="保存单据" onclick="SubmitOrderForm()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/disk.png")) 50% 4px no-repeat;">保存</b></span></a>
+            @*<a id="button_Commit_Save" title="保存单据" onclick="SubmitOrderForm()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/disk.png")) 50% 4px no-repeat;">保存</b></span></a>*@
             <a id="lr-print" title="打印单据" onclick="btn_print()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/printer.png")) 50% 4px no-repeat;">打印</b></span></a>
             <a id="lr-print" title="导出数据" onclick="btn_derive()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/excel_exports.png")) 50% 4px no-repeat;">导出</b></span></a>
               <div class="tools_separator"></div>
@@ -284,7 +284,7 @@
                     制单员：
                 </th>
                 <td>
-                    <input readonly id="SubmitMan" type="text" class="txt" style="width: 95%" value="@ViewBag.SubmitMan" />
+                    <input readonly id="CreateMan" type="text" class="txt" style="width: 95%" value="@ViewBag.SubmitMan" />
                 </td>
                 <th>
                     制单日期[<font face="宋体" color="red">*</font>]：
@@ -295,10 +295,10 @@
             </tr>
             <tr>
                 <th>
-                    收货部门：
+                    工程部位[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    <input readonly id="SubmitMan" type="text" class="txt" style="width: 95%" value="@ViewBag.SubmitMan" />
+                    <input readonly id="TreeName" type="text" class="txt" style="width: 95%" />
                 </td>
                 <th>
                     审核人：
@@ -333,7 +333,7 @@
             </tr>
         </table>
 
-        <div id="grid_List">
+        <div id="grid_List" style="width:1100px;">
             <table id="gridTable"></table>
             <style>
                 .ui-widget-content {

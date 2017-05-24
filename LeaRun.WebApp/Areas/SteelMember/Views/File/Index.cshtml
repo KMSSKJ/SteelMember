@@ -198,29 +198,6 @@
         });
     }
 
-    ////构件图纸/模型管理
-    //function btn_drawing() {
-    //    var KeyValue = GetJqGridRowValue("#gridTable", "MemberID");
-    //    var Sort = GetJqGridRowValue("#gridTable", "Sort");
-    //    var CAD_Drawing = GetJqGridRowValue("#gridTable", "CAD_Drawing");
-    //    var Model_Drawing = GetJqGridRowValue("#gridTable", "Model_Drawing");
-
-    //    if (IsChecked(KeyValue)) {
-    //        var CAD_Drawing1 = CAD_Drawing.replace(/"/, "'").replace(/"/, "'");
-    //        var Model_Drawing1 = Model_Drawing.replace(/"/, "'").replace(/"/, "'");
-    //        if (CAD_Drawing1 == "<img src='../../Content/Images/checkokmark.gif'>" || Model_Drawing1 == "<img src='../../Content/Images/checkokmark.gif'>") {
-    //            if (Sort == "1") {
-    //                var url = '/SteelMember/File/DrawingManagement?KeyValue=' + KeyValue;
-    //                Dialog(url, "DrawingManagement", "文件管理", 900, 890, function (iframe) {
-    //                    top.frames[iframe].AcceptClick()
-    //                });
-    //            } else {
-    //                alertDialog("请选择构件", 0);
-    //            }
-    //        } else { alertDialog("该构件无图纸和模型", 0); }
-    //    }
-    //}
-
     //构件图纸
     function btn_cad_drawing() {
         var KeyValue = GetJqGridRowValue("#gridTable", "MemberID");
@@ -268,73 +245,6 @@
     //刷新
     function windowload() {
         $("#gridTable").trigger("reloadGrid"); //重新载入 
-    }
-
-    @*//查询
-    function Search() {
-        if (!CheckDataValid('#formsearch')) {
-            return false;
-        }
-        Loading(true, "正在提交数据...");
-        var postData = GetWebControls("#formsearch");
-        $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/File/GridListJson")?FolderId=" + FolderId, postData, page: 1
-            }).trigger('reloadGrid');
-            }*@
-
-    //新建树
-    function btn_addfolder() {
-        var ItemID = GetQuery("ItemID");
-        var Sort = GetJqGridRowValue("#gridTable", "Sort");
-        if (!!TreeId) {
-            if (Sort == "1") {
-                tipDialog('请选择文件夹目录。', 4, 'warning');
-            } else {
-                var url = "/SteelMember/Tree/FolderForm?TreeId=" +TreeId + '&ItemID=' +ItemID;
-                openDialog(url, "FolderForm", "新增文件夹", 400, 240, function (iframe) {
-                    top.frames[iframe].AcceptClick()
-                });
-            }
-        } else if (!!ItemID) {
-            var url = "/SteelMember/Tree/FolderForm?TreeId=" + ItemID + '&ItemID=' + ItemID;
-            openDialog(url, "FolderForm", "新增文件夹", 400, 240, function (iframe) {
-                top.frames[iframe].AcceptClick()
-            });
-        }
-        else {
-            tipDialog('请选择文件夹目录。', 4, 'warning');
-        }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
-    }
-
-    //编辑树节点(得到实体)
-    function btn_editfolder() {
-        var Sort = GetJqGridRowValue("#gridTable", "Sort");
-        if (Sort != 1) {
-            if (IsChecked(TreeId)) {
-                var url = "/SteelMember/Tree/FolderForm?KeyValue= " + TreeId;
-                openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
-                    top.frames[iframe].AcceptClick();
-                });
-            }
-        } else {
-            alertDialog("请选择目录！", 0);
-        }
-    }
-
-    //删除树节点
-    function btn_deletefolder() {
-        var Sort = GetJqGridRowValue("#gridTable", "Sort");
-        if (Sort != 1) {
-            if (IsChecked(TreeId)) {
-                delConfirm('/SteelMember/Tree/DeleteTree', { KeyValue: TreeId }, Prompt);
-
-                $("#gridTable").trigger("reloadGrid"); //重新载入
-            }
-        } else {
-            alertDialog("请选择目录！", 0);
-        }
-
     }
 
     //新建构件

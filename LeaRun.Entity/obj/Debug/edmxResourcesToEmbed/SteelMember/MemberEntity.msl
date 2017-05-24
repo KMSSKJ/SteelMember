@@ -147,34 +147,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="RMC_ProjectOrder">
-      <EntityTypeMapping TypeName="kskfModel.RMC_ProjectOrder">
-        <MappingFragment StoreEntitySet="RMC_ProjectOrder">
-          <ScalarProperty Name="EngineeringPosition" ColumnName="EngineeringPosition" />
-          <ScalarProperty Name="Priority" ColumnName="Priority" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
-          <ScalarProperty Name="Productioned" ColumnName="Productioned" />
-          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-          <ScalarProperty Name="CreateMan" ColumnName="CreateMan" />
-          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-          <ScalarProperty Name="ConfirmMan" ColumnName="ConfirmMan" />
-          <ScalarProperty Name="ConfirmOrder" ColumnName="ConfirmOrder" />
-          <ScalarProperty Name="SubmitTime" ColumnName="SubmitTime" />
-          <ScalarProperty Name="SubmitMan" ColumnName="SubmitMan" />
-          <ScalarProperty Name="IsSubmit" ColumnName="IsSubmit" />
-          <ScalarProperty Name="ReviewTime" ColumnName="ReviewTime" />
-          <ScalarProperty Name="ReviewMan" ColumnName="ReviewMan" />
-          <ScalarProperty Name="IsReview" ColumnName="IsReview" />
-          <ScalarProperty Name="OrderBudget" ColumnName="OrderBudget" />
-          <ScalarProperty Name="Icon" ColumnName="Icon" />
-          <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
-          <ScalarProperty Name="ProjectDemandId" ColumnName="ProjectDemandId" />
-          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
-          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="RMC_RawMaterialLibrary">
       <EntityTypeMapping TypeName="kskfModel.RMC_RawMaterialLibrary">
         <MappingFragment StoreEntitySet="RMC_RawMaterialLibrary">
@@ -415,6 +387,35 @@
           <ScalarProperty Name="MemberName" ColumnName="MemberName" />
           <ScalarProperty Name="TreeID" ColumnName="TreeID" />
           <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RMC_ProjectOrder">
+      <EntityTypeMapping TypeName="kskfModel.RMC_ProjectOrder">
+        <MappingFragment StoreEntitySet="RMC_ProjectOrder">
+          <ScalarProperty Name="EngineeringPosition" ColumnName="EngineeringPosition" />
+          <ScalarProperty Name="Priority" ColumnName="Priority" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
+          <ScalarProperty Name="Productioned" ColumnName="Productioned" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="CreateMan" ColumnName="CreateMan" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="ConfirmMan" ColumnName="ConfirmMan" />
+          <ScalarProperty Name="ConfirmOrder" ColumnName="ConfirmOrder" />
+          <ScalarProperty Name="SubmitTime" ColumnName="SubmitTime" />
+          <ScalarProperty Name="SubmitMan" ColumnName="SubmitMan" />
+          <ScalarProperty Name="IsSubmit" ColumnName="IsSubmit" />
+          <ScalarProperty Name="ReviewTime" ColumnName="ReviewTime" />
+          <ScalarProperty Name="ReviewMan" ColumnName="ReviewMan" />
+          <ScalarProperty Name="IsReview" ColumnName="IsReview" />
+          <ScalarProperty Name="OrderBudget" ColumnName="OrderBudget" />
+          <ScalarProperty Name="Icon" ColumnName="Icon" />
+          <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
+          <ScalarProperty Name="ProjectDemandId" ColumnName="ProjectDemandId" />
+          <ScalarProperty Name="TreeName" ColumnName="TreeName" />
+          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

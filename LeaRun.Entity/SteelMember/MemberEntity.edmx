@@ -298,6 +298,7 @@
           </Key>
           <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TreeId" Type="int" />
+          <Property Name="TreeName" Type="nvarchar" MaxLength="20" />
           <Property Name="ProjectDemandId" Type="int" />
           <Property Name="OrderNumbering" Type="nvarchar" MaxLength="20" />
           <Property Name="Icon" Type="nvarchar" MaxLength="20" />
@@ -316,7 +317,7 @@
           <Property Name="Productioned" Type="int" />
           <Property Name="ModifiedTime" Type="datetime" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
-          <Property Name="Priority" Type="int" />
+          <Property Name="Priority" Type="nvarchar" MaxLength="5" />
           <Property Name="EngineeringPosition" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="RMC_ProjectWarehouse">
@@ -436,7 +437,6 @@
           <EntitySet Name="RMC_MemberUnit" EntityType="kskfModel.RMC_MemberUnit" />
           <EntitySet Name="RMC_OrderMember" EntityType="kskfModel.RMC_OrderMember" />
           <EntitySet Name="RMC_ProjectInfo" EntityType="kskfModel.RMC_ProjectInfo" />
-          <EntitySet Name="RMC_ProjectOrder" EntityType="kskfModel.RMC_ProjectOrder" />
           <EntitySet Name="RMC_RawMaterialLibrary" EntityType="kskfModel.RMC_RawMaterialLibrary" />
           <EntitySet Name="RMC_ShipManagement" EntityType="kskfModel.RMC_ShipManagement" />
           <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
@@ -447,6 +447,7 @@
           <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
           <EntitySet Name="RMC_ProjectDemand" EntityType="kskfModel.RMC_ProjectDemand" />
           <EntitySet Name="RMC_MemberLibrary" EntityType="kskfModel.RMC_MemberLibrary" />
+          <EntitySet Name="RMC_ProjectOrder" EntityType="kskfModel.RMC_ProjectOrder" />
         </EntityContainer>
         <EntityType Name="RMC_AnalysisRawMaterial">
           <Key>
@@ -586,33 +587,6 @@
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="ModifiedTime" Type="DateTime" Precision="3" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="RMC_ProjectOrder">
-          <Key>
-            <PropertyRef Name="OrderId" />
-          </Key>
-          <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TreeId" Type="Int32" />
-          <Property Name="ProjectDemandId" Type="Int32" />
-          <Property Name="OrderNumbering" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Icon" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="OrderBudget" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="IsReview" Type="Int32" />
-          <Property Name="ReviewMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="ReviewTime" Type="DateTime" Precision="3" />
-          <Property Name="IsSubmit" Type="Int32" />
-          <Property Name="SubmitMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="SubmitTime" Type="DateTime" Precision="3" />
-          <Property Name="ConfirmOrder" Type="Int32" />
-          <Property Name="ConfirmMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="DeleteFlag" Type="Int32" />
-          <Property Name="Productioned" Type="Int32" />
-          <Property Name="ModifiedTime" Type="DateTime" Precision="3" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Priority" Type="Int32" />
-          <Property Name="EngineeringPosition" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="RMC_RawMaterialLibrary">
           <Key>
@@ -847,6 +821,34 @@
           <Property Name="UploadTime" Type="DateTime" Precision="3" />
           <Property Name="Sort" Type="Int32" />
         </EntityType>
+        <EntityType Name="RMC_ProjectOrder">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TreeId" Type="Int32" />
+          <Property Name="TreeName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectDemandId" Type="Int32" />
+          <Property Name="OrderNumbering" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Icon" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="OrderBudget" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="IsReview" Type="Int32" />
+          <Property Name="ReviewMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ReviewTime" Type="DateTime" Precision="3" />
+          <Property Name="IsSubmit" Type="Int32" />
+          <Property Name="SubmitMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SubmitTime" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmOrder" Type="Int32" />
+          <Property Name="ConfirmMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="Productioned" Type="Int32" />
+          <Property Name="ModifiedTime" Type="DateTime" Precision="3" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Priority" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="EngineeringPosition" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -996,34 +998,6 @@
                 <ScalarProperty Name="TreeID" ColumnName="TreeID" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RMC_ProjectOrder">
-            <EntityTypeMapping TypeName="kskfModel.RMC_ProjectOrder">
-              <MappingFragment StoreEntitySet="RMC_ProjectOrder">
-                <ScalarProperty Name="EngineeringPosition" ColumnName="EngineeringPosition" />
-                <ScalarProperty Name="Priority" ColumnName="Priority" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
-                <ScalarProperty Name="Productioned" ColumnName="Productioned" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="CreateMan" ColumnName="CreateMan" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="ConfirmMan" ColumnName="ConfirmMan" />
-                <ScalarProperty Name="ConfirmOrder" ColumnName="ConfirmOrder" />
-                <ScalarProperty Name="SubmitTime" ColumnName="SubmitTime" />
-                <ScalarProperty Name="SubmitMan" ColumnName="SubmitMan" />
-                <ScalarProperty Name="IsSubmit" ColumnName="IsSubmit" />
-                <ScalarProperty Name="ReviewTime" ColumnName="ReviewTime" />
-                <ScalarProperty Name="ReviewMan" ColumnName="ReviewMan" />
-                <ScalarProperty Name="IsReview" ColumnName="IsReview" />
-                <ScalarProperty Name="OrderBudget" ColumnName="OrderBudget" />
-                <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
-                <ScalarProperty Name="ProjectDemandId" ColumnName="ProjectDemandId" />
-                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1267,6 +1241,35 @@
                 <ScalarProperty Name="MemberName" ColumnName="MemberName" />
                 <ScalarProperty Name="TreeID" ColumnName="TreeID" />
                 <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMC_ProjectOrder">
+            <EntityTypeMapping TypeName="kskfModel.RMC_ProjectOrder">
+              <MappingFragment StoreEntitySet="RMC_ProjectOrder">
+                <ScalarProperty Name="EngineeringPosition" ColumnName="EngineeringPosition" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
+                <ScalarProperty Name="Productioned" ColumnName="Productioned" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="CreateMan" ColumnName="CreateMan" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ConfirmMan" ColumnName="ConfirmMan" />
+                <ScalarProperty Name="ConfirmOrder" ColumnName="ConfirmOrder" />
+                <ScalarProperty Name="SubmitTime" ColumnName="SubmitTime" />
+                <ScalarProperty Name="SubmitMan" ColumnName="SubmitMan" />
+                <ScalarProperty Name="IsSubmit" ColumnName="IsSubmit" />
+                <ScalarProperty Name="ReviewTime" ColumnName="ReviewTime" />
+                <ScalarProperty Name="ReviewMan" ColumnName="ReviewMan" />
+                <ScalarProperty Name="IsReview" ColumnName="IsReview" />
+                <ScalarProperty Name="OrderBudget" ColumnName="OrderBudget" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
+                <ScalarProperty Name="ProjectDemandId" ColumnName="ProjectDemandId" />
+                <ScalarProperty Name="TreeName" ColumnName="TreeName" />
+                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

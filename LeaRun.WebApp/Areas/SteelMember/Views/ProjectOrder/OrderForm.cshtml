@@ -2,12 +2,20 @@
     ViewBag.Title = "订单管理》表单页面";
     Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
-
+@*<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>*@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-    var KeyValue = GetQuery('KeyValue');
     var TreeId = GetQuery('TreeId');
+    var KeyValue = GetQuery('KeyValue');
+    var TreeName = "";
     $(function () {
         GetGrid();
+
+        AjaxJson("/SteelMember/ProjectOrder/TreeName", { TreeId: TreeId }, function (data) {
+            //SetWebControls(data);
+            TreeName = data.TreeName;
+            document.getElementById("TreeName").value = TreeName;
+        });
 
         if (!!KeyValue) {
             //主表信息
@@ -19,11 +27,10 @@
             AjaxJson("/SteelMember/ProjectOrder/GetOrderEntryList", { OrderId: KeyValue }, function (data) {
                 var JsonData = data.rows;
                 $.each(JsonData, function (i) {
-                    var rowData = JsonData[i];                
-                    $("#ProjectDemandId➩" + rowindex).val(rowData.ProjectDemandId);
+                    var rowData = JsonData[i];
                     $("#MemberID➩" + rowindex).val(rowData.MemberID);
+                    $("#ProjectDemandId➩" + rowindex).val(rowData.ProjectDemandId);
                     $("#MemberNumbering➩" + rowindex).val(rowData.MemberNumbering);
-                    $("#MemberNumber➩" + rowindex).val(rowData.MemberNumber);
                     $("#MemberName➩" + rowindex).val(rowData.MemberName);
                     $("#MemberModel➩" + rowindex).val(rowData.MemberModel);
                     $("#MemberUnit➩" + rowindex).val(rowData.MemberUnit);
@@ -54,21 +61,21 @@
     function GetGrid() {
         $("#gridTable").jqGrid({
             datatype: "local",
-            height: $(window).height() - 290,
+            height: $(window).height() + 200,
             autowidth: true,
             colModel: [
-                { label: '构件编号[<font face="宋体">*</font>]', name: "MemberNumbering", width: 200, sortable: false },
-                { label: '构件名称', name: "MemberName", width: 180, sortable: false },
+                { label: '构件编号[<font face="宋体">*</font>]', name: "MemberNumbering", width: 180, sortable: false },
+                { label: '构件名称', name: "MemberName", width: 150, sortable: false },
                 { label: '构件型号', name: "MemberModel", width: 100, sortable: false, align: 'center' },
-                { label: '单位', name: "MemberUnit", width: 100, sortable: false, align: 'center' },
-                { label: '数量[<font face="宋体">*</font>]', name: 'Qty', width: 100, sortable: false, align: 'center' },
-                { label: '单价[<font face="宋体">*</font>]', name: 'Price', width: 100, sortable: false, align: 'center' },
-                { label: '金额[<font face="宋体">*</font>]', name: 'PriceAmount', width: 200, sortable: false, align: 'center' },
+                { label: '单位', name: "MemberUnit", width: 80, sortable: false, align: 'center' },
+                { label: '数量[<font face="宋体">*</font>]', name: 'Qty', width: 80, sortable: false, align: 'center' },
+                { label: '单价[<font face="宋体">*</font>]', name: 'Price', width: 80, sortable: false, align: 'center' },
+                { label: '金额[<font face="宋体">*</font>]', name: 'PriceAmount', width: 120, sortable: false, align: 'center' },
                 //{ label: '含税单价[<font face="宋体">*</font>]', name: 'PlusPrice', width: 70, sortable: false, align: 'center' },
                 //{ label: '税率(%)[<font face="宋体">*</font>]', name: 'CESS', width: 70, sortable: false, align: 'center' },
                 //{ label: '税额', name: 'CESSAmount', width: 70, sortable: false, align: 'center' },
                 //{ label: '含税金额[<font face="宋体">*</font>]', name: 'PlusPriceAmount', width: 70, sortable: false, align: 'center' },
-                { label: '说明', name: 'Description', width: 400, sortable: false },
+                { label: '说明', name: 'Description', width: 220, sortable: false },
                 { label: '构件ID', name: 'MemberID', width: 1, sortable: false, hidden: true },
                 { label: '需求ID', name: 'ProjectDemandId', width: 1, sortable: false, hidden: true }
             ],
@@ -132,7 +139,7 @@
             }
             var index = $(this).attr('id').split('➩')[1];
             var url = "/SteelMember/ProjectOrder/ItemList?index=" + index + "&TreeId=" + TreeId;
-            Dialog(url, "ItemList", "选取构件信息（双击表格添加）", 960, 400);
+            Dialog(url, "ItemList", "选取<" + TreeName + ">构件（点击表格添加）", 900, 440);
         });
         //价格信息文本框点击事件
         $("#gridTable").find('.decimal').click(function () {
@@ -180,18 +187,18 @@
             if (PriceAmount != "" && Qty != undefined) {
                 TotalPriceAmount += Number(PriceAmount);
             }
-            //var PlusPrice = $(this).find('td:eq(8)').find('input').val();
-            //if (PlusPrice != "" && Qty != undefined) {
-            //    TotalPlusPrice += Number(PlusPrice);
-            //}
-            //var CESSAmount = $(this).find('td:eq(10)').find('input').val();
-            //if (CESSAmount != "" && Qty != undefined) {
-            //    TotalCESSAmount += Number(CESSAmount);
-            //}
-            //var PlusPriceAmount = $(this).find('td:eq(11)').find('input').val();
-            //if (PlusPriceAmount != "" && Qty != undefined) {
-            //    TotalPlusPriceAmount += Number(PlusPriceAmount);
-            //}
+            var PlusPrice = $(this).find('td:eq(8)').find('input').val();
+            if (PlusPrice != "" && Qty != undefined) {
+                TotalPlusPrice += Number(PlusPrice);
+            }
+            var CESSAmount = $(this).find('td:eq(10)').find('input').val();
+            if (CESSAmount != "" && Qty != undefined) {
+                TotalCESSAmount += Number(CESSAmount);
+            }
+            var PlusPriceAmount = $(this).find('td:eq(11)').find('input').val();
+            if (PlusPriceAmount != "" && Qty != undefined) {
+                TotalPlusPriceAmount += Number(PlusPriceAmount);
+            }
         });
         $("#TotalQty").text(TotalQty);
         $("#TotalPrice").text(FormatCurrency(TotalPrice));
@@ -201,64 +208,35 @@
         //$("#TotalPlusPriceAmount").text(FormatCurrency(TotalPlusPriceAmount));
     }
     /*明细end=======================================*/
+    
     //保存事件
-    function SubmitOrderForm() {
+    function AcceptClick() {
         if (!CheckDataValid('#form1')) {
             return false;
         }
-        confirmDialog('提示', '注：您确认要保存此操作吗？', function (r) {
-            if (r) {
-                Loading(true, "正在提交数据...");
-                window.setTimeout(function () {
-                    var postData = GetWebControls("#tb_POOrderFrom");
-                    postData["POOrderEntryJson"] = GetTableDataJson("#gridTable");
-                    AjaxJson("/SteelMember/ProjectOrder/SubmitOrderForm?TreeId=" + TreeId + "&KeyValue=" + KeyValue, postData, function (data) {
-                        tipDialog(data.Message, 3, data.Code);
-                        ThisCloseTab();
-                    });
-                }, 200);
-            }
-        });
-    }
+        Loading(true, "正在提交数据...");
+        window.setTimeout(function () {
+            var postData = GetWebControls("#tb_POOrderFrom");
+            postData["POOrderEntryJson"] = GetTableDataJson("#gridTable");
+            AjaxJson("/SteelMember/ProjectOrder/SubmitOrderForm?TreeId=" + TreeId + "&KeyValue=" + KeyValue, postData, function (data) {
+                tipDialog(data.Message, 3, data.Code);
+                top.frames[tabiframeId()].windowload();
+                closeDialog();
+            });
+        }, 200);
+    };
 
-    //导出文件
-    function btn_derive() {
-        SetDeriveExcel("#gridTable", "构件需求信息表");
-        openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "信息导出", 900, 500, function (iframe) {
-            top.frames[iframe].AcceptClick();
-        })
-    }
-
-    //要打印数据源，子页面调用的函数
-    function PrintDataSource() {
-        var columnModel = $("#gridTable").jqGrid('getGridParam', 'colModel');
-        var dataModel = $("#gridTable").jqGrid("getRowData");
-        var footerData = $("#gridTable").jqGrid("footerData");
-        var JsonData = {
-            columnModel: columnModel,
-            dataModel: dataModel,
-            footerData: footerData,
-        }
-        return JsonData;
-    }
-
-    //点击打印报表
-    function btn_print() {
-        PrintDialog("/SteelMember/File/PrintPage", "PrintPage", "打印当前页", 1200, 500, function (iframe) {
-            top.frames[iframe].SubmitPrint()
-        });
-    }
 </script>
 <form id="form1">
     <div class="leftline rightline" style="margin-left: 1px; margin-right: 1px;">
         <div class="tools_bar" style="margin-top: 1px; margin-bottom: 0px;">
             <a id="lr-replace" class="tools_btn" title="刷新当前(Ctrl+Q)" onclick="Replace()"><span><b style='background: url(@Url.Content("../../Content/Images/Icon16/arrow_refresh.png")) no-repeat 50% 4px;'>刷新</b></span></a>
-            <div class="tools_separator"></div>
-            @*<a id="button_first_bills" title="最前面单据" onclick="first_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_first.png")) 50% 4px no-repeat;">最前</b></span></a>
-                <a id="button_prev_bills" title="前面单单" onclick="prev_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_previous.png")) 50% 4px no-repeat;">前单</b></span></a>
-                <a id="button_next_bills" title="后面单单" onclick="next_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_next.png")) 50% 4px no-repeat;">后单</b></span></a>
-                <a id="button_last_bills" title="最后面单据" onclick="last_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_last.png")) 50% 4px no-repeat;">最后</b></span></a>*@
-            <a id="button_Commit_Save" title="保存单据" onclick="SubmitOrderForm()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/disk.png")) 50% 4px no-repeat;">保存</b></span></a>
+            @* <div class="tools_separator"></div>
+                <a id="button_first_bills" title="最前面单据" onclick="first_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_first.png")) 50% 4px no-repeat;">最前</b></span></a>
+                    <a id="button_prev_bills" title="前面单单" onclick="prev_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_previous.png")) 50% 4px no-repeat;">前单</b></span></a>
+                    <a id="button_next_bills" title="后面单单" onclick="next_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_next.png")) 50% 4px no-repeat;">后单</b></span></a>
+                    <a id="button_last_bills" title="最后面单据" onclick="last_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_last.png")) 50% 4px no-repeat;">最后</b></span></a>*@
+            @*<a id="button_Commit_Save" title="保存单据" onclick="SubmitOrderForm()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/disk.png")) 50% 4px no-repeat;">保存</b></span></a>*@
             <div class="tools_separator"></div>
             <a title="关闭当前窗口(Esc)" onclick="ThisCloseTab()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/back.png")) 50% 4px no-repeat;">离开</b></span></a>
         </div>
@@ -282,7 +260,7 @@
                     制单员：
                 </th>
                 <td>
-                    <input readonly id="CreateMan" type="text" class="txt" style="width: 95%" value="@ViewBag.CreateMan" />
+                    <input readonly id="CreateMan" type="text" class="txt" style="width: 95%" value="@ViewData["CreateMan"]" />
                 </td>
                 <th>
                     制单日期[<font face="宋体" color="red">*</font>]：
@@ -293,22 +271,22 @@
             </tr>
             <tr>
                 <th>
-                    收货部门：
+                    工程部位[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    <input readonly id="SubmitMan" type="text" class="txt" style="width: 95%" value="@ViewBag.SubmitMan" />
+                    <input readonly id="TreeName" type="text" class="txt" style="width: 95%" />
                 </td>
                 <th>
                     审核人：
                 </th>
                 <td>
-                    <input id="ReviewMan" type="text" class="txt" style="width: 95%" value="@ViewBag.ReviewMan" />
+                    <input id="ReviewMan" type="text" class="txt" style="width: 95%" />
                 </td>
                 <th>
                     审核日期：
                 </th>
                 <td>
-                    <input readonly id="ReviewTime" type="text" class="txt" style="width: 95%" value="@ViewBag.ReviewTime" />
+                    <input readonly id="ReviewTime" type="text" class="txt" style="width: 95%" />
                 </td>
             </tr>
             <tr>
@@ -331,7 +309,7 @@
             </tr>
         </table>
 
-        <div id="grid_List">
+        <div id="grid_List" style="width:1100px;">
             <table id="gridTable"></table>
             <style>
                 .ui-widget-content {
