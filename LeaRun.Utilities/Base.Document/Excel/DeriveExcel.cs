@@ -117,7 +117,7 @@ namespace LeaRun.Utilities
         /// <param name="JsonData">数据</param>
         /// <param name="ExportField">导出字段</param>
         /// <param name="fileName">文件名</param>
-        public static void JqGridToExcel(string JsonColumn, string JsonData, string ExportField, string fileName, string TableHeader)
+        public static void JqGridToExcel(string JsonColumn, string JsonData, string ExportField, string fileName, string TableHeader, string TableObject)
         {
             List<JqGridColumn> ListColumn = JsonConvert.DeserializeObject<List<JqGridColumn>>(JsonColumn);
             HttpContext.Current.Response.ContentType = "application/vnd.ms-excel";
@@ -131,16 +131,38 @@ namespace LeaRun.Utilities
             string[] FieldInfo = ExportField.Split(',');
 
             //写出表头
-            sbHtml.AppendLine("<tr style=\"font-weight:700;; white-space: nowrap;\">");
+            sbHtml.AppendLine("<tr style=\"font-weight:700; white-space: nowrap;\">");
             int Column = FieldInfo.Count()-1;
 
             sbHtml.AppendLine("<td colspan=" + Column + " style=\"height:40px;text-align:center \">" + TableHeader + "</td>");
             sbHtml.AppendLine("</tr>");
 
-            sbHtml.AppendLine("<tr style=\"font-weight:200;; white-space: nowrap;\">");
+            sbHtml.AppendLine("<tr style=\"font-weight:300;; white-space: nowrap;\">");
             sbHtml.AppendLine("<td colspan=" + Column + " style=\"height:25px;text-align:center \">" + fileName + "</td>");
             sbHtml.AppendLine("</tr>");
 
+            //写副表
+            if (TableObject != null) {
+                string[] TableObject1 = TableObject.Split('|');
+                foreach (string item in TableObject1)
+                {
+                    sbHtml.AppendLine("<tr style=\"font-weight: bold; white-space: nowrap\">");
+                    string[] TableObject2= item.Split(',');
+                    for (int i = 0; i < TableObject2.Count(); i++)
+                    {
+                        if (TableObject2[i] != "")
+                        {
+                            sbHtml.AppendLine("<td></td>");
+                            sbHtml.AppendLine("<td colspan=" + Column/2+ "style=\"text-align:align;\">" + TableObject2[i] + "</td>");
+                            sbHtml.AppendLine("<td></td><td></td>");
+                        }
+                    }
+                    sbHtml.AppendLine("</tr>");
+                }
+                sbHtml.AppendLine("<tr></tr>");
+
+
+            }
 
             //写出列名
             sbHtml.AppendLine("<tr style=\"font-weight: bold; white-space: nowrap\">");

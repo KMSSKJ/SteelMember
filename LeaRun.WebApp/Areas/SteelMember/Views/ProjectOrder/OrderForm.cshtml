@@ -95,6 +95,23 @@
                     //"CESSAmount": "<span id='TotalCESSAmount'>0.00</span>",
                     //"PlusPriceAmount": "<span id='TotalPlusPriceAmount'>0.00</span>"
                 });
+            },
+              /** 设置删行事件处理 */
+            //$("#removeButton").bind("click", function () {
+            //    var selectedId = $("#gridTable").jqGrid("getGridParam", "selrow");
+            //    if (!selectedId) {
+            //        alert("请选择要删除的行");
+            //        return;
+            //    } else {
+            //        $("#gridTable").jqGrid("delRowData", selectedId);
+            //    }
+            //}),
+            //onSelectRow: function () {
+            //    SelectRowIndx = GetJqGridRowIndx("#" + this.id);
+            //},
+            ondblclick:function(rowid, e) {
+                var selectedId = $("#gridTable").jqGrid("getGridParam", "selrow");
+                $("#gridTable").jqGrid("delRowData", selectedId);
             }
         });
         ////表头合并

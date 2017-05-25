@@ -1188,7 +1188,7 @@ function FieldExist(id, tablename, keyfield, Msg) {
 obj:表格对象ID
 fileName：导出Excel文件名
 */
-function SetDeriveExcel(obj, fileName, TableHeader, JsonData1) {
+function SetDeriveExcel(obj, fileName, TableHeader, JsonData1, TableObject) {
     var footerData;
     if (JsonData1 != "") {
         dataModel = JsonData1;
@@ -1202,7 +1202,8 @@ function SetDeriveExcel(obj, fileName, TableHeader, JsonData1) {
         JsonData: JSON.stringify(dataModel),
         JsonFooter: JSON.stringify(footerData),
         FileName: fileName,
-        TableHeader: TableHeader,
+        TableHeader:TableHeader,
+        TableObject:TableObject
     }
     getAjax("/Utility/SetDeriveExcel", JsonData, function (data) { })
 }

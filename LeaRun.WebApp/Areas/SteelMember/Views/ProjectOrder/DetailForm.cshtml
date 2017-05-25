@@ -6,13 +6,16 @@
 <script type="text/javascript">
     var KeyValue = GetQuery('KeyValue');
     var TreeId = GetQuery('TreeId');
-    var JsonData1="";
+    var JsonData1 = "";
+   
     $(function () {
         GetGrid();
         if (!!KeyValue) {
             //主表信息
             AjaxJson("/SteelMember/ProjectOrder/SetDataForm", { KeyValue: KeyValue }, function (data) {
+                table = data;
                 SetWebControls(data);
+                loadTable();
             });
             var rowindex = 1;
             //明细信息
@@ -42,11 +45,39 @@
                 });
             });
             if (GetQuery("motionType") == 0) {
-                $("#button_Commit_Save").attr({ "disabled": "disabled" }).attr('onclick', '');
+                //$("#button_Commit_Save").attr({ "disabled": "disabled" }).attr('onclick', '');
                 $('input,select,textarea').attr({ "disabled": "disabled" });
             }
         }
     })
+
+    var TableObject = [];
+    function loadTable() {
+        //var tab = document.getElementById("tb_POOrderFrom");
+        //var rows = tab.rows;
+        //for (var i = 0; i < rows.length; i++) {
+        //    for (var j = 0; j < rows[i].cells.length; j++) {
+        //        alert("第" + (i + 1) + "行，第" + (j + 1) + "列的值是:" + rows[i].cells[j].);
+        //    }
+        //}
+        //var trList = $("#tb_POOrderFrom").children("tr")
+        //for (var i = 0; i < trList.length; i++) {
+        //    var tdArr = trList.eq(i).find("td").text();
+        //    alert(tdArr);
+        //}
+        //$("#tb_POOrderFrom tr").each(function () {
+        //    alert($(this).children().eq(0).text());
+        //});
+       
+        $("#tb_POOrderFrom tr").each(function (i) {
+            var RowTitel1 = $(this).find('td:eq(0)').text();
+            var RowValue1 = $(this).find('td:eq(1)').find('input').val();
+            var RowTitel2 = $(this).find('td:eq(2)').text();
+            var RowValue2 = $(this).find('td:eq(3)').find('input').val();
+            TableObject.push(RowTitel1.trim() + RowValue1.trim(), RowTitel2.trim() + RowValue2.trim()+"|");
+        })
+    }
+
     /*明细begin=======================================*/
     //采购订单分录
     function GetGrid() {
@@ -86,7 +117,7 @@
                 });
             }
         });
-     
+
         columnModelData("#gridTable");
 
         ////表头合并
@@ -222,7 +253,7 @@
 
     //导出文件
     function btn_derive() {
-        SetDeriveExcel("#gridTable", "构件订单表", "云南公投澄川高速", JsonData1,);
+        SetDeriveExcel("#gridTable", "构件订单表", "云南公投澄川高速", JsonData1, TableObject.toString());
         openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "信息导出", 900, 500, function (iframe) {
             top.frames[iframe].AcceptClick();
         })
@@ -259,105 +290,101 @@
                 <a id="button_next_bills" title="后面单单" onclick="next_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_next.png")) 50% 4px no-repeat;">后单</b></span></a>
                 <a id="button_last_bills" title="最后面单据" onclick="last_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_last.png")) 50% 4px no-repeat;">最后</b></span></a>*@
             @*<a id="button_Commit_Save" title="保存单据" onclick="SubmitOrderForm()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/disk.png")) 50% 4px no-repeat;">保存</b></span></a>*@
-            <a id="lr-print" title="打印单据" onclick="btn_print()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/printer.png")) 50% 4px no-repeat;">打印</b></span></a>
+            @*<a id="lr-print" title="打印单据" onclick="btn_print()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/printer.png")) 50% 4px no-repeat;">打印</b></span></a>*@
             <a id="lr-print" title="导出数据" onclick="btn_derive()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/excel_exports.png")) 50% 4px no-repeat;">导出</b></span></a>
               <div class="tools_separator"></div>
             <a title="关闭当前窗口(Esc)" onclick="ThisCloseTab()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/back.png")) 50% 4px no-repeat;">离开</b></span></a>
         </div>
-        <table id="tb_POOrderFrom" class="form-bill">
+        <div style="font-family: 华文楷体;text-align:center;font-size: x-large; height: 60px; line-height: 60px;">
+            构件订单&nbsp;
+            </div>
+            <table id="tb_POOrderFrom" class="form-bill">
             <tr>
-                <td align="center" colspan="8">
-                    <div style="font-family: 华文楷体; font-size: x-large; height: 60px; line-height: 60px;">
-                        构件订单&nbsp;
-                        @*<img src="../../Content/Images/billstatis1.png" style="vertical-align: middle;" />*@
-                    </div>
+                <td>
+                    订单编号：
                 </td>
-            </tr>
-            <tr>
-                <th>
-                    订单编号[<font face="宋体" color="red">*</font>]：
-                </th>
                 <td>
                     <input readonly id="OrderNumbering" type="text" class="txt" datacol="yes" err="制单编号" checkexpession="NotNull" value="@ViewBag.OrderNumbering" style="width: 95%" />
                 </td>
-                <th>
+                <td>
+                    工程部位：
+                </td>
+                <td>
+                    <input readonly id="TreeName" type="text" class="txt" style="width: 95%" />
+                </td></tr>
+                <tr>
+                <td>
                     制单员：
-                </th>
+                </td>
                 <td>
                     <input readonly id="CreateMan" type="text" class="txt" style="width: 95%" value="@ViewBag.SubmitMan" />
                 </td>
-                <th>
-                    制单日期[<font face="宋体" color="red">*</font>]：
-                </th>
+                <td>
+                    制单日期：
+                </td>
                 <td>
                     <input id="CreateTime" type="text" class="txt" datacol="yes" err="制单日期" checkexpession="NotNull" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 95%" />
                 </td>
             </tr>
             <tr>
-                <th>
-                    工程部位[<font face="宋体" color="red">*</font>]：
-                </th>
                 <td>
-                    <input readonly id="TreeName" type="text" class="txt" style="width: 95%" />
-                </td>
-                <th>
                     审核人：
-                </th>
+                </td>
                 <td>
                     <input id="ReviewMan" type="text" class="txt" style="width: 95%" value="@ViewBag.ReviewMan" />
                 </td>
-                <th>
+                <td>
                     审核日期：
-                </th>
+                </td>
                 <td>
                     <input readonly id="ReviewTime" type="text" class="txt" style="width: 95%" value="@ViewBag.ReviewTime" />
                 </td>
             </tr>
             <tr>
-                <th>
-                    生产优先级[<font face="宋体" color="red">*</font>]：
-                </th>
                 <td>
-                    @*<input id="Priority" type="text" class="txt" datacol="yes" err="生产优先级" checkexpession="NotNull" style="width: 95%" />*@
-                    <select id="Priority" datacol="yes" err="生产优先级" checkexpession="NotNull" style="width: 60%">
+                    生产优先级：
+                </td>
+                <td>
+                    <input readonly id="Priority" type="text" class="txt" style="width: 95%"value="@ViewBag.Priority" />
+                    @*<select id="Priority" datacol="yes" err="生产优先级" checkexpession="NotNull" style="width: 60%">
                         <option value="0">正常</option>
                         <option value="1">加急</option>
-                    </select>
+                    </select>*@
                 </td>
-                <th>
+                <td>
                     备注：
-                </th>
-                <td colspan="7">
-                    <input id="Description" type="text" class="txt" style="width:97%" value="@ViewBag.Description" />
+                </td>
+                <td>
+                    <input id="Description" type="text" class="txt" style="width:95%" value="@ViewBag.Description" />
                 </td>
             </tr>
-        </table>
+            </table>
 
-        <div id="grid_List" style="width:1100px;">
-            <table id="gridTable"></table>
-            <style>
-                .ui-widget-content {
-                    border-left: none;
-                }
-
-                .ui-jqgrid tr.ui-row-ltr td {
-                    padding: 0px;
-                    border-bottom: 1px solid #ccc;
-                }
-
-                .ui-jqgrid .ui-jqgrid-htable th {
-                    line-height: 15px;
-                }
-
-                    .ui-th-column, .ui-jqgrid .ui-jqgrid-htable th.ui-th-column {
-                        background: none;
+            <div id="grid_List" style="width:1100px;">
+                <table id="gridTable"></table>
+                <style>
+                    .ui-widget-content {
+                        border-left: none;
                     }
 
-                .editable {
-                    height: 22px;
-                    background-color: #fff;
-                }
-            </style>
+                    .ui-jqgrid tr.ui-row-ltr td {
+                        padding: 0px;
+                        border-bottom: 1px solid #ccc;
+                    }
+
+                    .ui-jqgrid .ui-jqgrid-htable th {
+                        line-height: 15px;
+                    }
+
+                        .ui-th-column, .ui-jqgrid .ui-jqgrid-htable th.ui-th-column {
+                            background: none;
+                        }
+
+                    .editable {
+                        height: 22px;
+                        background-color: #fff;
+                    }
+                </style>
+            </div>
         </div>
-    </div>
 </form>

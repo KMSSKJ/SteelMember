@@ -220,10 +220,11 @@ namespace LeaRun.WebApp.Controllers
             string JsonFooter = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonFooter_DeriveExcel"));
             string fileName = GZipHelper.Uncompress(CookieHelper.GetCookie("FileName_DeriveExcel"));
             string TableHeader = GZipHelper.Uncompress(CookieHelper.GetCookie("TableHeader_DeriveExcel"));
+            string TableObject = GZipHelper.Uncompress(CookieHelper.GetCookie("TableObject_DeriveExcel"));
             string JsonData = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonData_DeriveExcel"));
             //<img style=\"width:44px;height:32px;\" src=\"工字钢GB10/工字钢GB10.jpg\" onmouseover=\"showBigImg(event,'工字钢GB10/工字钢GB10.jpg')\" onmouseout=\"leaveBigImg(event)\">
             JsonData = JsonData.Replace("../../Resource/Document/NetworkDisk/System/Member/", "").Replace("style=\\\"width:44px;height:32px;\\\"", "").Replace("onmouseout=\\\"leaveBigImg(event)\\\"", "").Replace("onmouseover=\\\"showBigImg(event,", "");
-            DeriveExcel.JqGridToExcel(JsonColumn, JsonData, ExportField, fileName, TableHeader);
+            DeriveExcel.JqGridToExcel(JsonColumn, JsonData, ExportField, fileName, TableHeader, TableObject);
 
 
             //CookieHelper.DelCookie("JsonColumn_DeriveExcel");
@@ -238,13 +239,16 @@ namespace LeaRun.WebApp.Controllers
         /// <param name="JsonData">数据</param>
         /// <param name="JsonFooter">底部合计</param>
         [ValidateInput(false)]
-        public void SetDeriveExcel(string JsonColumn, string JsonData, string JsonFooter, string FileName,string TableHeader)
+        public void SetDeriveExcel(string JsonColumn, string JsonData, string JsonFooter, string FileName,string TableHeader,string TableObject)
         {
             CookieHelper.WriteCookie("JsonColumn_DeriveExcel", GZipHelper.Compress(JsonColumn));
             CookieHelper.WriteCookie("JsonData_DeriveExcel", GZipHelper.Compress(JsonData));
             CookieHelper.WriteCookie("JsonFooter_DeriveExcel", GZipHelper.Compress(JsonFooter));
             CookieHelper.WriteCookie("FileName_DeriveExcel", GZipHelper.Compress(FileName));
             CookieHelper.WriteCookie("TableHeader_DeriveExcel", GZipHelper.Compress(TableHeader));
+            if (TableObject != null) { 
+            CookieHelper.WriteCookie("TableObject_DeriveExcel", GZipHelper.Compress(TableObject));
+            }
         }
         #endregion
 

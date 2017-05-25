@@ -76,11 +76,22 @@
                     top.TipMsg("构件已存在,不能重复添加", 4000, "error");
                 }
             },
+
+            /** 设置删行事件处理 */
+            //$("#removeButton").bind("click", function () {
+            //    var selectedId = $("#gridTable").jqGrid("getGridParam", "selrow");
+            //    if (!selectedId) {
+            //        alert("请选择要删除的行");
+            //        return;
+            //    } else {
+            //        $("#gridTable").jqGrid("delRowData", selectedId);
+            //    }
+            //})
             //全选事件
             onSelectAll: function (RowIndx) {
                 for (var i = 0; i < RowIndx.length; i++) {
                     var rowData = $(this).jqGrid('getRowData', RowIndx[i]);
-                    var $parentobj = top.frames[tabiframeId()];
+                    var $parentobj = top.frames["OrderForm"];
                     if (!$parentobj.IsExistItem(index, rowData.MemberNumbering)) {
                         $parentobj.$("#MemberID➩" + index).val(rowData.MemberId);
                         $parentobj.$("#MemberNumbering➩" + index).val(rowData.MemberNumbering);
@@ -119,9 +130,6 @@
     }).trigger('reloadGrid');
     }
 
-    function btn_batch_add() {
-
-    }
 </script>
 
 <div class="rightline" style="margin: 1px; margin-top: -1px;width:900px">
