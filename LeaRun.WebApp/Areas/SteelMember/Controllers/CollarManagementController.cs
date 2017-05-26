@@ -94,7 +94,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             try
             {
                 int IsOk = 0;
-                string Message = KeyValue == "" ? "变更成功。" : "新增成功。";
+                string Message = KeyValue == "" ? "新增成功。" : "变更成功。";
                 if (!string.IsNullOrEmpty(KeyValue))
                 {
                     int _CollarId = Convert.ToInt32(KeyValue);
@@ -351,27 +351,29 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             int _CollarId = Convert.ToInt32(CollarId);
             try
             {
-                List<OrderModel> OrderModellist = new List<OrderModel>();
+                List<CollarModel> CollarModelList = new List<CollarModel>();
                 var listfile = CollarMemberCurrent.Find(f => f.CollarId == _CollarId).ToList();
                 foreach (var item in listfile)
                 {
-                    OrderModel OrderModel = new OrderModel();
-                    OrderModel.MemberNumbering = item.MemberNumbering;
-                    OrderModel.MemberName = item.MemberName;
-                    OrderModel.MemberModel = item.MemberModel;
-                    OrderModel.MemberUnit = item.MemberUnit;
-                    OrderModel.Qty = item.Qty.ToString();
+                    CollarModel CollarModel = new CollarModel();
+                    CollarModel.ProjectDemandId = item.ProjectDemandId.ToString();
+                    CollarModel.MemberID = item.MemberId.ToString();
+                    CollarModel.MemberNumbering = item.MemberNumbering;
+                    CollarModel.MemberName = item.MemberName;
+                    CollarModel.MemberModel = item.MemberModel;
+                    CollarModel.MemberUnit = item.MemberUnit;
+                    CollarModel.Qty = item.Qty.ToString();
                     //OrderModel.Price = item.Price.ToString();
                     //OrderModel.PriceAmount = item.PriceAmount.ToString();
-                    OrderModel.Description = item.Description;
-                    OrderModellist.Add(OrderModel);
+                    CollarModel.Description = item.Description;
+                    CollarModelList.Add(CollarModel);
                 }
 
 
 
                 var JsonData = new
                 {
-                    rows = OrderModellist,
+                    rows = CollarModelList,
                 };
                 return Content(JsonData.ToJson());
             }

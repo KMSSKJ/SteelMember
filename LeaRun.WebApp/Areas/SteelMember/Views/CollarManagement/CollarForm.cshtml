@@ -247,25 +247,24 @@
         //$("#TotalPlusPriceAmount").text(FormatCurrency(TotalPlusPriceAmount));
     }
     /*明细end=======================================*/
+   
     //保存事件
-    function SubmitOrderForm() {
+    function AcceptClick() {
         if (!CheckDataValid('#form1')) {
             return false;
         }
-        confirmDialog('提示', '注：您确认要保存此操作吗？', function (r) {
-            if (r) {
-                Loading(true, "正在提交数据...");
-                window.setTimeout(function () {
-                    var postData = GetWebControls("#tb_POOrderFrom");
-                    postData["POOrderEntryJson"] = GetTableDataJson("#gridTable");
-                    AjaxJson("/SteelMember/CollarManagement/SubmitCollarForm?KeyValue=" + KeyValue, postData, function (data) {
-                        tipDialog(data.Message, 3, data.Code);
-                        ThisCloseTab();
-                    });
-                }, 200);
-            }
-        });
-    }
+        Loading(true, "正在提交数据...");
+        window.setTimeout(function () {
+            var postData = GetWebControls("#tb_POOrderFrom");
+            postData["POOrderEntryJson"] = GetTableDataJson("#gridTable");
+            AjaxJson("/SteelMember/CollarManagement/SubmitCollarForm?KeyValue=" + KeyValue + "&TreeId=" + TreeId, postData, function (data) {
+                tipDialog(data.Message, 3, data.Code);
+                top.frames[tabiframeId()].windowload();
+                closeDialog();
+            });
+        }, 200);
+    };
+
 </script>
 <form id="form1">
     <div class="leftline rightline" style="margin-left: 1px; margin-right: 1px;">

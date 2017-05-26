@@ -50,7 +50,7 @@
             //单击事件
             onSelectRow: function (RowIndx) {
                 var rowData = $(this).jqGrid('getRowData', RowIndx);
-                var $parentobj = top.frames[tabiframeId()];
+                var $parentobj = top.frames["CollarForm"];
                 if (!$parentobj.IsExistItem(index, rowData.MemberNumbering)) {
                     $parentobj.$("#MemberID➩" + index).val(rowData.MemberId);
                     $parentobj.$("#MemberNumbering➩" + index).val(rowData.MemberNumbering);
@@ -79,7 +79,7 @@
             onSelectAll: function (RowIndx) {
                 for (var i = 0; i < RowIndx.length; i++) {
                     var rowData = $(this).jqGrid('getRowData', RowIndx[i]);
-                    var $parentobj = top.frames[tabiframeId()];
+                    var $parentobj = top.frames["CollarForm"];
                     if (!$parentobj.IsExistItem(index, rowData.MemberNumbering)) {
                         $parentobj.$("#MemberID➩" + index).val(rowData.MemberId);
                         $parentobj.$("#MemberNumbering➩" + index).val(rowData.MemberNumbering);
