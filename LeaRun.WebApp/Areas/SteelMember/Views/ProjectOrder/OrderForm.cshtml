@@ -28,6 +28,10 @@
                 var JsonData = data.rows;
                 $.each(JsonData, function (i) {
                     var rowData = JsonData[i];
+                    //给判断集合赋值开始
+                    IsExistItem(rowindex, rowData.MemberID);
+                    //给判断集合赋值结束
+
                     $("#MemberID➩" + rowindex).val(rowData.MemberID);
                     $("#ProjectDemandId➩" + rowindex).val(rowData.ProjectDemandId);
                     $("#MemberNumbering➩" + rowindex).val(rowData.MemberNumbering);
@@ -172,6 +176,25 @@
             return true;
         }
     }
+
+    function HaveExistItem(index, code) {
+        if (!ArrayExists(array, code)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    function IsExistItemdelete(index, code) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] == code) {
+                array.splice(i, 1);
+                break;
+            }
+        }
+    }
+
     //采购订单明细换算+合计
     function Conversion(index) {
         var Qty = $("#Qty➩" + index).val();                                //数量
@@ -225,7 +248,11 @@
         //$("#TotalPlusPriceAmount").text(FormatCurrency(TotalPlusPriceAmount));
     }
     /*明细end=======================================*/
-    
+
+    //刷新
+    function windowload() {
+        $("#gridTable").trigger("reloadGrid"); //重新载入 
+    }
     //保存事件
     function AcceptClick() {
         if (!CheckDataValid('#form1')) {

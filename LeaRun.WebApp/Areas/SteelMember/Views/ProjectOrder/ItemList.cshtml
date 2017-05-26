@@ -7,9 +7,9 @@
         $("#keywords").focus();
         //GetTree();
         GetGrid();
-        //绑定键盘按下事件  
+        //绑定键盘按下事件
         $(document).keypress(function (e) {
-            // 回车键事件  
+            // 回车键事件
             if (e.which == 13) {
                 $("#keywords").focus();
                 $("#keywords").select();
@@ -47,12 +47,32 @@
             gridview: true,
             multiselect: true,
             rowList: [15, 30, 50, 100, 500, 1000],
+            gridComplete: function () {
+                var rowIds = jQuery("#gridTable").jqGrid('getDataIDs');
+                var $parentobj = top.frames["OrderForm"];
+                for (var k = 0; k < rowIds.length; k++) {
+                    var curRowData = jQuery("#gridTable").jqGrid('getRowData', rowIds[k]);
+                    var curChk = $("#" + rowIds[k] + "").find(":checkbox");
+                    //curChk.attr('name', 'checkboxname');   //给每一个checkbox赋名字
+                    //curChk.attr('value', curRowData['MY_ID']);   //给checkbox赋值
+                    //curChk.attr('title', curRowData['NAME']);   //给checkbox赋予额外的属性值
+                    ////curChk.attr('checked', 'true');   //设置所有checkbox被选中
+                    if (!$parentobj.HaveExistItem(k,curRowData.MemberId)) {
+                        //$("#gridTable").attr("checked", false);
+                        curChk.attr('checked',false); 
+                    } else {
+                        //$("#gridTable").attr("checked", true);
+                        curChk.attr('checked',true); 
+                    }
+                }
+            },
+
             //单击事件
             onSelectRow: function (RowIndx) {
                 var rowData = $(this).jqGrid('getRowData', RowIndx);
                 //var $parentobj = top.frames[tabiframeId()];
                 var $parentobj = top.frames["OrderForm"];
-                if (!$parentobj.IsExistItem(index, rowData.MemberNumbering)) {
+                if (!$parentobj.IsExistItem(index,rowData.MemberId)) {
                     $parentobj.$("#MemberID➩" + index).val(rowData.MemberId);
                     $parentobj.$("#MemberNumbering➩" + index).val(rowData.MemberNumbering);
                     $parentobj.$("#ProjectDemandId➩" + index).val(rowData.ProjectDemandId);
@@ -73,26 +93,37 @@
                     $parentobj.$("#MemberNumbering➩" + index).focus();
                     //closeDialog();
                 } else {
-                    top.TipMsg("构件已存在,不能重复添加", 4000, "error");
+                     confirmDialog("系统提示", "构件已存在,是否需要移除？", function (r) {
+                         if (r) {
+                            //删除判断集合对应元素开始
+                            $parentobj.IsExistItemdelete(index, rowData.MemberId);
+                            //删除判断集合对应元素结束
+                            $parentobj.$("#MemberID➩" + index).val(null);
+                            $parentobj.$("#MemberNumbering➩" + index).val(null);
+                            $parentobj.$("#ProjectDemandId➩" + index).val(null);
+                            $parentobj.$("#MemberName➩" + index).val(null);
+                            $parentobj.$("#MemberModel➩" + index).val(null);
+                            $parentobj.$("#MemberUnit➩" + index).val(null);
+                            $parentobj.$("#Qty➩" + index).val(null);
+                            $parentobj.$("#Price➩" + index).val(null);
+                            $parentobj.$("#PriceAmount➩" + index).val(null);
+                            $parentobj.$("#gridTable tbody tr:eq(" + index + ")").find('input').attr("datacol", "yes");
+                            //index++;
+                            $parentobj.$("#gridTable tbody tr:eq(" + index + ")").find('input').removeAttr('disabled');
+                            $parentobj.$("#gridTable").find('.disabled').attr("disabled", "disabled");
+                            $parentobj.$("#MemberNumbering➩" + index).focus();
+                        }
+                    });
                 }
+                $("#gridTable").trigger("reloadGrid"); //重新载入 
             },
 
-            /** 设置删行事件处理 */
-            //$("#removeButton").bind("click", function () {
-            //    var selectedId = $("#gridTable").jqGrid("getGridParam", "selrow");
-            //    if (!selectedId) {
-            //        alert("请选择要删除的行");
-            //        return;
-            //    } else {
-            //        $("#gridTable").jqGrid("delRowData", selectedId);
-            //    }
-            //})
             //全选事件
             onSelectAll: function (RowIndx) {
                 for (var i = 0; i < RowIndx.length; i++) {
                     var rowData = $(this).jqGrid('getRowData', RowIndx[i]);
                     var $parentobj = top.frames["OrderForm"];
-                    if (!$parentobj.IsExistItem(index, rowData.MemberNumbering)) {
+                    if (!$parentobj.IsExistItem(index, rowData.MemberId)) {
                         $parentobj.$("#MemberID➩" + index).val(rowData.MemberId);
                         $parentobj.$("#MemberNumbering➩" + index).val(rowData.MemberNumbering);
                         $parentobj.$("#ProjectDemandId➩" + index).val(rowData.ProjectDemandId);
@@ -112,11 +143,35 @@
                         $parentobj.$("#gridTable").find('.disabled').attr("disabled", "disabled");
                         $parentobj.$("#MemberNumbering➩" + index).focus();
                     } else {
-                        top.TipMsg("构件已存在,不能重复添加", 4000, "error");
+                        //top.TipMsg("构件已存在,不能重复添加", 4000, "error");
+                        confirmDialog("系统提示", "构件已存在,是否需要移除？", function (r) {
+                            if (r) {
+                                for (var i = 0; i < RowIndx.length; i++) {
+                                    var rowData = $(this).jqGrid('getRowData', RowIndx[i]);
+                                    //删除判断集合对应元素开始
+                                    $parentobj.IsExistItemdelete(index, rowData.MemberId);
+                                    //删除判断集合对应元素结束
+                                    $parentobj.$("#MemberID➩" + index).val(null);
+                                    $parentobj.$("#MemberNumbering➩" + index).val(null);
+                                    $parentobj.$("#ProjectDemandId➩" + index).val(null);
+                                    $parentobj.$("#MemberName➩" + index).val(null);
+                                    $parentobj.$("#MemberModel➩" + index).val(null);
+                                    $parentobj.$("#MemberUnit➩" + index).val(null);
+                                    $parentobj.$("#Qty➩" + index).val(null);
+                                    $parentobj.$("#Price➩" + index).val(null);
+                                    $parentobj.$("#PriceAmount➩" + index).val(null);
+                                    $parentobj.$("#gridTable tbody tr:eq(" + index + ")").find('input').attr("datacol", "yes");
+                                    index++;
+                                    $parentobj.$("#gridTable tbody tr:eq(" + index + ")").find('input').removeAttr('disabled');
+                                    $parentobj.$("#gridTable").find('.disabled').attr("disabled", "disabled");
+                                    $parentobj.$("#MemberNumbering➩" + index).focus();
+                                }
+                            }
+                        });
                     }
+                    $("#gridTable").trigger("reloadGrid"); //重新载入 
                 }
                 closeDialog();
-              
             },
 
         });

@@ -9067,7 +9067,6 @@
     <Content Include="Areas\SteelMember\Views\MemberProduce\RawMaterialsIndex.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\ShipManagementForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\ShipManagementIndex.cshtml" />
-    <Content Include="Areas\SteelMember\Views\ProjectManagement\CreateOrderForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\ProjectManagement\Form.cshtml" />
     <Content Include="Areas\SteelMember\Views\ProjectManagement\Index.cshtml" />
     <Content Include="Areas\SteelMember\Views\ProjectOrder\DetailForm.cshtml" />

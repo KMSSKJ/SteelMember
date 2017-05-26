@@ -194,6 +194,25 @@
             return true;
         }
     }
+
+    function HaveExistItem(index, code) {
+        if (!ArrayExists(array, code)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    function IsExistItemdelete(index, code) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] == code) {
+                array.splice(i, 1);
+                break;
+            }
+        }
+    }
+
     //领用单明细换算+合计
     function Conversion(index) {
         var Qty = $("#Qty➩" + index).val();                                //数量
@@ -247,7 +266,12 @@
         //$("#TotalPlusPriceAmount").text(FormatCurrency(TotalPlusPriceAmount));
     }
     /*明细end=======================================*/
-   
+
+    //刷新
+    function windowload() {
+        $("#gridTable").trigger("reloadGrid"); //重新载入 
+    }
+
     //保存事件
     function AcceptClick() {
         if (!CheckDataValid('#form1')) {

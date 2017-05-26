@@ -332,7 +332,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     RMC_ProjectDemand Oldentity = new RMC_ProjectDemand();
                     Oldentity.TreeId = treeid;
                     Oldentity.MemberClassId = entity.MemberClassId;
-                    // Oldentity.ProjectId = entity.ProjectId;//给旧实体重新赋值
+                    Oldentity.TreeName = entity.TreeName;
                     Oldentity.MemberId = entity.MemberId;
                     var Member = MemberLibraryCurrent.Find(f => f.MemberID == entity.MemberId).SingleOrDefault();
                     Oldentity.MemberNumbering = Member.MemberNumbering;

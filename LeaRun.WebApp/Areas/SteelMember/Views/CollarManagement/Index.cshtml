@@ -221,7 +221,7 @@
         if (IsChecked(KeyValue)) {
             //AddTabMenu("DetailForm", "@Url.Content("/SteelMember/CollarManagement/DetailForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId, "领用单详细", "page_white_add.png", true, true, true);
             var url = "/SteelMember/CollarManagement/DetailForm?KeyValue= " + KeyValue + "&TreeId=" + TreeId + "&motionType="+ItemId;
-            openDialog(url, "DetailForm", "详细信息",  1100, 600, function (iframe) {
+            Dialog(url, "DetailForm", "详细信息",  1100, 600, function (iframe) {
                 top.frames[iframe].AcceptClick();
             });
         }
