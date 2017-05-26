@@ -120,12 +120,16 @@
         });
 
     }
-
-    //刷新表格 树
+    //按钮刷新表格树
     function btn_reload() {
         GetTree();
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
+    //刷新
+    function windowload() {
+        $("#gridTable").trigger("reloadGrid"); //重新载入 
+    }
+
 
     //新建树
     function btn_addfolder() {
@@ -278,10 +282,10 @@
     });
     }
 
-    var JsonData1 = "";
+       var JsonData1 = "";  var TableObject ="";
     //导出文件
     function btn_derive() {
-        SetDeriveExcel("#gridTable", "构件结算表", "云南公投澄川高速", JsonData1);//参数说明：ID,表名，表头
+        SetDeriveExcel("#gridTable", "构件结算表", "云南公投澄川高速", JsonData1, TableObject.toString());//参数说明：ID,表名，表头
         openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "信息导出", 900, 500, function (iframe) {
             top.frames[iframe].AcceptClick();
         })

@@ -283,10 +283,10 @@
         }
     }
 
-    var JsonData1 = "";
+       var JsonData1 = "";  var TableObject ="";
     //导出文件
     function btn_derive() {
-        SetDeriveExcel("#gridTable", "构件需求信息表","云南公投澄川高速", JsonData1);
+        SetDeriveExcel("#gridTable", "构件需求信息表", "云南公投澄川高速", JsonData1,TableObject.toString());
         openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "信息导出", 900, 500, function (iframe) {
             top.frames[iframe].AcceptClick();
         })

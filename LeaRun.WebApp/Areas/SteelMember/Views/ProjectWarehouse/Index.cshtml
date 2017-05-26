@@ -101,10 +101,14 @@
 
     }
 
-    //刷新表格 树
+    //按钮刷新表格树
     function btn_reload() {
         GetTree();
         $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
+    //刷新
+    function windowload() {
+        $("#gridTable").trigger("reloadGrid"); //重新载入 
     }
 
     //查询
@@ -221,9 +225,11 @@
         });
     });
     }
+
+    var JsonData1, TableObject = "";
     //导出文件
     function btn_derive() {
-        SetDeriveExcel("#gridTable", "项目仓库表");
+        SetDeriveExcel("#gridTable", "项目仓库表", "云南公投澄川高速", JsonData1, TableObject.toString());
         openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "信息导出", 900, 500, function (iframe) {
             top.frames[iframe].AcceptClick();
         })

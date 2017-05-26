@@ -44,22 +44,23 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             return View();
         }
-        /// <summary>
-        /// 创建领用单
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult CreateCollarForm()
-        {
-            ViewBag.CollarNumbering = "LYD" + DateTime.Now.ToString("yyyyMMddhhmmssffff");
-            ViewData["Librarian"] = currentUser.RealName;
-            return View();
-        }
+
         public ActionResult ItemList()
         {
             return View();
         }
-        public ActionResult CollarForm()
+
+        /// <summary>
+        /// 领用单表单
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult CollarForm(string KeyValue)
         {
+            if (KeyValue == "" || KeyValue == null)
+            {
+                ViewBag.CollarNumbering = "LYD" + DateTime.Now.ToString("yyyyMMddhhmmssffff");
+                ViewData["Librarian"] = currentUser.RealName;
+            }
             return View();
         }
 

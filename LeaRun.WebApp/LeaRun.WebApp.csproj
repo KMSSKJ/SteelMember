@@ -9096,7 +9096,6 @@
     <Content Include="Areas\SteelMember\Views\MemberProduce\NumberForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\File\MemberProcessForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\File\MemberProcessIndex.cshtml" />
-    <Content Include="Areas\SteelMember\Views\CollarManagement\CreateCollarForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\CollarManagement\DetailForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\CollarManagement\ItemList.cshtml" />
     <Content Include="Areas\SteelMember\Views\CollarManagement\CollarForm.cshtml" />

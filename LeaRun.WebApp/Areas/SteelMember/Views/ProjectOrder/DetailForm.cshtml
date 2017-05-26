@@ -6,7 +6,7 @@
 <script type="text/javascript">
     var KeyValue = GetQuery('KeyValue');
     var TreeId = GetQuery('TreeId');
-    var JsonData1 = "";
+       var JsonData1 = "";  var TableObject ="";
    
     $(function () {
         GetGrid();
@@ -51,24 +51,8 @@
         }
     })
 
-    var TableObject = [];
     function loadTable() {
-        //var tab = document.getElementById("tb_POOrderFrom");
-        //var rows = tab.rows;
-        //for (var i = 0; i < rows.length; i++) {
-        //    for (var j = 0; j < rows[i].cells.length; j++) {
-        //        alert("第" + (i + 1) + "行，第" + (j + 1) + "列的值是:" + rows[i].cells[j].);
-        //    }
-        //}
-        //var trList = $("#tb_POOrderFrom").children("tr")
-        //for (var i = 0; i < trList.length; i++) {
-        //    var tdArr = trList.eq(i).find("td").text();
-        //    alert(tdArr);
-        //}
-        //$("#tb_POOrderFrom tr").each(function () {
-        //    alert($(this).children().eq(0).text());
-        //});
-       
+        TableObject = [];
         $("#tb_POOrderFrom tr").each(function (i) {
             var RowTitel1 = $(this).find('td:eq(0)').text();
             var RowValue1 = $(this).find('td:eq(1)').find('input').val();

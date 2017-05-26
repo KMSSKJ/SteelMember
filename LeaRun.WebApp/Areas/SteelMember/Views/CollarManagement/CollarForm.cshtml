@@ -15,7 +15,7 @@
 
         AjaxJson("/SteelMember/ProjectOrder/TreeName", { TreeId: TreeId }, function (data) {
             //SetWebControls(data);
-            TreeName=data.TreeName;
+            TreeName = data.TreeName;
             document.getElementById("Use").value = TreeName;
         });
 
@@ -102,7 +102,7 @@
     function GetGrid() {
         $("#gridTable").jqGrid({
             datatype: "local",
-            height: $(window).height() - 290,
+            height: $(window).height() + 200,
             autowidth: true,
             colModel: [
                 { label: '构件编号[<font face="宋体">*</font>]', name: "MemberNumbering", width: 200, sortable: false },
@@ -177,8 +177,8 @@
                 return false;
             }
             var index = $(this).attr('id').split('➩')[1];
-            var url = "/SteelMember/CollarManagement/ItemList?index=" + index+"&TreeId="+TreeId;
-            Dialog(url, "ItemList", "选取<"+TreeName+">构件（点击表格添加）", 900, 440);
+            var url = "/SteelMember/CollarManagement/ItemList?index=" + index + "&TreeId=" + TreeId;
+            Dialog(url, "ItemList", "选取<" + TreeName + ">构件（点击表格添加）", 900, 440);
         });
         //价格信息文本框点击事件
         $("#gridTable").find('.decimal').click(function () {
@@ -204,7 +204,7 @@
         //var CESSAmount = $("#CESSAmount➩" + index).val();                  //税额
         //var PlusPriceAmount = $("#PlusPriceAmount➩" + index).val();        //含税金额
         //数量*单价=金额
-       // $("#PriceAmount➩" + index).val(FormatCurrency(Qty * Price));
+        // $("#PriceAmount➩" + index).val(FormatCurrency(Qty * Price));
         ////单价 * (1 + (税率 / 100))=含税单价
         //$("#PlusPrice➩" + index).val(FormatCurrency(Price * (1 + (CESS / 100))));
         ////(含税单价-单价)*数量=税额
@@ -271,14 +271,14 @@
     <div class="leftline rightline" style="margin-left: 1px; margin-right: 1px;">
         <div class="tools_bar" style="margin-top: 1px; margin-bottom: 0px;">
             <a id="lr-replace" class="tools_btn" title="刷新当前(Ctrl+Q)" onclick="Replace()"><span><b style='background: url(@Url.Content("../../Content/Images/Icon16/arrow_refresh.png")) no-repeat 50% 4px;'>刷新</b></span></a>
-            <div class="tools_separator"></div>
-            @*<a id="button_first_bills" title="最前面单据" onclick="first_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_first.png")) 50% 4px no-repeat;">最前</b></span></a>
-                <a id="button_prev_bills" title="前面单单" onclick="prev_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_previous.png")) 50% 4px no-repeat;">前单</b></span></a>
-                <a id="button_next_bills" title="后面单单" onclick="next_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_next.png")) 50% 4px no-repeat;">后单</b></span></a>
-                <a id="button_last_bills" title="最后面单据" onclick="last_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_last.png")) 50% 4px no-repeat;">最后</b></span></a>*@
-            <a id="button_Commit_Save" title="保存单据" onclick="SubmitOrderForm()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/disk.png")) 50% 4px no-repeat;">保存</b></span></a>
-            <div class="tools_separator"></div>
-            <a title="关闭当前窗口(Esc)" onclick="ThisCloseTab()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/back.png")) 50% 4px no-repeat;">离开</b></span></a>
+            @*<div class="tools_separator"></div>
+                <a id="button_first_bills" title="最前面单据" onclick="first_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_first.png")) 50% 4px no-repeat;">最前</b></span></a>
+                    <a id="button_prev_bills" title="前面单单" onclick="prev_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_previous.png")) 50% 4px no-repeat;">前单</b></span></a>
+                    <a id="button_next_bills" title="后面单单" onclick="next_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_next.png")) 50% 4px no-repeat;">后单</b></span></a>
+                    <a id="button_last_bills" title="最后面单据" onclick="last_bills()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/resultset_last.png")) 50% 4px no-repeat;">最后</b></span></a>*@
+            @*<a id="button_Commit_Save" title="保存单据" onclick="SubmitOrderForm()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/disk.png")) 50% 4px no-repeat;">保存</b></span></a>
+    <div class="tools_separator"></div>
+    <a title="关闭当前窗口(Esc)" onclick="ThisCloseTab()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/back.png")) 50% 4px no-repeat;">离开</b></span></a>*@
         </div>
         <table id="tb_POOrderFrom" class="form-bill">
             <tr>
@@ -297,6 +297,15 @@
                     <input readonly id="CollarNumbering" type="text" class="txt" datacol="yes" err="制单编号" checkexpession="NotNull" value="@ViewBag.CollarNumbering" style="width: 95%" />
                 </td>
                 <th>
+                    工程部位[<font face="宋体" color="red">*</font>]：
+                </th>
+                <td>
+                    <input readonly id="Use" type="text" class="txt" style="width: 95%" />
+                </td>
+
+            </tr>
+            <tr>
+                <th>
                     制单(库管)员：
                 </th>
                 <td>
@@ -308,20 +317,15 @@
                 <td>
                     <input id="CollarTime" type="text" class="txt" datacol="yes" err="制单日期" checkexpession="NotNull" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 95%" />
                 </td>
+
             </tr>
             <tr>
-                <th>
-                    工程部位[<font face="宋体" color="red">*</font>]：
-                </th>
-                <td>
-                    <input readonly id="Use" type="text" class="txt" style="width: 95%" />
-                </td>
                 <th>
                     借用状态[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    @*<input id="Priority" type="text" class="txt" datacol="yes" err="生产优先级" checkexpession="NotNull" style="width: 95%" />*@
-                    <select id="Borrow" datacol="yes" err="借用状态" checkexpession="NotNull" style="width: 60%">
+                    @*<input id="Priority" type="text" class="txt" style="width: 95%" />*@
+                    <select id="Borrow" datacol="yes" err="借用状态" checkexpession="NotNull" style="width: 95%">
                         <option value="无">无</option>
                         <option value="有">有</option>
                     </select>
@@ -330,22 +334,26 @@
                     领用人[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    @*<input id="Priority" type="text" class="txt" datacol="yes" err="生产优先级" checkexpession="NotNull" style="width: 95%" />*@
-                    <select id="CollarMan" datacol="yes" err="领用人" checkexpession="NotNull" style="width: 60%"></select>
-                    签字：
+                    @*<input id="CollarMan" type="text" class="txt" style="width: 95%" />*@
+                    <select id="CollarMan" datacol="yes" err="领用人" checkexpession="NotNull" style="width: 95%"></select>
+
                 </td>
             </tr>
             <tr>
                 <th>
+                    领用人签字：
+                </th>
+                <td><input readonly id="Q" type="text" class="txt" style="width: 95%" /></td>
+                <th>
                     备注：
                 </th>
-                <td colspan="7">
+                <td>
                     <input id="Description" type="text" class="txt" style="width:97%" value="@ViewBag.Description" />
                 </td>
             </tr>
         </table>
 
-        <div id="grid_List">
+        <div id="grid_List" style="width:1100px">
             <table id="gridTable"></table>
             <style>
                 .ui-widget-content {

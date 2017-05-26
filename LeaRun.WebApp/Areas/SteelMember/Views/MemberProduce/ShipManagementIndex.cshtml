@@ -117,10 +117,14 @@
 
     }
 
-    //刷新表格树
+    //按钮刷新表格树
     function btn_reload() {
-       // window.parent.GetTree();
+        GetTree();
         $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
+    //刷新
+    function windowload() {
+        $("#gridTable").trigger("reloadGrid"); //重新载入 
     }
 
     //新增信息
@@ -209,10 +213,10 @@
     });
     }
 
-    var JsonData1 = "";
+       var JsonData1 = "";  var TableObject ="";
     //导出文件
     function btn_derive() {
-        SetDeriveExcel("#gridTable", "构件发货单", "云南公投澄川高速", JsonData1);
+        SetDeriveExcel("#gridTable", "构件发货单", "云南公投澄川高速", JsonData1,TableObject.toString());
         openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "信息导出", 900, 500, function (iframe) {
             top.frames[iframe].AcceptClick();
         })

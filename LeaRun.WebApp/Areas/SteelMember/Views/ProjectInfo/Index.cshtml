@@ -85,11 +85,14 @@
         });
     }
 
-    //刷新表格 树
+    //按钮刷新表格树
     function btn_reload() {
         GetTree();
-        GetGrid();
-        //$("#gridTable").trigger("reloadGrid"); //重新载入
+        $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
+    //刷新
+    function windowload() {
+        $("#gridTable").trigger("reloadGrid"); //重新载入 
     }
 
     //新增信息
