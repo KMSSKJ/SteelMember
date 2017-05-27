@@ -68,7 +68,7 @@
                 var postData = GetWebControls("#form2");
                 AjaxJson("/SteelMember/File/SubmitMemberProcessForm?KeyValue=" + KeyValue + "&OrderId=" + OrderId , postData, function (data) {//+ '&ItemID=' + ItemID
                     tipDialog(data.Message, 3, data.Code);
-                    top.frames[tabiframeId()].windowload();
+                    top.frames["MemberProcessIndex"].windowload();
                     closeDialog();
                 });
             }, 200);

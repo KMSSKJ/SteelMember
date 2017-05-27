@@ -79,6 +79,10 @@
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
+    function windowload() {
+        $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
+
     //查询
     function Search() {
         if (!CheckDataValid('#formsearch')) {

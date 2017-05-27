@@ -45,7 +45,7 @@
                 var postData = GetWebControls("#form2");
                 AjaxJson("/SteelMember/File/SubmitDataForm?KeyValue=" + KeyValue, postData, function (data) {//+ '&ItemID=' + ItemID
                     tipDialog(data.Message, 3, data.Code);
-                    top.frames[tabiframeId()].windowload();
+                    top.frames["RawMaterialsDosageIndex"].windowload();
                     closeDialog();
                 });
             }, 200);

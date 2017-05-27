@@ -31,6 +31,9 @@
                 var JsonData = data.rows;
                 $.each(JsonData, function (i) {
                     var rowData = JsonData[i];
+                    //给判断集合赋值开始
+                    IsExistItem(rowindex, rowData.MemberID);
+                    //给判断集合赋值结束
                     $("#ProjectDemandId➩" + rowindex).val(rowData.ProjectDemandId);
                     $("#MemberID➩" + rowindex).val(rowData.MemberID);
                     $("#MemberNumbering➩" + rowindex).val(rowData.MemberNumbering);
@@ -88,7 +91,6 @@
                         //编辑时获取值
                         $("#CollarMan  option[value='" + Data.CollarMan + "']").attr("selected", true);
                     }
-
                 }
             },
             error: function () {

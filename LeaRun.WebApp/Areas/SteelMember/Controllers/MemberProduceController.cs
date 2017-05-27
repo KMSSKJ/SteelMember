@@ -529,33 +529,35 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 List<RMC_MemberMaterial> MemberMaterialList = new List<RMC_MemberMaterial>();
                 List<RMC_RawMaterialLibrary> RawMaterialLibraryList = new List<RMC_RawMaterialLibrary>();
 
-                ProjectOrderList = OrderManagementCurrent.Find(f => f.OrderId > 0).ToList();
+                ProjectOrderList = OrderManagementCurrent.Find(f => f.OrderId > 0&&f.ConfirmOrder==1&&f.Productioned==0).ToList();//所有订单
                 if (ProjectOrderList.Count > 0)
                 {
                     for (int i0 = 0; i0 < ProjectOrderList.Count; i0++)
                     {
                         int OrderId = Convert.ToInt32(ProjectOrderList[i0].OrderId);
-                        OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
+                        OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();//单个订单所需构件
                         if (OrderMemberList.Count() > 0)
                         {
                             for (int i1 = 0; i1 < OrderMemberList.Count(); i1++)
                             {
                                 int MemberId = Convert.ToInt32(OrderMemberList[i1].MemberId);
-                                MemberMaterialList = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();
+                                MemberMaterialList = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();//单个构件所需原材料
                                 if (MemberMaterialList.Count() > 0)
                                 {
                                     for (int i2 = 0; i2 < MemberMaterialList.Count(); i2++)
                                     {
                                         AnalysisRawMaterialModel AnalysisRawMaterialModel = new AnalysisRawMaterialModel();
-                                        if (AnalysisRawMaterialModellist.Count() != 0)
+                                        if (AnalysisRawMaterialModellist.Count() != 0)//判断构造函数是否有数据，没有就新增
                                         {
-                                            //for (int i = 0; i < AnalysisRawMaterialModellist.Count(); i++)
-                                            // {
-                                            var a = AnalysisRawMaterialModellist.Where(w => w.RawMaterialId == MemberMaterialList[i2].RawMaterialId);
-                                            if (a.Count() != 0)
+                                            var a = AnalysisRawMaterialModellist.Where(w => w.RawMaterialId == MemberMaterialList[i2].RawMaterialId);//筛选构造函数中的数据，
+                                            if (a.Count() != 0)//判断构造函数中是否有相同数据，没有就新增
                                             {
-                                                AnalysisRawMaterialModel.OrderProcessingNumber += MemberMaterialList[i2].MaterialNumber * OrderMemberList[i1].Qty;
-
+                                                foreach (var item in a)
+                                                {
+                                                    item.OrderProcessingNumber += MemberMaterialList[i2].MaterialNumber * OrderMemberList[i1].Qty;
+                                                    AnalysisRawMaterialModel.OrderProcessingNumber = item.OrderProcessingNumber;
+                                                }
+                                                
                                             }
                                             else
                                             {
@@ -569,7 +571,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                                 AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
                                             }
 
-                                            //}
+                                         
                                         }
                                         else
                                         {

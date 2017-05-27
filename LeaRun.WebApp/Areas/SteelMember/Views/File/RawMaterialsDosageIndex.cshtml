@@ -78,11 +78,14 @@
 
     }
 
-    //刷新表格 树
+    //刷新表格
     function btn_reload() {
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
-
+    //刷新表格
+    function windowload() {
+        $("#gridTable").trigger("reloadGrid"); //重新载入
+    }
     //查询
     function Search() {
         if (!CheckDataValid('#formsearch')) {
