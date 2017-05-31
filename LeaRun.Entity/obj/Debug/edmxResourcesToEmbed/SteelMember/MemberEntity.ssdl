@@ -42,6 +42,7 @@
     </Key>
     <Property Name="CollarMemberId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CollarId" Type="int" />
+    <Property Name="CollarNumbering" Type="nvarchar" MaxLength="50" />
     <Property Name="MemberId" Type="int" />
     <Property Name="ProjectDemandId" Type="int" />
     <Property Name="MemberNumbering" Type="nvarchar" MaxLength="50" />

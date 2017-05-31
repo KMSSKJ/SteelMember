@@ -473,10 +473,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 AnalysisRawMaterialEntity.RawMaterialId = 0;
                 AnalysisRawMaterialCurrent.Add(AnalysisRawMaterialEntity);
 
-                List<RMC_OrderMember> OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
-                for (int i = 0; i < OrderMemberList.Count(); i++)
+                List<RMC_OrderMember> CollarMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
+                for (int i = 0; i < CollarMemberList.Count(); i++)
                 {
-                    int _MemberId = Convert.ToInt32(OrderMemberList[i].MemberId);
+                    int _MemberId = Convert.ToInt32(CollarMemberList[i].MemberId);
                     var MemberProcess = MemberProcessCurrent.Find(f => f.MemberId == _MemberId).ToList();
                     for (int i0 = 0; i0 < MemberProcess.Count(); i0++)
                     {
@@ -525,7 +525,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             try
             {
                 List<RMC_ProjectOrder> ProjectOrderList = new List<RMC_ProjectOrder>();
-                List<RMC_OrderMember> OrderMemberList = new List<RMC_OrderMember>();
+                List<RMC_OrderMember> CollarMemberList = new List<RMC_OrderMember>();
                 List<RMC_MemberMaterial> MemberMaterialList = new List<RMC_MemberMaterial>();
                 List<RMC_RawMaterialLibrary> RawMaterialLibraryList = new List<RMC_RawMaterialLibrary>();
 
@@ -535,12 +535,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     for (int i0 = 0; i0 < ProjectOrderList.Count; i0++)
                     {
                         int OrderId = Convert.ToInt32(ProjectOrderList[i0].OrderId);
-                        OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();//单个订单所需构件
-                        if (OrderMemberList.Count() > 0)
+                        CollarMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();//单个订单所需构件
+                        if (CollarMemberList.Count() > 0)
                         {
-                            for (int i1 = 0; i1 < OrderMemberList.Count(); i1++)
+                            for (int i1 = 0; i1 < CollarMemberList.Count(); i1++)
                             {
-                                int MemberId = Convert.ToInt32(OrderMemberList[i1].MemberId);
+                                int MemberId = Convert.ToInt32(CollarMemberList[i1].MemberId);
                                 MemberMaterialList = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();//单个构件所需原材料
                                 if (MemberMaterialList.Count() > 0)
                                 {
@@ -554,7 +554,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                             {
                                                 foreach (var item in a)
                                                 {
-                                                    item.OrderProcessingNumber += MemberMaterialList[i2].MaterialNumber * OrderMemberList[i1].Qty;
+                                                    item.OrderProcessingNumber += MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
                                                     AnalysisRawMaterialModel.OrderProcessingNumber = item.OrderProcessingNumber;
                                                 }
                                                 
@@ -566,7 +566,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                                 AnalysisRawMaterialModel.RawMaterialName = RawMaterial.RawMaterialName;
                                                 AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
                                                 AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
-                                                AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * OrderMemberList[i1].Qty;
+                                                AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
                                                 AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
                                                 AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
                                             }
@@ -580,7 +580,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                             AnalysisRawMaterialModel.RawMaterialName = RawMaterial.RawMaterialName;
                                             AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
                                             AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
-                                            AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * OrderMemberList[i1].Qty;
+                                            AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
                                             AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
                                             AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
                                         }

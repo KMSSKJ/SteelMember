@@ -105,12 +105,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.Description = entity.Description;
 
                     List<int> Ids = new List<int>();
-                    List<RMC_CollarMember> OrderMemberList = CollarMemberCurrent.Find(f => f.CollarId == _CollarId).ToList();
-                    for (int i = 0; i < OrderMemberList.Count(); i++)
+                    List<RMC_CollarMember> CollarMemberList = CollarMemberCurrent.Find(f => f.CollarId == _CollarId).ToList();
+                    for (int i = 0; i < CollarMemberList.Count(); i++)
                     {
-                        int CollarMemberId = OrderMemberList[i].CollarMemberId;
+                        int CollarMemberId = CollarMemberList[i].CollarMemberId;
                         Ids.Add(CollarMemberId);
-                        int ProjectDemandId = Convert.ToInt32(OrderMemberList[i].ProjectDemandId);
+                        int ProjectDemandId = Convert.ToInt32(CollarMemberList[i].ProjectDemandId);
                         var CollarMember = CollarMemberCurrent.Find(f => f.CollarMemberId == CollarMemberId).SingleOrDefault();
                         var ProjectDemand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).SingleOrDefault();
                         ProjectDemand.CollarNumbered = ProjectDemand.CollarNumbered - CollarMember.Qty;
@@ -173,6 +173,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                             //poorderentry.SortCode = index;
                             //poorderentry.Create();
                             CollarModel.CollarId = CollarId;
+                            CollarModel.CollarNumbering = entity.CollarNumbering;
                             CollarModel.ProjectDemandId = Convert.ToInt32(poorderentry.ProjectDemandId);
                             CollarModel.MemberId = Convert.ToInt32(poorderentry.MemberID);
                             CollarModel.Description = poorderentry.Description;
@@ -520,16 +521,16 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 CollarManagementCurrent.Remove(ids);
 
 
-                List<RMC_CollarMember> OrderMemberList = CollarMemberCurrent.Find(f => f.CollarId== CollarId).ToList();
-                if (OrderMemberList.Count() > 0)
+                List<RMC_CollarMember> CollarMemberList = CollarMemberCurrent.Find(f => f.CollarId== CollarId).ToList();
+                if (CollarMemberList.Count() > 0)
                 {
-                    for (int i = 0; i < OrderMemberList.Count(); i++)
+                    for (int i = 0; i < CollarMemberList.Count(); i++)
                     {
-                        ids1.Add(Convert.ToInt32(OrderMemberList[i].CollarMemberId));
+                        ids1.Add(Convert.ToInt32(CollarMemberList[i].CollarMemberId));
 
-                        var OrderMember = CollarMemberCurrent.Find(f => f.CollarMemberId == OrderMemberList[i].CollarMemberId).SingleOrDefault();
+                        var OrderMember = CollarMemberCurrent.Find(f => f.CollarMemberId == CollarMemberList[i].CollarMemberId).SingleOrDefault();
                         var Demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == OrderMember.ProjectDemandId).SingleOrDefault();
-                        Demand.OrderQuantityed = Demand.OrderQuantityed - OrderMemberList[i].Qty;
+                        Demand.CollarNumbered = Demand.CollarNumbered - CollarMemberList[i].Qty;
                         ProjectManagementCurrent.Modified(Demand);
                     }
                     CollarMemberCurrent.Remove(ids1);

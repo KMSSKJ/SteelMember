@@ -145,12 +145,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
 
                     List<int> Ids = new List<int>();
-                    List<RMC_OrderMember> OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == _OrderId).ToList();
-                    for (int i = 0; i < OrderMemberList.Count(); i++)
+                    List<RMC_OrderMember> CollarMemberList = OrderMemberCurrent.Find(f => f.OrderId == _OrderId).ToList();
+                    for (int i = 0; i < CollarMemberList.Count(); i++)
                     {
-                        int OrderMemberId = OrderMemberList[i].OrderMemberId;
+                        int OrderMemberId = CollarMemberList[i].OrderMemberId;
                         Ids.Add(OrderMemberId);
-                        var ProjectDemandId =Convert.ToInt32(OrderMemberList[i].ProjectDemandId);
+                        var ProjectDemandId =Convert.ToInt32(CollarMemberList[i].ProjectDemandId);
                         var OrderMember = OrderMemberCurrent.Find(f => f.OrderMemberId == OrderMemberId).SingleOrDefault();
                         var ProjectDemand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).SingleOrDefault();
                         ProjectDemand.OrderQuantityed = ProjectDemand.OrderQuantityed - OrderMember.Qty;
@@ -656,17 +656,17 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 OrderManagementCurrent.Remove(ids);
 
 
-                List<RMC_OrderMember> OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
-                if (OrderMemberList.Count() > 0)
+                List<RMC_OrderMember> CollarMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
+                if (CollarMemberList.Count() > 0)
                 {
-                    for (int i = 0; i < OrderMemberList.Count(); i++)
+                    for (int i = 0; i < CollarMemberList.Count(); i++)
                     {
-                        int OrderMemberId = Convert.ToInt32(OrderMemberList[i].OrderMemberId);
+                        int OrderMemberId = Convert.ToInt32(CollarMemberList[i].OrderMemberId);
                         ids1.Add(OrderMemberId);
 
                         var OrderMember = OrderMemberCurrent.Find(f => f.OrderMemberId== OrderMemberId).SingleOrDefault();
                         var Demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == OrderMember.ProjectDemandId).SingleOrDefault();
-                        Demand.OrderQuantityed = Demand.OrderQuantityed - OrderMemberList[i].Qty;
+                        Demand.OrderQuantityed = Demand.OrderQuantityed - CollarMemberList[i].Qty;
                         ProjectManagementCurrent.Modified(Demand);
                     }
                     OrderMemberCurrent.Remove(ids1);
@@ -731,8 +731,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 file.SubmitMan =currentUser.RealName;
                 OrderManagementCurrent.Modified(file);
 
-                List<RMC_OrderMember> OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
-                foreach (var item in OrderMemberList)
+                List<RMC_OrderMember> CollarMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
+                foreach (var item in CollarMemberList)
                 {
                     List<RMC_ProjectWarehouse> projectwarehouselist = ProjectWarehouseCurrent.Find(f => f.MemberId == item.MemberId).ToList();
                     if (projectwarehouselist.Count() == 0)

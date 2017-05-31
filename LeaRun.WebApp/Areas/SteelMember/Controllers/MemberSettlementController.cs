@@ -120,10 +120,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     int Number =0;
                     int UnitPrice = 0;
                     int CostBudget = 0;
-                    var MemberId = 0;
+                    int MemberId = 0;
                     int ProjectDemandId = 0;
+                    var CollarNumbering = "";
                     for (int i = 0; i < CollarMember.Count(); i++)
                     {
+                        CollarNumbering = CollarMember[i].CollarNumbering;
                         MemberId = Convert.ToInt32(CollarMember[i].MemberId);
                         ProjectDemandId = Convert.ToInt32(CollarMember[i].ProjectDemandId);
                         var MemberMaterial = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();
@@ -139,7 +141,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         }
                     }
                     var Member = MemberLibraryCurrent.Find(f => f.MemberID == MemberId).SingleOrDefault();
-                    var ProjectDemand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).SingleOrDefault();    
+                    var ProjectDemand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).SingleOrDefault();
+                    projectdemand.CollarNumbering = CollarNumbering;
                     projectdemand.MemberName = Member.MemberName;
                     projectdemand.MemberModel = Member.MemberModel;
                     projectdemand.UnitPrice = UnitPrice.ToString();

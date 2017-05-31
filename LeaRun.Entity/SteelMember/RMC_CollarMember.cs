@@ -16,6 +16,7 @@ namespace LeaRun.Entity.SteelMember
     {
         public int CollarMemberId { get; set; }
         public Nullable<int> CollarId { get; set; }
+        public string CollarNumbering { get; set; }
         public Nullable<int> MemberId { get; set; }
         public Nullable<int> ProjectDemandId { get; set; }
         public string MemberNumbering { get; set; }

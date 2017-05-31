@@ -47,14 +47,15 @@
                     { label: '主键', name: "OrderId", index: "OrderId", hidden: true },
                     { label: '外键', name: "ProjectDemandId", hidden: true },
                     { label: '外键', name: "MemberId", hidden: true },
-                    { label: '构件名', name: "MemberName", index: "MemberName", width: 6 },
-                    { label: '构件型号', name: "MemberModel", index: "MemberModel", width: 6 },
-                    { label: "单价", name: "UnitPrice", index: "UnitPrice", width: 16 },
+                    { label: '领用单号', name: "CollarNumbering", index: "CollarNumbering", width: 12 },
+                    //{ label: '构件名', name: "MemberName", index: "MemberName", width: 6 },
+                    //{ label: '构件型号', name: "MemberModel", index: "MemberModel", width: 6 },
+                    //{ label: "单价", name: "UnitPrice", index: "UnitPrice", width: 16 },
                     { label: '数量', name: "LeaderNumber", index: "LeaderNumber", width: 12 },
                     //{ label: '构件型号', name: "MemberModel", index: "MemberModel", width: 6 },
                     //{ label: "单价", name: "UnitPrice", index: "UnitPrice", width: 12 },
                     //{ label: '数量', name: "OrderNumber", index: "OrderNumber", width: 12 },
-                 
+
                        { label: '总价', name: "CostBudget", index: "CostBudget", width: 12 },
                        {
                            label: '创建时间', name: "LeaderTime", index: "LeaderTime", width: 12,
@@ -127,7 +128,7 @@
     }
     //刷新
     function windowload() {
-        $("#gridTable").trigger("reloadGrid"); //重新载入 
+        $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
 
@@ -280,6 +281,20 @@
             }).trigger('reloadGrid');
         });
     });
+    }
+
+        //详细信息(得到实体)
+    function btn_detail() {
+        var KeyValue = GetJqGridRowValue("#gridTable", "CollarId");
+        var ItemId = 0;
+        if (IsChecked(KeyValue)) {
+            //AddTabMenu("DetailForm", "@Url.Content("/SteelMember/CollarManagement/DetailForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId, "领用单详细", "page_white_add.png", true, true, true);
+            var url = "/SteelMember/CollarManagement/DetailForm?KeyValue= " + KeyValue + "&TreeId=" + TreeId + "&motionType="+ItemId;
+            Dialog(url, "DetailForm", "详细信息",  1100, 600, function (iframe) {
+                top.frames[iframe].AcceptClick();
+            });
+        }
+        $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
        var JsonData1 = "";  var TableObject ="";
