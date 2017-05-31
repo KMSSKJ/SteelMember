@@ -142,6 +142,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     }
                     var Member = MemberLibraryCurrent.Find(f => f.MemberID == MemberId).SingleOrDefault();
                     var ProjectDemand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).SingleOrDefault();
+                    projectdemand.CollarId = item.CollarId;
                     projectdemand.CollarNumbering = CollarNumbering;
                     projectdemand.MemberName = Member.MemberName;
                     projectdemand.MemberModel = Member.MemberModel;
