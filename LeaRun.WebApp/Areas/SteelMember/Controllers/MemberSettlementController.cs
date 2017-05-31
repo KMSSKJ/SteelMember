@@ -128,6 +128,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         CollarNumbering = CollarMember[i].CollarNumbering;
                         MemberId = Convert.ToInt32(CollarMember[i].MemberId);
                         ProjectDemandId = Convert.ToInt32(CollarMember[i].ProjectDemandId);
+
                         var MemberMaterial = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();
                         for (int i0 = 0; i0 < MemberMaterial.Count(); i0++)
                         {
@@ -136,9 +137,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                             var Material = RawMaterialCurrent.Find(f => f.RawMaterialId == RawMaterialId).SingleOrDefault();
                             CostBudget += Convert.ToInt32(MemberMaterial[i0].MaterialNumber) * Convert.ToInt32(Material.UnitPrice) * Convert.ToInt32(CollarMember[i].Qty);
                             UnitPrice += Convert.ToInt32(MemberMaterial[i0].MaterialNumber) * Convert.ToInt32(Material.UnitPrice);
-                            Number = Convert.ToInt32(CollarMember[i].Qty);
-                        
                         }
+                        Number += Convert.ToInt32(CollarMember[i].Qty);
                     }
                     var Member = MemberLibraryCurrent.Find(f => f.MemberID == MemberId).SingleOrDefault();
                     var ProjectDemand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).SingleOrDefault();

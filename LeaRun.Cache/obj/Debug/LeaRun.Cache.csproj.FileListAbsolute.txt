@@ -14,4 +14,3 @@ D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.Properties.Resou
 D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.csproj.GenerateResource.Cache
 D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.dll
 D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.pdb
-D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.csprojResolveAssemblyReference.cache

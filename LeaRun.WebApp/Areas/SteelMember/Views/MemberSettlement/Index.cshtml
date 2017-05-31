@@ -44,7 +44,7 @@
             height: $(window).height() - 154,
             autowidth: true,
             colModel: [
-                    { label: '主键', name: "OrderId", index: "OrderId", hidden: true },
+                    { label: '主键', name: "CollarId", index: "CollarId", hidden: true },
                     { label: '外键', name: "ProjectDemandId", hidden: true },
                     { label: '外键', name: "MemberId", hidden: true },
                     { label: '领用单号', name: "CollarNumbering", index: "CollarNumbering", width: 12 },
@@ -288,13 +288,12 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "CollarId");
         var ItemId = 0;
         if (IsChecked(KeyValue)) {
-            //AddTabMenu("DetailForm", "@Url.Content("/SteelMember/CollarManagement/DetailForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId, "领用单详细", "page_white_add.png", true, true, true);
+            //AddTabMenu("DetailForm", "Url.Content("/SteelMember/CollarManagement/DetailForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId, "领用单详细", "page_white_add.png", true, true, true);
             var url = "/SteelMember/CollarManagement/DetailForm?KeyValue= " + KeyValue + "&TreeId=" + TreeId + "&motionType="+ItemId;
             Dialog(url, "DetailForm", "详细信息",  1100, 600, function (iframe) {
-                top.frames[iframe].AcceptClick();
+                //top.frames[iframe].AcceptClick();
             });
         }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
        var JsonData1 = "";  var TableObject ="";
