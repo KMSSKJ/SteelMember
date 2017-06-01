@@ -271,14 +271,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
                 //                         , jqgridparam.rows
                 //                         , func1
-                //                         , true
+                //                         , false
                 //                         , f => f.TreeID.ToString()
                 //                         , out total
                 //                         ).ToList();
                 List<RMC_Collar> listfile = CollarManagementCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
-                                         , true
+                                         , false
                                          , f => f.TreeId.ToString()
                                          , out total
                                          ).ToList();
@@ -436,14 +436,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
                 //                         , jqgridparam.rows
                 //                         , func1
-                //                         , true
+                //                         , false
                 //                         , f => f.TreeID.ToString()
                 //                         , out total
                 //                         ).ToList();
                 List<RMC_ProjectWarehouse> listfile = ProjectWarehouseCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
-                                         , true
+                                         , false
                                          , f => f.ModifyTime.ToString()
                                          , out total
                                          ).ToList();

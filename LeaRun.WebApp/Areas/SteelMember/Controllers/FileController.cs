@@ -942,15 +942,15 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
                 //                         , jqgridparam.rows
                 //                         , func1
-                //                         , true
+                //                         , false
                 //                         , f => f.TreeID.ToString()
                 //                         , out total
                 //                         ).ToList();
                 List<RMC_MemberLibrary> listfile = MemberLibraryCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
-                                         , true
-                                         , f => f.MemberID.ToString()
+                                         , false
+                                         , f => f.UploadTime.ToString()
                                          , out total
                                          ).ToList();
                 if (listfile.Count() > 0)// && listtree.Count() > 0
@@ -1651,7 +1651,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         }
                     }
                     entitys.UploadTime = DateTime.Now;
-                    entitys.MemberNumbering = (MemberNumbering + "-" + DateTime.Now.ToString("yyyyMMddhhmmssff")).ToString();
+                    entitys.MemberNumbering = (MemberNumbering + "-" + DateTime.Now.ToString("yyyyMMddhhmmssffff")).ToString();
                     entitys.SectionalArea = entity.SectionalArea;
                     entitys.SurfaceArea = entity.SurfaceArea;
                     entitys.TheoreticalWeight = entity.TheoreticalWeight;
@@ -1893,7 +1893,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 List<RMC_MemberMaterial> listfile = MemberMaterialCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
-                                         , true
+                                         , false
                                          , f => f.MemberMaterialId.ToString()
                                          , out total
                                          ).ToList();
@@ -2046,7 +2046,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 List<RMC_MemberProcess> listfile = MemberProcessCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
-                                         , true
+                                         , false
                                          , f => f.SortCode.ToString()
                                          , out total
                                          ).ToList();

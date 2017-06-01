@@ -15,17 +15,17 @@
             autowidth: true,
             colModel: [
                 { label: '主键', name: 'pk', index: 'pk', hidden: true },
-                { label: "数据库表名", name: "name", index: "name", width: 300 },
+                { label: "数据库表名", name: "name", index: "name", align:' center',width: 300 },
                 {
-                    label: "记录数", name: "sumrows", index: "rows", width: 120, align: "center",
+                    label: "记录数", name: "sumrows", index: "rows", align:' center',width: 120,
                     formatter: function (cellvalue, options, rowObject) {
                         return cellvalue + "条";
                     }
                 },
-                { label: "使用大小", name: "reserved", index: "reserved", width: 120, align: "center" },
-                { label: "索引所使使用大小", name: "index_size", index: "index_size", width: 120, align: "center" },
-                { label: "未用的空间量", name: "unused", index: "unused", width: 120, align: "center" },
-                { label: "说明", name: "tdescription", index: "tdescription", width: 500 }
+                { label: "使用大小", name: "reserved", index: "reserved", align:' center',width: 120},
+                { label: "索引所使使用大小", name: "index_size", index: "index_size", align:' center',width: 120},
+                { label: "未用的空间量", name: "unused", index: "unused", align:' center',width: 120},
+                { label: "说明", name: "tdescription", index: "tdescription", align:' center',width: 500 }
             ],
             loadonce: true,
             viewrecords: true,
@@ -41,14 +41,14 @@
                     url: "@Url.Content("~/CommonModule/DataBase/GridColumnListJson")?tableName=" + escape(tableName),
                     datatype: "json",
                     colModel: [
-                        { label: "列名", name: "column", index: "column", width: 300, sortable: false },
-                        { label: "数据类型", name: "datatype", index: "datatype", width: 120, align: "center", sortable: false },
-                        { label: "长度", name: "length", index: "length", width: 57, align: "center", sortable: false },
-                        { label: "允许空", name: "isnullable", index: "isnullable", width: 58, align: "center", sortable: false },
-                        { label: "标识", name: "identity", index: "identity", width: 58, align: "center", sortable: false },
-                        { label: "主键", name: "key", index: "key", width: 57, align: "center", sortable: false },
-                        { label: "默认值", name: "default", index: "default", width: 120, align: "center", sortable: false },
-                        { label: "说明", name: "remark", index: "remark", width: 400, sortable: false }
+                        { label: "列名", name: "column", index: "column", align:' center',width: 300, sortable: false },
+                        { label: "数据类型", name: "datatype", index: "datatype", align:' center',width: 120,sortable: false },
+                        { label: "长度", name: "length", index: "length", align:' center',width: 57,sortable: false },
+                        { label: "允许空", name: "isnullable", index: "isnullable", align:' center',width: 58, sortable: false },
+                        { label: "标识", name: "identity", index: "identity", align:' center',width: 58, sortable: false },
+                        { label: "主键", name: "key", index: "key", align:' center',width: 57,sortable: false },
+                        { label: "默认值", name: "default", index: "default", align:' center',width: 120,sortable: false },
+                        { label: "说明", name: "remark", index: "remark", align:' center',width: 400, sortable: false }
                     ],
                     width: "1227",
                     rowNum: "all"

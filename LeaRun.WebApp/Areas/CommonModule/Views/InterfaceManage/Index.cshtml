@@ -15,26 +15,26 @@
             autowidth: true,
             colModel: [
                 { label: '主键', name: 'InterfaceId', hidden: true },
-                { label: "接口编码", name: "Code", index: "Code", width: 100 },
-                { label: "接口名称", name: "FullName", index: "FullName", width: 500 },
-                { label: "动作类型", name: "Action", index: "Action", width: 200 },
+                { label: "接口编码", name: "Code", index: "Code", align:' center',width: 100 },
+                { label: "接口名称", name: "FullName", index: "FullName", align:' center',width: 500 },
+                { label: "动作类型", name: "Action", index: "Action", align:' center',width: 200 },
                 {
-                    label: '有效', name: 'Enabled', index: 'Enabled', width: 45, align: 'center',
+                    label: '有效', name: 'Enabled', index: 'Enabled', align:' center',width: 45,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif'/>";
                         if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif'/>";
                     }
                 },
-                { label: "创建用户", name: "CreateUserName", index: "CreateUserName", width: 100, align: 'center' },
+                { label: "创建用户", name: "CreateUserName", index: "CreateUserName", align:' center',width: 100},
                 {
-                    label: '创建时间', name: 'CreateDate', index: 'ModifyDate', width: 110, align: 'center',
+                    label: '创建时间', name: 'CreateDate', index: 'ModifyDate', align:' center',width: 110,
                     formatter: function (cellvalue, options, rowObject) {
                         return formatDate(cellvalue, 'yyyy-MM-dd hh:mm');
                     }
                 },
-                { label: "修改用户", name: "ModifyUserName", index: "ModifyUserName", width: 100, align: 'center' },
+                { label: "修改用户", name: "ModifyUserName", index: "ModifyUserName", align:' center',width: 100},
                 {
-                    label: '修改日期', name: 'ModifyDate', index: 'ModifyDate', width: 110, align: 'center',
+                    label: '修改日期', name: 'ModifyDate', index: 'ModifyDate', align:' center',width: 110,
                     formatter: function (cellvalue, options, rowObject) {
                         return formatDate(cellvalue, 'yyyy-MM-dd hh:mm');
                     }
@@ -55,25 +55,25 @@
                     url: "@Url.Content("~/CommonModule/InterfaceManage/GridInterfaceParameterListJson")?InterfaceId=" + escape(InterfaceId),
                     datatype: "json",
                     colModel: [
-                        { label: '输入参数', name: "Field", width: 210, sortable: false },
-                        { label: '数据类型', name: "FieldType", width: 60, sortable: false, align: 'center' },
-                        { label: '长度', name: "FieldMaxLength", width: 45, sortable: false, align: 'center' },
+                        { label: '输入参数', name: "Field", align:' center',width: 210, sortable: false },
+                        { label: '数据类型', name: "FieldType", align:' center',width: 60, sortable: false},
+                        { label: '长度', name: "FieldMaxLength", align:' center',width: 45, sortable: false},
                         {
-                            label: '允许空', name: 'AllowNull', index: 'Enabled', width: 45, align: 'center',
+                            label: '允许空', name: 'AllowNull', index: 'Enabled', align:' center',width: 45,
                             formatter: function (cellvalue, options, rowObject) {
                                 if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif'/>";
                                 if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif'/>";
                             }
                         },
-                        { label: '顺序', name: 'SortCode', width: 45, sortable: false, align: 'center' },
+                        { label: '顺序', name: 'SortCode', align:' center',width: 45, sortable: false},
                         {
-                            label: '有效', name: 'Enabled', index: 'Enabled', width: 45, align: 'center',
+                            label: '有效', name: 'Enabled', index: 'Enabled', align:' center',width: 45,
                             formatter: function (cellvalue, options, rowObject) {
                                 if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif'/>";
                                 if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif'/>";
                             }
                         },
-                        { label: '说明', name: 'FieldMemo', width: 220, sortable: false }
+                        { label: '说明', name: 'FieldMemo', align:' center',width: 220, sortable: false }
                     ],
                     width: "1227",
                     rowNum: "all"

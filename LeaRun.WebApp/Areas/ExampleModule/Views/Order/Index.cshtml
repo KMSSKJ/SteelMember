@@ -25,34 +25,34 @@
             height: $(window).height() - 150,
             autowidth: true,
             colModel: [
-                { label: '主键', name: 'POOrderId', width: 80, align: 'left', hidden: true },
-                { label: '制单编号', name: 'BillNo', index: 'BillNo', width: 100, align: 'center' },
+                { label: '主键', name: 'POOrderId', align:' center',width: 80, align: 'left', hidden: true },
+                { label: '制单编号', name: 'BillNo', index: 'BillNo', align:' center',width: 100},
                 {
-                    label: '制单日期', name: 'BillDate', index: 'BillDate', width: 110, align: 'center',
+                    label: '制单日期', name: 'BillDate', index: 'BillDate', align:' center',width: 110,
                     formatter: function (cellvalue, options, rowObject) {
                         return formatDate(cellvalue, 'yyyy-MM-dd hh:mm');
                     }
                 },
-                { label: '供应商', name: 'SupplierId', index: 'SupplierId', width: 200, align: 'left' },
-                { label: '采购方式', name: 'Method', index: 'Method', width: 70, align: 'center' },
-                { label: '结算方式', name: 'Clearing', index: 'Clearing', width: 70, align: 'center' },
+                { label: '供应商', name: 'SupplierId', index: 'SupplierId', align:' center',width: 200},
+                { label: '采购方式', name: 'Method', index: 'Method', align:' center',width: 70},
+                { label: '结算方式', name: 'Clearing', index: 'Clearing', align:' center',width: 70},
                 {
-                    label: '结算日期', name: 'ClearingTime', index: 'ClearingTime', width: 110, align: 'center',
+                    label: '结算日期', name: 'ClearingTime', index: 'ClearingTime', align:' center',width: 110,
                     formatter: function (cellvalue, options, rowObject) {
                         return formatDate(cellvalue, 'yyyy-MM-dd hh:mm');
                     }
                 },
-                { label: '币别', name: 'Currency', index: 'Currency', width: 70, align: 'center' },
-                { label: '制单员', name: 'CreateUserName', index: 'CreateUserName', width: 90, align: 'center' },
-                { label: '采购员', name: 'Salesman', index: 'Salesman', width: 90, align: 'center' },
-                { label: '变更人员', name: 'ModifyUserName', index: 'ModifyUserName', width: 90, align: 'center' },
+                { label: '币别', name: 'Currency', index: 'Currency', align:' center',width: 70},
+                { label: '制单员', name: 'CreateUserName', index: 'CreateUserName', align:' center',width: 90},
+                { label: '采购员', name: 'Salesman', index: 'Salesman', align:' center',width: 90},
+                { label: '变更人员', name: 'ModifyUserName', index: 'ModifyUserName', align:' center',width: 90},
                 {
-                    label: '变更日期', name: 'ModifyDate', index: 'ModifyDate', width: 110, align: 'center',
+                    label: '变更日期', name: 'ModifyDate', index: 'ModifyDate', align:' center',width: 110,
                     formatter: function (cellvalue, options, rowObject) {
                         return formatDate(cellvalue, 'yyyy-MM-dd hh:mm');
                     }
                 },
-                { label: '备注', name: 'Remark', index: 'Remark', width: 200, align: 'left' }
+                { label: '备注', name: 'Remark', index: 'Remark', align:' center',width: 200}
             ],
             viewrecords: true,
             rowNum: 30,
@@ -71,18 +71,18 @@
                     url: "@Url.Content("~/ExampleModule/Order/GetOrderEntryList")?POOrderId=" + POOrderId,
                     datatype: "json",
                     colModel: [
-                        { label: '物料代码', name: "ItemCode", width: 100, sortable: false },
-                        { label: '物料名称', name: "ItemName", width: 200, sortable: false },
-                        { label: '规格型号', name: "ItemModel", width: 80, sortable: false, align: 'center' },
-                        { label: '单位', name: "UnitId", width: 70, sortable: false, align: 'center' },
-                        { label: '数量', name: 'Qty', width: 70, sortable: false, align: 'center' },
-                        { label: '单价', name: 'Price', width: 70, sortable: false, align: 'center' },
-                        { label: '金额', name: 'PriceAmount', width: 70, sortable: false, align: 'center' },
-                        { label: '含税单价', name: 'PlusPrice', width: 70, sortable: false, align: 'center' },
-                        { label: '税率(%)', name: 'CESS', width: 70, sortable: false, align: 'center' },
-                        { label: '税额', name: 'CESSAmount', width: 70, sortable: false, align: 'center' },
-                        { label: '含税金额', name: 'PlusPriceAmount', width: 70, sortable: false, align: 'center' },
-                        { label: '说明', name: 'Description', width: 200, sortable: false }
+                        { label: '物料代码', name: "ItemCode", align:' center',width: 100, sortable: false },
+                        { label: '物料名称', name: "ItemName", align:' center',width: 200, sortable: false },
+                        { label: '规格型号', name: "ItemModel", align:' center',width: 80, sortable: false, align: 'center' },
+                        { label: '单位', name: "UnitId", align:' center',width: 70, sortable: false, align: 'center' },
+                        { label: '数量', name: 'Qty', align:' center',width: 70, sortable: false, align: 'center' },
+                        { label: '单价', name: 'Price', align:' center',width: 70, sortable: false, align: 'center' },
+                        { label: '金额', name: 'PriceAmount', align:' center',width: 70, sortable: false, align: 'center' },
+                        { label: '含税单价', name: 'PlusPrice', align:' center',width: 70, sortable: false, align: 'center' },
+                        { label: '税率(%)', name: 'CESS', align:' center',width: 70, sortable: false, align: 'center' },
+                        { label: '税额', name: 'CESSAmount', align:' center',width: 70, sortable: false, align: 'center' },
+                        { label: '含税金额', name: 'PlusPriceAmount', align:' center',width: 70, sortable: false, align: 'center' },
+                        { label: '说明', name: 'Description', align:' center',width: 200, sortable: false }
                     ],
                     width: "1227",
                     rowNum: "all"

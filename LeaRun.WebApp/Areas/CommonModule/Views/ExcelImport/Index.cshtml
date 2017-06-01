@@ -15,18 +15,18 @@
             autowidth: true,
             colModel: [
                 { label: "主键", name: "ImportId", index: "ImportId", hidden: true },
-                { label: "导入名称", name: "ImportName", index: "ImportName", width: 150 },
-                { label: "要导入的表", name: "ImportTable", index: "ImportTable", width: 150 },
-                { label: "Excel文件名", name: "ImportFileName", index: "ImportFileName", width: 150 },
+                { label: "导入名称", name: "ImportName", index: "ImportName", align:' center',width: 150 },
+                { label: "要导入的表", name: "ImportTable", index: "ImportTable", align:' center',width: 150 },
+                { label: "Excel文件名", name: "ImportFileName", index: "ImportFileName", align:' center',width: 150 },
                 {
-                    label: '有效', name: 'Enabled', index: 'Enabled', width: 45, align: 'center',
+                    label: '有效', name: 'Enabled', index: 'Enabled', align:' center',width: 45,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == 1) return "<img src='../../Content/Images/checkokmark.gif'/>";
                         if (cellvalue == 0) return "<img src='../../Content/Images/checknomark.gif'/>";
                     }
                 },
                 {
-                    label: '错误处理机制', name: 'ErrorHanding', index: 'ErrorHanding', width: 150, align: 'center',
+                    label: '错误处理机制', name: 'ErrorHanding', index: 'ErrorHanding', align:' center',width: 150,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == '1') return "跳过";
                         if (cellvalue == '0') return "中止";

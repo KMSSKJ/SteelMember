@@ -41,20 +41,20 @@
             autowidth: true,
             colModel: [
                 { label: "主键", name: "ModuleId", index: "ModuleId", hidden: true },
-                { label: "编码", name: "Code", index: "Code", width: 76 },
-                { label: "名称", name: "FullName", index: "FullName", width: 100 },
-                { label: "分类", name: "Category", index: "Category", width: 45, align: "center" },
-                { label: "访问地址", name: "Location", index: "Location", width: 350 },
-                { label: "目标", name: "Target", index: "Target", width: 45, align: "center" },
-                { label: "层次", name: "Level", index: "Level", width: 45, align: "center" },
+                { label: "编码", name: "Code", index: "Code", align:' center',width: 76 },
+                { label: "名称", name: "FullName", index: "FullName", align:' center',width: 100 },
+                { label: "分类", name: "Category", index: "Category", align:' center',width: 45},
+                { label: "访问地址", name: "Location", index: "Location", align:' center',width: 350 },
+                { label: "目标", name: "Target", index: "Target", align:' center',width: 45},
+                { label: "层次", name: "Level", index: "Level", align:' center',width: 45},
                 {
-                    label: '有效', name: 'Enabled', index: 'enabled', width: 45, align: 'center',
+                    label: '有效', name: 'Enabled', index: 'enabled', align:' center',width: 45,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif'/>";
                         if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif'/>";
                     }
                 },
-                { label: "说明", name: "Remark", index: "Remark", width: 400 }
+                { label: "说明", name: "Remark", index: "Remark", align:' center',width: 400 }
             ],
             pager: false,
             rowNum: 1000,

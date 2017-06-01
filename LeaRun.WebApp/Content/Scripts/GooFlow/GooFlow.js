@@ -418,7 +418,7 @@ GooFlow.prototype = {
                 y = (parseInt(from[1], 10) + parseInt(to[1], 10)) / 2 - 12;
                 var t = getElCoordinate(This.$workArea[0]);
                 This.$textArea.val(oldTxt).css({
-                    display: "block", width: 120, height: 14,
+                    display: "block", align:' center',width: 120, height: 14,
                     left: t.left + x - This.$workArea[0].parentNode.scrollLeft,
                     top: t.top + y - This.$workArea[0].parentNode.scrollTop
                 }).data("id", This.$focus).focus();
@@ -537,7 +537,7 @@ GooFlow.prototype = {
             var x = parseInt(p.style.left, 10) + 18, y = parseInt(p.style.top, 10) + 1;
             var t = getElCoordinate(This.$workArea[0]);
             This.$textArea.val(oldTxt).css({
-                display: "block", width: 100, height: 14,
+                display: "block", align:' center',width: 100, height: 14,
                 left: t.left + x - This.$workArea[0].parentNode.scrollLeft,
                 top: t.top + y - This.$workArea[0].parentNode.scrollTop
             }).data("id", p.id).focus();
@@ -768,7 +768,7 @@ GooFlow.prototype = {
             var id = $(this).parents(".GooFlow_item").attr("id");
             var t = getElCoordinate(This.$workArea[0]);
             This.$textArea.val(oldTxt).css({
-                display: "block", width: $(this).width() + 24, height: $(this).height(),
+                display: "block", align:' center',width: $(this).width() + 24, height: $(this).height(),
                 left: t.left + 24 + This.$nodeData[id].left - This.$workArea[0].parentNode.scrollLeft,
                 top: t.top + 2 + This.$nodeData[id].top - This.$workArea[0].parentNode.scrollTop
             })
@@ -1797,7 +1797,7 @@ GooFlow.prototype = {
     reinitSize: function (width, height) {
         var w = (width || 800) - 2;
         var h = (height || 500) - 2;
-        this.$bgDiv.css({ height: h + "px", width: w + "px" });
+        this.$bgDiv.css({ height: h + "px", align:' center',width: w + "px" });
         var headHeight = 0, hack = 10;
         if (this.$head != null) {
             headHeight = 24;
@@ -1808,15 +1808,15 @@ GooFlow.prototype = {
         }
         w -= 39;
         h = h - headHeight - (this.$head != null ? 5 : 8);
-        this.$workArea.parent().css({ height: h + "px", width: w + "px" });
-        this.$workArea.css({ height: h * 3 + "px", width: w * 3 + "px" });
+        this.$workArea.parent().css({ height: h + "px", align:' center',width: w + "px" });
+        this.$workArea.css({ height: h * 3 + "px", align:' center',width: w * 3 + "px" });
         if (GooFlow.prototype.useSVG == "") {
             this.$draw.coordsize = w * 3 + "," + h * 3;
         }
         this.$draw.style.width = w * 3 + "px";
         this.$draw.style.height = +h * 3 + "px";
         if (this.$group == null) {
-            this.$group.css({ height: h * 3 + "px", width: w * 3 + "px" });
+            this.$group.css({ height: h * 3 + "px", align:' center',width: w * 3 + "px" });
         }
     }
 }

@@ -166,17 +166,17 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
                 //                         , jqgridparam.rows
                 //                         , func1
-                //                         , true
+                //                         , false
                 //                         , f => f.TreeID.ToString()
                 //                         , out total
                 //                         ).ToList();
                 List<RMC_ProjectDemand> listfile = ProjectManagementCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
-                                         , true
+                                         , false
                                          , f => f.CreateTime.ToString()
                                          , out total
-                                         ).OrderBy(f => f.CreateTime).ToList();
+                                         ).ToList();
                 List<ProjectDemandModel> projectdemandlist = new List<ProjectDemandModel>();
                 foreach (var item in listfile)
                 {

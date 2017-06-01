@@ -37,25 +37,25 @@
             colModel: [
                 { label: '主键', name: 'DataDictionaryDetailId', index: 'DataDictionaryDetailId', hidden: true },
                 { label: '名称', name: 'DataDictionaryDetailName', index: 'DataDictionaryDetailName', hidden: true },
-                { label: "项目名称", name: "FullName", index: "FullName", width: 200 },
-                { label: "项目值", name: "Code", index: "Code", width: 150 },
+                { label: "项目名称", name: "FullName", index: "FullName", align:' center',width: 200 },
+                { label: "项目值", name: "Code", index: "Code", align:' center',width: 150 },
                 {
-                    label: '有效', name: 'Enabled', index: 'Enabled', width: 45, align: 'center',
+                    label: '有效', name: 'Enabled', index: 'Enabled', align:' center',width: 45, align: 'center',
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif'/>";
                         if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif'/>";
                     }
                 },
-                { label: "创建用户", name: "CreateUserName", index: "CreateUserName", width: 100 },
+                { label: "创建用户", name: "CreateUserName", index: "CreateUserName", align:' center',width: 100 },
                 {
-                    label: "创建时间", name: "CreateDate", index: "CreateDate", width: 120,
+                    label: "创建时间", name: "CreateDate", index: "CreateDate", align:' center',width: 120,
                     formatter: function (cellvalue, options, rowObject) {
                         return formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
                     }
                 },
-                { label: "修改用户", name: "ModifyUserName", index: "ModifyUserName", width: 100 },
+                { label: "修改用户", name: "ModifyUserName", index: "ModifyUserName", align:' center',width: 100 },
                 {
-                    label: "修改时间", name: "ModifyDate", index: "ModifyDate", width: 120,
+                    label: "修改时间", name: "ModifyDate", index: "ModifyDate", align:' center',width: 120,
                     formatter: function (cellvalue, options, rowObject) {
                         return formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
                     }

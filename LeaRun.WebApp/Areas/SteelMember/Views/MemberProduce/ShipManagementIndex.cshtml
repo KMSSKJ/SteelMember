@@ -41,17 +41,17 @@
             autowidth: true,
             colModel: [
                     { label: '主键', name: 'ShipId', hidden: true },
-                    { label: '构件名', name: "MemberName", index: "MemberName", width: 10 },
-                    //{ label: '构件编号', name: 'MemberNumbering', index: 'MemberNumbering', width: 10 },
-                    { label: '构件型号', name: 'MemberModel', index: 'MemberModel', width: 10 },
-                    { label: '库存量', name: 'LibraryNumber', index: 'LibraryNumber', width: 10 },
-                    { label: '发货量', name: 'ShipNumber', index: 'ShipNumber', width: 10 },
-                    //{ label: '单价', name: 'UnitPrice', index: 'UnitPrice', width: 10 },
-                    //{ label: '总价', name: 'TotalPrice', index: 'TotalPrice', width: 10 },
-                    { label: '发货日期', name: 'ShipDate', index: 'ShipDate', width: 10 },
-                    { label: '发货人', name: 'ShipMan', index: 'ShipMan', width: 10 },
+                    { label: '构件名', name: "MemberName", index: "MemberName", align:' center',width: 10 },
+                    //{ label: '构件编号', name: 'MemberNumbering', index: 'MemberNumbering', align:' center',width: 10 },
+                    { label: '构件型号', name: 'MemberModel', index: 'MemberModel', align:' center',width: 10 },
+                    { label: '库存量', name: 'LibraryNumber', index: 'LibraryNumber', align:' center',width: 10 },
+                    { label: '发货量', name: 'ShipNumber', index: 'ShipNumber', align:' center',width: 10 },
+                    //{ label: '单价', name: 'UnitPrice', index: 'UnitPrice', align:' center',width: 10 },
+                    //{ label: '总价', name: 'TotalPrice', index: 'TotalPrice', align:' center',width: 10 },
+                    { label: '发货日期', name: 'ShipDate', index: 'ShipDate', align:' center',width: 10 },
+                    { label: '发货人', name: 'ShipMan', index: 'ShipMan', align:' center',width: 10 },
                     {
-                        label: '发货状态', name: 'LogisticsStatus', index: 'LogisticsStatus', width: 10,
+                        label: '发货状态', name: 'LogisticsStatus', index: 'LogisticsStatus', align:' center',width: 10,
                         formatter: function (cellvalue, value, row, index) {
                             var logistics_status = cellvalue;
                             if (logistics_status != "" || logistics_status != null) {
@@ -64,10 +64,10 @@
                                 return "";
                             }
                         }},
-                    { label: '收货地址', name: 'ShippingAddress', index: 'ShippingAddress', width: 10 },
-                    { label: '收货电话', name: 'ShippingTEL', index: 'ShippingTEL', width: 10 },
-                    { label: '收货人', name: 'ShippingMan', index: 'ShippingMan', width: 10 },
-                    { label: '备注', name: 'Description', index: 'Description', width: 15 },
+                    { label: '收货地址', name: 'ShippingAddress', index: 'ShippingAddress', align:' center',width: 10 },
+                    { label: '收货电话', name: 'ShippingTEL', index: 'ShippingTEL', align:' center',width: 10 },
+                    { label: '收货人', name: 'ShippingMan', index: 'ShippingMan', align:' center',width: 10 },
+                    { label: '备注', name: "Description", index: "Description", align:' center',width: 15 },
             ],
             rowNum: 30,
             sortname: 'SortCode',

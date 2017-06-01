@@ -33,15 +33,15 @@
             colModel: [
                 { label: "主键", name: "SysLogId", index: "SysLogId", hidden: true },
                 {
-                    label: "操作时间", name: "CreateDate", index: "CreateDate", width: 120,
+                    label: "操作时间", name: "CreateDate", index: "CreateDate", align:' center',width: 120,
                     formatter: function (value, options, rowObject) {
                         return formatDate(value, 'yyyy-MM-dd hh:mm:ss');
                     }
                 },
-                { label: "操作模块", name: "ModuleId", index: "ModuleId", width: 100 },
-                { label: "操作类型", name: "LogType", index: "LogType", width: 100, hidden: true },
+                { label: "操作模块", name: "ModuleId", index: "ModuleId", align:' center',width: 100 },
+                { label: "操作类型", name: "LogType", index: "LogType", align:' center',width: 100, hidden: true },
                 {
-                    label: "操作类型名称", name: "LogTypeName", width: 65, align: "center",
+                    label: "操作类型名称", name: "LogTypeName", align:' center',width: 65,
                     formatter: function (value, options, rowObject) {
                         if (rowObject.LogType == '0') { return "登陆"; }
                         if (rowObject.LogType == '1') { return "新增"; }
@@ -54,12 +54,12 @@
                         if (rowObject.LogType == '8') { return "安全退出"; }
                     }
                 },
-                { label: "IP地址", name: "IPAddress", index: "IPAddress", width: 100 },
-                { label: "操作用户", name: "CreateUserName", index: "CreateUserName", width: 80 },
-                { label: "操作公司", name: "CompanyId", index: "CompanyId", width: 120 },
-                { label: "操作部门", name: "DepartmentId", index: "DepartmentId", width: 80 },
+                { label: "IP地址", name: "IPAddress", index: "IPAddress", align:' center',width: 100 },
+                { label: "操作用户", name: "CreateUserName", index: "CreateUserName", align:' center',width: 80 },
+                { label: "操作公司", name: "CompanyId", index: "CompanyId", align:' center',width: 120 },
+                { label: "操作部门", name: "DepartmentId", index: "DepartmentId", align:' center',width: 80 },
                 {
-                    label: "操作状态", name: "Status", index: "Status", width: 50, align: "center",
+                    label: "操作状态", name: "Status", index: "Status", align:' center',width: 50,
                     formatter: function (value, options, rowObject) {
                         if (value == '1') {
                             return "<span style='color:blue'>成功</span>";
@@ -68,8 +68,8 @@
                         }
                     }
                 },
-                { label: "对象值", name: "ObjectId", index: "ObjectId", width: 260 },
-                { label: "操作描述", name: "Remark", index: "Remark", width: 1000 },
+                { label: "对象值", name: "ObjectId", index: "ObjectId", align:' center',width: 260 },
+                { label: "操作描述", name: "Remark", index: "Remark", align:' center',width: 1000 },
             ],
             viewrecords: true,
             rowNum: 30,

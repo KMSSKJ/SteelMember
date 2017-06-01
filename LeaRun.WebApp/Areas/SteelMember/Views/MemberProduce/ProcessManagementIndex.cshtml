@@ -48,12 +48,12 @@
                     { label: '主键', name: "ProcessId", hidden: true },
                     { label: '外键', name: "OrderId", hidden: true },
                     { label: '外键', name: "MemberId", hidden: true },
-                    { label: '构件名', name: "MemberName", index: "MemberName", width: 10 },
-                    { label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", width: 8 },
-                    { label: '开始时间', name: "ProduceStartDate", index: "ProduceStartDate", width: 4 },
-                    { label: '结束时间', name: "ProduceEndDate", index: "ProduceEndDate", width: 4 },
+                    { label: '构件名', name: "MemberName", index: "MemberName", align:' center',width: 10 },
+                    { label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", align:' center',width: 8 },
+                    { label: '开始时间', name: "ProduceStartDate", index: "ProduceStartDate", align:' center',width: 4 },
+                    { label: '结束时间', name: "ProduceEndDate", index: "ProduceEndDate", align:' center',width: 4 },
                     {
-                        label: '领取', name: "IsSetUpProcessingTask", index: "IsSetUpProcessingTask", width: 2,
+                        label: '领取', name: "IsSetUpProcessingTask", index: "IsSetUpProcessingTask", align:' center',width: 2,
                         formatter: function (cellvalue, value, row, index) {
                            var is_setupprocessing_task = cellvalue;
                             if (is_setupprocessing_task != "" || is_setupprocessing_task != null) {
@@ -83,7 +83,7 @@
                         }
                     },
                     {
-                        label: '领取', name: "IsSubmergedArcProcessingTask", index: "IsSubmergedArcProcessingTask", width: 2,
+                        label: '领取', name: "IsSubmergedArcProcessingTask", index: "IsSubmergedArcProcessingTask", align:' center',width: 2,
                         formatter: function (cellvalue, value, row, index) {
                             var is_submerged_arc_processing_task = cellvalue;
                             if (is_submerged_arc_processing_task != "" || is_submerged_arc_processing_task != null) {
@@ -98,7 +98,7 @@
                         }
                     },
                     {
-                        label: '埋弧', name: "IsSubmergedArcProcessing", index: "IsSubmergedArcProcessing", width: 2,
+                        label: '埋弧', name: "IsSubmergedArcProcessing", index: "IsSubmergedArcProcessing", align:' center',width: 2,
                         formatter: function (cellvalue, value, row, index) {
                             var is_submerged_arc_processing = cellvalue;
                             if (is_submerged_arc_processing != "" || is_submerged_arc_processing != null) {
@@ -143,7 +143,7 @@
                         }
                     },
                     {
-                        label: '领取', name: "IsPaintProcessingTask", index: "IsPaintProcessingTask", width: 2,
+                        label: '领取', name: "IsPaintProcessingTask", index: "IsPaintProcessingTask", align:' center',width: 2,
                         formatter: function (cellvalue, value, row, index) {
                             var is_paint_processing_task = cellvalue;
                             if (is_paint_processing_task != "" || is_paint_processing_task != null) {
@@ -158,7 +158,7 @@
                         }
                     },
                     {
-                        label: '油漆', name: "IsPaintProcessing", index: "IsPaintProcessing", width: 2,
+                        label: '油漆', name: "IsPaintProcessing", index: "IsPaintProcessing", align:' center',width: 2,
                         formatter: function (cellvalue, value, row, index) {
                             var is_paint_processing = cellvalue;
                             if (is_paint_processing != "" || is_paint_processing != null) {
@@ -186,7 +186,7 @@
                         }
                     },
                     {
-                        label: '监理', name: "Supervision", index: "Supervision", width: 2,
+                        label: '监理', name: "Supervision", index: "Supervision", align:' center',width: 2,
                         formatter: function (cellvalue, value, row, index) {
                             var supervision = cellvalue;
                             if (supervision == 0 || supervision == null) {
@@ -199,7 +199,7 @@
                         }
                     },
                     {
-                        label: '打包', name: "IsPacking", index: "IsPacking", width: 2,
+                        label: '打包', name: "IsPacking", index: "IsPacking", align:' center',width: 2,
                         formatter: function (cellvalue, value, row, index) {
                             var is_packing = cellvalue;
                             if (is_packing != "" || is_packing != null) {
@@ -213,10 +213,10 @@
                             }
                         }
                     },
-                    { label: '生产数量', name: "MemberNumber", index: "MemberNumber", width: 6 },
-                    { label: '合格量', name: "QualifiedNumber", index: "QualifiedNumber", width: 6 },
-                    { label: '不合格量', name: "UnqualifiedNumber", index: "UnqualifiedNumber", width: 6 },
-                    { label: '备注', name: 'Description', index: 'Description', width: 12 },
+                    { label: '生产数量', name: "MemberNumber", index: "MemberNumber", align:' center',width: 6 },
+                    { label: '合格量', name: "QualifiedNumber", index: "QualifiedNumber", align:' center',width: 6 },
+                    { label: '不合格量', name: "UnqualifiedNumber", index: "UnqualifiedNumber", align:' center',width: 6 },
+                    { label: '备注', name: "Description", index: "Description", align:' center',width: 12 },
             ],
             rowNum: 30,
             sortname: 'SortCode',

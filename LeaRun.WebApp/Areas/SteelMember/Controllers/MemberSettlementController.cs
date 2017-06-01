@@ -101,15 +101,15 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
                 //                         , jqgridparam.rows
                 //                         , func1
-                //                         , true
+                //                         , false
                 //                         , f => f.TreeID.ToString()
                 //                         , out total
                 //                         ).ToList();
                 List<RMC_Collar> listfile = CollarManagementCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
-                                         , true
-                                         , f => f.TreeId.ToString()
+                                         , false
+                                         , f => f.CollarTime.ToString()
                                          , out total
                                          ).ToList();
                 List<ProjectDemandModel> projectdemandlist = new List<ProjectDemandModel>();

@@ -16,10 +16,10 @@
             autowidth: true,
             colModel: [
                 { label: "主键", name: "CodeRuleId", index: "CodeRuleId", hidden: true },
-                { label: "编码名称", name: "FullName", index: "FullName", width: 150 },
-                { label: "编码代号", name: "Code", index: "Code", width: 150 },
+                { label: "编码名称", name: "FullName", index: "FullName", align:' center',width: 150 },
+                { label: "编码代号", name: "Code", index: "Code", align:' center',width: 150 },
                 {
-                    label: '有效', name: 'Enabled', index: 'Enabled', width: 45, align: 'center',
+                    label: '有效', name: 'Enabled', index: 'Enabled', align:' center',width: 45,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == 1) return "<img src='../../Content/Images/checkokmark.gif'/>";
                         if (cellvalue == 0) return "<img src='../../Content/Images/checknomark.gif'/>";

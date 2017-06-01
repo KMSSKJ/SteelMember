@@ -271,14 +271,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
                 //                         , jqgridparam.rows
                 //                         , func1
-                //                         , true
+                //                         , false
                 //                         , f => f.TreeID.ToString()
                 //                         , out total
                 //                         ).ToList();
                 List<RMC_ProjectOrder> listfile = OrderManagementCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
-                                         , true
+                                         , false
                                          , f => f.ModifiedTime.ToString()
                                          , out total
                                          ).ToList();
@@ -817,14 +817,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
                 //                         , jqgridparam.rows
                 //                         , func1
-                //                         , true
+                //                         , false
                 //                         , f => f.TreeID.ToString()
                 //                         , out total
                 //                         ).ToList();
                 List<RMC_RawMaterialLibrary> listfile = RawMaterialCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
-                                         , true
+                                         , false
                                          , f => f.RawMaterialId.ToString()
                                          , out total
                                          ).ToList();
@@ -1045,14 +1045,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
                 //                         , jqgridparam.rows
                 //                         , func1
-                //                         , true
+                //                         , false
                 //                         , f => f.TreeID.ToString()
                 //                         , out total
                 //                         ).ToList();
                 List<RMC_OrderMember> listfile = OrderMemberCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
-                                         , true
+                                         , false
                                          , f => f.OrderId.ToString()
                                          , out total
                                          ).ToList();
@@ -1308,10 +1308,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         int _MemberId = Convert.ToInt32(MemberId);
                         int _OrderId = Convert.ToInt32(OrderId);
 
-                        Oldentity.UnqualifiedNumber = Process.UnqualifiedNumber;
-                        Oldentity.ProcessNumbered = Process.ProcessNumbered;
+                        Oldentity.UnqualifiedNumber =Convert.ToInt32(Oldentity.UnqualifiedNumber) + Convert.ToInt32(Process.UnqualifiedNumber);
+                        Oldentity.ProcessNumbered = Convert.ToInt32(Oldentity.ProcessNumbered) + Convert.ToInt32(Process.ProcessNumbered);
                         var OrderMember = OrderMemberCurrent.Find(f=>f.OrderId == _OrderId&&f.MemberId== _MemberId).SingleOrDefault();
-                        if(OrderMember.Qty >= Oldentity.ProcessNumbered)
+                        if(OrderMember.Qty <= Oldentity.ProcessNumbered)
                         {
                             Oldentity.IsProcessStatus = Convert.ToInt32(IsQqualified);
                             Oldentity.ProcessNumbered = OrderMember.Qty;
@@ -1702,14 +1702,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
                 //                         , jqgridparam.rows
                 //                         , func1
-                //                         , true
+                //                         , false
                 //                         , f => f.TreeID.ToString()
                 //                         , out total
                 //                         ).ToList();
                 List<RMC_ShipManagement> listfile = ShipManagementCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
-                                         , true
+                                         , false
                                          , f => f.ShipId.ToString()
                                          , out total
                                          ).ToList();

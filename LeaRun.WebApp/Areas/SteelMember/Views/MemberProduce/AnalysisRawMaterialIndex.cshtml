@@ -51,24 +51,24 @@
             autowidth: true,
             colModel: [
                     { label: '主键', name: "RawMaterialId", hidden: true },
-                    { label: '原材料名称', name: "RawMaterialName", index: "RawMaterialName", width: 15 },
-                    { label: '材料规格', name: "RawMaterialStandard", index: "RawMaterialStandard", width: 15 },
+                    { label: '原材料名称', name: "RawMaterialName", index: "RawMaterialName", align: 'center',width: 15 },
+                    { label: '材料规格', name: "RawMaterialStandard", index: "RawMaterialStandard", align: 'center',width: 15 },
                     {
-                        label: '库存量', name: "RawMaterialNumber", index: "RawMaterialNumber", width: 10,
+                        label: '库存量', name: "RawMaterialNumber", index: "RawMaterialNumber", align: 'center',width: 10,
                         formatter: function (cellvalue, value, row, index) {
                             RawMaterialNumber = cellvalue;
                             return RawMaterialNumber;
                         }
                     },
                     {
-                        label: '订单加工用量', name: "OrderProcessingNumber", index: "OrderProcessingNumber", width: 15,
+                        label: '订单加工用量', name: "OrderProcessingNumber", index: "OrderProcessingNumber", align: 'center',width: 15,
                         formatter: function (cellvalue, value, row, index) {
                             OrderProcessingNumber = cellvalue;
                             return OrderProcessingNumber;
                         }
                     },
                     {
-                        label: '需采购量', name: "PurchaseNumber", index: "PurchaseNumber", width: 15,
+                        label: '需采购量', name: "PurchaseNumber", index: "PurchaseNumber", align: 'center',width: 15,
                         formatter: function (cellvalue, value, row, index) {
                             var PurchaseNumber = cellvalue;
                             PurchaseNumber = OrderProcessingNumber - RawMaterialNumber;
@@ -79,7 +79,7 @@
                             }
                         }
                     },
-                    { label: '备注', name: 'Description', index: 'Description', width: 15 },
+                    { label: '备注', name: 'Description', index: 'Description', align:' center',width: 15 },
             ],
             rowNum: 30,
             sortname: 'SortCode',

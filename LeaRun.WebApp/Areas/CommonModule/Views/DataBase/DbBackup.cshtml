@@ -19,11 +19,11 @@
             autowidth: true,
             colModel: [
                 { label: '主键', name: 'BackupId', index: 'BackupId', hidden: true },
-                { label: "计划名称", name: "JobName", index: "JobName", width: 200 },
-                { label: "执行方式", name: "Mode", index: "Mode", width: 80 },
-                { label: "执行时间", name: "StartTime", index: "StartTime", width: 80 },
-                { label: "备份路径", name: "FilePath", index: "FilePath", width: 275 },
-                { label: '状态', name: 'Enabled', index: 'Enabled', width: 45, align: 'center' }
+                { label: "计划名称", name: "JobName", index: "JobName", align:' center',width: 200 },
+                { label: "执行方式", name: "Mode", index: "Mode", align:' center',width: 80 },
+                { label: "执行时间", name: "StartTime", index: "StartTime", align:' center',width: 80 },
+                { label: "备份路径", name: "FilePath", index: "FilePath", align:' center',width: 275 },
+                { label: '状态', name: 'Enabled', index: 'Enabled', align:' center',width: 45}
             ],
             pager: false,
             rownumbers: true,
@@ -106,10 +106,10 @@
             height: $(window).height() - 137,
             width: $(window).width() - 4,
             colModel: [
-                { label: "名称", name: "ModuleId", index: "ModuleId", width: 200 },
-                { label: "修改时间", name: "FullName", index: "FullName", width: 120 },
-                { label: "类型", name: "FullName", index: "FullName", width: 80, align: 'center' },
-                { label: "大小", name: "FullName", index: "FullName", width: 80, align: 'center' }
+                { label: "名称", name: "ModuleId", index: "ModuleId", align:' center',width: 200 },
+                { label: "修改时间", name: "FullName", index: "FullName", align:' center',width: 120 },
+                { label: "类型", name: "FullName", index: "FullName", align:' center',width: 80, align: 'center' },
+                { label: "大小", name: "FullName", index: "FullName", align:' center',width: 80, align: 'center' }
             ],
             viewrecords: true,
             pager: "#gridPager_File",

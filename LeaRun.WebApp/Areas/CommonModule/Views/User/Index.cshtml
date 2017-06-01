@@ -53,34 +53,34 @@
             height: $(window).height() - 178,
             autowidth: true,
             colModel: [
-                { label: '主键', name: 'userid', index: 'userid', width: 80, align: 'left', hidden: true },
-                { label: '工号', name: 'code', index: 'code', width: 80, align: 'left' },
-                { label: '登录账户', name: 'account', index: 'account', width: 80, align: 'left' },
-                { label: '姓名', name: 'realname', index: 'realname', width: 80, align: 'left' },
-                { label: '性别', name: 'gender', index: 'gender', width: 45, align: 'center' },
-                { label: '手机', name: 'mobile', index: 'mobile', width: 100, align: 'left' },
-                { label: '电话', name: 'telephone', index: 'telephone', width: 100, align: 'left' },
-                { label: '邮箱', name: 'email', index: 'email', width: 100, align: 'left' },
-                { label: '负责项目', name: 'responsibleproject', index: 'responsibleproject', width: 150, align: 'left' },
+                { label: '主键', name: 'userid', index: 'userid', align:' center',width: 80, hidden: true },
+                { label: '工号', name: 'code', index: 'code', align:' center',width: 80},
+                { label: '登录账户', name: 'account', index: 'account', align:' center',width: 80},
+                { label: '姓名', name: 'realname', index: 'realname', align:' center',width: 80},
+                { label: '性别', name: 'gender', index: 'gender', align:' center',width: 45},
+                { label: '手机', name: 'mobile', index: 'mobile', align:' center',width: 100},
+                { label: '电话', name: 'telephone', index: 'telephone', align:' center',width: 100},
+                { label: '邮箱', name: 'email', index: 'email', align:' center',width: 100},
+                { label: '负责项目', name: 'responsibleproject', index: 'responsibleproject', align:' center',width: 150},
                 { label: '所在公司Id', name: 'companyid', hidden: true },
-                { label: '所在公司', name: 'companyname', index: 'companyname', width: 100, align: 'left' },
-                { label: '所在部门', name: 'departmentname', index: 'departmentname', width: 80, align: 'left' },
-                { label: '担任职务', name: 'duty', index: 'duty', width: 80, align: 'left' },
+                { label: '所在公司', name: 'companyname', index: 'companyname', align:' center',width: 100},
+                { label: '所在部门', name: 'departmentname', index: 'departmentname', align:' center',width: 80},
+                { label: '担任职务', name: 'duty', index: 'duty', align:' center',width: 80},
                 {
-                    label: '有效', name: 'enabled', index: 'enabled', width: 45, align: 'center',
+                    label: '有效', name: 'enabled', index: 'enabled', align:' center',width: 45,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif'/>";
                         if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif'/>";
                     }
                 },
-                { label: '登录次数', name: 'logoncount', index: 'logoncount', width: 70, align: 'center' },
+                { label: '登录次数', name: 'logoncount', index: 'logoncount', align:' center',width: 70},
                 {
-                    label: '最后登录时间', name: 'lastvisit', index: 'lastvisit', width: 120, align: 'left',
+                    label: '最后登录时间', name: 'lastvisit', index: 'lastvisit', align:' center',width: 120,
                     formatter: function (cellvalue, options, rowObject) {
                         return formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
                     }
                 },
-                { label: '说明', name: 'remark', index: 'remark', width: 300, align: 'left' }
+                { label: '说明', name: 'remark', index: 'remark', align:' center',width: 300}
             ],
             viewrecords: true,
             rowNum: 30,

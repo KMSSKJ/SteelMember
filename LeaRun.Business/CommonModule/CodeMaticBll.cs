@@ -563,7 +563,7 @@ namespace LeaRun.Business
                     int Enabled = CommonHelper.GetInt(item.Enabled);
                     if (Enabled == 1)
                     {
-                        sb_colModel.Append("                { label: '" + PropertyName + "', name: '" + ControlId + "', index: '" + ControlId + "', width: " + width + ", align: '" + align + "',sortable: " + Sortable + " " + IsShow_Field(hidden) + " },\r\n");
+                        sb_colModel.Append("                { label: '" + PropertyName + "', name: '" + ControlId + "', index: '" + ControlId + "', align:' center',width: " + width + ", align: '" + align + "',sortable: " + Sortable + " " + IsShow_Field(hidden) + " },\r\n");
                     }
                 }
             }

@@ -10,7 +10,7 @@
 
     var TreeId = "";//16
     var ItemId = 2;
-    var subgrid_table_id;
+    var subgrid_table_id="";
     function GetTree() {
         var itemtree = {
             onnodeclick: function (node) {
@@ -44,11 +44,11 @@
             colModel: [
                     { label: '外键', name: "MemberId", hidden: true },
                     { label: '外键', name: "OrderId", hidden: true },
-                    { label: '构件名', name: "MemberName", index: "MemberName", width: 10 },
-                    { label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", width: 10 },
-                    { label: '生产数量', name: "MemberNumber", index: "MemberNumber", width: 10 },
+                    { label: '构件名', name: "MemberName", index: "MemberName", align: 'center',width: 10 },
+                    { label: '构件编号', name: "MemberNumbering", index: "MemberNumbering", align: 'center',width: 10 },
+                    { label: '生产数量', name: "MemberNumber", index: "MemberNumber", align: 'center',width: 10 },
                     { label: '已生产量', name: 'Productioned', index: 'Productioned', width: 6 },
-                    { label: '备注', name: 'Description', index: 'Description', width: 15 },
+                    { label: '备注', name: "Description", index: "Description", align: 'center',width: 15 },
             ],
             rowNum: 30,
             sortname: 'SortCode',
@@ -67,9 +67,9 @@
                     url: "@Url.Content("~/SteelMember/MemberProduce/GetProcessEntryList")?MemberId=" + MemberId + "&OrderId=" + OrderId,
                     datatype: "json",
                     colModel: [
-                        { label: '主键', name: "ProcessId", width: 1, sortable: false, hidden: true },
-                        { label: '外键', name: "OrderId", width: 100, sortable: false, hidden: true },
-                        { label: '制程名称', name: "ProcessName", width: 150, sortable: false },
+                        { label: '主键', name: "ProcessId", align: 'center',width: 1, sortable: false, hidden: true },
+                        { label: '外键', name: "OrderId", align: 'center',width: 100, sortable: false, hidden: true },
+                        { label: '制程名称', name: "ProcessName", align: 'center',width: 150, sortable: false },
                         {
                             label: '制程任务状态', name: 'IsProcessTask', width: 80, sortable: false, align: 'center',
                             formatter: function (cellvalue, value, row, index) {
@@ -96,12 +96,12 @@
                                 }
                             }
                         },
-                        { label: '工艺完成量', name: "ProcessNumbered", width: 80, sortable: false, align: 'center' },
-                        { label: '工艺要求', name: "ProcessRequirements", width: 80, sortable: false, align: 'center' },
-                        { label: '负责人', name: "ProcessMan", width: 80, sortable: false, align: 'center' },
-                        //{ label: '图片', name: "ProcessManImage", width: 80, sortable: false, align: 'center' },
-                        { label: '不合格量', name: "UnqualifiedNumber", width: 80, align: 'center', },
-                        { label: '说明', name: 'Description', width: 200, sortable: false }
+                        { label: '工艺完成量', name: "ProcessNumbered", align: 'center',width: 80, sortable: false, },
+                        { label: '工艺要求', name: "ProcessRequirements", align: 'center',width: 80, sortable: false, },
+                        { label: '负责人', name: "ProcessMan", align: 'center',width: 80, sortable: false, },
+                        //{ label: '图片', name: "ProcessManImage", align: 'center',width: 80, sortable: false, align: 'center' },
+                        { label: '不合格量', name: "UnqualifiedNumber", align: 'center',width: 80, },
+                        { label: '说明', name: 'Description', width: 200, sortable: false, align: 'center' }
                     ],
                     width: "1227",
                     height: "300",
@@ -222,8 +222,6 @@
         if (IsChecked(KeyValue)) {
             if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
                 subConfirm('/SteelMember/MemberProduce/ReceiveProcessed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
-                $("#gridTable").trigger("reloadGrid"); //重新载入
-
             } else {
                 alertDialog("不能重复提交", 0);
             }
@@ -270,15 +268,23 @@
         if (IsChecked(subgrid_table_id)) {
             var Prompt = "您确实要提交信息吗？";
             var IsQqualified = 1;
-            var subgrid_table_id = 0;
             var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
             var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
             var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
+            var strObj = GetJqGridRowValue("#" + subgrid_table_id, "ProcessName");
+            var subString = "工厂质检";
             if (IsChecked(KeyValue)) {
                 if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
                     if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checknomark.gif'>") {
-                        subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
-                        $("#gridTable").trigger("reloadGrid"); //重新载入
+                        if (strObj.indexOf(subString) > 0) {
+                            alertDialog("请点击工厂质检项按钮", 0);
+                        } else {
+                            //subConfirm('/SteelMember/MemberProduce/NumberForm', { KeyValue: KeyValue, MemberId: MemberId, OrderId: OrderId, IsQqualified: IsQqualified }, Prompt);
+                            var url = "/SteelMember/MemberProduce/NumberForm?KeyValue= " + KeyValue + "&MemberId=" + MemberId + "&OrderId=" + OrderId + "&IsQqualified=" + IsQqualified;
+                            openDialog(url, "NumberForm", "信息填报", 360, 260, function (iframe) {
+                                top.frames[iframe].AcceptClick();
+                            });
+                        }
                     } else {
                         alertDialog("不能重复提交", 0);
                     }
@@ -297,12 +303,20 @@
             var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
             var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
             var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
+            var strObj = GetJqGridRowValue("#" + subgrid_table_id, "ProcessName");
+            var subString = "工厂质检";
             if (IsChecked(KeyValue)) {
                 if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
                     if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checknomark.gif'>") {
-                        subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
-                        $("#gridTable").trigger("reloadGrid"); //重新载入
-
+                        //subConfirm('/SteelMember/MemberProduce/NumberForm', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
+                        if (strObj.indexOf(subString) > 0) {
+                            alertDialog("请点击工厂质检项按钮", 0);
+                        } else {
+                            var url = "/SteelMember/MemberProduce/NumberForm?KeyValue= " + KeyValue + "&MemberId=" + MemberId + "&OrderId=" + OrderId + "&IsQqualified=" + IsQqualified;
+                            openDialog(url, "NumberForm", "信息填报", 360, 260, function (iframe) {
+                                top.frames[iframe].AcceptClick();
+                            });
+                        }
                     } else {
                         alertDialog("不能重复提交", 0);
                     }
@@ -322,11 +336,20 @@
             var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
             var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
             var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
+            var strObj = GetJqGridRowValue("#" + subgrid_table_id, "ProcessName");
+            var subString = "工厂质检";
             if (IsChecked(KeyValue)) {
                 if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
                     if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
-                        subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
-                        $("#gridTable").trigger("reloadGrid"); //重新载入
+                       // subConfirm('/SteelMember/MemberProduce/NumberForm', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
+                        if (strObj.indexOf(subString) > 0) {
+                            var url = "/SteelMember/MemberProduce/NumberForm?KeyValue= " + KeyValue + "&MemberId=" + MemberId + "&OrderId=" + OrderId + "&IsQqualified=" + IsQqualified;
+                            openDialog(url, "NumberForm", "信息填报", 360, 260, function (iframe) {
+                                top.frames[iframe].AcceptClick();
+                            }); 
+                        } else {
+                            alertDialog("请点击监理检测项按钮", 0);
+                        }
                     } else {
                         alertDialog("不能重复提交", 0);
                     }
@@ -342,16 +365,23 @@
         if (IsChecked(subgrid_table_id)) {
             var Prompt = "您确实要提交信息吗？";
             var Supervision = 2;
-            var subgrid_table_id = 0;
             var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "ProcessId");
             var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
             var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
+            var strObj = GetJqGridRowValue("#" + subgrid_table_id, "ProcessName");
+            var subString = "工厂质检";
             if (IsChecked(KeyValue)) {
                 if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
                     if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checknomark.gif'>") {
-                        subConfirm('/SteelMember/MemberProduce/Processed', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
-                        $("#gridTable").trigger("reloadGrid"); //重新载入
-
+                       // subConfirm('/SteelMember/MemberProduce/NumberForm', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
+                        if (strObj.indexOf(subString) > 0) {
+                            var url = "/SteelMember/MemberProduce/NumberForm?KeyValue= " + KeyValue + "&MemberId=" + MemberId + "&OrderId=" + OrderId + "&IsQqualified=" + IsQqualified;
+                            openDialog(url, "NumberForm", "信息填报", 360, 260, function (iframe) {
+                                top.frames[iframe].AcceptClick();
+                            });
+                        } else {
+                            alertDialog("请点击监理检测项按钮", 0);
+                        }
                     } else {
                         alertDialog("不能重复提交", 0);
                     }

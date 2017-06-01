@@ -77,27 +77,27 @@
                             }
                         }
                     },
-                    { label: '编号', name: "MemberNumbering", index: "MemberNumbering", width: 15 },
-                    { label: '型号', name: "MemberModel", index: "MemberModel", width: 6 },
+                    { label: '编号', name: "MemberNumbering", index: "MemberNumbering", align: 'center',width: 15 },
+                    { label: '型号', name: "MemberModel", index: "MemberModel", align: 'center',width: 6 },
                      {
-                         label: '入库时间', name: "UploadTime", index: "UploadTime", width: 10,
+                         label: '入库时间', name: "UploadTime", index: "UploadTime", align: 'center',width: 10,
                          formatter: function (cellvalue, options, rowObject) {
                              return formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
                          }
                      },
-                    { label: '截面面积/<Br/>cm²', name: "SectionalArea", index: "SectionalArea", width: 6, },
-                    { label: '外表面积/(m²/m)', name: "SurfaceArea", index: "SurfaceArea", width: 6, },
-                    { label: '理论重量/(㎏/m)', name: "TheoreticalWeight", index: "TheoreticalWeight", width: 6, },
-                    { label: '高度', name: "SectionalSize_h", index: "SectionalSize_h", width: 5 },
-                    //{ label: '长边宽度', name: 'SectionalSizeB', index: 'SectionalSizeB', width: 8 },
-                    { label: '腿宽度', name: 'SectionalSize_b', index: 'SectionalSize_b', width: 5 },
-                    //{ label: '长边厚度', name: 'SectionalSizeD', index: 'SectionalSizeD', width: 8 },
-                    { label: '腰厚度', name: 'SectionalSize_d', index: 'SectionalSize_d', width: 5 },
-                    //{ label: '平均腿厚度', name: 'SectionalSize_t', index: 'SectionalSize_t', width: 8 },
-                    //{ label: '内圆弧半径', name: 'SectionalSize_r', index: 'SectionalSize_r', width: 8 },
-                    //{ label: '腿端圆弧半径', name: 'SectionalSize_r1', index: 'SectionalSize_r1', width: 8 },
+                    { label: '截面面积/<Br/>cm²', name: "SectionalArea", index: "SectionalArea", align: 'center',width: 6, },
+                    { label: '外表面积/(m²/m)', name: "SurfaceArea", index: "SurfaceArea", align: 'center',width: 6, },
+                    { label: '理论重量/(㎏/m)', name: "TheoreticalWeight", index: "TheoreticalWeight", align: 'center',width: 6, },
+                    { label: '高度', name: "SectionalSize_h", index: "SectionalSize_h", align: 'center',width: 5 },
+                    //{ label: '长边宽度', name: 'SectionalSizeB', index: 'SectionalSizeB', align: 'center',width: 8 },
+                    { label: '腿宽度', name: 'SectionalSize_b', index: 'SectionalSize_b', align: 'center',width: 5 },
+                    //{ label: '长边厚度', name: 'SectionalSizeD', index: 'SectionalSizeD', align: 'center',width: 8 },
+                    { label: '腰厚度', name: 'SectionalSize_d', index: 'SectionalSize_d', align: 'center',width: 5 },
+                    //{ label: '平均腿厚度', name: 'SectionalSize_t', index: 'SectionalSize_t', align: 'center',width: 8 },
+                    //{ label: '内圆弧半径', name: 'SectionalSize_r', index: 'SectionalSize_r', align: 'center',width: 8 },
+                    //{ label: '腿端圆弧半径', name: 'SectionalSize_r1', index: 'SectionalSize_r1', align: 'center',width: 8 },
                     {
-                        label: '图纸', name: 'CAD_Drawing', index: 'CAD_Drawing', width: 5,
+                        label: '图纸', name: 'CAD_Drawing', index: 'CAD_Drawing', align: 'center',width: 5,
                         formatter: function (cellvalue, value, row, index) {
                             var is_have_drawing = cellvalue;
                             if (is_have_drawing != "" || is_have_drawing != null) {
@@ -112,7 +112,7 @@
                         }
                     },
                     {
-                        label: '模型', name: 'Model_Drawing', index: 'Model_Drawing', width: 5,
+                        label: '模型', name: 'Model_Drawing', index: 'Model_Drawing', align: 'center',width: 5,
                         formatter: function (cellvalue, value, row, index) {
                             var is_have_model = cellvalue;
                             if (is_have_model != "" || is_have_model != null) {
@@ -127,7 +127,7 @@
                         }
                     },
                      {
-                         label: '材料', name: 'IsRawMaterial', index: 'IsRawMaterial', width: 5,
+                         label: '材料', name: 'IsRawMaterial', index: 'IsRawMaterial', align: 'center',width: 5,
                          formatter: function (cellvalue, value, row, index) {
                              var IsRawMaterial = cellvalue;
                              if (IsRawMaterial != 0) {
@@ -138,7 +138,7 @@
                          }
                      },
                     {
-                        label: '制程', name: 'IsProcess', index: 'IsProcess', width: 5,
+                        label: '制程', name: 'IsProcess', index: 'IsProcess', align: 'center',width: 5,
                         formatter: function (cellvalue, value, row, index) {
                             var IsProcess = cellvalue;
                             if (IsProcess != 0) {
@@ -456,6 +456,7 @@
             <img id="bigImg" src="" style="width:100%;height:100%" />
         </div>
         <table id="gridTable"></table>
+        <div id="gridPager"></div>
     </div>
 
 </div>

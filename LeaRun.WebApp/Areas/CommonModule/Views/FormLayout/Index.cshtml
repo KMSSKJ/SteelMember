@@ -42,10 +42,10 @@
             autowidth: true,
             colModel: [
                 { label: '主键', name: 'FormAttributeId', hidden: true },
-                { label: '属性名称', name: 'PropertyName', index: 'PropertyName', width: 100 },
-                { label: "控件名称", name: "ControlId", index: "ControlId", width: 150 },
+                { label: '属性名称', name: 'PropertyName', index: 'PropertyName', align:' center',width: 100 },
+                { label: "控件名称", name: "ControlId", index: "ControlId", align:' center',width: 150 },
                 {
-                    label: "控件类型", name: "ControlType", index: "ControlType", width: 65, align: "center",
+                    label: "控件类型", name: "ControlType", index: "ControlType", align:' center',width: 65,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == '1') return "文本框";
                         if (cellvalue == '2') return "下拉框";
@@ -54,18 +54,18 @@
                         if (cellvalue == '5') return "多行文本框";
                     }
                 },
-                { label: "控件样式", name: "ControlStyle", index: "ControlStyle", width: 65, align: "center" },
-                { label: "输入长度", name: "ImportLength", index: "ImportLength", width: 65, align: "center" },
-                { label: "默认值", name: "DefaultVlaue", index: "DefaultVlaue", width: 100 },
-                { label: "控件验证", name: "ControlValidator", index: "ControlValidator", width: 200 },
+                { label: "控件样式", name: "ControlStyle", index: "ControlStyle", align:' center',width: 65},
+                { label: "输入长度", name: "ImportLength", index: "ImportLength", align:' center',width: 65},
+                { label: "默认值", name: "DefaultVlaue", index: "DefaultVlaue", align:' center',width: 100 },
+                { label: "控件验证", name: "ControlValidator", index: "ControlValidator", align:' center',width: 200 },
                 {
-                    label: '有效', name: 'Enabled', index: 'Enabled', width: 45, align: 'center',
+                    label: '有效', name: 'Enabled', index: 'Enabled', align:' center',width: 45,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif'/>";
                         if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif'/>";
                     }
                 },
-                { label: '描述', name: 'Remark', index: 'Remark', width: 200 }
+                { label: '描述', name: 'Remark', index: 'Remark', align:' center',width: 200 }
             ],
             pager: false,
             rowNum: 1000,

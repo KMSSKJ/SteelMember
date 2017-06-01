@@ -18,22 +18,22 @@
             height: $(window).height() - 77,
             autowidth: true,
             colModel: [
-            { label: '主键', name: 'CompanyId', index: 'CompanyId', width: 80, hidden: true },
-            { label: "名称", name: "FullName", index: "FullName", width: 200 },
-            { label: "编码", name: "Code", index: "Code", width: 100 },
-            { label: "简称", name: "ShortName", index: "ShortName", width: 100 },
-            { label: "分类", name: "Category", index: "Category", width: 50, align: "center" },
-            { label: "联系人", name: "Contact", index: "Contact", width: 100 },
-            { label: "电话", name: "Phone", index: "Phone", width: 100 },
-            { label: "传真", name: "Fax", index: "Fax", width: 100 },
+            { label: '主键', name: 'CompanyId', index: 'CompanyId', align:' center',width: 80, hidden: true },
+            { label: "名称", name: "FullName", index: "FullName", align:' center',width: 200 },
+            { label: "编码", name: "Code", index: "Code", align:' center',width: 100 },
+            { label: "简称", name: "ShortName", index: "ShortName", align:' center',width: 100 },
+            { label: "分类", name: "Category", index: "Category", align:' center',width: 50},
+            { label: "联系人", name: "Contact", index: "Contact", align:' center',width: 100 },
+            { label: "电话", name: "Phone", index: "Phone", align:' center',width: 100 },
+            { label: "传真", name: "Fax", index: "Fax", align:' center',width: 100 },
             {
-                label: '有效', name: 'Enabled', index: 'Enabled', width: 45, align: 'center',
+                label: '有效', name: 'Enabled', index: 'Enabled', align:' center',width: 45,
                 formatter: function (cellvalue, options, rowObject) {
                     if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif'/>";
                     if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif'/>";
                 }
             },
-            { label: '描述', name: 'Remark', index: 'Remark', width: 500 }
+            { label: '描述', name: 'Remark', index: 'Remark', align:' center',width: 500 }
             ],
             pager: "false",
             rowNum: 1000,

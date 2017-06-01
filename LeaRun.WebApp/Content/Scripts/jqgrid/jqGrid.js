@@ -2447,11 +2447,11 @@
             }
             if (this.p.multiselect) {
                 this.p.colNames.unshift("<input role='checkbox' id='cb_" + this.p.id + "' class='cbox' type='checkbox'/>");
-                this.p.colModel.unshift({ name: 'cb', width: $.jgrid.cell_width ? ts.p.multiselectWidth + ts.p.cellLayout : ts.p.multiselectWidth, sortable: false, resizable: false, hidedlg: true, search: false, align: 'center', fixed: true });
+                this.p.colModel.unshift({ name: 'cb', align:' center',width: $.jgrid.cell_width ? ts.p.multiselectWidth + ts.p.cellLayout : ts.p.multiselectWidth, sortable: false, resizable: false, hidedlg: true, search: false, align: 'center', fixed: true });
             }
             if (this.p.rownumbers) {
                 this.p.colNames.unshift("");
-                this.p.colModel.unshift({ name: 'rn', width: ts.p.rownumWidth, sortable: false, resizable: false, hidedlg: true, search: false, align: 'center', fixed: true });
+                this.p.colModel.unshift({ name: 'rn', align:' center',width: ts.p.rownumWidth, sortable: false, resizable: false, hidedlg: true, search: false, align: 'center', fixed: true });
             }
             ts.p.xmlReader = $.extend(true, {
                 root: "rows",
@@ -4634,7 +4634,7 @@
                     $th = $(th);
                     cmi = colModel[i];
                     // build the next cell for the first header row
-                    thStyle = { height: '0px', width: ths[i].width + 'px', display: (cmi.hidden ? 'none' : '') };
+                    thStyle = { height: '0px', align:' center',width: ths[i].width + 'px', display: (cmi.hidden ? 'none' : '') };
                     $("<th>", { role: 'gridcell' }).css(thStyle).addClass("ui-first-th-" + ts.p.direction).appendTo($firstHeaderRow);
 
                     th.style.width = ""; // remove unneeded style
@@ -4932,7 +4932,7 @@
     $.jqm = {
         hash: {},
         open: function (s, t) {
-            var h = H[s], c = h.c, cc = '.' + c.closeClass, z = (parseInt(h.w.css('z-index'))); z = (z > 0) ? z : 3000; var o = $('<div></div>').css({ height: '100%', width: '100%', position: 'fixed', left: 0, top: 0, 'z-index': z - 1, opacity: c.overlay / 100 }); if (h.a) return F; h.t = t; h.a = true; h.w.css('z-index', z);
+            var h = H[s], c = h.c, cc = '.' + c.closeClass, z = (parseInt(h.w.css('z-index'))); z = (z > 0) ? z : 3000; var o = $('<div></div>').css({ height: '100%', align:' center',width: '100%', position: 'fixed', left: 0, top: 0, 'z-index': z - 1, opacity: c.overlay / 100 }); if (h.a) return F; h.t = t; h.a = true; h.w.css('z-index', z);
             if (c.modal) { if (!A[0]) setTimeout(function () { L('bind'); }, 1); A.push(s); }
             else if (c.overlay > 0) { if (c.closeoverlay) h.w.jqmAddClose(o); }
             else o = F;
@@ -8510,7 +8510,7 @@ var xmlJsonClass = {
                             $("td:eq(" + (cp - 2) + ")", trdata[0]).html('<b>' + (frmopt.label === undefined ? obj.p.colNames[i] : frmopt.label) + '</b>');
                             $("td:eq(" + (cp - 1) + ")", trdata[0]).append("<span>" + tmp + "</span>").attr("id", "v_" + nm);
                             if (setme) {
-                                $("td:eq(" + (cp - 1) + ") span", trdata[0]).css({ 'text-align': 'right', width: maxw + "px" });
+                                $("td:eq(" + (cp - 1) + ") span", trdata[0]).css({ 'text-align': 'right', align:' center',width: maxw + "px" });
                             }
                             retpos[cnt] = i;
                             cnt++;
@@ -10488,7 +10488,7 @@ var xmlJsonClass = {
                 };
                 $t.p.subGridOptions = $.extend(suboptions, $t.p.subGridOptions || {});
                 $t.p.colNames.unshift("");
-                $t.p.colModel.unshift({ name: 'subgrid', width: $.jgrid.cell_width ? $t.p.subGridWidth + $t.p.cellLayout : $t.p.subGridWidth, sortable: false, resizable: false, hidedlg: true, search: false, fixed: true });
+                $t.p.colModel.unshift({ name: 'subgrid', align:' center',width: $.jgrid.cell_width ? $t.p.subGridWidth + $t.p.cellLayout : $t.p.subGridWidth, sortable: false, resizable: false, hidedlg: true, search: false, fixed: true });
                 cm = $t.p.subGridModel;
                 if (cm[0]) {
                     cm[0].align = $.extend([], cm[0].align || []);

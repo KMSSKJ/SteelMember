@@ -53,7 +53,7 @@
             { label: 'Sort', name: 'Sort', hidden: true },
             { label: "Icon", name: "Icon", hidden: true },
             {
-                label: "文件名", name: "MemberName", index: "MemberName", width: 330,
+                label: "文件名", name: "MemberName", index: "MemberName", align:' center',width: 330,
                 formatter: function (cellvalue, options, rowObject) {
                     if (rowObject.Icon == "-1") {
                         return "<div style='cursor:pointer;padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;' src='../../Content/Images/Icon16/folder.png' />" + cellvalue + "</div>";
@@ -66,40 +66,40 @@
                     }
                 }
             },
-            { label: "文件类型", name: "FileType", index: "FileType", width: 70 },
-            { label: "文件大小", name: "FileSize", index: "FileSize", width: 80 },
+            { label: "文件类型", name: "FileType", index: "FileType", align:' center',width: 70 },
+            { label: "文件大小", name: "FileSize", index: "FileSize", align:' center',width: 80 },
             {
-                label: "添加时间", name: "UploadTime", index: "UploadTime", width: 120,
+                label: "添加时间", name: "UploadTime", index: "UploadTime", align:' center',width: 120,
                 formatter: function (value, options, rowObject) {
                     return formatDate(value, 'yyyy-MM-dd hh:mm:ss');
                 }
             },
             {
-                label: "修改时间", name: "ModifiedTime", index: "ModifiedTime", width: 120,
+                label: "修改时间", name: "ModifiedTime", index: "ModifiedTime", align:' center',width: 120,
                 formatter: function (value, options, rowObject) {
                     return formatDate(value, 'yyyy-MM-dd hh:mm:ss');
                 }
             },
             {
-                label: "过期时间", name: "OverdueTime", index: "OverdueTime", width: 120,
+                label: "过期时间", name: "OverdueTime", index: "OverdueTime", align:' center',width: 120,
                 formatter: function (value, options, rowObject) {
                     return formatDate(value, 'yyyy-MM-dd hh:mm:ss');
                 }
             },
             {
-                label: '有效', name: 'Enabled', index: 'Enabled', width: 35, align: 'center',
+                label: '有效', name: 'Enabled', index: 'Enabled', align:' center',width: 35, align: 'center',
                 formatter: function (cellvalue, options, rowObject) {
                     if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif' />";
                     if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif' />";
                 }
             }, {
-                label: '审核状态', name: 'IsReview', index: 'IsReview', width: 38, align: 'center',
+                label: '审核状态', name: 'IsReview', index: 'IsReview', align:' center',width: 38, align: 'center',
                 formatter: function (cellvalue, options, rowObject) {
                     if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif' />";
                     if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif' />";
                 }
             },
-            { label: '描述', name: 'Description', index: 'Description', width: 300 },
+            { label: '描述', name: 'Description', index: 'Description', align:' center',width: 300 },
             ],
             viewrecords: true,
             rownumbers: true,

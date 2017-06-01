@@ -57,7 +57,7 @@
                 { label: 'icon', name: 'icon', hidden: true },
                 { label: 'ispublic', name: 'ispublic', hidden: true },
                 {
-                    label: '文件名', name: 'filename', index: 'filename', width: 500, align: 'left',
+                    label: '文件名', name: 'filename', index: 'filename', align:' center',width: 500,
                     formatter: function (cellvalue, options, rowObject) {
                         if (rowObject.icon == "-1") {
                             return "<div style='cursor:pointer;padding-top:1px;'><img style='padding-bottom:3px;padding-right:2px;' src='../../Content/Scripts/tree/images/folder.gif' />" + cellvalue + "</div>";
@@ -70,20 +70,20 @@
                         }
                     }
                 },
-                { label: '类型', name: 'filetype', index: 'filetype', width: 80, align: 'left' },
+                { label: '类型', name: 'filetype', index: 'filetype', align:' center',width: 80},
                 {
-                    label: '大小', name: 'filesize', index: 'filesize', width: 80, align: 'left',
+                    label: '大小', name: 'filesize', index: 'filesize', align:' center',width: 80,
                     formatter: function (cellvalue, options, rowObject) {
                         return CountFileSize(cellvalue);
                     }
                 },
                 {
-                    label: '创建时间', name: 'createdate', index: 'createdate', width: 120, align: 'left',
+                    label: '创建时间', name: 'createdate', index: 'createdate', align:' center',width: 120,
                     formatter: function (cellvalue, options, rowObject) {
                         return formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
                     }
                 },
-                { label: '创建人', name: 'createusername', index: 'createusername', width: 120, align: 'left' }
+                { label: '创建人', name: 'createusername', index: 'createusername', align:' center',width: 120}
             ],
             gridview: true,
             rowNum: 10000,

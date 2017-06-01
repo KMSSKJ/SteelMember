@@ -32,13 +32,13 @@
             autowidth: true,
             colModel: [
                 { label: "主键", name: "ViewId", index: "ViewId", hidden: true },
-                { label: "绑定字段", name: "FieldName", index: "FieldName", width: 120 },
-                { label: "内部名称", name: "FullName", index: "FullName", width: 120 },
-                { label: "显示名称", name: "ShowName", index: "ShowName", width: 120 },
-                { label: "显示列宽", name: "ColumnWidth", index: "ColumnWidth", width: 65, align: "center" },
-                { label: "对齐方式", name: "TextAlign", index: "TextAlign", width: 65, align: "center" },
+                { label: "绑定字段", name: "FieldName", index: "FieldName", align:' center',width: 120 },
+                { label: "内部名称", name: "FullName", index: "FullName", align:' center',width: 120 },
+                { label: "显示名称", name: "ShowName", index: "ShowName", align:' center',width: 120 },
+                { label: "显示列宽", name: "ColumnWidth", index: "ColumnWidth", align:' center',width: 65},
+                { label: "对齐方式", name: "TextAlign", index: "TextAlign", align:' center',width: 65},
                 {
-                    label: "导出/打印", name: "AllowDerive", index: "AllowDerive", width: 80, align: "center",
+                    label: "导出/打印", name: "AllowDerive", index: "AllowDerive", align:' center',width: 80,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == '1')
                             return "<img src='../../Content/Images/checkokmark.gif'/>";
@@ -47,7 +47,7 @@
                     }
                 },
                 {
-                    label: "是否显示", name: "AllowShow", index: "AllowShow", width: 65, align: "center",
+                    label: "是否显示", name: "AllowShow", index: "AllowShow", align:' center',width: 65,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == '1')
                             return "<img src='../../Content/Images/checkokmark.gif'/>";
@@ -56,7 +56,7 @@
                     }
                 },
                 {
-                    label: "有效", name: "Enabled", index: "Enabled", width: 45, align: "center",
+                    label: "有效", name: "Enabled", index: "Enabled", align:' center',width: 45,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == '1')
                             return "<img src='../../Content/Images/checkokmark.gif'/>";
@@ -64,7 +64,7 @@
                             return "<img src='../../Content/Images/checknomark.gif'/>";
                     }
                 },
-                { label: "自定义转换", name: "CustomSwitch", index: "CustomSwitch", width: 400 }
+                { label: "自定义转换", name: "CustomSwitch", index: "CustomSwitch", align:' center',width: 400 }
             ],
             pager: false,
             rowNum: 1000,

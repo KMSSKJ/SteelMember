@@ -45,29 +45,29 @@
                 { label: '主键', name: 'ButtonId', index: 'ButtonId', hidden: true },
                 { label: '名称', name: 'ButtonName', index: 'ButtonName', hidden: true },
                 {
-                    label: "按钮", name: "FullName", index: "FullName", width: 150,
+                    label: "按钮", name: "FullName", index: "FullName", align:' center',width: 150,
                     formatter: function (cellvalue, options, rowObject) {
                         return "<img src='../../Content/Images/Icon16/" + rowObject.Icon + "'/>&nbsp;" + cellvalue;
                     }
                 },
-                { label: "编码", name: "Code", index: "Code", width: 150 },
-                { label: "Js事件", name: "JsEvent", index: "JsEvent", width: 150 },
-                { label: "Action地址", name: "ActionEvent", index: "ActionEvent", width: 350 },
+                { label: "编码", name: "Code", index: "Code", align:' center',width: 150 },
+                { label: "Js事件", name: "JsEvent", index: "JsEvent", align:' center',width: 150 },
+                { label: "Action地址", name: "ActionEvent", index: "ActionEvent", align:' center',width: 350 },
                 {
-                    label: "分开线", name: "Split", index: "Split", width: 45, align: 'center',
+                    label: "分开线", name: "Split", index: "Split", align:' center',width: 45,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif'/>";
                         if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif'/>";
                     }
                 },
                 {
-                    label: '有效', name: 'Enabled', index: 'Enabled', width: 45, align: 'center',
+                    label: '有效', name: 'Enabled', index: 'Enabled', align:' center',width: 45,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == '1') return "<img src='../../Content/Images/checkokmark.gif'/>";
                         if (cellvalue == '0') return "<img src='../../Content/Images/checknomark.gif'/>";
                     }
                 },
-                { label: '描述', name: 'Remark', index: 'Remark', width: 200 }
+                { label: '描述', name: 'Remark', index: 'Remark', align:' center',width: 200 }
             ],
             pager: "false",
             rowNum: 1000,

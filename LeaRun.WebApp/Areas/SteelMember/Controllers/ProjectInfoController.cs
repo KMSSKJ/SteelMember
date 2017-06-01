@@ -132,14 +132,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
                 //                         , jqgridparam.rows
                 //                         , func1
-                //                         , true
+                //                         , false
                 //                         , f => f.TreeID.ToString()
                 //                         , out total
                 //                         ).ToList();
                 List<RMC_ProjectInfo> listfile = ProjectInfoCurrent.FindPage<string>(jqgridparam.page
                                          , jqgridparam.rows
                                          , func
-                                         , true
+                                         , false
                                          , f => f.ProjectId.ToString()
                                          , out total
                                          ).ToList();
@@ -263,6 +263,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 {
                     int keyvalue = Convert.ToInt32(KeyValue);
                     RMC_ProjectInfo Oldentity = ProjectInfoCurrent.Find(t => t.ProjectId == keyvalue).SingleOrDefault();//获取没更新之前实体对象
+                    Oldentity.ProjectSystemTitel = entity.ProjectSystemTitel;
                     Oldentity.ConstructionUnit = entity.ConstructionUnit;
                     Oldentity.ConstructionPrincipal = entity.ConstructionPrincipal;
                     Oldentity.ConstructionPrincipalTEL = entity.ConstructionPrincipalTEL;
@@ -298,6 +299,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         RMC_ProjectInfo Oldentity = new RMC_ProjectInfo();
                         Oldentity.TreeID = treeid;
                         var tree = TreeCurrent.Find(f => f.TreeID == treeid).SingleOrDefault();
+                        Oldentity.ProjectSystemTitel = entity.ProjectSystemTitel;
                         Oldentity.ConstructionUnit = entity.ConstructionUnit;
                         Oldentity.ConstructionPrincipal = entity.ConstructionPrincipal;
                         Oldentity.ConstructionPrincipalTEL = entity.ConstructionPrincipalTEL;

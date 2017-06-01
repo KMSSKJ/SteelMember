@@ -150,7 +150,7 @@
         if (!EmailId) { EmailId = ""; }
         Loading(true);
         top.$.dialog({
-            id: "WriteEmail", width: 1000, height: 500, lock: true, max: false, resize: false, extendDrag: true,
+            id: "WriteEmail", align:' center',width: 1000, height: 500, lock: true, max: false, resize: false, extendDrag: true,
             title: "写信",
             content: 'url:' + RootPath() + '/ExampleModule/Email/WriteEmail?KeyValue=' + EmailId,
             button: [
@@ -179,7 +179,7 @@
     function LookEmail(EmailId) {
         Loading(true);
         top.$.dialog({
-            id: "LookEmail", width: 1000, height: 500, lock: true, max: false, resize: false, extendDrag: true,
+            id: "LookEmail", align:' center',width: 1000, height: 500, lock: true, max: false, resize: false, extendDrag: true,
             title: "查看邮件",
             content: 'url:' + RootPath() + '/ExampleModule/Email/LookEmail?EmailId=' + EmailId,
             button: [
