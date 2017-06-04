@@ -676,20 +676,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         //}
         #endregion
 
-
-        public ContentResult Parent(string KeyValue)
-        {
-            string str="";
-            int _KeyValue = Convert.ToInt32(KeyValue);
-            var a = TreeCurrent.Find(f => f.ParentID == _KeyValue).ToList();
-            if (a.Count() == 0) {
-                str = "0";
-            } else {
-                str = "1";
-            }
-            return Content(str);
-        }
-
         /// <summary>
         /// 【控制测量文档管理】返回树JONS
         /// </summary>
