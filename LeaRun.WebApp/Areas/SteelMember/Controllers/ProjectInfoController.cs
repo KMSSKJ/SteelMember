@@ -234,8 +234,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         }
         public ActionResult GetItemInfo(string KeyValue)
         {
-            int TreeId = Convert.ToInt32(KeyValue);
-            RMC_ProjectInfo entity = ProjectInfoCurrent.Find(f => f.TreeID == TreeId).SingleOrDefault();
+            //int TreeId = Convert.ToInt32(KeyValue);
+            RMC_ProjectInfo entity = ProjectInfoCurrent.Find(f => f.TreeID>0).SingleOrDefault();
             //string JsonData = entity.ToJson();
             ////自定义
             //JsonData = JsonData.Insert(1, Sys_FormAttributeBll.Instance.GetBuildForm(KeyValue));

@@ -676,6 +676,20 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         //}
         #endregion
 
+
+        public ContentResult Parent(string KeyValue)
+        {
+            string str="";
+            int _KeyValue = Convert.ToInt32(KeyValue);
+            var a = TreeCurrent.Find(f => f.ParentID == _KeyValue).ToList();
+            if (a.Count() == 0) {
+                str = "0";
+            } else {
+                str = "1";
+            }
+            return Content(str);
+        }
+
         /// <summary>
         /// 【控制测量文档管理】返回树JONS
         /// </summary>
@@ -781,64 +795,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         }
 
         /// <summary>
-        /// 删除（销毁）文件（夹）
-        /// </summary>
-        /// <param name="FolderId"></param>
-        /// <returns></returns>
-        public ActionResult DeleteFolder(string FolderId)
-        {
-            try
-            {//删除文件夹和文件开始  
-                int folderid = Convert.ToInt32(FolderId);
-                var tree = TreeCurrent.Find(u => u.TreeID == folderid).First();
-                List<int> Treeids = new List<int>();
-                Treeids.Add(folderid);
-                TreeCurrent.Remove(Treeids);
-                List<RMC_MemberLibrary> files = MemberLibraryCurrent.Find(u => u.TreeID == folderid).ToList();
-                if (files.Count() > 0)
-                {
-                    foreach (var item in files)
-                    {
-                        //var file = MemberLibraryCurrent.Find(u => u.TreeID == folderid).First();
-                        List<int> fileids = new List<int>();
-                        fileids.Add(item.MemberID);
-                        MemberLibraryCurrent.Remove(fileids);
-                    }
-                }//删除文件夹和文件结束
-                 //循环删除文件夹中的文件。。。。开始
-                List<RMC_Tree> trees = TreeCurrent.Find(u => u.TreeID > 0).ToList();
-                for (int i = 0; i < trees.Count(); i++)
-                {
-                    List<RMC_Tree> trees1 = trees.Where(t => t.ParentID == folderid).ToList();
-                    foreach (var item in trees1)
-                    {
-                        tree = trees.Where(u => u.TreeID == item.TreeID).First();
-                        List<int> Treeids1 = new List<int>();
-                        Treeids1.Add(folderid);
-                        TreeCurrent.Remove(Treeids1);
-                        folderid = tree.TreeID;
-                        files = MemberLibraryCurrent.Find(u => u.TreeID == item.TreeID).ToList();
-                        if (files.Count() > 0)
-                        {
-                            foreach (var itemfile in files)
-                            {
-                                //var file1 = MemberLibraryCurrent.Find(u => u.MemberID == itemfile.MemberID).First();
-                                List<int> fileids = new List<int>();
-                                fileids.Add(itemfile.MemberID);
-                                MemberLibraryCurrent.Remove(fileids);
-                            }
-                        }
-                    }
-                }
-                //TreeCurrent.Remove(trees1);                
-                return Content(new JsonMessage { Success = true, Code = "1", Message = "删除成功。" }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
-        /// <summary>
         /// 删除（销毁）文件
         /// </summary>
         /// <param name="FolderId"></param>
@@ -847,11 +803,39 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             try
             {
-                int fileid = Convert.ToInt32(MemberID);
-                //var file = MemberLibraryCurrent.Find(u => u.MemberID == fileid).First();
+                int _MemberId = Convert.ToInt32(MemberID);
+                //删除构件
                 List<int> ids = new List<int>();
-                ids.Add(fileid);
+                ids.Add(_MemberId);
                 MemberLibraryCurrent.Remove(ids);
+                //
+
+                //删除构件原材料
+               
+                var MemberMaterial = MemberMaterialCurrent.Find(f => f.MemberId == _MemberId).ToList();
+                if (MemberMaterial.Count() > 0) {
+                    List<int> ids1 = new List<int>();
+                    for (int i = 0; i < MemberMaterial.Count(); i++)
+                    {
+                        ids1.Add(Convert.ToInt32(MemberMaterial[i].MemberId));
+                    }
+                    MemberMaterialCurrent.Remove(ids1);
+                }
+                //
+
+                //删除构件制程
+                var MemberProcess = MemberProcessCurrent.Find(f => f.MemberId == _MemberId).ToList();
+                if (MemberProcess.Count() > 0)
+                {
+                    List<int> ids2 = new List<int>();
+                    for (int i = 0; i < MemberProcess.Count(); i++)
+                    {
+                        ids2.Add(Convert.ToInt32(MemberProcess[i].MemberId));
+                    }
+                    MemberProcessCurrent.Remove(ids2);
+                }
+                //
+
                 return Content(new JsonMessage { Success = true, Code = "1", Message = "删除成功。" }.ToString());
             }
             catch (Exception ex)
@@ -887,107 +871,110 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <returns></returns>         
         public ActionResult GridListJson(FileViewModel model, string TreeId, JqGridParam jqgridparam, string IsPublic, string ParameterJson)
         {
-
-            if (ParameterJson != null)
-            {
-                if (ParameterJson != "[{\"MemberModel\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]")
-                {
-                    List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
-                    for (int i = 0; i < query_member.Count(); i++)
-                    {
-                        model.MemberModel = query_member[i].MemberModel;
-                        model.InBeginTime = query_member[i].InBeginTime;
-                        model.InEndTime = query_member[i].InEndTime;
-                    }
-                }
-            }
             try
             {
-                model.TreeID = Convert.ToInt32(TreeId);
-                int total = 0;
-                Expression<Func<RMC_MemberLibrary, bool>> func = ExpressionExtensions.True<RMC_MemberLibrary>();
-                func = f => f.DeleteFlag != 1;
-
                 #region 查询条件拼接
-                if (model.TreeID.ToString() != "" && model.TreeID != 0)
+                if (ParameterJson != null)
                 {
-                    func = func.And(f => f.TreeID == model.TreeID);
-
-                }
-                if (model.MemberModel != null && model.MemberModel.ToString() != "")
-                {
-                    func = func.And(f => f.MemberModel.Contains(model.MemberModel));
-
-                }
-                if (model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00")
-                {
-                    func = func.And(f => f.UploadTime >= model.InBeginTime);
-
-                }
-                if (model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00")
-                {
-                    func = func.And(f => f.UploadTime <= model.InEndTime);
-                }
-
-                #endregion
-                //
-                //string UserId = ManageProvider.Provider.Current().UserId;
-                //if (IsPublic == null || IsPublic == "1")
-                //{
-                //    UserId = "0";
-                //}
-                //int userid = Convert.ToInt32(UserId);
-                DataTable ListData, ListData1;
-                ListData = null;
-                //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
-                //                         , jqgridparam.rows
-                //                         , func1
-                //                         , false
-                //                         , f => f.TreeID.ToString()
-                //                         , out total
-                //                         ).ToList();
-                List<RMC_MemberLibrary> listfile = MemberLibraryCurrent.FindPage<string>(jqgridparam.page
-                                         , jqgridparam.rows
-                                         , func
-                                         , false
-                                         , f => f.UploadTime.ToString()
-                                         , out total
-                                         ).ToList();
-                if (listfile.Count() > 0)// && listtree.Count() > 0
-                {
-                    //ListData0 = ListToDataTable(listtree);
-                    ListData1 = DataHelper.ListToDataTable(listfile);
-                    ListData = ListData1.Clone();
-                    object[] obj = new object[ListData.Columns.Count];
-                    ////添加DataTable0的数据
-                    //for (int i = 0; i < ListData0.Rows.Count; i++)
-                    //{
-                    //    ListData0.Rows[i].ItemArray.CopyTo(obj, 0);
-                    //    ListData.Rows.Add(obj);
-                    //}
-                    //添加DataTable1的数据
-                    for (int i = 0; i < ListData1.Rows.Count; i++)
+                    if (ParameterJson != "[{\"MemberModel\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]")
                     {
-                        ListData1.Rows[i].ItemArray.CopyTo(obj, 0);
-                        ListData.Rows.Add(obj);
+                        List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
+                        for (int i = 0; i < query_member.Count(); i++)
+                        {
+                            model.MemberModel = query_member[i].MemberModel;
+                            model.InBeginTime = query_member[i].InBeginTime;
+                            model.InEndTime = query_member[i].InEndTime;
+                        }
                     }
                 }
-                //else if (listtree.Count() > 0)
-                //{
-                //    ListData = ListToDataTable(listtree);
-                //}
-                else if (listfile.Count() > 0)
+
+                Expression<Func<RMC_MemberLibrary, bool>> func = ExpressionExtensions.True<RMC_MemberLibrary>();
+                Func<RMC_MemberLibrary, bool> func1 = f => f.TreeID != 0;
+
+                var _a = model.MemberModel != null && model.MemberModel.ToString() != "";
+                var _b = model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00";
+                var _c = model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00";
+
+                if (_a && _b && _c)
                 {
-                    ListData = DataHelper.ListToDataTable(listfile);
+                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime >= model.InBeginTime && f.UploadTime <= model.InEndTime;
+                }
+                else if (_a)
+                {
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel));
+                    func1 = f => f.MemberModel.Contains(model.MemberModel);
+                }
+                else if (_b)
+                {
+                    func = func.And(f => f.UploadTime >= model.InBeginTime);
+                    func1 = f => f.UploadTime >= model.InBeginTime;
+                }
+                else if (_c)
+                {
+                    func = func.And(f => f.UploadTime <= model.InEndTime);
+                    func1 = f => f.UploadTime <= model.InEndTime;
+                }
+                else if (_a && _b)
+                {
+                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime >= model.InBeginTime;
+                }
+                else if (_a && _c)
+                {
+                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime <= model.InEndTime;
+                }
+                else if (_b && _c)
+                {
+                    func1 = f => f.UploadTime >= model.InBeginTime && f.UploadTime <= model.InEndTime;
+                }
+                #endregion
+
+                var MemberList_ = new List<RMC_MemberLibrary>();
+                Stopwatch watch = CommonHelper.TimerStart();
+                int total = 0;
+                List<RMC_MemberLibrary> MemberList = new List<RMC_MemberLibrary>();
+                if (TreeId == "")
+                {
+                    func.And(f => f.DeleteFlag != 1 & f.MemberID > 0);
+
+                    MemberList = MemberList_ = MemberLibraryCurrent.FindPage<string>(jqgridparam.page
+                                             , jqgridparam.rows
+                                             , func
+                                             , false
+                                             , f => f.UploadTime.ToString()
+                                             , out total
+                                             ).ToList();
                 }
                 else
                 {
-                    ListData = null;
-                }
+                    int _id = Convert.ToInt32(TreeId);
 
+                    var list = GetSonId(_id).ToList();
+
+                    list.Add(TreeCurrent.Find(p => p.TreeID == _id).Single());
+
+                    foreach (var item in list)
+                    {
+                        var _memberList = MemberLibraryCurrent.Find(m => m.TreeID == item.TreeID).ToList();
+                        if (_memberList.Count() > 0)
+                        {
+                            MemberList = MemberList.Concat(_memberList).ToList();
+                        }
+
+                    }
+
+                   MemberList= MemberList.Where(func1).ToList();
+                    MemberList_ = MemberList.Take(jqgridparam.rows * jqgridparam.page).Skip(jqgridparam.rows * (jqgridparam.page - 1)).ToList();
+
+                    total = MemberList.Count();
+                }
                 var JsonData = new
                 {
-                    rows = ListData,
+                    total = total / jqgridparam.rows + 1,
+                    page = jqgridparam.page,
+                    records = total,
+                    costtime = CommonHelper.TimerEnd(watch),
+                    rows = MemberList_.OrderByDescending(f => f.UploadTime),
+
                 };
                 return Content(JsonData.ToJson());
             }
@@ -995,6 +982,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             {
                 return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
+
+        }
+
+        //获取树字节子节点(自循环)
+        public IEnumerable<RMC_Tree> GetSonId(int p_id)
+        {
+            List<RMC_Tree> list = TreeCurrent.Find(p => p.ParentID == p_id).ToList();
+            return list.Concat(list.SelectMany(t => GetSonId(t.TreeID)));
         }
         #endregion
 
@@ -1254,7 +1249,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// </summary>
         /// <param name="paths"></param>
         /// <returns></returns>
-        public ActionResult SubmitUpLoadFile(string KeyValue, string Images, string Icon, string CAD, string Model, string Logo, string Background, RMC_MemberLibrary file, HttpPostedFileBase Filedata)/*RMC_MemberLibrary File,  */
+        public ActionResult SubmitUpLoadFile(string KeyValue, string Images, string Icon, string CAD, string Model, string Img, RMC_MemberLibrary file, HttpPostedFileBase Filedata)/*RMC_MemberLibrary File,  */
         {
             try
             {
@@ -1274,21 +1269,25 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 string FileEextension = Path.GetExtension(Filedata.FileName);
                 string uploadDate = DateTime.Now.ToString("yyyyMMdd");
                 //string UserId = ManageProvider.Provider.Current().UserId;
+                string NewPath = "";
+                string virtualPath = "";
+                string virtualPath1 = "";
+                string fullFileName = "";
                 string UserId = "System";
                 string filename = Filedata.FileName.Substring(0, Filedata.FileName.LastIndexOf('.'));//获取文件名称，去除后缀名
                 oldentity = MemberLibraryCurrent.Find(f => f.MemberID == key_value).SingleOrDefault();
                 oldentity1 = ProjectInfoCurrent.Find(f => f.ProjectId == key_value).SingleOrDefault();
                 if (Images != null)
                 {
-                    string virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
-                    string fullFileName = virtualPath + "/" + Filedata.FileName;
+                    virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
+                    fullFileName = virtualPath + "/" + Filedata.FileName;
 
                     //if (oldentity.Icon == null || oldentity.Icon == "")
                     //{
                     //    oldentity.Icon = "1.png";
                     //}
                     //string filename1 = oldentity.Icon.Substring(0, oldentity.Icon.LastIndexOf('.'));//获取文件名称，去除后缀名
-                    string virtualPath1 = "/Resource/Document/NetworkDisk/System/Member/" + filename;
+                    virtualPath1 = "/Resource/Document/NetworkDisk/System/Member/" + filename;
                     if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
                     {
                         Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
@@ -1303,15 +1302,15 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 if (Icon != null)
                 {
-                    string virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
-                    string fullFileName = virtualPath + "/" + Filedata.FileName;
+                    virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
+                    fullFileName = virtualPath + "/" + Filedata.FileName;
 
                     if (oldentity.Icon == null || oldentity.Icon == "")
                     {
                         oldentity.Icon = "1.png";
                     }
                     string filename1 = oldentity.Icon.Substring(0, oldentity.Icon.LastIndexOf('.'));//获取文件名称，去除后缀名
-                    string virtualPath1 = "~/Resource/Document/NetworkDisk/System/Member/" + filename1;
+                    virtualPath1 = "~/Resource/Document/NetworkDisk/System/Member/" + filename1;
                     if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
                     {
                         Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
@@ -1325,15 +1324,15 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
                 else if (CAD != null)
                 {
-                    string virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
-                    string fullFileName = virtualPath + "/" + Filedata.FileName;
+                    virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
+                    fullFileName = virtualPath + "/" + Filedata.FileName;
 
                     if (oldentity.CAD_Drawing == null || oldentity.CAD_Drawing == "")
                     {
                         oldentity.CAD_Drawing = "1.png";
                     }
                     string filename1 = oldentity.CAD_Drawing.Substring(0, oldentity.CAD_Drawing.LastIndexOf('.'));//获取文件名称，去除后缀名
-                    string virtualPath1 = "~/Resource/Document/NetworkDisk/System/Member/" + filename1;
+                    virtualPath1 = "~/Resource/Document/NetworkDisk/System/Member/" + filename1;
                     if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
                     {
                         Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
@@ -1347,15 +1346,15 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
                 else if (Model != null)
                 {
-                    string virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
-                    string fullFileName = virtualPath + "/" + Filedata.FileName;
+                    virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
+                    fullFileName = virtualPath + "/" + Filedata.FileName;
 
                     if (oldentity.Model_Drawing == null || oldentity.Model_Drawing == "")
                     {
                         oldentity.Model_Drawing = "1.png";
                     }
                     string filename1 = oldentity.Model_Drawing.Substring(0, oldentity.Model_Drawing.LastIndexOf('.'));//获取文件名称，去除后缀名
-                    string virtualPath1 = "~/Resource/Document/NetworkDisk/System/Member/" + filename1;
+                    virtualPath1 = "~/Resource/Document/NetworkDisk/System/Member/" + filename1;
                     if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
                     {
                         Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
@@ -1367,39 +1366,41 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     oldentity.ModifiedTime = DateTime.Now;
                     MemberLibraryCurrent.Modified(oldentity);
                 }
-                else if (Logo != null)
+                else if (Img == "Logo")
                 {
-                    string virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Project", filename));// UserId,
-                    string fullFileName = virtualPath + "/" + Filedata.FileName;
+                    //NewPath = string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Project", filename);
+                    //virtualPath = this.Server.MapPath(NewPath);// UserId,
+                    //fullFileName = virtualPath + "/" + Filedata.FileName;
 
-                    if (oldentity1.ProjectLogo == null || oldentity1.ProjectLogo == "")
-                    {
-                        oldentity1.ProjectLogo = "1.png";
-                    }
-                    string filename1 = oldentity1.ProjectLogo.Substring(0, oldentity1.ProjectLogo.LastIndexOf('.'));//获取文件名称，去除后缀名
-                    string virtualPath1 = "~/Resource/Document/NetworkDisk/System/Project/" + filename1;
-                    if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
-                    {
-                        Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
-                    }
-                    //创建文件夹，保存文件
-                    Directory.CreateDirectory(virtualPath);
-                    Filedata.SaveAs(fullFileName);
+                    //if (oldentity1.ProjectLogo == null || oldentity1.ProjectLogo == "")
+                    //{
+                    //    oldentity1.ProjectLogo = "1.png";
+                    //}
+                    //string filename1 = oldentity1.ProjectLogo.Substring(0, oldentity1.ProjectLogo.LastIndexOf('.'));//获取文件名称，去除后缀名
+                    //virtualPath1 = "~/Resource/Document/NetworkDisk/System/Project/" + filename1;
+                    //if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
+                    //{
+                    //    Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
+                    //}
+                    ////创建文件夹，保存文件
+                    //Directory.CreateDirectory(virtualPath);
+                    //Filedata.SaveAs(fullFileName);
                     oldentity1.ProjectLogo = Filedata.FileName;
                     oldentity1.ModifiedTime = DateTime.Now;
                     ProjectInfoCurrent.Modified(oldentity1);
                 }
-                else if (Background != null)
+                else if (Img == "Background")
                 {
-                    string virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Project", filename));// UserId,
-                    string fullFileName = virtualPath + "/" + Filedata.FileName;
+                    NewPath = string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Project", filename);
+                    virtualPath = this.Server.MapPath(NewPath);// UserId,
+                    fullFileName = virtualPath + "/" + Filedata.FileName;
 
                     if (oldentity1.ProjectBackground == null || oldentity1.ProjectBackground == "")
                     {
                         oldentity1.ProjectBackground = "1.png";
                     }
                     string filename1 = oldentity1.ProjectLogo.Substring(0, oldentity1.ProjectLogo.LastIndexOf('.'));//获取文件名称，去除后缀名
-                    string virtualPath1 = "~/Resource/Document/NetworkDisk/System/Project/" + filename1;
+                    virtualPath1 = "~/Resource/Document/NetworkDisk/System/Project/" + filename1;
                     if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
                     {
                         Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
@@ -1418,13 +1419,57 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Status = IsOk,
                     NetworkFile = oldentity,
                 };
-                return Content(JsonData.ToJson());
+                NewPath = NewPath.Replace("~", "../..");
+                return Content(NewPath + "/" + Filedata.FileName);
             }
             catch (Exception ex)
             {
                 return Content(ex.Message);
             }
         }
+
+        /// <summary>
+        /// 上传用户头像
+        /// </summary>
+        /// <param name="Filedata">用户图片对象</param>
+        /// <returns></returns>
+        public ActionResult SubmitUploadify(HttpPostedFileBase Filedata)
+        {
+            try
+            {
+                Thread.Sleep(1000);////延迟500毫秒
+                //没有文件上传，直接返回
+                if (Filedata == null || string.IsNullOrEmpty(Filedata.FileName) || Filedata.ContentLength == 0)
+                {
+                    return HttpNotFound();
+                }
+                //获取文件完整文件名(包含绝对路径)
+                //文件存放路径格式：/Resource/Document/NetworkDisk/{日期}/{guid}.{后缀名}
+                //例如：/Resource/Document/Email/20130913/43CA215D947F8C1F1DDFCED383C4D706.jpg
+
+                string filename = Filedata.FileName;
+                string filename1 = filename.Substring(0, filename.LastIndexOf('.'));//获取文件名称，去除后缀名
+                string NewPath = string.Format("/Resource/Document/NetworkDisk/System/{0}/{1}", "Member", filename1);
+                long filesize = Filedata.ContentLength;
+                string FileEextension = Path.GetExtension(Filedata.FileName);
+                
+                // virtualPath = string.Format("/Content/Images/Avatar/{0}/{1}/{2}{3}", UserId, uploadDate, fileGuid, FileEextension);
+                string fullFileName = this.Server.MapPath(NewPath+"/");
+                //创建文件夹，保存文件
+                string path = Path.GetDirectoryName(fullFileName);
+                Directory.CreateDirectory(path);
+                if (!System.IO.File.Exists(fullFileName))
+                {
+                    Filedata.SaveAs(fullFileName+ filename);
+                }
+                return Content("../.."+NewPath+"/"+ filename);
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
+        }
+
 
         /// <summary>
         /// 获取文件类型、文件图标
@@ -1623,6 +1668,27 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.GravityCenterDistance_0 = entity.GravityCenterDistance_0;
                     Oldentity.GravityCenterDistance_x0 = entity.GravityCenterDistance_x0;
                     Oldentity.GravityCenterDistance_y0 = entity.GravityCenterDistance_y0;
+                    if (entity.CAD_Drawing == null)
+                    {
+                        entity.CAD_Drawing = "1.png";
+                    }
+                    string filename = System.IO.Path.GetFileName(entity.CAD_Drawing);
+                    Oldentity.CAD_Drawing = filename;
+
+                    if (entity.Model_Drawing == null)
+                    {
+                        entity.Model_Drawing = "1.png";
+                    }
+                    string filename1 = System.IO.Path.GetFileName(entity.Model_Drawing);
+                    Oldentity.Model_Drawing = filename1;
+
+                    if (entity.Icon== null)
+                    {
+                        entity.Icon = "1.png";
+                    }
+                    string filename2 = System.IO.Path.GetFileName(entity.Icon);
+                    Oldentity.Icon = filename2;
+
                     Oldentity.MemberUnit = entity.MemberUnit;
                     Oldentity.UnitPrice = entity.UnitPrice;
                     MemberLibraryCurrent.Modified(Oldentity);
@@ -1684,9 +1750,28 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     entitys.GravityCenterDistance_y0 = entity.GravityCenterDistance_y0;
                     entitys.MemberUnit = entity.MemberUnit;
                     entitys.UnitPrice = entity.UnitPrice;
-                    entitys.CAD_Drawing = "1.png";
-                    entitys.Model_Drawing = "1.png";
-                    entitys.Icon = "1.png";
+
+                    if (entity.CAD_Drawing == null)
+                    {
+                        entity.CAD_Drawing = "1.png";
+                    }
+                    string filename = System.IO.Path.GetFileName(entity.CAD_Drawing);
+                    entitys.CAD_Drawing = filename;
+
+                    if (entity.Model_Drawing == null)
+                    {
+                        entity.Model_Drawing = "1.png";
+                    }
+                    string filename1 = System.IO.Path.GetFileName(entity.Model_Drawing);
+                    entitys.Model_Drawing = filename1;
+
+                    if (entity.Icon == null)
+                    {
+                        entity.Icon = "1.png";
+                    }
+                    string filename2 = System.IO.Path.GetFileName(entity.Icon);
+                    entitys.Icon = filename2;
+
                     entitys.IsRawMaterial = 0;
                     entitys.IsProcess = 0;
                     MemberLibraryCurrent.Add(entitys);
@@ -1758,11 +1843,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             }
             return View();
         }
-        public ActionResult CADDrawingManagement(string KeyValue, string FileNamePath) {
+        public ActionResult CADDrawingManagement(string KeyValue, string FileNamePath)
+        {
             if (KeyValue == "")
             {
                 ViewData["CADDrawing"] = FileNamePath;
-               // ViewData["ModelDrawing"] = FileNamePath;
+                // ViewData["ModelDrawing"] = FileNamePath;
             }
             else
             {
@@ -1795,7 +1881,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             if (KeyValue == "")
             {
-               // ViewData["CADDrawing"] = FileNamePath;
+                // ViewData["CADDrawing"] = FileNamePath;
                 ViewData["ModelDrawing"] = FileNamePath;
             }
             else
@@ -2068,7 +2154,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public ActionResult GetUserName()
         {
 
-           List<Base_User> entity = repositoryfactory.Repository().FindListTop(25);
+            List<Base_User> entity = repositoryfactory.Repository().FindListTop(25);
             //string JsonData = entity.ToJson();
             ////自定义
             //JsonData = JsonData.Insert(1, Sys_FormAttributeBll.Instance.GetBuildForm(KeyValue));

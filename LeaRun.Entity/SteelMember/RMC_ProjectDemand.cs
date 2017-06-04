@@ -35,6 +35,7 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<int> MemberNumber { get; set; }
         public Nullable<int> OrderQuantityed { get; set; }
         public Nullable<int> Productioned { get; set; }
+        public Nullable<int> ProductionNumber { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public Nullable<System.DateTime> ModifiedTime { get; set; }
         public Nullable<int> CollarNumbered { get; set; }

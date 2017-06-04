@@ -197,7 +197,13 @@
     <Compile Include="SteelMember\RMC_ProjectWarehouse.cs">
       <DependentUpon>MemberEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="SteelMember\RMC_Purchase.cs">
+      <DependentUpon>MemberEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="SteelMember\RMC_RawMaterialLibrary.cs">
+      <DependentUpon>MemberEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SteelMember\RMC_RawMaterialPurchase.cs">
       <DependentUpon>MemberEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="SteelMember\RMC_ShipManagement.cs">

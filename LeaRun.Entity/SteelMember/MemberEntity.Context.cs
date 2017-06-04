@@ -25,7 +25,6 @@ namespace LeaRun.Entity.SteelMember
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<RMC_AnalysisRawMaterial> RMC_AnalysisRawMaterial { get; set; }
         public virtual DbSet<RMC_Collar> RMC_Collar { get; set; }
         public virtual DbSet<RMC_CollarMember> RMC_CollarMember { get; set; }
         public virtual DbSet<RMC_Company> RMC_Company { get; set; }
@@ -36,12 +35,15 @@ namespace LeaRun.Entity.SteelMember
         public virtual DbSet<RMC_MemberUnit> RMC_MemberUnit { get; set; }
         public virtual DbSet<RMC_OrderMember> RMC_OrderMember { get; set; }
         public virtual DbSet<RMC_ProcessManagement> RMC_ProcessManagement { get; set; }
-        public virtual DbSet<RMC_ProjectDemand> RMC_ProjectDemand { get; set; }
         public virtual DbSet<RMC_ProjectInfo> RMC_ProjectInfo { get; set; }
         public virtual DbSet<RMC_ProjectOrder> RMC_ProjectOrder { get; set; }
         public virtual DbSet<RMC_ProjectWarehouse> RMC_ProjectWarehouse { get; set; }
         public virtual DbSet<RMC_RawMaterialLibrary> RMC_RawMaterialLibrary { get; set; }
         public virtual DbSet<RMC_ShipManagement> RMC_ShipManagement { get; set; }
         public virtual DbSet<RMC_Tree> RMC_Tree { get; set; }
+        public virtual DbSet<RMC_ProjectDemand> RMC_ProjectDemand { get; set; }
+        public virtual DbSet<RMC_AnalysisRawMaterial> RMC_AnalysisRawMaterial { get; set; }
+        public virtual DbSet<RMC_Purchase> RMC_Purchase { get; set; }
+        public virtual DbSet<RMC_RawMaterialPurchase> RMC_RawMaterialPurchase { get; set; }
     }
 }

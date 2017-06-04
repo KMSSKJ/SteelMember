@@ -13,6 +13,7 @@ namespace SteelMember.Models
         public string CreateMan { get; set; }
         public Nullable<int> OrderNumber { get; set; }
         public Nullable<int> MemberNumber { get; set; }
+        public Nullable<int> ProductionNumber { get; set; }
         public Nullable<int> TreeId { get; set; }
         public string TreeName { get; set; }
         public string MemberNumbering { get; set; }//Nullable<long>

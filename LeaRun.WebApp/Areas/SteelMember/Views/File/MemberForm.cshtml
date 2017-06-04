@@ -2,16 +2,34 @@
     ViewBag.Title = "构件库管理》表单页面";
     Layout = "~/Views/Shared/_LayoutForm.cshtml";
 }
+<link href="~/Content/Scripts/uploadify/uploadify.css" rel="stylesheet" />
+<script src="~/Content/Scripts/uploadify/jquery.uploadify.js"></script>
 <script type="text/javascript">
     //var KeyValue = GetQuery('KeyValue');
-    $(function () { 
+    $(function () {
         InitControl();
+        UploadFile();
     })
     //得到一个对象实体
     function InitControl() {
         if (!!GetQuery('KeyValue')) {
             getAjax("/SteelMember/File/SetMemberForm", { KeyValue: GetQuery('KeyValue') }, function (data) {
                 var data = eval("(" + data + ")");
+                var filename, filename1, filename2 = "";
+                filename = data.CAD_Drawing;
+                filename = filename.substring(0, filename.lastIndexOf('.'));//获取文件名称，去除后缀名
+                filename = "../../Resource/Document/NetworkDisk/System/Project/" + filename + "/" + data.CAD_Drawing;
+                document.getElementById("_CAD_Drawing").src = filename;
+
+                filename1 = data.Model_Drawing;
+                filename1 = filename1.substring(0, filename1.lastIndexOf('.'));//获取文件名称，去除后缀名
+                filename1 = "../../Resource/Document/NetworkDisk/System/Project/" + filename1 + "/" + data.Model_Drawing;
+                document.getElementById("_Model_Drawing").src = filename1;
+
+                filename2 = data.Icon;
+                filename2 = filename2.substring(0, filename2.lastIndexOf('.'));//获取文件名称，去除后缀名
+                filename2 = "../../Resource/Document/NetworkDisk/System/Project/" + filename2 + "/" + data.Icon;
+                document.getElementById("_Icon").src = filename2;
                 SetWebControls(data);
             });
         }
@@ -24,6 +42,7 @@
         //    //$("#ParentName").val(GetQuery('ModuleName'));
         //}
     }
+
     //保存事件
     function AcceptClick() {
         if (!CheckDataValid('#form1')) {
@@ -41,43 +60,114 @@
         }, 200);
     }
 
-    //上传图标
-    function btn_uploadIcon() {
-        var Icon = "Icon"
-        var CAD = "";
-        var Model = "";
-        var url = "/SteelMember/File/UpLoadFile?KeyValue=" + GetQuery('KeyValue') + "&CAD=" + CAD + "&Model=" + Model + "&Icon=" + Icon;
-        Dialog(url, "UpLoadFile", "上传图标", 500, 600, function (iframe) {
-            top.frames[iframe].AcceptClick()
-            $("#gridTable").trigger("reloadGrid"); //重新载入
+  
+    //var index_uploadify = 1;
+    function UploadFile() {
+        $('#Avatar').uploadify({
+            uploader: '/SteelMember/File/SubmitUploadify',
+            swf: '/Content/Scripts/uploadify/uploadify.swf',
+            buttonText: "选择图片",
+            height: 24,
+            width: 70,
+            fileTypeDesc: '支持格式:jpg/gif/jpeg/png/bmp.',
+            fileTypeExts: '*.jpg;*.gif;*.jpeg;*.png;*.bmp',//允许的格式
+            fileSizeLimit: '3MB',
+
+            onFallback: function () {
+                alert("您未安装FLASH控件，无法上传！请安装FLASH控件后再试。");
+            },
+            onUploadSuccess: function (file, data, response) {
+                document.getElementById("CAD_Drawing").value = data;
+                document.getElementById("_CAD_Drawing").src = data;
+            },
+        });
+
+    $('#Avatar1').uploadify({
+        uploader: '/SteelMember/File/SubmitUploadify',      //处理文件上传Action?FolderId=' + GetQuery('FolderId')
+        uploader: '/SteelMember/File/SubmitUploadify',
+        swf: '/Content/Scripts/uploadify/uploadify.swf',
+        buttonText: "选择图片",
+        height: 24,
+        width: 70,
+        fileTypeDesc: '支持格式:jpg/gif/jpeg/png/bmp.',
+        fileTypeExts: '*.jpg;*.gif;*.jpeg;*.png;*.bmp',//允许的格式
+        fileSizeLimit: '3MB',
+
+        onFallback: function () {
+            alert("您未安装FLASH控件，无法上传！请安装FLASH控件后再试。");
+        },
+        onUploadSuccess: function (file, data, response) {
+            document.getElementById("Model_Drawing").value = data;
+            document.getElementById("_Model_Drawing").src = data;
+            },
+        });
+
+    $('#Avatar2').uploadify({
+        uploader: '/SteelMember/File/SubmitUploadify',
+        swf: '/Content/Scripts/uploadify/uploadify.swf',
+        buttonText: "选择图片",
+        height: 24,
+        width: 70,
+        fileTypeDesc: '支持格式:jpg/gif/jpeg/png/bmp.',
+        fileTypeExts: '*.jpg;*.gif;*.jpeg;*.png;*.bmp',//允许的格式
+        fileSizeLimit: '3MB',
+
+        onFallback: function () {
+            alert("您未安装FLASH控件，无法上传！请安装FLASH控件后再试。");
+        },
+        onUploadSuccess: function (file, data, response) {
+            document.getElementById("Icon").value = data;
+            document.getElementById("_Icon").src = data;
+          
+            },     
         });
     }
 
-    //上传模型图
-    function btn_uploadModelDrawing() {
-        var CAD = "";
-        var Model = "Model";
-        var url = "/RoadDocumentCenterPlugins/File/UpLoadFile?KeyValue=" + GetQuery('KeyValue') + "&CAD=" + CAD + "&Model=" + Model;
-        Dialog(url, "UpLoadFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
-            top.frames[iframe].AcceptClick()
-            $("#gridTable").trigger("reloadGrid"); //重新载入
-        });
-    }
+    ////上传图标
+    //function btn_uploadIcon() {
+    //    var Icon = "Icon"
+    //    var CAD = "";
+    //    var Model = "";
+    //    var url = "/SteelMember/File/UpLoadFile?KeyValue=" + GetQuery('KeyValue') + "&CAD=" + CAD + "&Model=" + Model + "&Icon=" + Icon;
+    //    Dialog(url, "UpLoadFile", "上传图标", 500, 600, function (iframe) {
+    //        top.frames[iframe].AcceptClick()
+    //        $("#gridTable").trigger("reloadGrid"); //重新载入
+    //    });
+    //}
 
-    //上传CAD图纸
-    function btn_uploadCADDrawing() {
-        var CAD = "CAD";
-        var Model = "";
-        var url = "/RoadDocumentCenterPlugins/File/UpLoadFile?KeyValue=" + GetQuery('KeyValue') + "&CAD=" + CAD + "&Model=" + Model;
-        Dialog(url, "UpLoadFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
-            top.frames[iframe].AcceptClick()
-            $("#gridTable").trigger("reloadGrid"); //重新载入
-        });
-    }
+    ////上传模型图
+    //function btn_uploadModelDrawing() {
+    //    var CAD = "";
+    //    var Model = "Model";
+    //    var url = "/RoadDocumentCenterPlugins/File/UpLoadFile?KeyValue=" + GetQuery('KeyValue') + "&CAD=" + CAD + "&Model=" + Model;
+    //    Dialog(url, "UpLoadFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
+    //        top.frames[iframe].AcceptClick()
+    //        $("#gridTable").trigger("reloadGrid"); //重新载入
+    //    });
+    //}
+
+    ////上传CAD图纸
+    //function btn_uploadCADDrawing() {
+    //    var CAD = "CAD";
+    //    var Model = "";
+    //    var url = "/RoadDocumentCenterPlugins/File/UpLoadFile?KeyValue=" + GetQuery('KeyValue') + "&CAD=" + CAD + "&Model=" + Model;
+    //    Dialog(url, "UpLoadFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
+    //        top.frames[iframe].AcceptClick()
+    //        $("#gridTable").trigger("reloadGrid"); //重新载入
+    //    });
+    //}
 
 </script>
+<style>
+    .uploadify-queue {
+        display: none;
+    }
+</style>
 <form id="form1" style="margin: 1px">
     @ViewData["qq"]
+    <input id="CAD_Drawing" type="hidden" value=""/>
+    <input id="Model_Drawing" type="hidden" value=""/>
+    <input id="Icon" type="hidden" value=""/>
     <div id="message" style="display: none"></div>
     <table class="form">
         <tr>
@@ -324,15 +414,15 @@
                 图纸：
             </th>
             <td class="formValue">
-                <input id="CAD_Drawing" type="text" class="txt" />
-                <input type="button" onclick="btn_uploadCADDrawing()" value="修改/上传" style="margin-left:120px" />
+                <div style="float:left;margin:5px;" class="showImg;"><img id="_CAD_Drawing" name="txImg" class="txImg" src="" height="100" width="100" /></div>
+                <div class="btnAvatar" style="float:left;margin-left:5px; margin-top:80px;"><input id="Avatar" name="Avatar" type="file" class="Avatar required" checkexpession="NotNull" /></div>
             </td>
             <th class="formTitle">
                 模型：
             </th>
             <td class="formValue">
-                <input id="Model_Drawing" type="text" class="txt" />
-                <input type="button" onclick="btn_uploadModelDrawing()" value="修改/上传" style="margin-left:120px" />
+                <div style="float:left;margin:5px;" class="showImg;"><img id="_Model_Drawing" name="txImg" class="txImg" src="" height="100" width="100" /></div>
+                <div class="btnAvatar" style="float:left;margin-left:5px; margin-top:80px;"><input id="Avatar1" name="Avatar" type="file" class="Avatar required" checkexpession="NotNull" /></div>
             </td>
         </tr>
         <tr>
@@ -340,8 +430,8 @@
                 图标：
             </th>
             <td class="formValue">
-                <input id="Icon" type="text" class="txt" />
-                <input type="button" onclick="btn_uploadIcon()" value="修改/上传" style="margin-left:120px" />
+                <div style="float:left;margin:5px;" class="showImg;"><img id="_Icon" name="txImg" class="txImg" src="" height="100" width="100" /></div>
+                <div class="btnAvatar" style="float:left;margin-left:5px; margin-top:80px;"><input id="Avatar2" name="Avatar" type="file" class="Avatar required" checkexpession="NotNull" /></div>
             </td>
         </tr>
     </table>

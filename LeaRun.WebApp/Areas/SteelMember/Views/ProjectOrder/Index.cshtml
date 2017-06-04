@@ -94,9 +94,9 @@
                             label: '订单状态', name: "Productioned", index: "Productioned", align:' center',width: 12,
                             formatter: function (cellvalue, options, rowObject) {
                                 var Productioned = cellvalue;
-                                if (Productioned == 0) {
+                                if (Productioned == "0") {
                                     return "未生产"
-                                } else if (Productioned == 1) {
+                                } else if (Productioned =="1") {
                                     return "生产完成"
                                 } else {
                                     return "正在生产"

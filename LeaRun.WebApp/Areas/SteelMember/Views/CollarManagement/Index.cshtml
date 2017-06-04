@@ -13,11 +13,13 @@
     //加载左边树
     //注意 FolderId 默认等于1 这样就可以加载一级目录下的子节点文件夹
     var TreeId = "";//16
-    var ItemId=2;
+    var ItemId = 2;
+    var HavesChildren;
     //ItemId = GetQuery("ItemID"), ProjectName = "", IsPublic = "1";
     function GetTree() {
         var itemtree = {
             onnodeclick: function (node) {
+                HavesChildren = node.hasChildren;
                 TreeId = node.id;
                 TreeName = node.text;
                 GridFolderEvent(TreeId);
@@ -31,7 +33,7 @@
     function GridFolderEvent(TreeId) {
         TreeId = TreeId;
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/CollarManagement/GridListJson")?TreeID=" + TreeId, page: 1
+            url: "@Url.Content("/SteelMember/CollarManagement/GridListJson")?TreeId=" + TreeId, page: 1
         }).trigger('reloadGrid');
     }
 
@@ -39,7 +41,7 @@
     function GetGrid() {
         var SelectRowIndx;
         $("#gridTable").jqGrid({
-            url: "@Url.Content("/SteelMember/CollarManagement/GridListJson")?TreeID=" + TreeId,
+            url: "@Url.Content("/SteelMember/CollarManagement/GridListJson")?TreeId=" + TreeId,
             datatype: "json",
             height: $(window).height() - 154,
             autowidth: true,
@@ -47,7 +49,11 @@
                 { label: '主键', name: "CollarId", hidden: true },
                 { label: '领用单编号', name: "CollarNumbering", index: "CollarNumbering", align: 'center',width: 12 },
                 { label: '用于工程', name: "Use", index: "Use", align: 'center',width: 10 },
-                { label: '领用时间', name: "CollarTime", index: "LeaderTime", align: 'center',width: 10 },
+                {
+                    label: '领用时间', name: "CollarTime", index: "CollarTime", align: 'center', width: 10,
+                    formatter: function (cellvalue, options, rowObject) {
+                        return formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
+                    } },
                 { label: '库管', name: "Librarian", index: "Librarian", align: 'center',width: 10 },
                 { label: '领用人签字', name: "CollarMan", index: "CollarMan", align: 'center',width: 10 },
             ],
@@ -127,51 +133,6 @@
     }
     //刷新
     function windowload() {
-        $("#gridTable").trigger("reloadGrid"); //重新载入 
-    }
-
-    //新建树
-    function btn_addfolder() {
-        //var FolderId = GetJqGridRowValue("#gridTable", "TreeID");
-        var ItemID = GetQuery("ItemID");
-        if (!!TreeId) {
-            var url = "/SteelMember/Tree/FolderForm?TreeId=" + TreeId + '&ItemID=' + ItemID;
-            openDialog(url, "Form", "新增信息", 500, 400, function (iframe) {
-                top.frames[iframe].AcceptClick()
-            });
-        } else if (!!ItemID) {
-            var url = "/SteelMember/Tree/FolderForm?TreeId=" + ItemID + '&ItemID=' + ItemID;
-            openDialog(url, "Form", "新增信息", 500, 400, function (iframe) {
-                top.frames[iframe].AcceptClick()
-            });
-        }
-        else {
-            tipDialog('请选择目录。', 4, 'warning');
-        }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
-    }
-
-    //编辑树节点(得到实体)
-    function btn_editfolder() {
-        var KeyValue = TreeId;
-            if (IsChecked(KeyValue)) {
-                var url = "/SteelMember/Tree/FolderForm?KeyValue= " + KeyValue;
-                openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
-                    top.frames[iframe].AcceptClick();
-                });
-            }
-
-        $("#gridTable").trigger("reloadGrid"); //重新载入
-    }
-
-
-    //删除树节点
-    function btn_deletefolder() {
-        var KeyValue = TreeId;
-        var Prompt = "您确实要删除此文件吗？";
-        if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/Tree/DeleteTree', { KeyValue: KeyValue }, Prompt);
-        }
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
@@ -181,10 +142,14 @@
         var ItemId = 1;
         if (IsChecked(TreeId)) {
             //AddTabMenu("CollarForm", "@Url.Content("/SteelMember/CollarManagement/CollarForm")?TreeId=" + TreeId + "&TreeName=" + TreeName, "新增领用单", "page_white_add.png", true, true, true);
-            var url = "/SteelMember/CollarManagement/CollarForm?TreeId= " + TreeId + "&ItemId=" + ItemId + "&motionType=" + ItemId;
-            openDialog(url, "CollarForm", "新增领用单", 1100, 600, function (iframe) {
-                top.frames[iframe].AcceptClick();
-            });
+            if (HavesChildren ==true) {
+                    tipDialog("此节点不可编辑，请选择一个子节点", 3, 'warning');
+                } else {
+                    var url = "/SteelMember/CollarManagement/CollarForm?TreeId= " + TreeId + "&ItemId=" + ItemId + "&motionType=" + ItemId;
+                    openDialog(url, "CollarForm", "新增领用单", 1100, 600, function (iframe) {
+                        top.frames[iframe].AcceptClick();
+                    });
+                }
         }
     }
 
@@ -200,7 +165,6 @@
                     top.frames[iframe].AcceptClick();
                 });
         }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
     //删除单据
@@ -225,7 +189,6 @@
                 top.frames[iframe].AcceptClick();
             });
         }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
     //构件图纸/模型管理
@@ -248,7 +211,6 @@
         if (IsDelData(KeyValue)) {
             delConfirm('/SteelMember/ProjectOrder/ReviewProjectOrder', { KeyValue: KeyValue, IsReview: IsReview }, Prompt);
         }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
     }
     //审核订单（不通过）
     function btn_not_review() {
@@ -275,7 +237,6 @@
         } else {
             tipDialog('该订单未审核或未通过审核！', 4, 'warning');
         }
-        //$("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
     //查询

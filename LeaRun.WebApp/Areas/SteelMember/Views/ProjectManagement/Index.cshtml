@@ -107,8 +107,8 @@
                     //{ label: '生产商', name: 'MemberCompany', index: 'MemberCompany', align:' center',width: 12 },
                     //{ label: '订单创建状态', name: 'IsDemandSubmit', index: 'IsDemandSubmit', align:' center',width: 6 },
                     { label: '已成订单量', name: 'OrderQuantityed', index: 'OrderQuantityed', align:' center',width: 6 },
-                    { label: '已生产量', name: 'Productioned', index: 'Productioned', align:' center',width: 6 },
-                    { label: '已领用量', name: 'CollarNumbered', index: 'Productioned', align:' center',width: 6 },
+                    { label: '已生产量', name: 'ProductionNumber', index: 'ProductionNumber', align:' center',width: 6 },
+                    { label: '已领用量', name: 'CollarNumbered', index: 'CollarNumbered', align:' center',width: 6 },
                      {
                          label: '创建时间', name: "CreateTime", index: "CreateTime", align:' center',width: 10,
                          formatter: function (cellvalue, options, rowObject) {
@@ -147,8 +147,8 @@
                     "MemberName": "合计",
                     "MemberNumber": $(this).getCol("MemberNumber", false, "sum"),
                     "OrderQuantityed": $(this).getCol("OrderQuantityed", false, "sum"),
-                    "Productioned": $(this).getCol("Productioned", false, "sum"),
-                    //"UnitName": unit_name,
+                    "ProductionNumber": $(this).getCol("ProductionNumber", false, "sum"),
+                    "CollarNumbered": $(this).getCol("CollarNumbered", false, "sum"),
                    });
 
                 //表格行样式

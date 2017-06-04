@@ -140,6 +140,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     RMC_ProjectOrder Oldentity = OrderManagementCurrent.Find(f => f.OrderId == _OrderId).SingleOrDefault();
                     Oldentity.IsSubmit = 0;
                     Oldentity.IsReview = 0;
+                    Oldentity.Priority = entity.Priority;
                     Oldentity.Description = entity.Description;
                     OrderManagementCurrent.Modified(Oldentity);
 
@@ -198,6 +199,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.IsReview = 0;
                     Oldentity.ConfirmOrder = 0;
                     Oldentity.Productioned = 0;
+                    Oldentity.Priority = entity.Priority;
                     Oldentity.TreeName = entity.TreeName;
                     Oldentity.CreateMan =currentUser.RealName;
                     Oldentity.CreateTime = entity.CreateTime;
@@ -336,6 +338,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     projectdemand.CreateTime = item.CreateTime;
                     projectdemand.CreateMan =item.CreateMan;
                     projectdemand.Description = item.Description;
+                    projectdemand.Productioned = item.Productioned;
                     projectdemandlist.Add(projectdemand);
                 }
                 if (projectdemandlist.Count() > 0)// && listtree.Count() > 0

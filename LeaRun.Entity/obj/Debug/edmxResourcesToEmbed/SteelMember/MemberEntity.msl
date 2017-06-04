@@ -1,29 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="kskfModelStoreContainer" CdmEntityContainer="kskfEntities">
-    <EntitySetMapping Name="RMC_AnalysisRawMaterial">
-      <EntityTypeMapping TypeName="kskfModel.RMC_AnalysisRawMaterial">
-        <MappingFragment StoreEntitySet="RMC_AnalysisRawMaterial">
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-          <ScalarProperty Name="AnalysisTime" ColumnName="AnalysisTime" />
-          <ScalarProperty Name="AnalysisMan" ColumnName="AnalysisMan" />
-          <ScalarProperty Name="MaterialBudget" ColumnName="MaterialBudget" />
-          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
-          <ScalarProperty Name="UnitId" ColumnName="UnitId" />
-          <ScalarProperty Name="Number" ColumnName="Number" />
-          <ScalarProperty Name="MaterialStandard" ColumnName="MaterialStandard" />
-          <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
-          <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
-          <ScalarProperty Name="MaterialClassId" ColumnName="MaterialClassId" />
-          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-          <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
-          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
-          <ScalarProperty Name="AnalysisRawMaterialId" ColumnName="AnalysisRawMaterialId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="RMC_Collar">
       <EntityTypeMapping TypeName="kskfModel.RMC_Collar">
         <MappingFragment StoreEntitySet="RMC_Collar">
@@ -237,37 +214,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="RMC_ProjectDemand">
-      <EntityTypeMapping TypeName="kskfModel.RMC_ProjectDemand">
-        <MappingFragment StoreEntitySet="RMC_ProjectDemand">
-          <ScalarProperty Name="CreateMan" ColumnName="CreateMan" />
-          <ScalarProperty Name="CollarNumbered" ColumnName="CollarNumbered" />
-          <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
-          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-          <ScalarProperty Name="Productioned" ColumnName="Productioned" />
-          <ScalarProperty Name="OrderQuantityed" ColumnName="OrderQuantityed" />
-          <ScalarProperty Name="MemberNumber" ColumnName="MemberNumber" />
-          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="IsSubmit" ColumnName="IsSubmit" />
-          <ScalarProperty Name="IsDemandSubmit" ColumnName="IsDemandSubmit" />
-          <ScalarProperty Name="ReviewMan" ColumnName="ReviewMan" />
-          <ScalarProperty Name="IsReview" ColumnName="IsReview" />
-          <ScalarProperty Name="CostBudget" ColumnName="CostBudget" />
-          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
-          <ScalarProperty Name="MemberWeight" ColumnName="MemberWeight" />
-          <ScalarProperty Name="UnitId" ColumnName="UnitId" />
-          <ScalarProperty Name="MemberClassId" ColumnName="MemberClassId" />
-          <ScalarProperty Name="MemberCompanyId" ColumnName="MemberCompanyId" />
-          <ScalarProperty Name="MemberModel" ColumnName="MemberModel" />
-          <ScalarProperty Name="MemberNumbering" ColumnName="MemberNumbering" />
-          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-          <ScalarProperty Name="TreeName" ColumnName="TreeName" />
-          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
-          <ScalarProperty Name="ProjectDemandId" ColumnName="ProjectDemandId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="RMC_ProjectInfo">
       <EntityTypeMapping TypeName="kskfModel.RMC_ProjectInfo">
         <MappingFragment StoreEntitySet="RMC_ProjectInfo">
@@ -417,6 +363,94 @@
           <ScalarProperty Name="ItemID" ColumnName="ItemID" />
           <ScalarProperty Name="ParentID" ColumnName="ParentID" />
           <ScalarProperty Name="TreeID" ColumnName="TreeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RMC_ProjectDemand">
+      <EntityTypeMapping TypeName="kskfModel.RMC_ProjectDemand">
+        <MappingFragment StoreEntitySet="RMC_ProjectDemand">
+          <ScalarProperty Name="CreateMan" ColumnName="CreateMan" />
+          <ScalarProperty Name="CollarNumbered" ColumnName="CollarNumbered" />
+          <ScalarProperty Name="ModifiedTime" ColumnName="ModifiedTime" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="ProductionNumber" ColumnName="ProductionNumber" />
+          <ScalarProperty Name="Productioned" ColumnName="Productioned" />
+          <ScalarProperty Name="OrderQuantityed" ColumnName="OrderQuantityed" />
+          <ScalarProperty Name="MemberNumber" ColumnName="MemberNumber" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IsSubmit" ColumnName="IsSubmit" />
+          <ScalarProperty Name="IsDemandSubmit" ColumnName="IsDemandSubmit" />
+          <ScalarProperty Name="ReviewMan" ColumnName="ReviewMan" />
+          <ScalarProperty Name="IsReview" ColumnName="IsReview" />
+          <ScalarProperty Name="CostBudget" ColumnName="CostBudget" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="MemberWeight" ColumnName="MemberWeight" />
+          <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+          <ScalarProperty Name="MemberClassId" ColumnName="MemberClassId" />
+          <ScalarProperty Name="MemberCompanyId" ColumnName="MemberCompanyId" />
+          <ScalarProperty Name="MemberModel" ColumnName="MemberModel" />
+          <ScalarProperty Name="MemberNumbering" ColumnName="MemberNumbering" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="TreeName" ColumnName="TreeName" />
+          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+          <ScalarProperty Name="ProjectDemandId" ColumnName="ProjectDemandId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RMC_AnalysisRawMaterial">
+      <EntityTypeMapping TypeName="kskfModel.RMC_AnalysisRawMaterial">
+        <MappingFragment StoreEntitySet="RMC_AnalysisRawMaterial">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="AnalysisTime" ColumnName="AnalysisTime" />
+          <ScalarProperty Name="AnalysisMan" ColumnName="AnalysisMan" />
+          <ScalarProperty Name="MaterialBudget" ColumnName="MaterialBudget" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="MaterialStandard" ColumnName="MaterialStandard" />
+          <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+          <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
+          <ScalarProperty Name="MaterialClassId" ColumnName="MaterialClassId" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+          <ScalarProperty Name="AnalysisRawMaterialId" ColumnName="AnalysisRawMaterialId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RMC_Purchase">
+      <EntityTypeMapping TypeName="kskfModel.RMC_Purchase">
+        <MappingFragment StoreEntitySet="RMC_Purchase">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Library" ColumnName="Library" />
+          <ScalarProperty Name="CreateMan" ColumnName="CreateMan" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="PurchaseNumbering" ColumnName="PurchaseNumbering" />
+          <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RMC_RawMaterialPurchase">
+      <EntityTypeMapping TypeName="kskfModel.RMC_RawMaterialPurchase">
+        <MappingFragment StoreEntitySet="RMC_RawMaterialPurchase">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="MaterialBudget" ColumnName="MaterialBudget" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="MaterialStandard" ColumnName="MaterialStandard" />
+          <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+          <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
+          <ScalarProperty Name="MaterialClassId" ColumnName="MaterialClassId" />
+          <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
+          <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+          <ScalarProperty Name="RawMaterialPurchaseId" ColumnName="RawMaterialPurchaseId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

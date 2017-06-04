@@ -16,6 +16,7 @@ namespace SteelMember.Models
         //领用结束
 
         public int ProjectDemandId { get; set; }
+        public int? ProductionNumber { get; set; }
         public int OrderId { get; set; }
         public Nullable<int> MemberClassId { get; set; }
         public string MemberClassName { get; set; }

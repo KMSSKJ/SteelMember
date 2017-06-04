@@ -1,10 +1,14 @@
 ﻿@{
     ViewBag.Title = "构件库管理》上传文件表单页面";
-        Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    //Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
+
+
 <link href="~/Content/themes/bootstrap/easyui.css" rel="stylesheet" />
-<script src="~/Scripts/jquery.easyui-1.4.5.min.js"></script>
-<script src="~/Scripts/locale/easyui-lang-zh_CN.js"></script>
+
+<link href="~/Content/Styles/learunui-framework.css" rel="stylesheet" />
+<script src="~/Content/Scripts/jquery/jquery-1.8.2.min.js"></script>
+<script src="~/Content/Scripts/learunui-framework.js"></script>
 
 <!--上传文件组件start-->
 <link href="~/Content/Scripts/uploadify/uploadify.css" rel="stylesheet" />
@@ -25,7 +29,7 @@
     //var index_uploadify = 1;
     function UploadFile() {
         $('#uploadify').uploadify({
-            swf: '/Content/Scripts/uploadify/uploadify.swf',  //FLash文件路径
+            swf: '/Content/Scripts/uploadify/uploadify.swf',  //FLash文件路径../../../../
             buttonText: "添加文件",
             height: 24,
             width: 70,
@@ -61,6 +65,7 @@
             //    $("#uploadify").uploadify("settings", 'formData'); //"settings", 'formData', { 'FileAddition': $('#FileAddition').val(), } 动态传参数
             //},
             onUploadSuccess: function (file, data, response) {
+                alert(data)
                 $('.drag-tip').remove();
                 var DataJson = JSON.parse(data);
                 var html = "";
@@ -147,13 +152,12 @@
         <div style="float: left;">
             <input id="uploadify" name="uploadify" type="file" />
         </div>
-        <div style="float: right; line-height: 26px; color: #3083eb; cursor: pointer;">
+        @*<div style="float: right; line-height: 26px; color: #3083eb; cursor: pointer;">
             上传需知 
-        </div>
+        </div>*@
     </div>
     <div>
-       
-        <table id="FileInfo">
+        @*<table id="FileInfo">
 
             <tr>
                 <th class="formTitle">
@@ -178,29 +182,30 @@
                     <textarea id="Description" name="Description" maxlength="500" class="txtArea" style="width:160px"></textarea>
                 </td>
                 <td>
-                    <table>
-                        <tr>
-                            <td><a href="javascript:void(0)" @*class="easyui-linkbutton"*@ id="btnUpload" @*data-options="plain:true,iconCls:'icon-folder_update'"*@ style="float:right" onclick="javascript: $('#uploadify').uploadify('upload', '*')">上传</a></td>
-                            <td><a href="javascript:void(0)" @*class="easyui-linkbutton"*@ id="btnCancelUpload" @*data-options="plain:true,iconCls:'icon-cancel'"*@ style="float:right" onclick="javascript: $('#uploadify').uploadify('cancel', '*')">取消</a></td>
-                        </tr>
-                    </table>
+                  
                 </td>
+            </tr>
+        </table>*@
+        <table>
+            <tr>
+                <td><a href="javascript:void(0)" @*class="easyui-linkbutton"*@ id="btnUpload" @*data-options="plain:true,iconCls:'icon-folder_update'"*@ style="float:right" onclick="javascript: $('#uploadify').uploadify('upload', '*')">上传</a></td>
+                <td><a href="javascript:void(0)" @*class="easyui-linkbutton"*@ id="btnCancelUpload" @*data-options="plain:true,iconCls:'icon-cancel'"*@ style="float:right" onclick="javascript: $('#uploadify').uploadify('cancel', '*')">取消</a></td>
             </tr>
         </table>
     </div>
-    <div class="border background" style="height: 298px; overflow: auto; overflow-y: hidden">
+    @*<div class="border background" style="height: 298px; overflow: auto; overflow-y: hidden">
         <div class="upload-item">
             <table id="grid" style="width: 100%; border-collapse: collapse;">
                 <tbody></tbody>
             </table>
         </div>
-        @*<div class="drag-tip" style="text-align: center; padding-top: 100px;">
+        <div class="drag-tip" style="text-align: center; padding-top: 100px;">
             <h1 style="color: #666; font-size: 20px; font-family: Microsoft Yahei; padding-bottom: 2px;">试试将电脑里的文件拖拽到此上传</h1>
             <p style="color: #666; font-size: 12px;">
                 （您的浏览器不支持此拖拽功能）
             </p>
-        </div>*@
-    </div>
+        </div>
+    </div>*@
     <div id="fileQueue" class="fileQueue"></div>
     <div id="div_files"></div>
 </form>

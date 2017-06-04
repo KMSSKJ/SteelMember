@@ -75,7 +75,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             list2 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemClass == 3).ToList();
             list = list1.Concat(list2).Distinct().ToList();
 
-            List <TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
+            List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
             foreach (RMC_Tree item in list)
             {
                 TreeJsonEntity tree = new TreeJsonEntity();
@@ -148,7 +148,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             int _ItemId = Convert.ToInt32(ItemId);
             List<RMC_Tree> list, list1, list2;
             list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemClass == 0).ToList();
-            list2 = TreeCurrent.Find(t => t.DeleteFlag != 1 &&t.ItemID== _ItemId && t.ItemClass == 2).ToList();
+            list2 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemID == _ItemId && t.ItemClass == 2).ToList();
             list = list1.Concat(list2).Distinct().ToList();
 
             List<RMC_Tree> lists = new List<RMC_Tree>();
@@ -211,7 +211,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
         public ActionResult GridListJsonOrder(FileViewModel model, string TreeID, JqGridParam jqgridparam, string ConfirmOrder, string Productioned, string ParameterJson)
         {
-            int _ConfirmOrder =Convert.ToInt32(ConfirmOrder);
+            int _ConfirmOrder = Convert.ToInt32(ConfirmOrder);
             int _Productioned = Convert.ToInt32(Productioned);
             if (ParameterJson != null)
             {
@@ -241,7 +241,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 int total = 0;
                 Expression<Func<RMC_ProjectOrder, bool>> func = ExpressionExtensions.True<RMC_ProjectOrder>();
-                func = f => f.DeleteFlag != 1 && f.IsSubmit == 1&&f.ConfirmOrder== _ConfirmOrder&&f.Productioned== _Productioned;
+                func = f => f.DeleteFlag != 1 && f.IsSubmit == 1 && f.ConfirmOrder == _ConfirmOrder && f.Productioned == _Productioned;
                 #region 查询条件拼接
 
                 //if (TreeId.ToString() != "" && TreeId != 0)
@@ -459,7 +459,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 var file = OrderManagementCurrent.Find(f => f.OrderId == OrderId).First();
                 file.ModifiedTime = DateTime.Now;
                 file.ConfirmOrder = 1;
-                file.ConfirmMan =currentUser.RealName;
+                file.ConfirmMan = currentUser.RealName;
                 OrderManagementCurrent.Modified(file);
 
                 // var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == file.ProjectDemandId).SingleOrDefault();
@@ -511,6 +511,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             return View();
         }
+        public ActionResult QueryPage()
+        {
+            return View();
+        }
 
         /// <summary>
         /// 【工程项目管理】返回文件（夹）列表JSON
@@ -529,7 +533,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 List<RMC_MemberMaterial> MemberMaterialList = new List<RMC_MemberMaterial>();
                 List<RMC_RawMaterialLibrary> RawMaterialLibraryList = new List<RMC_RawMaterialLibrary>();
 
-                ProjectOrderList = OrderManagementCurrent.Find(f => f.OrderId > 0&&f.ConfirmOrder==1&&f.Productioned==0).ToList();//所有订单
+                ProjectOrderList = OrderManagementCurrent.Find(f => f.OrderId > 0 && f.ConfirmOrder == 1 && f.Productioned == 0).ToList();//所有订单
                 if (ProjectOrderList.Count > 0)
                 {
                     for (int i0 = 0; i0 < ProjectOrderList.Count; i0++)
@@ -557,7 +561,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                                     item.OrderProcessingNumber += MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
                                                     AnalysisRawMaterialModel.OrderProcessingNumber = item.OrderProcessingNumber;
                                                 }
-                                                
+
                                             }
                                             else
                                             {
@@ -571,7 +575,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                                 AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
                                             }
 
-                                         
+
                                         }
                                         else
                                         {
@@ -737,6 +741,38 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             return Json(List, JsonRequestBehavior.AllowGet);
 
         }
+        #endregion
+
+        #region 原材料采购
+        public ActionResult RawMaterialsPurchaseIndex()
+        {
+            return View();
+        }
+
+        public ActionResult ItemList()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 领用单表单
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult RawMaterialsPurchaseForm(string KeyValue)
+        {
+            if (KeyValue == "" || KeyValue == null)
+            {
+                ViewBag.PurchaseNumbering = "CG" + DateTime.Now.ToString("yyyyMMddhhmmssffff");
+                ViewData["Librarian"] = currentUser.RealName;
+            }
+            return View();
+        }
+
+        public ActionResult RawMaterialsPurchaseDetailForm()
+        {
+            return View();
+        }
+
         #endregion
 
         #region 构件厂原材料库存管理
@@ -1006,7 +1042,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             return View();
         }
 
-        public ActionResult NumberForm()
+
+
+
+        public ActionResult NumberForm() 
         {
             return View();
         }
@@ -1065,6 +1104,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     _ProduceOrderModel.MemberId = item.MemberId;
                     _ProduceOrderModel.MemberName = item.MemberName;
                     _ProduceOrderModel.MemberNumber = item.Qty;
+                    var ProjectDemand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == item.ProjectDemandId).SingleOrDefault();
+                    _ProduceOrderModel.ProductionNumber = ProjectDemand.ProductionNumber;
                     var Order = OrderManagementCurrent.Find(f => f.OrderId == item.OrderId).SingleOrDefault();
                     _ProduceOrderModel.Description = item.Description;
                     ProduceOrderModelList.Add(_ProduceOrderModel);
@@ -1120,7 +1161,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             int _OrderId = Convert.ToInt32(OrderId);
             try
             {
-                var OrderMember = OrderMemberCurrent.Find(f=>f.OrderId== _OrderId&&f.MemberId== _MemberId).SingleOrDefault();
+                var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == _OrderId && f.MemberId == _MemberId).SingleOrDefault();
 
                 List<ProcessManagementModel> ProcessManagementModelList = new List<ProcessManagementModel>();
                 var Proceess = ProcessManagementCurrent.Find(f => f.OrderId == _OrderId && f.MemberId == _MemberId).ToList();
@@ -1164,7 +1205,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             return View();
         }
-      
+
         /// <summary>
         /// 【项目信息管理】返回文件夹对象JSON
         /// </summary>
@@ -1187,13 +1228,13 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             //return Json(entity);
         }
 
-        public ActionResult ReceiveProcessed( string KeyValue)
+        public ActionResult ReceiveProcessed(string KeyValue)
         {
             try
             {
                 int IsOk = 0;
                 //string Message = KeyValue == "" ? "新增成功。" : "编辑成功。";
-                string Message ="操作成功";
+                string Message = "操作成功";
                 if (!string.IsNullOrEmpty(KeyValue))
                 {
                     int key_value = Convert.ToInt32(KeyValue);
@@ -1203,7 +1244,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     IsOk = 1;//更新实体对象
                     //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
                 }
-              
+
                 return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
             }
             catch (Exception ex)
@@ -1308,10 +1349,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         int _MemberId = Convert.ToInt32(MemberId);
                         int _OrderId = Convert.ToInt32(OrderId);
 
-                        Oldentity.UnqualifiedNumber =Convert.ToInt32(Oldentity.UnqualifiedNumber) + Convert.ToInt32(Process.UnqualifiedNumber);
+                        Oldentity.UnqualifiedNumber = Convert.ToInt32(Oldentity.UnqualifiedNumber) + Convert.ToInt32(Process.UnqualifiedNumber);
                         Oldentity.ProcessNumbered = Convert.ToInt32(Oldentity.ProcessNumbered) + Convert.ToInt32(Process.ProcessNumbered);
-                        var OrderMember = OrderMemberCurrent.Find(f=>f.OrderId == _OrderId&&f.MemberId== _MemberId).SingleOrDefault();
-                        if(OrderMember.Qty <= Oldentity.ProcessNumbered)
+                        var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == _OrderId && f.MemberId == _MemberId).SingleOrDefault();
+                        if (OrderMember.Qty <= Oldentity.ProcessNumbered)
                         {
                             Oldentity.IsProcessStatus = Convert.ToInt32(IsQqualified);
                             Oldentity.ProcessNumbered = OrderMember.Qty;
@@ -1319,7 +1360,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         ProcessManagementCurrent.Modified(Oldentity);//修改完成工艺量
                         IsOk = 1;
 
-                      
+
 
                         if (_MemberId == 0)
                         {
@@ -1342,7 +1383,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                             Operating(_MemberId, _OrderId);
                             Order.Productioned = 1;
                         }
-                        else if (a==0)
+                        else if (a == 0)
                         {
                             Order.Productioned = 0;
                         }
@@ -1366,16 +1407,16 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// </summary>
         public void Operating(int _MemberId, int _OrderId)
         {
-            var OrderMember = OrderMemberCurrent.Find(f => f.MemberId == _MemberId&&f.OrderId== _OrderId).SingleOrDefault();
+            var OrderMember = OrderMemberCurrent.Find(f => f.MemberId == _MemberId && f.OrderId == _OrderId).SingleOrDefault();
             var Member = MemberLibraryCurrent.Find(f => f.MemberID == _MemberId).SingleOrDefault();
             RMC_ProjectDemand _MemberDemend = new RMC_ProjectDemand();
             _MemberDemend = ProjectManagementCurrent.Find(f => f.MemberId == _MemberId).SingleOrDefault();
-            _MemberDemend.Productioned = Convert.ToInt32(_MemberDemend.Productioned) + Convert.ToInt32(OrderMember.Qty);
+            _MemberDemend.ProductionNumber = Convert.ToInt32(_MemberDemend.ProductionNumber) + Convert.ToInt32(OrderMember.Qty);
             ProjectManagementCurrent.Modified(_MemberDemend);
 
             RMC_FactoryWarehouse FactoryWarehouse = new RMC_FactoryWarehouse();
-           List<RMC_FactoryWarehouse>  FactoryWarehouseList= FactoryWarehouseCurrent.Find(f => f.MemberId == Member.MemberID).ToList();
-            if (FactoryWarehouseList.Count()== 0)
+            List<RMC_FactoryWarehouse> FactoryWarehouseList = FactoryWarehouseCurrent.Find(f => f.MemberId == Member.MemberID).ToList();
+            if (FactoryWarehouseList.Count() == 0)
             {
                 FactoryWarehouse.MemberId = Member.MemberID;
                 FactoryWarehouse.MemberModel = Member.MemberModel;
@@ -1384,9 +1425,9 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             }
             else
             {
-                    var _FactoryWarehouse= FactoryWarehouseCurrent.Find(f => f.MemberId == Member.MemberID).SingleOrDefault();
-                    _FactoryWarehouse.InStockNumber = Convert.ToInt32(_FactoryWarehouse.InStockNumber) + Convert.ToInt32(OrderMember.Qty);
-                    FactoryWarehouseCurrent.Modified(_FactoryWarehouse);
+                var _FactoryWarehouse = FactoryWarehouseCurrent.Find(f => f.MemberId == Member.MemberID).SingleOrDefault();
+                _FactoryWarehouse.InStockNumber = Convert.ToInt32(_FactoryWarehouse.InStockNumber) + Convert.ToInt32(OrderMember.Qty);
+                FactoryWarehouseCurrent.Modified(_FactoryWarehouse);
             }
 
 
@@ -1397,7 +1438,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             else
             {
                 ShipManagement.IsPackaged = 1;
-                ShipManagement.ShipNumber= OrderMember.Qty.ToString();
+                ShipManagement.ShipNumber = OrderMember.Qty.ToString();
                 ShipManagementCurrent.Modified(ShipManagement);
             }
 
@@ -1421,17 +1462,18 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     a++;
                 }
             }
-            if (a== ProcessManagementList.Count())
+            if (a == ProcessManagementList.Count())
             {
                 Message = "1";
             }
-            else {
+            else
+            {
                 Message = "存在未做制程或存在不合格构件！";
-        }
-        
+            }
+
             return Content(Message);
         }
-            
+
 
 
 
@@ -1458,7 +1500,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 EntityModel.MemberNumbering = Member.MemberNumbering;
                 EntityModel.MemberModel = Member.MemberModel;
                 EntityModel.TheoreticalWeight = Member.TheoreticalWeight;
-               // EntityModel.ProjectName = Project.ProjectName;
+                // EntityModel.ProjectName = Project.ProjectName;
                 return Content(EntityModel.ToJson());
             }
             catch (Exception ex)
@@ -1598,10 +1640,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             return View();
         }
 
-        public ActionResult QueryPage()
-        {
-            return View();
-        }
         /// <summary>
         /// 发货树
         /// </summary>
@@ -1612,7 +1650,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             int _ItemId = Convert.ToInt32(ItemId);
             List<RMC_Tree> list, list1, list2;
             list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemClass == 0).ToList();
-            list2 = TreeCurrent.Find(t => t.DeleteFlag != 1 &&t.ItemID== _ItemId&& t.ItemClass == 4).ToList();
+            list2 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemID == _ItemId && t.ItemClass == 4).ToList();
             list = list1.Concat(list2).Distinct().ToList();
 
             List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
@@ -1719,7 +1757,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     if (!string.IsNullOrEmpty(item.MemberId.ToString()))
                     {
                         var member = MemberLibraryCurrent.Find(f => f.MemberID == item.MemberId).SingleOrDefault();
-                        var FactoryWarehouse = FactoryWarehouseCurrent.Find(f=>f.MemberId==item.MemberId).SingleOrDefault();
+                        var FactoryWarehouse = FactoryWarehouseCurrent.Find(f => f.MemberId == item.MemberId).SingleOrDefault();
                         item.MemberName = member.MemberName;
                         item.MemberModel = member.MemberModel;
                         item.MemberNumbering = member.MemberNumbering;
@@ -1849,7 +1887,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     //Oldentity.OrderId = entity.OrderId;//给旧实体重新赋值
                     Oldentity.Description = entity.Description;
                     Oldentity.LogisticsStatus = entity.LogisticsStatus;
-                    Oldentity.ShipMan =currentUser.RealName;
+                    Oldentity.ShipMan = currentUser.RealName;
                     //Oldentity.ShipDate =Convert.ToDateTime(DateTime.Now.ToString("yyyy-mm-dd hh:MM:ss"));
                     Oldentity.ShipNumber = entity.ShipNumber;
                     Oldentity.ShippingAddress = entity.ShippingAddress;
@@ -1941,7 +1979,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     shipnumber = Convert.ToInt32(ShipNumber);
 
                     RMC_FactoryWarehouse FactoryWarehouse = FactoryWarehouseCurrent.Find(f => f.MemberId == Oldentity.MemberId).SingleOrDefault();
-                    FactoryWarehouse.InStockNumber =Convert.ToInt32(FactoryWarehouse.InStockNumber) - Convert.ToInt32(Oldentity.ShipNumber);
+                    FactoryWarehouse.InStockNumber = Convert.ToInt32(FactoryWarehouse.InStockNumber) - Convert.ToInt32(Oldentity.ShipNumber);
                     FactoryWarehouseCurrent.Modified(FactoryWarehouse);
 
 

@@ -71,9 +71,13 @@
                         label: '需采购量', name: "PurchaseNumber", index: "PurchaseNumber", align: 'center',width: 15,
                         formatter: function (cellvalue, value, row, index) {
                             var PurchaseNumber = cellvalue;
-                            PurchaseNumber = OrderProcessingNumber - RawMaterialNumber;
-                            if (PurchaseNumber>0) {
+                            PurchaseNumber = RawMaterialNumber - OrderProcessingNumber;
+                            if (PurchaseNumber < 0) {
+                                var str = PurchaseNumber.toString();
+                                PurchaseNumber = str.replace(/-/, "");
                                 return PurchaseNumber;
+                            } else if (0 < PurchaseNumber & PurchaseNumber<100) {
+                                return "库存量过低，请注意采购";
                             } else {
                                 return "无需采购";
                             }

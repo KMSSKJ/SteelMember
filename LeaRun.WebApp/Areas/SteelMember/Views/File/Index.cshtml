@@ -25,10 +25,12 @@
     //注意 FolderId 默认等于1 这样就可以加载一级目录下的子节点文件夹
     var ItemId = "";
     var TreeId = "";
+    var Node="";
     ItemId = 1, TreeName = "";
     function GetTree() {
         var itemtree = {
             onnodeclick: function (node) {
+                Node = node;
                 TreeId = node.id;            //ID
                 TreeName = node.text;
                 GridFolderEvent(TreeId);
@@ -149,13 +151,13 @@
                         }
                     },
             ],
-            rowNum: 30,
             sortname: 'SortCode',
             sortorder: 'Desc',//降序 asc升序
             pager: "#gridPager",
             viewrecords: true,
             rownumbers: true,
             gridview: true,
+            rowNum: 30,
             rowList: [15, 30, 50, 100, 500, 1000],
             ondblClickRow: function (TreeId) {
                 var rowData = $("#gridTable").getRowData(TreeId);  //根据ID拿到一行的数据
@@ -211,9 +213,9 @@
                         top.frames[iframe].AcceptClick()
                     });
                 } else {
-                    alertDialog("请选择构件", 0);
+                    tipDialog ("请选择构件", 0);
                 }
-            } else { alertDialog("该构件无图纸", 0); }
+            } else { tipDialog ("该构件无图纸", 0); }
         }
     }
 
@@ -231,9 +233,9 @@
                         top.frames[iframe].AcceptClick()
                     });
                 } else {
-                    alertDialog("请选择构件", 0);
+                    tipDialog ("请选择构件", 0);
                 }
-            } else { alertDialog("该构件无三维模型", 0); }
+            } else { tipDialog ("该构件无三维模型", 0); }
         }
     }
 
@@ -244,30 +246,35 @@
     }
     //刷新
     function windowload() {
-        $("#gridTable").trigger("reloadGrid"); //重新载入 
+        $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
     //新建构件
     function btn_add() {
         var ItemID = GetQuery("ItemID");
-        var Sort = GetJqGridRowValue("#gridTable", "Sort");
+       // var Sort = GetJqGridRowValue("#gridTable", "Sort");
         if (!!TreeId) {
-            if (Sort == "1") {
-                tipDialog('请选择文件夹目录。', 4, 'warning');
-            } else {
-                var url = "/SteelMember/File/MemberForm?TreeId=" + TreeId + '&&ItemID=' + ItemID;
-                openDialog(url, "MemberForm", "新增信息", 600, 400, function (iframe) {
-                    top.frames[iframe].AcceptClick()
-                });
-            }
-        } else if (!!ItemID) {
-            var url = "/SteelMember/File/MemberForm?FolderId=" + ItemID + '&ItemID=' + ItemID;
-            openDialog(url, "FolderForm", "新增信息", 600, 400, function (iframe) {
-                top.frames[iframe].AcceptClick()
+                //if (Sort == "1") {
+                //tipDialog('请选择文件夹目录。', 4, 'warning');
+            AjaxJson("/SteelMember/File/Parent", { KeyValue: TreeId }, function (data) {
+                if (data == "1") {
+                    tipDialog("此节点不可编辑，请选择一个子节点", 3, 'warning');
+                } else {
+                    var url = "/SteelMember/File/MemberForm?TreeId=" + TreeId + '&&ItemID=' + ItemID;
+                    openDialog(url, "MemberForm", "新增信息", 600, 400, function (iframe) {
+                        top.frames[iframe].AcceptClick()
+                    });
+                }
             });
+            //}
+        //} else if (!!ItemID) {
+        //    var url = "/SteelMember/File/MemberForm?FolderId=" + ItemID + '&ItemID=' + ItemID;
+        //    openDialog(url, "FolderForm", "新增信息", 600, 400, function (iframe) {
+        //        top.frames[iframe].AcceptClick()
+        //    });
         }
         else {
-            tipDialog('请选择文件夹目录。', 4, 'warning');
+            tipDialog('请选择文件夹目录。', 3, 'warning');
         }
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
@@ -284,7 +291,7 @@
                 });
             }
         } else {
-            alertDialog("请选择文件！", 0);
+            tipDialog ("请选择文件！", 0);
         }
     }
 
@@ -300,7 +307,7 @@
                 });
             }
         } else {
-            alertDialog("请选择文件！", 0);
+            tipDialog ("请选择文件！", 0);
         }
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
@@ -314,7 +321,7 @@
                 delConfig('/SteelMember/File/DeleteMember', { KeyValue: KeyValue }, KeyValue.split(",").length);
             }
         } else {
-            alertDialog("请选择文件！", 0);
+            tipDialog ("请选择文件！", 0);
         }
     }
 

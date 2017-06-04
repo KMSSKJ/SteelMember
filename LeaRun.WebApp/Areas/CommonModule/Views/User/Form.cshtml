@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_LayoutForm.cshtml";
 }
 <link href="~/Content/Scripts/uploadify/uploadify.css" rel="stylesheet" />
-<script src="~/Content/Scripts/uploadify/jquery.uploadify.js"></script>
+<script src="~/Content/Scripts/uploadify/jquery.uploadify-edit.js"></script>
 
 <script type="text/javascript">
     $(function () {
@@ -65,6 +65,7 @@
     function InitControl() {
         if (!!GetQuery('KeyValue')) {
             AjaxJson("/CommonModule/User/SetUserForm", { KeyValue: GetQuery('KeyValue') }, function (data) {
+                alert(data["Avatar"]);
                 document.getElementById("txImg").src = data["Avatar"];
                 SetWebControls(data);
                 BindDepartment(); $("#DepartmentId").val(data.DepartmentId);

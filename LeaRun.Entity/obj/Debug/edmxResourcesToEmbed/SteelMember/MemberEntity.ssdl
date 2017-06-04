@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="kskfModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“kskf.dbo.RMC_AnalysisRawMaterial”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
   <EntityType Name="RMC_AnalysisRawMaterial">
     <Key>
       <PropertyRef Name="AnalysisRawMaterialId" />
@@ -250,6 +252,7 @@
     <Property Name="MemberNumber" Type="int" />
     <Property Name="OrderQuantityed" Type="int" />
     <Property Name="Productioned" Type="int" />
+    <Property Name="ProductionNumber" Type="int" />
     <Property Name="CreateTime" Type="datetime" />
     <Property Name="ModifiedTime" Type="datetime" />
     <Property Name="CollarNumbered" Type="int" />
@@ -336,6 +339,17 @@
     <Property Name="Leader" Type="nvarchar" MaxLength="50" />
     <Property Name="Description" Type="nvarchar" MaxLength="200" />
   </EntityType>
+  <EntityType Name="RMC_Purchase">
+    <Key>
+      <PropertyRef Name="PurchaseId" />
+    </Key>
+    <Property Name="PurchaseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PurchaseNumbering" Type="nvarchar" MaxLength="30" />
+    <Property Name="CreateTime" Type="datetime" />
+    <Property Name="CreateMan" Type="nvarchar" MaxLength="20" />
+    <Property Name="Library" Type="nvarchar" MaxLength="20" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" />
+  </EntityType>
   <EntityType Name="RMC_RawMaterialLibrary">
     <Key>
       <PropertyRef Name="RawMaterialId" />
@@ -350,6 +364,26 @@
     <Property Name="DeleteFlag" Type="int" />
     <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="2" />
     <Property Name="UnitName" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="RMC_RawMaterialPurchase">
+    <Key>
+      <PropertyRef Name="RawMaterialPurchaseId" />
+    </Key>
+    <Property Name="RawMaterialPurchaseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TreeId" Type="int" />
+    <Property Name="OrderId" Type="int" />
+    <Property Name="RawMaterialId" Type="int" />
+    <Property Name="PurchaseId" Type="int" />
+    <Property Name="MaterialClassId" Type="int" />
+    <Property Name="OrderNumbering" Type="nvarchar" MaxLength="20" />
+    <Property Name="MaterialName" Type="nvarchar" MaxLength="20" />
+    <Property Name="MaterialStandard" Type="nvarchar" MaxLength="20" />
+    <Property Name="Qty" Type="int" />
+    <Property Name="UnitId" Type="int" />
+    <Property Name="UnitPrice" Type="int" />
+    <Property Name="MaterialBudget" Type="nvarchar" MaxLength="20" />
+    <Property Name="DeleteFlag" Type="int" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="RMC_ShipManagement">
     <Key>
@@ -402,7 +436,6 @@
     <Property Name="FileType" Type="nvarchar" MaxLength="20" />
   </EntityType>
   <EntityContainer Name="kskfModelStoreContainer">
-    <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="Self.RMC_AnalysisRawMaterial" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_Collar" EntityType="Self.RMC_Collar" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_CollarMember" EntityType="Self.RMC_CollarMember" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_Company" EntityType="Self.RMC_Company" Schema="dbo" store:Type="Tables" />
@@ -417,8 +450,31 @@
     <EntitySet Name="RMC_ProjectInfo" EntityType="Self.RMC_ProjectInfo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_ProjectOrder" EntityType="Self.RMC_ProjectOrder" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_ProjectWarehouse" EntityType="Self.RMC_ProjectWarehouse" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RMC_Purchase" EntityType="Self.RMC_Purchase" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_RawMaterialLibrary" EntityType="Self.RMC_RawMaterialLibrary" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RMC_RawMaterialPurchase" EntityType="Self.RMC_RawMaterialPurchase" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_ShipManagement" EntityType="Self.RMC_ShipManagement" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RMC_Tree" EntityType="Self.RMC_Tree" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="Self.RMC_AnalysisRawMaterial" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [RMC_AnalysisRawMaterial].[AnalysisRawMaterialId] AS [AnalysisRawMaterialId], 
+    [RMC_AnalysisRawMaterial].[TreeId] AS [TreeId], 
+    [RMC_AnalysisRawMaterial].[OrderId] AS [OrderId], 
+    [RMC_AnalysisRawMaterial].[RawMaterialId] AS [RawMaterialId], 
+    [RMC_AnalysisRawMaterial].[ParentId] AS [ParentId], 
+    [RMC_AnalysisRawMaterial].[MaterialClassId] AS [MaterialClassId], 
+    [RMC_AnalysisRawMaterial].[OrderNumbering] AS [OrderNumbering], 
+    [RMC_AnalysisRawMaterial].[MaterialName] AS [MaterialName], 
+    [RMC_AnalysisRawMaterial].[MaterialStandard] AS [MaterialStandard], 
+    [RMC_AnalysisRawMaterial].[Number] AS [Number], 
+    [RMC_AnalysisRawMaterial].[UnitId] AS [UnitId], 
+    [RMC_AnalysisRawMaterial].[UnitPrice] AS [UnitPrice], 
+    [RMC_AnalysisRawMaterial].[MaterialBudget] AS [MaterialBudget], 
+    [RMC_AnalysisRawMaterial].[AnalysisMan] AS [AnalysisMan], 
+    [RMC_AnalysisRawMaterial].[AnalysisTime] AS [AnalysisTime], 
+    [RMC_AnalysisRawMaterial].[DeleteFlag] AS [DeleteFlag], 
+    [RMC_AnalysisRawMaterial].[Description] AS [Description]
+    FROM [dbo].[RMC_AnalysisRawMaterial] AS [RMC_AnalysisRawMaterial]</DefiningQuery>
+    </EntitySet>
   </EntityContainer>
 </Schema>

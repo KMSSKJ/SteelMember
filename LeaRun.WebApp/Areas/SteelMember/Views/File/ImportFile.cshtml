@@ -1,10 +1,10 @@
 ﻿@{
     ViewBag.Title = "构件库管理》上传文件表单页面";
-        Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
+
 <link href="~/Content/themes/bootstrap/easyui.css" rel="stylesheet" />
 
-<script src="~/Content/Scripts/jquery/jquery-1.8.2.min.js"></script>
 <!--上传文件组件start-->
 <link href="~/Content/Scripts/uploadify/uploadify.css" rel="stylesheet" />
 <script src="~/Content/Scripts/uploadify/jquery.uploadify.js"></script>
@@ -134,34 +134,34 @@
         <div style="float: left;">
             <input id="uploadify" name="uploadify" type="file" />
         </div>
-        <div style="float: right; line-height: 26px; color: #3083eb; cursor: pointer;">
-            上传需知
-        </div>
+        @*<div style="float: right; line-height: 26px; color: #3083eb; cursor: pointer;">
+                上传需知
+            </div>*@
     </div>
     <div>
         <table id="FileInfo">
+            @*<tr>
+                    <th class="formTitle">
+                        过期时间：
+                    </th>
+                    <td class="formValue">
+                        <input id="OverdueTime" type="text" class="txt Wdate" onfocus="WdatePicker({minDate: '%y-%M-#{%d+1}' })" style="width:160px" />
+                    </td>
+                    <th class="formTitle">是否有效：</th>
+                    <td class="formValue">
+                        <span class="item">
+                            <input type="checkbox" name="checkbox" checked="checked" id="Enabled" />
+                            <label for="Enabled">有效</label>
+                        </span>
+                    </td>
+                </tr>*@
             <tr>
-                <th class="formTitle">
-                    过期时间：
-                </th>
-                <td class="formValue">
-                    <input id="OverdueTime" type="text" class="txt Wdate" onfocus="WdatePicker({minDate: '%y-%M-#{%d+1}' })" style="width:160px" />
-                </td>
-                <th class="formTitle">是否有效：</th>
-                <td class="formValue">
-                    <span class="item">
-                        <input type="checkbox" name="checkbox" checked="checked" id="Enabled" />
-                        <label for="Enabled">有效</label>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <th class="formTitle">
-                    文件描述：
-                </th>
-                <td class="formValue">
-                    <textarea id="Description" name="Description" maxlength="500" class="txtArea" style="width:160px"></textarea>
-                </td>
+                @*<th class="formTitle">
+                        文件描述：
+                    </th>
+                    <td class="formValue">
+                        <textarea id="Description" name="Description" maxlength="500" class="txtArea" style="width:160px"></textarea>
+                    </td>*@
                 <td>
                     <table>
                         <tr>
@@ -182,19 +182,19 @@
             </tr>
         </table>
     </div>
-    <div class="border background" style="height: 298px; overflow: auto; overflow-y: hidden">
+    @*<div class="border background" style="height: 298px; overflow: auto; overflow-y: hidden">
         <div class="upload-item">
             <table id="grid" style="width: 100%; border-collapse: collapse;">
                 <tbody></tbody>
             </table>
         </div>
-        @*<div class="drag-tip" style="text-align: center; padding-top: 100px;">
+        <div class="drag-tip" style="text-align: center; padding-top: 100px;">
                 <h1 style="color: #666; font-size: 20px; font-family: Microsoft Yahei; padding-bottom: 2px;">试试将电脑里的文件拖拽到此上传</h1>
                 <p style="color: #666; font-size: 12px;">
                     （您的浏览器不支持此拖拽功能）
                 </p>
-            </div>*@
-    </div>
+            </div>*
+    </div>*@
     <div id="fileQueue" class="fileQueue"></div>
     <div id="div_files"></div>
 </form>
