@@ -8,11 +8,11 @@
     function GetConditionJson() {
         var JsonData = [];
         $("#grid_condition tbody tr").each(function () {
-            var ShipNumbering = $(this).find('td:eq(0)').find('input').val();
+            var MemberModel = $(this).find('td:eq(0)').find('input').val();
             var InBeginTime = $(this).find('td:eq(1)').find('input').val();
             var InEndTime = $(this).find('td:eq(2)').find('input').val();
                 var tdData = {
-                    ShipNumbering: ShipNumbering,
+                    MemberModel: MemberModel,
                     InBeginTime: InBeginTime,
                     InEndTime: InEndTime,
                 }
@@ -30,9 +30,9 @@
 
 <table id="grid_condition" border="0" class="form-find" style="height: 30px;">
     <tr>
-        <th>发货单号：</th>
+        <th>构件型号：</th>
         <td>
-            <input id="ShipNumbering" class="txt" style="width:120px;" />
+            <input id="MemberModel" class="txt" style="width:120px;" />
         </td>
         <th>发货时间：</th>
         <td>

@@ -277,32 +277,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="RMC_ShipManagement">
-      <EntityTypeMapping TypeName="kskfModel.RMC_ShipManagement">
-        <MappingFragment StoreEntitySet="RMC_ShipManagement">
-          <ScalarProperty Name="LibraryNumber" ColumnName="LibraryNumber" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="ShippingMan" ColumnName="ShippingMan" />
-          <ScalarProperty Name="ShippingTEL" ColumnName="ShippingTEL" />
-          <ScalarProperty Name="ShippingAddress" ColumnName="ShippingAddress" />
-          <ScalarProperty Name="LogisticsStatus" ColumnName="LogisticsStatus" />
-          <ScalarProperty Name="ShipMan" ColumnName="ShipMan" />
-          <ScalarProperty Name="ShipDate" ColumnName="ShipDate" />
-          <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
-          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
-          <ScalarProperty Name="IsPackaged" ColumnName="IsPackaged" />
-          <ScalarProperty Name="ShipNumber" ColumnName="ShipNumber" />
-          <ScalarProperty Name="MemberName" ColumnName="MemberName" />
-          <ScalarProperty Name="MemberModel" ColumnName="MemberModel" />
-          <ScalarProperty Name="MemberNumbering" ColumnName="MemberNumbering" />
-          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-          <ScalarProperty Name="MemberClassId" ColumnName="MemberClassId" />
-          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
-          <ScalarProperty Name="ShipId" ColumnName="ShipId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="RMC_Tree">
       <EntityTypeMapping TypeName="kskfModel.RMC_Tree">
         <MappingFragment StoreEntitySet="RMC_Tree">
@@ -453,6 +427,33 @@
           <ScalarProperty Name="MemberModel" ColumnName="MemberModel" />
           <ScalarProperty Name="MemberId" ColumnName="MemberId" />
           <ScalarProperty Name="ProjectWarehouseId" ColumnName="ProjectWarehouseId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RMC_ShipManagement">
+      <EntityTypeMapping TypeName="kskfModel.RMC_ShipManagement">
+        <MappingFragment StoreEntitySet="RMC_ShipManagement">
+          <ScalarProperty Name="LibraryNumber" ColumnName="LibraryNumber" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ShippingMan" ColumnName="ShippingMan" />
+          <ScalarProperty Name="ShippingTEL" ColumnName="ShippingTEL" />
+          <ScalarProperty Name="ShippingAddress" ColumnName="ShippingAddress" />
+          <ScalarProperty Name="LogisticsStatus" ColumnName="LogisticsStatus" />
+          <ScalarProperty Name="ShipMan" ColumnName="ShipMan" />
+          <ScalarProperty Name="ShipDate" ColumnName="ShipDate" />
+          <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="IsPackaged" ColumnName="IsPackaged" />
+          <ScalarProperty Name="ShipNumber" ColumnName="ShipNumber" />
+          <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+          <ScalarProperty Name="MemberModel" ColumnName="MemberModel" />
+          <ScalarProperty Name="ShipNumbering" ColumnName="ShipNumbering" />
+          <ScalarProperty Name="MemberNumbering" ColumnName="MemberNumbering" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="MemberClassId" ColumnName="MemberClassId" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+          <ScalarProperty Name="ShipId" ColumnName="ShipId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

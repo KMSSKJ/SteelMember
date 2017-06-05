@@ -397,6 +397,7 @@
     <Property Name="MemberClassId" Type="int" />
     <Property Name="MemberId" Type="int" />
     <Property Name="MemberNumbering" Type="nvarchar" MaxLength="30" />
+    <Property Name="ShipNumbering" Type="nvarchar" MaxLength="30" />
     <Property Name="MemberModel" Type="nvarchar" MaxLength="10" />
     <Property Name="MemberName" Type="nvarchar" MaxLength="15" />
     <Property Name="ShipNumber" Type="nvarchar" MaxLength="10" />

@@ -13,7 +13,6 @@
     <EntitySet Name="RMC_ProcessManagement" EntityType="kskfModel.RMC_ProcessManagement" />
     <EntitySet Name="RMC_ProjectInfo" EntityType="kskfModel.RMC_ProjectInfo" />
     <EntitySet Name="RMC_ProjectOrder" EntityType="kskfModel.RMC_ProjectOrder" />
-    <EntitySet Name="RMC_ShipManagement" EntityType="kskfModel.RMC_ShipManagement" />
     <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
     <EntitySet Name="RMC_ProjectDemand" EntityType="kskfModel.RMC_ProjectDemand" />
     <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="kskfModel.RMC_AnalysisRawMaterial" />
@@ -21,6 +20,7 @@
     <EntitySet Name="RMC_RawMaterialPurchase" EntityType="kskfModel.RMC_RawMaterialPurchase" />
     <EntitySet Name="RMC_RawMaterialLibrary" EntityType="kskfModel.RMC_RawMaterialLibrary" />
     <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
+    <EntitySet Name="RMC_ShipManagement" EntityType="kskfModel.RMC_ShipManagement" />
   </EntityContainer>
   <EntityType Name="RMC_Collar">
     <Key>
@@ -286,31 +286,6 @@
     <Property Name="Priority" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
     <Property Name="EngineeringPosition" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
   </EntityType>
-  <EntityType Name="RMC_ShipManagement">
-    <Key>
-      <PropertyRef Name="ShipId" />
-    </Key>
-    <Property Name="ShipId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="TreeId" Type="Int32" />
-    <Property Name="OrderId" Type="Int32" />
-    <Property Name="MemberClassId" Type="Int32" />
-    <Property Name="MemberId" Type="Int32" />
-    <Property Name="MemberNumbering" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="MemberModel" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="MemberName" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="ShipNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="IsPackaged" Type="Int32" />
-    <Property Name="UnitPrice" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="TotalPrice" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="ShipDate" Type="DateTime" Precision="3" />
-    <Property Name="ShipMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="LogisticsStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ShippingAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ShippingTEL" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="ShippingMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="LibraryNumber" Type="Int32" />
-  </EntityType>
   <EntityType Name="RMC_Tree">
     <Key>
       <PropertyRef Name="TreeID" />
@@ -456,5 +431,31 @@
     <Property Name="Librarian" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Leader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="RMC_ShipManagement">
+    <Key>
+      <PropertyRef Name="ShipId" />
+    </Key>
+    <Property Name="ShipId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TreeId" Type="Int32" />
+    <Property Name="OrderId" Type="Int32" />
+    <Property Name="MemberClassId" Type="Int32" />
+    <Property Name="MemberId" Type="Int32" />
+    <Property Name="MemberNumbering" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="ShipNumbering" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="MemberModel" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="MemberName" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="ShipNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IsPackaged" Type="Int32" />
+    <Property Name="UnitPrice" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="TotalPrice" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="ShipDate" Type="DateTime" Precision="3" />
+    <Property Name="ShipMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="LogisticsStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ShippingAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ShippingTEL" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="ShippingMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="LibraryNumber" Type="Int32" />
   </EntityType>
 </Schema>

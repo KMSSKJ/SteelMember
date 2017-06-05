@@ -13,11 +13,11 @@
         GetGrid();
         GetCollarMan();
 
-        AjaxJson("/SteelMember/ProjectOrder/TreeName", { TreeId: TreeId }, function (data) {
-            //SetWebControls(data);
-            TreeName = data.TreeName;
-            document.getElementById("Use").value = TreeName;
-        });
+        //AjaxJson("/SteelMember/ProjectOrder/TreeName", { TreeId: TreeId }, function (data) {
+        //    //SetWebControls(data);
+        //    TreeName = data.TreeName;
+        //    document.getElementById("Use").value = TreeName;
+        //});
 
         if (!!KeyValue) {
             //主表信息
@@ -107,18 +107,25 @@
             height: $(window).height() + 200,
             autowidth: true,
             colModel: [
-                { label: '构件编号[<font face="宋体">*</font>]', name: "MemberNumbering", align:' center',width: 200, sortable: false },
-                { label: '构件名称', name: "MemberName", align:' center',width: 180, sortable: false },
-                { label: '构件型号', name: "MemberModel", align:' center',width: 100, sortable: false, align: 'center' },
-                { label: '数量[<font face="宋体">*</font>]', name: 'Qty', align:' center',width: 100, sortable: false, align: 'center' },
-                { label: '单位', name: "MemberUnit", align:' center',width: 100, sortable: false, align: 'center' },
+                { label: '主键', name: "Material", index: "Material",hidden: true }，
+                { label: '材料名', name: "MaterialName", index: "MaterialName", align: 'center', width: 6 },
+                { label: '规格', name: "MaterialStandard", index: "MaterialStandard", align: 'center', width: 6 },
+                { label: '数量', name: "Qty", index: "Qty", align: 'center', width: 12 },
+                { label: '单位', name: "MemberUnit", index: "MemberUnit", align: 'center', width: 6 },
+                { label: '备注', name: "Description", index: "Description", align: ' center', width: 12 },
+
+                //{ label: '构件编号[<font face="宋体">*</font>]', name: "MemberNumbering", align:' center',width: 200, sortable: false },
+                //{ label: '构件名称', name: "MemberName", align:' center',width: 180, sortable: false },
+                //{ label: '构件型号', name: "MemberModel", align:' center',width: 100, sortable: false, align: 'center' },
+                //{ label: '数量[<font face="宋体">*</font>]', name: 'Qty', align:' center',width: 100, sortable: false, align: 'center' },
+                //{ label: '单位', name: "MemberUnit", align:' center',width: 100, sortable: false, align: 'center' },
                 //{ label: '含税单价[<font face="宋体">*</font>]', name: 'PlusPrice', align:' center',width: 70, sortable: false, align: 'center' },
                 //{ label: '税率(%)[<font face="宋体">*</font>]', name: 'CESS', align:' center',width: 70, sortable: false, align: 'center' },
                 //{ label: '税额', name: 'CESSAmount', align:' center',width: 70, sortable: false, align: 'center' },
                 //{ label: '含税金额[<font face="宋体">*</font>]', name: 'PlusPriceAmount', align:' center',width: 70, sortable: false, align: 'center' },
-                { label: '说明', name: 'Description', align:' center',width: 400, sortable: false },
-                { label: '构件ID', name: 'MemberID', align:' center',width: 1, sortable: false, hidden: true },
-                { label: '需求ID', name: 'ProjectDemandId', align:' center',width: 1, sortable: false, hidden: true }
+                //{ label: '说明', name: 'Description', align:' center',width: 400, sortable: false },
+                //{ label: '构件ID', name: 'MemberID', align:' center',width: 1, sortable: false, hidden: true },
+                //{ label: '需求ID', name: 'ProjectDemandId', align:' center',width: 1, sortable: false, hidden: true }
             ],
             pager: false,
             rownumbers: true,
@@ -309,29 +316,29 @@
             <tr>
                 <td align="center" colspan="8">
                     <div style="font-family: 华文楷体; font-size: x-large; height: 60px; line-height: 60px;">
-                        构件领用单&nbsp;
+                        原材料采购单&nbsp;
                         <img src="../../Content/Images/billstatis1.png" style="vertical-align: middle;" />
                     </div>
                 </td>
             </tr>
             <tr>
                 <th>
-                    领用单编号[<font face="宋体" color="red">*</font>]：
+                    采购单编号[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    <input readonly id="CollarNumbering" type="text" class="txt" datacol="yes" err="制单编号" checkexpession="NotNull" value="@ViewBag.CollarNumbering" style="width: 95%" />
+                    <input readonly id="PurchaseNumbering" type="text" class="txt" datacol="yes" err="制单编号" checkexpession="NotNull" value="@ViewBag.CollarNumbering" style="width: 95%" />
                 </td>
                 <th>
-                    工程部位[<font face="宋体" color="red">*</font>]：
+                    制单(采购)人[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    <input readonly id="Use" type="text" class="txt" style="width: 95%" />
+                    <input readonly id="CreateMan" type="text" class="txt" style="width: 95%" />
                 </td>
 
             </tr>
             <tr>
                 <th>
-                    制单(库管)员：
+                    库管员：
                 </th>
                 <td>
                     <input readonly id="Librarian" type="text" class="txt" style="width: 95%" value="@ViewData["Librarian"] " />
@@ -340,33 +347,14 @@
                     制单日期[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    <input id="CollarTime" type="text" class="txt" datacol="yes" err="制单日期" checkexpession="NotNull" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 95%" />
+                    <input id="CreateTime" type="text" class="txt" datacol="yes" err="制单日期" checkexpession="NotNull" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 95%" />
                 </td>
 
             </tr>
+            
             <tr>
                 <th>
-                    借用状态[<font face="宋体" color="red">*</font>]：
-                </th>
-                <td>
-                    @*<input id="Priority" type="text" class="txt" style="width: 95%" />*@
-                    <select id="Borrow" datacol="yes" err="借用状态" checkexpession="NotNull" style="width: 95%">
-                        <option value="无">无</option>
-                        <option value="有">有</option>
-                    </select>
-                </td>
-                <th>
-                    领用人[<font face="宋体" color="red">*</font>]：
-                </th>
-                <td>
-                    @*<input id="CollarMan" type="text" class="txt" style="width: 95%" />*@
-                    <select id="CollarMan" datacol="yes" err="领用人" checkexpession="NotNull" style="width: 95%"></select>
-
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    领用人签字：
+                    库管签字：
                 </th>
                 <td><input readonly id="Q" type="text" class="txt" style="width: 95%" /></td>
                 <th>

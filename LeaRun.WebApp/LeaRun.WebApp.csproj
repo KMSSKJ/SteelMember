@@ -9101,6 +9101,10 @@
     <Content Include="Areas\SteelMember\Views\MemberProduce\QueryPage.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\RawMaterialQueryPage.cshtml" />
     <Content Include="Areas\SteelMember\Views\CollarManagement\QueryPage.cshtml" />
+    <Content Include="Areas\SteelMember\Views\MemberProduce\ShipManagementQueryPage.cshtml" />
+    <Content Include="Areas\SteelMember\Views\MemberProduce\RawMaterialsPurchaseDetailForm.cshtml" />
+    <Content Include="Areas\SteelMember\Views\MemberProduce\RawMaterialsPurchaseForm.cshtml" />
+    <Content Include="Areas\SteelMember\Views\MemberProduce\RawMaterialsPurchaseIndex.cshtml" />
     <None Include="Properties\PublishProfiles\LR-FDMS.pubxml" />
     <Content Include="Views\Home\SkinIndex.cshtml" />
     <Content Include="Views\Login\Default.cshtml" />

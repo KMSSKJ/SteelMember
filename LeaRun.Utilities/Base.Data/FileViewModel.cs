@@ -14,6 +14,7 @@ namespace LeaRun.Utilities
         public string MemberModel { get; set; }
         public string RawMaterialName { get; set; }
         public string OrderNumbering { get; set; }
+        public string ShipNumbering { get; set; }
         public string CollarNumbering { get; set; }
         public string FileType { get; set; }
         public string FilePath { get; set; }

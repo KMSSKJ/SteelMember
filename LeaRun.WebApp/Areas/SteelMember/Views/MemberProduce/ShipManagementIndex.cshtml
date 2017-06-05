@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "工程项目管理";
-        Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
 
 <script type="text/javascript">
@@ -11,23 +11,21 @@
 
     var TreeId = "";//16
     var ItemId = 2;
+    var IsPackaged=2;
     function GetTree() {
         var itemtree = {
             onnodeclick: function (node) {
                 TreeId = node.id;
                 TreeName = node.text;
                 if (node.url == "Produceing") {
-                    ConfirmOrder = 1;
-                    Productioned = 0;
+                    IsPackaged = 0;
                 } else if (node.url == "End") {
-                    ConfirmOrder = 1;
-                    Productioned = 1;
+                    IsPackaged = 1;
 
                 } else {
-                    ConfirmOrder = 2;
-                    Productioned = 2;
+                    IsPackaged = 2;
                 }
-                GridFolderEvent(TreeId, ConfirmOrder, Productioned);
+                GridFolderEvent(TreeId, IsPackaged);
             },
             url: "@Url.Content("/SteelMember/MemberProduce/TreeJsonShip")?ItemId=" + ItemId
         };
@@ -38,7 +36,7 @@
     function GridFolderEvent(TreeID) {
         TreeId = TreeID;
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonShipManagement")?TreeId=" + TreeId, page: 1
+            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonShipManagement")?TreeId=" + TreeId + "&IsPackaged=" + IsPackaged, page: 1
     }).trigger('reloadGrid');
     };
 
@@ -46,22 +44,22 @@
     function GetGrid() {
         var SelectRowIndx;
         $("#gridTable").jqGrid({
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonShipManagement")?TreeId=" + TreeId,
+            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonShipManagement")?TreeId=" + TreeId + "&IsPackaged=" + IsPackaged,
             datatype: "json",
             height: $(window).height() - 125,
             autowidth: true,
             colModel: [
-                    { label: '主键', name: 'ShipId', hidden: true },
-                    { label: '构件名', name: "MemberName", index: "MemberName", align:' center',width: 10 },
-                    //{ label: '构件编号', name: 'MemberNumbering', index: 'MemberNumbering', align:' center',width: 10 },
-                    { label: '构件型号', name: 'MemberModel', index: 'MemberModel', align:' center',width: 10 },
-                    { label: '库存量', name: 'LibraryNumber', index: 'LibraryNumber', align:' center',width: 10 },
-                    { label: '发货量', name: 'ShipNumber', index: 'ShipNumber', align:' center',width: 10 },
+                { label: '主键', name: 'ShipId', hidden: true },
+                { label: '外键', name: 'OrderId', hidden: true },
+                { label: '发货单号', name: 'ShipNumbering', index: 'ShipNumbering', align:' center',width: 10 },
+                    //{ label: '构件型号', name: 'MemberModel', index: 'MemberModel', align:' center',width: 10 },
+                    //{ label: '库存量', name: 'LibraryNumber', index: 'LibraryNumber', align:' center',width: 10 },
+                { label: '发货量', name: 'ShipNumber', index: 'ShipNumber', align:' center',width: 10 },
                     //{ label: '单价', name: 'UnitPrice', index: 'UnitPrice', align:' center',width: 10 },
                     //{ label: '总价', name: 'TotalPrice', index: 'TotalPrice', align:' center',width: 10 },
-                    { label: '发货日期', name: 'ShipDate', index: 'ShipDate', align:' center',width: 10 },
-                    { label: '发货人', name: 'ShipMan', index: 'ShipMan', align:' center',width: 10 },
-                    {
+                { label: '发货日期', name: 'ShipDate', index: 'ShipDate', align:' center',width: 10 },
+                { label: '发货人', name: 'ShipMan', index: 'ShipMan', align:' center',width: 10 },
+                {
                         label: '发货状态', name: 'LogisticsStatus', index: 'LogisticsStatus', align:' center',width: 10,
                         formatter: function (cellvalue, value, row, index) {
                             var logistics_status = cellvalue;
@@ -88,6 +86,29 @@
             rownumbers: true,
             gridview: true,
             footerrow: true,
+            subGrid: true,
+            subGridRowExpanded: function (subgrid_id, row_id) {
+                var OrderId = GetJqGridValue("#gridTable", row_id, "OrderId");
+                var subgrid_table_id = subgrid_id + "_t";
+                $("#" + subgrid_id).html("<table id='" + subgrid_table_id + "'></table>");
+                $("#" + subgrid_table_id).jqGrid({
+                    url: "@Url.Content("~/SteelMember/ProjectOrder/GetOrderEntryList")?OrderId=" + OrderId,
+                    datatype: "json",
+                    colModel: [
+                        { label: '主键', name: "MemberId",align: 'center',width: 200, sortable: false ,hidden:true},
+                        { label: '构件编号', name: "MemberNumbering",align: 'center',width: 200, sortable: false },
+                        { label: '构件名称', name: "MemberName",align: 'center',width: 150, sortable: false },
+                        { label: '构件型号', name: "MemberModel",align: 'center',width: 80, sortable: false,},
+                        { label: '单位', name: "MemberUnit",align: 'center',width: 80, sortable: false, },
+                        { label: '数量', name: 'Qty', align:' center',width: 80, sortable: false, align: 'center' },
+                        { label: '单价', name: 'Price', align:' center',width: 80, sortable: false, align: 'center' },
+                        { label: '金额', name: 'PriceAmount', align:' center',width: 80, sortable: false, align: 'center' },
+                        { label: '说明', name: 'Description', align:' center',width: 200, sortable: false }
+                    ],
+                    width: "1227",
+                    rowNum: "all"
+                });
+            },
             rowList: [15, 30, 50, 100, 500, 1000],
             ondblClickRow: function (TreeId) {
                 var rowData = $("#gridTable").getRowData(TreeId);  //根据ID拿到一行的数据
@@ -135,7 +156,7 @@
     }
     //刷新
     function windowload() {
-        $("#gridTable").trigger("reloadGrid"); //重新载入 
+        $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
     //新增信息
@@ -235,7 +256,7 @@
 
 </script>
 <div id="layout" class="layout">
-   
+    <!--左边-->
     <div class="layoutPanel layout-west">
         <div class="btnbartitle">
             <div>
@@ -244,7 +265,7 @@
         </div>
         <div class="ScrollBar" id="ItemsTree"></div>
     </div>
-    
+    <!--中间-->
     <div class="layoutPanel layout-center">
         <div class="btnbartitle">
             <div>
@@ -260,12 +281,3 @@
         <div id="gridPager"></div>
     </div>
 </div>
-
-@*<div class="tools_bar leftline rightline" style="margin-bottom: 0px; margin: 1px;">
-    <div class="PartialButton">
-        @Html.Partial("_PartialButton")
-    </div>
-</div>
-<div class="rightline" style="margin: 1px; margin-top: -1px;">
-    <table id="gridTable"></table>
-</div>*@
