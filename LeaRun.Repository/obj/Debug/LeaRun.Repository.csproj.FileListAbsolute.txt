@@ -127,7 +127,6 @@ D:\SSKJProject\LeaRun.Repository\bin\Debug\zh-Hans\EntityFramework.resources.dll
 D:\SSKJProject\LeaRun.Repository\obj\Debug\LeaRun.Repository.csprojResolveAssemblyReference.cache
 D:\SSKJProject\LeaRun.Repository\obj\Debug\LeaRun.Repository.dll
 D:\SSKJProject\LeaRun.Repository\obj\Debug\LeaRun.Repository.pdb
-E:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\LeaRun.Repository.dll.config
 E:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\LeaRun.Repository.dll
 E:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\LeaRun.Repository.pdb
 E:\Source\Repos\SteelMember\LeaRun.Repository\bin\Debug\EntityFramework.dll

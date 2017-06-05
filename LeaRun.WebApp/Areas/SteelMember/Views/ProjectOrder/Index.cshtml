@@ -33,7 +33,7 @@
     function GridFolderEvent(TreeId) {
         TreeId = TreeId;
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/ProjectOrder/GridListJson")?TreeID=" + TreeId, page: 1
+            url: "@Url.Content("/SteelMember/ProjectOrder/GridListJson")?TreeId=" + TreeId, page: 1
         }).trigger('reloadGrid');
     }
 

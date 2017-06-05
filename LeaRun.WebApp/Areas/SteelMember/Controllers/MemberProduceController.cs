@@ -20,6 +20,7 @@ using LeaRun.WebApp.Areas.SteelMember.Models;
 using System.Text;
 using LeaRun.Entity;
 using LeaRun.WebApp.Controllers;
+using System.Diagnostics;
 
 namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 {
@@ -209,135 +210,121 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <returns></returns>         
         /// 
 
-        public ActionResult GridListJsonOrder(FileViewModel model, string TreeID, JqGridParam jqgridparam, string ConfirmOrder, string Productioned, string ParameterJson)
+        public ActionResult GridListJsonOrder(FileViewModel model, string TreeId, JqGridParam jqgridparam, string ConfirmOrder, string Productioned, string ParameterJson)
         {
-            int _ConfirmOrder = Convert.ToInt32(ConfirmOrder);
-            int _Productioned = Convert.ToInt32(Productioned);
-            if (ParameterJson != null)
-            {
-                if (ParameterJson != "[{\"OrderNumbering\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]")
-                {
-                    List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
-                    for (int i = 0; i < query_member.Count(); i++)
-                    {
-                        model.OrderNumbering = query_member[i].OrderNumbering;
-                        model.InBeginTime = query_member[i].InBeginTime;
-                        model.InEndTime = query_member[i].InEndTime;
-                    }
-                }
-            }
             try
             {
-                int TreeId;
-                //int FolderId = Convert.ToInt32(FolderId);
-                if (TreeID == "" || TreeID == null)
-                {
-                    TreeId = 1;
-                }
-                else
-                {
-                    TreeId = Convert.ToInt32(TreeID);
-                }
-
-                int total = 0;
-                Expression<Func<RMC_ProjectOrder, bool>> func = ExpressionExtensions.True<RMC_ProjectOrder>();
-                func = f => f.DeleteFlag != 1 && f.IsSubmit == 1 && f.ConfirmOrder == _ConfirmOrder && f.Productioned == _Productioned;
                 #region 查询条件拼接
+                int _ConfirmOrder = Convert.ToInt32(ConfirmOrder);
+                int _Productioned = Convert.ToInt32(Productioned);
+                if (ParameterJson != null)
+                {
+                    if (ParameterJson != "[{\"OrderNumbering\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]")
+                    {
+                        List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
+                        for (int i = 0; i < query_member.Count(); i++)
+                        {
+                            model.OrderNumbering = query_member[i].OrderNumbering;
+                            model.InBeginTime = query_member[i].InBeginTime;
+                            model.InEndTime = query_member[i].InEndTime;
+                        }
+                    }
+                }
 
-                //if (TreeId.ToString() != "" && TreeId != 0)
-                //{
-                //    func = func.And(f => f.TreeId == TreeId);
+                Expression<Func<RMC_ProjectOrder, bool>> func = ExpressionExtensions.True<RMC_ProjectOrder>();
+                Expression<Func<RMC_ProjectOrder, bool>> func0 = ExpressionExtensions.True<RMC_ProjectOrder>();
+                func0 = f => f.DeleteFlag != 1 && f.IsSubmit == 1 && f.ConfirmOrder == _ConfirmOrder && f.Productioned == _Productioned;
+                Func<RMC_ProjectOrder, bool> func1 = f => f.TreeId != 0;
+               
+                var _a = model.OrderNumbering != null && model.OrderNumbering.ToString() != "";
+                var _b = model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00";
+                var _c = model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00";
 
-                //}
-                if (model.OrderNumbering != null && model.OrderNumbering.ToString() != "")
+                if (_a && _b && _c)
+                {
+                    func1 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime;
+                }
+                else if (_a)
                 {
                     func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering));
-
+                    func1 = f => f.OrderNumbering.Contains(model.OrderNumbering);
                 }
-                if (model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00")
+                else if (_b)
                 {
                     func = func.And(f => f.CreateTime >= model.InBeginTime);
-
+                    func1 = f => f.CreateTime >= model.InBeginTime;
                 }
-                if (model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00")
+                else if (_c)
                 {
                     func = func.And(f => f.CreateTime <= model.InEndTime);
+                    func1 = f => f.CreateTime <= model.InEndTime;
                 }
-
+                else if (_a && _b)
+                {
+                    func1 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime;
+                }
+                else if (_a && _c)
+                {
+                    func1 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime <= model.InEndTime;
+                }
+                else if (_b && _c)
+                {
+                    func1 = f => f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime;
+                }
                 #endregion
 
-                DataTable ListData, ListData1;
-                ListData = null;
-                //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
-                //                         , jqgridparam.rows
-                //                         , func1
-                //                         , false
-                //                         , f => f.TreeID.ToString()
-                //                         , out total
-                //                         ).ToList();
-                List<RMC_ProjectOrder> listfile = OrderManagementCurrent.FindPage<string>(jqgridparam.page
-                                         , jqgridparam.rows
-                                         , func
-                                         , false
-                                         , f => f.ModifiedTime.ToString()
-                                         , out total
-                                         ).ToList();
-                List<ProduceOrderModel> produceorderlist = new List<ProduceOrderModel>();
-                foreach (var item in listfile)
-                {
-                    ProduceOrderModel produceorder = new ProduceOrderModel();
-                    produceorder.OrderId = item.OrderId;
-                    var order = OrderManagementCurrent.Find(f => f.OrderId == item.OrderId).SingleOrDefault();
-                    var Tree = TreeCurrent.Find(f => f.TreeID == item.TreeId).SingleOrDefault();
-                    produceorder.TreeName = Tree.TreeName;
-                    produceorder.OrderNumbering = order.OrderNumbering;
-                    produceorder.CreateTime = order.CreateTime;
-                    produceorder.CreateMan = item.CreateMan; //order.CreateMan;
-                    produceorder.IsSubmit = item.IsSubmit;
-                    produceorder.SubmitMan = item.SubmitMan;
-                    produceorder.SubmitTime = item.SubmitTime.ToString();
-                    produceorder.ConfirmOrder = item.ConfirmOrder;
-                    produceorder.ConfirmMan = item.ConfirmMan;
-                    produceorder.Description = item.Description;
-                    produceorderlist.Add(produceorder);
-                }
-                if (produceorderlist.Count() > 0)// && listtree.Count() > 0
-                {
+                var ProjectOrderList_ = new List<RMC_ProjectOrder>();
+                //var ProjectDemandModelList_ = new List<RMC_ProjectOrder>();
 
-                    //ListData0 = ListToDataTable(listtree);
-                    ListData1 = DataHelper.ListToDataTable(produceorderlist);
-                    ListData = ListData1.Clone();
-                    object[] obj = new object[ListData.Columns.Count];
-                    ////添加DataTable0的数据
-                    //for (int i = 0; i < ListData0.Rows.Count; i++)
-                    //{
-                    //    ListData0.Rows[i].ItemArray.CopyTo(obj, 0);
-                    //    ListData.Rows.Add(obj);
-                    //}
-                    //添加DataTable1的数据
-                    for (int i = 0; i < ListData1.Rows.Count; i++)
-                    {
-                        ListData1.Rows[i].ItemArray.CopyTo(obj, 0);
-                        ListData.Rows.Add(obj);
-                    }
-
-                }
-                //else if (listtree.Count() > 0)
-                //{
-                //    ListData = ListToDataTable(listtree);
-                //}
-                else if (listfile.Count() > 0)
+                Stopwatch watch = CommonHelper.TimerStart();
+                int total = 0;
+                List<RMC_ProjectOrder> ProjectOrderList = new List<RMC_ProjectOrder>();
+                if (TreeId == "")
                 {
-                    ListData = DataHelper.ListToDataTable(produceorderlist);
+                    func.And(f => f.DeleteFlag != 1 & f.ProjectDemandId > 0);
+
+                    ProjectOrderList = ProjectOrderList_ = OrderManagementCurrent.FindPage<string>(jqgridparam.page
+                                             , jqgridparam.rows
+                                             , func
+                                             , false
+                                             , f => f.CreateTime.ToString()
+                                             , out total
+                                             ).ToList();
                 }
                 else
                 {
-                    ListData = null;
+                    //int _id = Convert.ToInt32(TreeId);
+                    //var list = GetSonId(_id).ToList();
+
+                    //list.Add(TreeCurrent.Find(p => p.TreeID == _id).Single());
+                    //foreach (var item in list)
+                    //{
+                    //    var _ProjectOrderList = OrderManagementCurrent.Find(m => m.TreeId == item.TreeID).ToList();
+                    //    if (_ProjectOrderList.Count() > 0)
+                    //    {
+                    //        ProjectOrderList = ProjectOrderList.Concat(_ProjectOrderList).ToList();
+                    //    }
+                    //}
+                    ProjectOrderList = OrderManagementCurrent.FindPage<string>(jqgridparam.page
+                                           , jqgridparam.rows
+                                           , func0
+                                           , false
+                                           , f => f.CreateTime.ToString()
+                                           , out total
+                                           ).ToList();
+
+                   // ProjectOrderList = ProjectOrderList.Where(func1).ToList();
+                    ProjectOrderList_ = ProjectOrderList.Take(jqgridparam.rows * jqgridparam.page).Skip(jqgridparam.rows * (jqgridparam.page - 1)).ToList();
+                    total = ProjectOrderList.Count();
                 }
 
                 var JsonData = new
                 {
-                    rows = ListData,
+                    total = total / jqgridparam.rows + 1,
+                    page = jqgridparam.page,
+                    records = total,
+                    costtime = CommonHelper.TimerEnd(watch),
+                    rows = ProjectOrderList_.OrderByDescending(f => f.CreateTime),
                 };
                 return Content(JsonData.ToJson());
             }
@@ -346,6 +333,13 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
         }
+        //获取树字节子节点(自循环)
+        public IEnumerable<RMC_Tree> GetSonId(int p_id)
+        {
+            List<RMC_Tree> list = TreeCurrent.Find(p => p.ParentID == p_id).ToList();
+            return list.Concat(list.SelectMany(t => GetSonId(t.TreeID)));
+        }
+
 
         /// <summary>
         /// 表单视图
@@ -1045,7 +1039,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
 
 
-        public ActionResult NumberForm() 
+        public ActionResult NumberForm()
         {
             return View();
         }

@@ -28,9 +28,11 @@
     var TreeId = "";//16
     var ItemId = 2;
     ProjectName = "", IsPublic = "1";
+    var HavesChildren;
     function GetTree() {
         var itemtree = {
             onnodeclick: function (node) {
+                HavesChildren = node.hasChildren;
                 TreeId = node.id;
                 TreeName = node.text;
                 GridFolderEvent(TreeId);
@@ -52,7 +54,7 @@
         var SelectRowIndx;
         var unit_name;
         $("#gridTable").jqGrid({
-            url: "@Url.Content("/SteelMember/ProjectManagement/GridListJson")?TreeID=" + TreeId,
+            url: "@Url.Content("/SteelMember/ProjectManagement/GridListJson")?TreeId=" + TreeId,
             datatype: "json",
             height: $(window).height() - 154,
             autowidth: true,
@@ -198,12 +200,15 @@
         //var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
         var ItemID = 1
         if (IsChecked(TreeId)) {
-            var url = "/SteelMember/ProjectManagement/Form?TreeID= " + TreeId + "&ItemID=" + ItemID;
-            openDialog(url, "Form", "新增信息", 500, 320, function (iframe) {
-                top.frames[iframe].AcceptClick();
-            });
+            if (HavesChildren == true) {
+                tipDialog("此节点不可编辑，请选择一个子节点", 3, 'warning');
+            } else {
+                var url = "/SteelMember/ProjectManagement/Form?TreeID= " + TreeId + "&ItemID=" + ItemID;
+                openDialog(url, "Form", "新增信息", 500, 320, function (iframe) {
+                    top.frames[iframe].AcceptClick();
+                });
+            }
         }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
     }
 
     //编辑信息(得到实体)

@@ -44,7 +44,7 @@
     //表格文件夹点击事件
     function GridFolderEvent(TreeId, ConfirmOrder, Productioned) {
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonOrder")?TreeID=" + TreeId + "&ConfirmOrder=" + ConfirmOrder + "&Productioned=" + Productioned, page: 1
+            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonOrder")?TreeId=" + TreeId + "&ConfirmOrder=" + ConfirmOrder + "&Productioned=" + Productioned, page: 1
         }).trigger('reloadGrid');
     }
 
@@ -52,7 +52,7 @@
     function GetGrid() {
         var SelectRowIndx;
         $("#gridTable").jqGrid({
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonOrder")?TreeID=" + TreeId + "&ConfirmOrder=" + ConfirmOrder + "&Productioned=" + Productioned,
+            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonOrder")?TreeId=" + TreeId + "&ConfirmOrder=" + ConfirmOrder + "&Productioned=" + Productioned,
             datatype: "json",
             height: $(window).height() - 154,
             autowidth: true,

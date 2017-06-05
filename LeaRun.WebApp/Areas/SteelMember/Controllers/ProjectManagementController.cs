@@ -9,6 +9,7 @@ using SteelMember.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -105,82 +106,103 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <param name="FolderId">文件夹ID</param>
         /// <param name="IsPublic">是否公共 1-公共、0-我的</param>
         /// <returns></returns>         
-        public ActionResult GridListJson(FileViewModel model, string TreeID, JqGridParam jqgridparam, string IsPublic, string ParameterJson)
+        public ActionResult GridListJson(FileViewModel model, string TreeId, JqGridParam jqgridparam, string IsPublic, string ParameterJson)
         {
-
-            if (ParameterJson != null)
-            {
-                if (ParameterJson != "[{\"MemberModel\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]")
-                {
-                    List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
-                    for (int i = 0; i < query_member.Count(); i++)
-                    {
-                        model.MemberModel = query_member[i].MemberModel;
-                        model.InBeginTime = query_member[i].InBeginTime;
-                        model.InEndTime = query_member[i].InEndTime;
-                    }
-                }
-            }
             try
             {
-                int TreeId;
-                //int FolderId = Convert.ToInt32(FolderId);
-                if (TreeID == "" || TreeID == null)
-                {
-                    TreeId = 1;
-                }
-                else
-                {
-                    TreeId = Convert.ToInt32(TreeID);
-                }
-
-
-
-
-
-                int total = 0;
-                Expression<Func<RMC_ProjectDemand, bool>> func = ExpressionExtensions.True<RMC_ProjectDemand>();
-                func = f => f.DeleteFlag != 1 && f.TreeId == TreeId;
                 #region 查询条件拼接
-                if (TreeId.ToString() != "" && TreeId != 0)
+                if (ParameterJson != null)
                 {
-                    func = func.And(f => f.TreeId == TreeId);
-
+                    if (ParameterJson != "[{\"MemberModel\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]")
+                    {
+                        List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
+                        for (int i = 0; i < query_member.Count(); i++)
+                        {
+                            model.MemberModel = query_member[i].MemberModel;
+                            model.InBeginTime = query_member[i].InBeginTime;
+                            model.InEndTime = query_member[i].InEndTime;
+                        }
+                    }
                 }
-                if (model.OrderNumbering != null && model.OrderNumbering.ToString() != "")
+                Expression<Func<RMC_ProjectDemand, bool>> func = ExpressionExtensions.True<RMC_ProjectDemand>();
+                Func<RMC_ProjectDemand, bool> func1 = f => f.TreeId != 0;
+
+                var _a = model.MemberModel != null && model.MemberModel.ToString() != "";
+                var _b = model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00";
+                var _c = model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00";
+
+                if (_a && _b && _c)
+                {
+                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime;
+                }
+                else if (_a)
                 {
                     func = func.And(f => f.MemberModel.Contains(model.MemberModel));
-
+                    func1 = f => f.MemberModel.Contains(model.MemberModel);
                 }
-                if (model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00")
+                else if (_b)
                 {
                     func = func.And(f => f.CreateTime >= model.InBeginTime);
-
+                    func1 = f => f.CreateTime >= model.InBeginTime;
                 }
-                if (model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00")
+                else if (_c)
                 {
                     func = func.And(f => f.CreateTime <= model.InEndTime);
+                    func1 = f => f.CreateTime <= model.InEndTime;
+                }
+                else if (_a && _b)
+                {
+                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.CreateTime >= model.InBeginTime;
+                }
+                else if (_a && _c)
+                {
+                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.CreateTime <= model.InEndTime;
+                }
+                else if (_b && _c)
+                {
+                    func1 = f => f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime;
                 }
                 #endregion
 
-                DataTable ListData, ListData1;
-                ListData = null;
-                //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
-                //                         , jqgridparam.rows
-                //                         , func1
-                //                         , false
-                //                         , f => f.TreeID.ToString()
-                //                         , out total
-                //                         ).ToList();
-                List<RMC_ProjectDemand> listfile = ProjectManagementCurrent.FindPage<string>(jqgridparam.page
-                                         , jqgridparam.rows
-                                         , func
-                                         , false
-                                         , f => f.CreateTime.ToString()
-                                         , out total
-                                         ).ToList();
-                List<ProjectDemandModel> projectdemandlist = new List<ProjectDemandModel>();
-                foreach (var item in listfile)
+                var ProjectDemandList_ = new List<RMC_ProjectDemand>();
+                var ProjectDemandModelList_ = new List<ProjectDemandModel>();
+
+                Stopwatch watch = CommonHelper.TimerStart();
+                int total = 0;
+                List<RMC_ProjectDemand> ProjectDemandList = new List<RMC_ProjectDemand>();
+                if (TreeId == "")
+                {
+                    func.And(f => f.DeleteFlag != 1 & f.ProjectDemandId > 0);
+
+                    ProjectDemandList = ProjectDemandList_ = ProjectManagementCurrent.FindPage<string>(jqgridparam.page
+                                             , jqgridparam.rows
+                                             , func
+                                             , false
+                                             , f => f.CreateTime.ToString()
+                                             , out total
+                                             ).ToList();
+                }
+                else
+                {
+                    int _id = Convert.ToInt32(TreeId);
+                    var list = GetSonId(_id).ToList();
+
+                    list.Add(TreeCurrent.Find(p => p.TreeID == _id).Single());
+                    foreach (var item in list)
+                    {
+                        var _ProjectDemandList = ProjectManagementCurrent.Find(m => m.TreeId == item.TreeID).ToList();
+                        if (_ProjectDemandList.Count() > 0)
+                        {
+                            ProjectDemandList = ProjectDemandList.Concat(_ProjectDemandList).ToList();
+                        }
+                    }
+
+                    ProjectDemandList = ProjectDemandList.Where(func1).ToList();
+                    ProjectDemandList_ = ProjectDemandList.Take(jqgridparam.rows * jqgridparam.page).Skip(jqgridparam.rows * (jqgridparam.page - 1)).ToList();
+                    total = ProjectDemandList.Count();
+                }
+
+                foreach (var item in ProjectDemandList)
                 {
                     ProjectDemandModel projectdemand = new ProjectDemandModel();
                     projectdemand.ProjectDemandId = item.ProjectDemandId;
@@ -201,48 +223,17 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     projectdemand.Productioned = item.Productioned;
                     projectdemand.ProductionNumber = item.ProductionNumber;
                     projectdemand.CollarNumbered = item.CollarNumbered;
-                    //projectdemand.MemberWeight = item.MemberWeight;
-                    //var company = CompanyCurrent.Find(f=>f.MemberCompanyId==item.MemberCompanyId).SingleOrDefault();
-                    //projectdemand.MemberCompany = company.FullName;
                     projectdemand.Description = item.Description;
-                    projectdemandlist.Add(projectdemand);
-                }
-
-                if (projectdemandlist.Count() > 0)// && listtree.Count() > 0
-                {
-                    //ListData0 = ListToDataTable(listtree);
-                    ListData1 = DataHelper.ListToDataTable(projectdemandlist);
-                    ListData = ListData1.Clone();
-                    object[] obj = new object[ListData.Columns.Count];
-                    ////添加DataTable0的数据
-                    //for (int i = 0; i < ListData0.Rows.Count; i++)
-                    //{
-                    //    ListData0.Rows[i].ItemArray.CopyTo(obj, 0);
-                    //    ListData.Rows.Add(obj);
-                    //}
-                    //添加DataTable1的数据
-                    for (int i = 0; i < ListData1.Rows.Count; i++)
-                    {
-                        ListData1.Rows[i].ItemArray.CopyTo(obj, 0);
-                        ListData.Rows.Add(obj);
-                    }
-                }
-                //else if (listtree.Count() > 0)
-                //{
-                //    ListData = ListToDataTable(listtree);
-                //}
-                else if (listfile.Count() > 0)
-                {
-                    ListData = DataHelper.ListToDataTable(projectdemandlist);
-                }
-                else
-                {
-                    ListData = null;
+                    ProjectDemandModelList_.Add(projectdemand);
                 }
 
                 var JsonData = new
                 {
-                    rows = ListData,
+                    total = total / jqgridparam.rows + 1,
+                    page = jqgridparam.page,
+                    records = total,
+                    costtime = CommonHelper.TimerEnd(watch),
+                    rows = ProjectDemandModelList_.OrderByDescending(f => f.CreateTime),
                 };
                 return Content(JsonData.ToJson());
             }
@@ -250,6 +241,13 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             {
                 return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
+        }
+
+        //获取树字节子节点(自循环)
+        public IEnumerable<RMC_Tree> GetSonId(int p_id)
+        {
+            List<RMC_Tree> list = TreeCurrent.Find(p => p.ParentID == p_id).ToList();
+            return list.Concat(list.SelectMany(t => GetSonId(t.TreeID)));
         }
 
         /// <summary>

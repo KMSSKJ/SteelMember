@@ -921,7 +921,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 if (TreeId == "")
                 {
                     func.And(f => f.DeleteFlag != 1 & f.MemberID > 0);
-
                     MemberList = MemberList_ = MemberLibraryCurrent.FindPage<string>(jqgridparam.page
                                              , jqgridparam.rows
                                              , func
@@ -933,24 +932,21 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 else
                 {
                     int _id = Convert.ToInt32(TreeId);
-
                     var list = GetSonId(_id).ToList();
 
                     list.Add(TreeCurrent.Find(p => p.TreeID == _id).Single());
 
                     foreach (var item in list)
                     {
-                        var _memberList = MemberLibraryCurrent.Find(m => m.TreeID == item.TreeID).ToList();
-                        if (_memberList.Count() > 0)
+                        var _MemberList = MemberLibraryCurrent.Find(m => m.TreeID == item.TreeID).ToList();
+                        if (_MemberList.Count() > 0)
                         {
-                            MemberList = MemberList.Concat(_memberList).ToList();
+                            MemberList = MemberList.Concat(_MemberList).ToList();
                         }
-
                     }
 
-                   MemberList= MemberList.Where(func1).ToList();
+                    MemberList= MemberList.Where(func1).ToList();
                     MemberList_ = MemberList.Take(jqgridparam.rows * jqgridparam.page).Skip(jqgridparam.rows * (jqgridparam.page - 1)).ToList();
-
                     total = MemberList.Count();
                 }
                 var JsonData = new
@@ -960,7 +956,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     records = total,
                     costtime = CommonHelper.TimerEnd(watch),
                     rows = MemberList_.OrderByDescending(f => f.UploadTime),
-
                 };
                 return Content(JsonData.ToJson());
             }
