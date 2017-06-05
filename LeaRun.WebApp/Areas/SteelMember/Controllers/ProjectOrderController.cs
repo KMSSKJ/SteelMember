@@ -746,8 +746,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 file.SubmitMan = currentUser.RealName;
                 OrderManagementCurrent.Modified(file);
 
-                List<RMC_OrderMember> CollarMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
-                foreach (var item in CollarMemberList)
+                List<RMC_OrderMember> OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
+                foreach (var item in OrderMemberList)
                 {
                     List<RMC_ProjectWarehouse> projectwarehouselist = ProjectWarehouseCurrent.Find(f => f.MemberId == item.MemberId).ToList();
                     if (projectwarehouselist.Count() == 0)
@@ -758,6 +758,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         var Member = MemberLibraryCurrent.Find(f => f.MemberID == item.MemberId).SingleOrDefault();
                         projectwarehouse.MemberTreeId = Member.TreeID;
                         projectwarehouse.TreeId = file.TreeId;
+                        projectwarehouse.ModifyTime = DateTime.Now;
+                        projectwarehouse.MemberModel = item.MemberModel;
                         projectwarehouse.IsShiped = 0;
                         var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == OrderId && f.MemberId == item.MemberId).SingleOrDefault();
                         projectwarehouse.ProjectDemandId = OrderMember.ProjectDemandId;
@@ -769,6 +771,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     {
                         RMC_ShipManagement shipmanagement = new RMC_ShipManagement();
                         shipmanagement.OrderId = OrderId;
+                        shipmanagement.ShipNumbering = "FHD" + file.OrderNumbering.Replace("DD","");
                         shipmanagement.MemberId = item.MemberId;
                         shipmanagement.TreeId = file.TreeId;
                         shipmanagement.IsPackaged = 0;

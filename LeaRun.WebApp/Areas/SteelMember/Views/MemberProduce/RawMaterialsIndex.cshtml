@@ -13,10 +13,11 @@
     //注意 FolderId 默认等于1 这样就可以加载一级目录下的子节点文件夹
     var ItemId = 3;
     var TreeId = "";//
-    //ItemId = GetQuery("ItemID"), IsPublic = "1";
+    var HavesChildren;
     function GetTree() {
         var itemtree = {
             onnodeclick: function (node) {
+                HavesChildren = node.hasChildren;
                 TreeId = node.id;
                 TreeName = node.text;
                 GridFolderEvent(TreeId);
@@ -28,7 +29,7 @@
     //表格文件夹点击事件
     function GridFolderEvent(TreeId) {
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonRawMaterials")?TreeID=" + TreeId, page: 1
+            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonRawMaterials")?TreeId=" + TreeId, page: 1
         }).trigger('reloadGrid');
     };
 
@@ -36,7 +37,7 @@
     function GetGrid() {
         var SelectRowIndx;
         $("#gridTable").jqGrid({
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonRawMaterials")?TreeID=" + TreeId,
+            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonRawMaterials")?TreeId=" + TreeId,
             datatype: "json",
             height: $(window).height() - 110,
             autowidth: true,
@@ -126,7 +127,7 @@
         Loading(true, "正在提交数据...");
         var postData = GetWebControls("#formsearch");
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJson")?KeyValue=" + ProjectId, postData, page: 1
+            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonRawMaterials")?KeyValue=" + ProjectId, postData, page: 1
             }).trigger('reloadGrid');
             }
 
@@ -134,10 +135,14 @@
     function btn_add() {
         //var KeyValue = GetJqGridRowValue("#gridTable", "ProjectId");
         if (IsChecked(TreeId)) {
-            var url = "/SteelMember/MemberProduce/RawMaterialsForm?TreeId= " + TreeId;
-            openDialog(url, "RawMaterialsForm", "新增信息", 500, 400, function (iframe) {
-                top.frames[iframe].AcceptClick();
-            });
+            if (HavesChildren == true) {
+                tipDialog("此节点不可编辑，请选择一个子节点", 3, 'warning');
+            } else {
+                var url = "/SteelMember/MemberProduce/RawMaterialsForm?TreeId= " + TreeId;
+                openDialog(url, "RawMaterialsForm", "新增信息", 500, 400, function (iframe) {
+                    top.frames[iframe].AcceptClick();
+                });
+            }
         }
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
@@ -221,5 +226,6 @@
             </div>
         </div>
         <table id="gridTable"></table>
+        <div id="gridPager"></div>
     </div>
 </div>

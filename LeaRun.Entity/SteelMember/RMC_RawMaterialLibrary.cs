@@ -24,5 +24,6 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<int> DeleteFlag { get; set; }
         public Nullable<decimal> UnitPrice { get; set; }
         public string UnitName { get; set; }
+        public Nullable<System.DateTime> WarehousingTime { get; set; }
     }
 }

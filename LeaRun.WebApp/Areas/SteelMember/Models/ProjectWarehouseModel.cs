@@ -15,6 +15,7 @@ namespace SteelMember.Models
         public string MemberName { get; set; }
         public string MemberNumbering { get; set; }//Nullable<long>
         public string MemberUnit { get; set; }
+        public DateTime? ModifyTime { get; set; }
         public Nullable<int> OrderId { get; set; }
         public Nullable<int> DeleteFlag { get; set; }
         public Nullable<int> TreeId { get; set; }

@@ -241,11 +241,11 @@
     //查询
     var QueryParamJson = "";
     function btn_query() {
-        QueryDialog("/SteelMember/MemberSettlement/QueryPage", "QueryPage", "查询", 540, 30, function (iframe) {
+        QueryDialog("/SteelMember/CollarManagement/QueryPage", "QueryPage", "查询", 720, 30, function (iframe) {
             top.frames[iframe].QueryClick(function (JsonData) {
                 QueryParamJson = JsonData;
                 $("#gridTable").jqGrid('setGridParam', {
-                    url: "@Url.Content("/SteelMember/MemberSettlement/GridListJson")?ParameterJson=" + escape(JsonData) + "&TreeID=" + TreeId, page: 1
+                    url: "@Url.Content("/SteelMember/CollarManagement/GridListJson")?ParameterJson=" + escape(JsonData) + "&TreeID=" + TreeId, page: 1
             }).trigger('reloadGrid');
         });
     });

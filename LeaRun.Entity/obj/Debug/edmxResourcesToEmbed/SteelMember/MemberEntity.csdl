@@ -13,14 +13,14 @@
     <EntitySet Name="RMC_ProcessManagement" EntityType="kskfModel.RMC_ProcessManagement" />
     <EntitySet Name="RMC_ProjectInfo" EntityType="kskfModel.RMC_ProjectInfo" />
     <EntitySet Name="RMC_ProjectOrder" EntityType="kskfModel.RMC_ProjectOrder" />
-    <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
-    <EntitySet Name="RMC_RawMaterialLibrary" EntityType="kskfModel.RMC_RawMaterialLibrary" />
     <EntitySet Name="RMC_ShipManagement" EntityType="kskfModel.RMC_ShipManagement" />
     <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
     <EntitySet Name="RMC_ProjectDemand" EntityType="kskfModel.RMC_ProjectDemand" />
     <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="kskfModel.RMC_AnalysisRawMaterial" />
     <EntitySet Name="RMC_Purchase" EntityType="kskfModel.RMC_Purchase" />
     <EntitySet Name="RMC_RawMaterialPurchase" EntityType="kskfModel.RMC_RawMaterialPurchase" />
+    <EntitySet Name="RMC_RawMaterialLibrary" EntityType="kskfModel.RMC_RawMaterialLibrary" />
+    <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
   </EntityContainer>
   <EntityType Name="RMC_Collar">
     <Key>
@@ -286,41 +286,6 @@
     <Property Name="Priority" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
     <Property Name="EngineeringPosition" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
   </EntityType>
-  <EntityType Name="RMC_ProjectWarehouse">
-    <Key>
-      <PropertyRef Name="ProjectWarehouseId" />
-    </Key>
-    <Property Name="ProjectWarehouseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="MemberId" Type="Int32" />
-    <Property Name="OrderId" Type="Int32" />
-    <Property Name="DeleteFlag" Type="Int32" />
-    <Property Name="MemberTreeId" Type="Int32" />
-    <Property Name="ProjectDemandId" Type="Int32" />
-    <Property Name="TreeId" Type="Int32" />
-    <Property Name="InStock" Type="Int32" />
-    <Property Name="Damage" Type="Int32" />
-    <Property Name="Class" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="IsShiped" Type="Int32" />
-    <Property Name="ModifyTime" Type="DateTime" Precision="3" />
-    <Property Name="Librarian" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Leader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="RMC_RawMaterialLibrary">
-    <Key>
-      <PropertyRef Name="RawMaterialId" />
-    </Key>
-    <Property Name="RawMaterialId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="TreeId" Type="Int32" />
-    <Property Name="RawMaterialName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="RawMaterialStandard" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="RawMaterialNumber" Type="Int32" />
-    <Property Name="UnitId" Type="Int32" />
-    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="DeleteFlag" Type="Int32" />
-    <Property Name="UnitPrice" Type="Decimal" Precision="18" Scale="2" />
-    <Property Name="UnitName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-  </EntityType>
   <EntityType Name="RMC_ShipManagement">
     <Key>
       <PropertyRef Name="ShipId" />
@@ -453,6 +418,43 @@
     <Property Name="UnitPrice" Type="Int32" />
     <Property Name="MaterialBudget" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="DeleteFlag" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="RMC_RawMaterialLibrary">
+    <Key>
+      <PropertyRef Name="RawMaterialId" />
+    </Key>
+    <Property Name="RawMaterialId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TreeId" Type="Int32" />
+    <Property Name="RawMaterialName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="RawMaterialStandard" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="RawMaterialNumber" Type="Int32" />
+    <Property Name="UnitId" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="DeleteFlag" Type="Int32" />
+    <Property Name="UnitPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="UnitName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="WarehousingTime" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="RMC_ProjectWarehouse">
+    <Key>
+      <PropertyRef Name="ProjectWarehouseId" />
+    </Key>
+    <Property Name="ProjectWarehouseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MemberId" Type="Int32" />
+    <Property Name="MemberModel" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="OrderId" Type="Int32" />
+    <Property Name="DeleteFlag" Type="Int32" />
+    <Property Name="MemberTreeId" Type="Int32" />
+    <Property Name="ProjectDemandId" Type="Int32" />
+    <Property Name="TreeId" Type="Int32" />
+    <Property Name="InStock" Type="Int32" />
+    <Property Name="Damage" Type="Int32" />
+    <Property Name="Class" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsShiped" Type="Int32" />
+    <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+    <Property Name="Librarian" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Leader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

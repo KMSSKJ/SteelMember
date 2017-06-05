@@ -9,6 +9,7 @@ using SteelMember.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -49,41 +50,41 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <returns></returns>      
         public ActionResult TreeJson(string ItemId)
         {
-                //var userid = 1;
-                //List<DOC_R_Tree_Role> TRR = new List<DOC_R_Tree_Role>();
-                //var userrole = UserRoleRepository.Find(ur => ur.UserID == userid).SingleOrDefault();
-                //TRR = TreeRoleRepository.Find(tr => tr.RoleID == userrole.RoleID).ToList();
-                int _ItemId = Convert.ToInt32(ItemId);
-                List<RMC_Tree> list = TreeCurrent.Find(t => t.ItemID == _ItemId).ToList();
-                List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
-                foreach (RMC_Tree item in list)
+            //var userid = 1;
+            //List<DOC_R_Tree_Role> TRR = new List<DOC_R_Tree_Role>();
+            //var userrole = UserRoleRepository.Find(ur => ur.UserID == userid).SingleOrDefault();
+            //TRR = TreeRoleRepository.Find(tr => tr.RoleID == userrole.RoleID).ToList();
+            int _ItemId = Convert.ToInt32(ItemId);
+            List<RMC_Tree> list = TreeCurrent.Find(t => t.ItemID == _ItemId).ToList();
+            List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
+            foreach (RMC_Tree item in list)
+            {
+                TreeJsonEntity tree = new TreeJsonEntity();
+                bool hasChildren = false;
+                List<RMC_Tree> childnode = list.FindAll(t => t.ParentID == item.TreeID);
+                if (childnode.Count > 0)
                 {
-                    TreeJsonEntity tree = new TreeJsonEntity();
-                    bool hasChildren = false;
-                    List<RMC_Tree> childnode = list.FindAll(t => t.ParentID == item.TreeID);
-                    if (childnode.Count > 0)
-                    {
-                        hasChildren = true;
-                    }
-                    tree.id = item.TreeID.ToString();
-                    tree.text = item.TreeName;
-                    tree.value = item.TreeID.ToString();
-                    tree.isexpand = item.State == 1 ? true : false;
-                    tree.complete = true;
-                    tree.hasChildren = hasChildren;
-                    tree.parentId = item.ParentID.ToString();
-                    //tree.iconCls = item.Icon != null ? "/Content/Images/Icon16/" + item.Icon : item.Icon;
-                    TreeList.Add(tree);
+                    hasChildren = true;
                 }
-                return Content(TreeList.TreeToJson());
+                tree.id = item.TreeID.ToString();
+                tree.text = item.TreeName;
+                tree.value = item.TreeID.ToString();
+                tree.isexpand = item.State == 1 ? true : false;
+                tree.complete = true;
+                tree.hasChildren = hasChildren;
+                tree.parentId = item.ParentID.ToString();
+                //tree.iconCls = item.Icon != null ? "/Content/Images/Icon16/" + item.Icon : item.Icon;
+                TreeList.Add(tree);
             }
+            return Content(TreeList.TreeToJson());
+        }
 
-            #region 项目仓库管理
-            /// <summary>
-            /// 查询
-            /// </summary>
-            /// <returns></returns>
-            public ActionResult QueryPage()
+        #region 项目仓库管理
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult QueryPage()
         {
             return View();
         }
@@ -94,131 +95,147 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <param name="FolderId">文件夹ID</param>
         /// <param name="IsPublic">是否公共 1-公共、0-我的</param>
         /// <returns></returns>         
-        public ActionResult GridListJson(FileViewModel model, string ParameterJson, string TreeID, JqGridParam jqgridparam, string IsPublic)
+        public ActionResult GridListJson(FileViewModel model, string ParameterJson, string TreeId, JqGridParam jqgridparam, string IsPublic)
         {
-            if (ParameterJson != null)
-            {
-                if (ParameterJson != "[{\"MemberModel\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\",\"Class\":\"\"}]")
-                {
-                    List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
-                    for (int i = 0; i < query_member.Count(); i++)
-                    {
-                        model.MemberModel = query_member[i].MemberModel;
-                        model.InBeginTime = query_member[i].InBeginTime;
-                        model.InEndTime = query_member[i].InEndTime;
-                        model.Class = query_member[i].Class;
-                    }
-                }
-            }
             try
             {
-                model.TreeID = Convert.ToInt32(TreeID);
-                int total = 0;
-                Expression<Func<RMC_ProjectWarehouse, bool>> func = ExpressionExtensions.True<RMC_ProjectWarehouse>();
-                func = f => f.DeleteFlag != 1&&f.IsShiped==1;
                 #region 查询条件拼接
-                if (model.TreeID != 0 && model.TreeID.ToString() != "")
+                if (ParameterJson != null)
                 {
-                    func = func.And(f => f.MemberTreeId == model.TreeID);
+                    if (ParameterJson != "[{\"MemberModel\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\",\"Class\":\"\"}]")
+                    {
+                        List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
+                        for (int i = 0; i < query_member.Count(); i++)
+                        {
+                            model.MemberModel = query_member[i].MemberModel;
+                            model.InBeginTime = query_member[i].InBeginTime;
+                            model.InEndTime = query_member[i].InEndTime;
+                            model.Class = query_member[i].Class;
+                        }
+                    }
                 }
-                if (model.MemberModel != null && model.MemberModel != "")
+
+                Expression<Func<RMC_ProjectWarehouse, bool>> func = ExpressionExtensions.True<RMC_ProjectWarehouse>();
+                func=f => f.ProjectWarehouseId > 0 && f.IsShiped == 1;
+                Func<RMC_ProjectWarehouse, bool> func1 = f => f.MemberTreeId!= 0;
+
+                var _a = model.MemberModel != null && model.MemberModel.ToString() != "";
+                var _b = model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00";
+                var _c = model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00";
+
+                if (_a && _b && _c)
                 {
-                    var member = MemberLibraryCurrent.Find(fm => fm.MemberModel == model.MemberModel).SingleOrDefault();
-                    func = func.And(f => f.MemberId== member.MemberID);
+                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime >= model.InBeginTime && f.ModifyTime <= model.InEndTime;
                 }
-                if (model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00")
+                else if (_a)
+                {
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel));
+                    func1 = f => f.MemberModel.Contains(model.MemberModel);
+                }
+                else if (_b)
                 {
                     func = func.And(f => f.ModifyTime >= model.InBeginTime);
+                    func1 = f => f.ModifyTime >= model.InBeginTime;
                 }
-                if (model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00")
+                else if (_c)
                 {
                     func = func.And(f => f.ModifyTime <= model.InEndTime);
+                    func1 = f => f.ModifyTime <= model.InEndTime;
                 }
-                if (!string.IsNullOrEmpty(model.Class))
+                else if (_a && _b)
                 {
-                    func = func.And(f => f.Class== model.Class.Trim()); /*func = func.And(f => f.FullPath.Contains(model.FilePath))*/
+                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime >= model.InBeginTime;
+                }
+                else if (_a && _c)
+                {
+                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime <= model.InEndTime;
+                }
+                else if (_b && _c)
+                {
+                    func1 = f => f.ModifyTime >= model.InBeginTime && f.ModifyTime <= model.InEndTime;
                 }
                 #endregion
 
-                DataTable ListData, ListData1;
-                ListData = null;
-                //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
-                //                         , jqgridparam.rows
-                //                         , func1
-                //                         , false
-                //                         , f => f.TreeID.ToString()
-                //                         , out total
-                //                         ).ToList();
-                List<RMC_ProjectWarehouse> listfile = ProjectWarehouseCurrent.FindPage<string>(jqgridparam.page
-                                         , jqgridparam.rows
-                                         , func
-                                         , false
-                                         , f => f.ModifyTime.ToString()
-                                         , out total
-                                         ).ToList();
-                List<ProjectWarehouseModel> ProjectWarehouselist = new List<ProjectWarehouseModel>();
-                foreach (var item in listfile)
+                var MemberList_ = new List<RMC_ProjectWarehouse>();
+                var ProjectWarehouseModellist = new List<ProjectWarehouseModel>();
+
+                Stopwatch watch = CommonHelper.TimerStart();
+                int total = 0;
+                List<RMC_ProjectWarehouse> MemberList = new List<RMC_ProjectWarehouse>();
+                if (TreeId == ""||TreeId==null)
+                {
+                    //func.And(f =>f.ProjectWarehouseId> 0&&f.IsShiped==1);
+                    MemberList = MemberList_ = ProjectWarehouseCurrent.FindPage<string>(jqgridparam.page
+                                             , jqgridparam.rows
+                                             , func
+                                             , false
+                                             , f => f.ModifyTime.ToString()
+                                             , out total
+                                             ).ToList();
+                }
+                else
+                {
+                    int _id = Convert.ToInt32(TreeId);
+                    var list = GetSonId(_id).ToList();
+
+                    list.Add(TreeCurrent.Find(p => p.TreeID == _id).Single());
+
+                    foreach (var item in list)
+                    {
+                        var _MemberList = ProjectWarehouseCurrent.Find(m => m.MemberTreeId == item.TreeID && m.IsShiped == 1).ToList();
+                        if (_MemberList.Count() > 0)
+                        {
+                            MemberList = MemberList.Concat(_MemberList).ToList();
+                        }
+                    }
+
+                    MemberList = MemberList.Where(func1).ToList();
+                    MemberList_ = MemberList.Take(jqgridparam.rows * jqgridparam.page).Skip(jqgridparam.rows * (jqgridparam.page - 1)).ToList();
+                    total = MemberList.Count();
+                }
+
+                foreach (var item in MemberList_)
                 {
                     ProjectWarehouseModel ProjectWarehouse = new ProjectWarehouseModel();
-                    ProjectWarehouse.ProjectWarehouseId= item.ProjectWarehouseId;
+                    ProjectWarehouse.ProjectWarehouseId = item.ProjectWarehouseId;
                     //var projectinfo = ProjectInfoCurrent.Find(f => f.ProjectId == item.ProjectId).SingleOrDefault();
                     //projectdemand.ProjectName = projectinfo.ProjectName;
                     var memberlibrary = MemberLibraryCurrent.Find(f => f.MemberID == item.MemberId).SingleOrDefault();
                     ProjectWarehouse.MemberName = memberlibrary.MemberName;
-                    ProjectWarehouse.MemberModel = memberlibrary.MemberModel;
+                    ProjectWarehouse.MemberModel = item.MemberModel;
                     ProjectWarehouse.MemberNumbering = memberlibrary.MemberNumbering.ToString();
-                    ProjectWarehouse.Class= item.Class;
+                    ProjectWarehouse.ModifyTime = item.ModifyTime;
+                    ProjectWarehouse.Class = item.Class;
                     ProjectWarehouse.Damage = item.Damage;
                     ProjectWarehouse.InStock = item.InStock;
                     ProjectWarehouse.Leader = item.Leader;
                     ProjectWarehouse.Librarian = item.Librarian;
                     ProjectWarehouse.Description = item.Description;
-                    ProjectWarehouselist.Add(ProjectWarehouse);
-                }
-                if (ProjectWarehouselist.Count() > 0)// && listtree.Count() > 0
-                {
-                 
-                    //ListData0 = ListToDataTable(listtree);
-                    ListData1 =DataHelper.ListToDataTable(ProjectWarehouselist);
-                    ListData = ListData1.Clone();
-                    object[] obj = new object[ListData.Columns.Count];
-                    ////添加DataTable0的数据
-                    //for (int i = 0; i < ListData0.Rows.Count; i++)
-                    //{
-                    //    ListData0.Rows[i].ItemArray.CopyTo(obj, 0);
-                    //    ListData.Rows.Add(obj);
-                    //}
-                    //添加DataTable1的数据
-                    for (int i = 0; i < ListData1.Rows.Count; i++)
-                    {
-                        ListData1.Rows[i].ItemArray.CopyTo(obj, 0);
-                        ListData.Rows.Add(obj);
-                    }
-                  
-                }
-                //else if (listtree.Count() > 0)
-                //{
-                //    ListData = ListToDataTable(listtree);
-                //}
-                else if (listfile.Count() > 0)
-                {
-                    ListData =DataHelper.ListToDataTable(ProjectWarehouselist);
-                }
-                else
-                {
-                    ListData = null;
+                    ProjectWarehouseModellist.Add(ProjectWarehouse);
                 }
 
                 var JsonData = new
                 {
-                    rows = ListData,
+                    total = total / jqgridparam.rows + 1,
+                    page = jqgridparam.page,
+                    records = total,
+                    costtime = CommonHelper.TimerEnd(watch),
+                    rows = ProjectWarehouseModellist.OrderByDescending(f => f.ModifyTime)
                 };
+
                 return Content(JsonData.ToJson());
             }
             catch (Exception ex)
             {
                 return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
+        }
+
+        //获取树字节子节点(自循环)
+        public IEnumerable<RMC_Tree> GetSonId(int p_id)
+        {
+            List<RMC_Tree> list = TreeCurrent.Find(p => p.ParentID == p_id).ToList();
+            return list.Concat(list.SelectMany(t => GetSonId(t.TreeID)));
         }
 
         /// <summary>
@@ -270,7 +287,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     RMC_ProjectWarehouse Oldentity = ProjectWarehouseCurrent.Find(t => t.ProjectWarehouseId == key_value).SingleOrDefault();//获取没更新之前实体对象
                     Oldentity.Damage = entity.Damage;//给旧实体重新赋值
                     Oldentity.Class = entity.Class;
-                    Oldentity.Librarian ="1";
+                    Oldentity.Librarian = "1";
                     Oldentity.Leader = entity.Leader;
                     Oldentity.Description = entity.Description;
                     ProjectWarehouseCurrent.Modified(Oldentity);

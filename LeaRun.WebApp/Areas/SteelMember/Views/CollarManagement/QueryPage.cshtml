@@ -9,12 +9,14 @@
         var JsonData = [];
         $("#grid_condition tbody tr").each(function () {
             var CollarNumbering = $(this).find('td:eq(0)').find('input').val();
-            var InBeginTime = $(this).find('td:eq(1)').find('input').val();
-            var InEndTime = $(this).find('td:eq(2)').find('input').val();
+            var Class = $(this).find('td:eq(1)').find('input').val();
+            var InBeginTime = $(this).find('td:eq(2)').find('input').val();
+            var InEndTime = $(this).find('td:eq(3)').find('input').val();
                 var tdData = {
                     CollarNumbering: CollarNumbering,
                     InBeginTime: InBeginTime,
                     InEndTime: InEndTime,
+                    Class:Class
                 }
                 JsonData.push(tdData);
         });
@@ -34,12 +36,15 @@
         <td>
             <input id="CollarNumbering" class="txt" style="width:120px;" />
         </td>
+        <th>用于工程：</th>
+        <td>
+            <input id="Class" class="txt" style="width:120px;" />
+        </td>
         <th>创建时间：</th>
         <td>
             <input id="InBeginTime" type="text" class="txt Wdate" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" style="width:90px;" />
-            至
         </td>
-        <td><input id="InEndTime" type="text" class="txt Wdate" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" style="width:90px;" /></td>
+        <td>至<input id="InEndTime" type="text" class="txt Wdate" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" style="width:90px;" /></td>
     </tr>
 </table>
 

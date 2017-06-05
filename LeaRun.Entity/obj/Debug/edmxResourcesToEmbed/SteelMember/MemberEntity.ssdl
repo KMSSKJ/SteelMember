@@ -325,6 +325,7 @@
     </Key>
     <Property Name="ProjectWarehouseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="MemberId" Type="int" />
+    <Property Name="MemberModel" Type="nvarchar" MaxLength="20" />
     <Property Name="OrderId" Type="int" />
     <Property Name="DeleteFlag" Type="int" />
     <Property Name="MemberTreeId" Type="int" />
@@ -364,6 +365,7 @@
     <Property Name="DeleteFlag" Type="int" />
     <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="2" />
     <Property Name="UnitName" Type="nvarchar" MaxLength="10" />
+    <Property Name="WarehousingTime" Type="datetime" />
   </EntityType>
   <EntityType Name="RMC_RawMaterialPurchase">
     <Key>

@@ -265,7 +265,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 else if (_d)
                 {
                     func = func.And(f => f.Use.Contains(model.Class));
-                    func1 = f => f.CollarTime <= model.InEndTime;
+                    func1 = f => f.Use.Contains(model.Class);
                 }
                 else if (_a && _b)
                 {
@@ -349,28 +349,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     total = CollarList.Count();
                 }
 
-                //DataTable ListData, ListData1;
-                //ListData = null;
-                //List<RMC_Collar> listfile = CollarManagementCurrent.FindPage<string>(jqgridparam.page
-                //                         , jqgridparam.rows
-                //                         , func
-                //                         , false
-                //                         , f => f.TreeId.ToString()
-                //                         , out total
-                //                         ).ToList();
-                //List<ProjectDemandModel> projectdemandlist = new List<ProjectDemandModel>();
-                //foreach (var item in listfile)
-                //{
-                //    ProjectDemandModel projectdemand = new ProjectDemandModel();
-                //    projectdemand.CollarId = item.CollarId;
-                //    projectdemand.CollarNumbering = item.CollarNumbering;
-                //    projectdemand.Use = item.Use;
-                //    projectdemand.CollarTime = item.CollarTime;
-                //    projectdemand.CollarMan = item.CollarMan;
-                //    projectdemand.Librarian = item.Librarian;
-                //    projectdemand.Description = item.Description;
-                //    projectdemandlist.Add(projectdemand);
-                //}
                 var JsonData = new
                 {
                     total = total / jqgridparam.rows + 1,

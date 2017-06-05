@@ -7,6 +7,7 @@ using SteelMember.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
@@ -33,6 +34,9 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
         [Inject]
         public CollarIBLL CollarManagementCurrent { get; set; }
+        [Inject]
+        public TreeIBLL TreeCurrent { get; set; }
+
         public ActionResult Index()
         {
             return View();
@@ -41,83 +45,107 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             return View();
         }
-        public ActionResult GridListJson(FileViewModel model, string TreeID, JqGridParam jqgridparam, string IsPublic, string ParameterJson)
+        public ActionResult GridListJson(FileViewModel model, string TreeId, JqGridParam jqgridparam, string IsPublic, string ParameterJson)
         {
-
-            if (ParameterJson != null)
-            {
-                if (ParameterJson != "[{\"CollarNumbering\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]")
-                {
-                    List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
-                    for (int i = 0; i < query_member.Count(); i++)
-                    {
-                        model.CollarNumbering = query_member[i].CollarNumbering;
-                        model.InBeginTime = query_member[i].InBeginTime;
-                        model.InEndTime = query_member[i].InEndTime;
-                    }
-                }
-            }
             try
             {
-                int TreeId;
-                //int FolderId = Convert.ToInt32(FolderId);
-                if (TreeID == "" || TreeID == null)
+                #region 查询条件拼接
+                if (ParameterJson != null)
                 {
-                    TreeId = 1;
+                    if (ParameterJson != "[{\"CollarNumbering\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]")
+                    {
+                        List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
+                        for (int i = 0; i < query_member.Count(); i++)
+                        {
+                            model.CollarNumbering = query_member[i].CollarNumbering;
+                            model.InBeginTime = query_member[i].InBeginTime;
+                            model.InEndTime = query_member[i].InEndTime;
+                        }
+                    }
+                }
+                Expression<Func<RMC_Collar, bool>> func = ExpressionExtensions.True<RMC_Collar>();
+                Func<RMC_Collar, bool> func1 = f => f.TreeId != 0;
+
+                var _a = model.CollarNumbering != null && model.CollarNumbering.ToString() != "";
+                var _b = model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00";
+                var _c = model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00";
+
+                if (_a && _b && _c)
+                {
+                    func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime;
+                }
+                else if (_a)
+                {
+                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering));
+                    func1 = f => f.CollarNumbering.Contains(model.CollarNumbering);
+                }
+                else if (_b)
+                {
+                    func = func.And(f => f.CollarTime >= model.InBeginTime);
+                    func1 = f => f.CollarTime >= model.InBeginTime;
+                }
+                else if (_c)
+                {
+                    func = func.And(f => f.CollarTime <= model.InEndTime);
+                    func1 = f => f.CollarTime <= model.InEndTime;
+                }
+                else if (_a && _b)
+                {
+                    func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime >= model.InBeginTime;
+                }
+                else if (_a && _c)
+                {
+                    func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime <= model.InEndTime;
+                }
+                else if (_b && _c)
+                {
+                    func1 = f => f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime;
+                }
+                #endregion
+
+                var MemberList_ = new List<RMC_Collar>();
+                var projectdemandlist = new List<ProjectDemandModel>();
+
+                Stopwatch watch = CommonHelper.TimerStart();
+                int total = 0;
+                List<RMC_Collar> MemberList = new List<RMC_Collar>();
+                if (TreeId == "")
+                {
+                    func.And(f => f.CollarId> 0);
+                    MemberList = MemberList_ = CollarManagementCurrent.FindPage<string>(jqgridparam.page
+                                             , jqgridparam.rows
+                                             , func
+                                             , false
+                                             , f => f.CollarTime.ToString()
+                                             , out total
+                                             ).ToList();
                 }
                 else
                 {
-                    TreeId = Convert.ToInt32(TreeID);
+                    int _id = Convert.ToInt32(TreeId);
+                    var list = GetSonId(_id).ToList();
+
+                    list.Add(TreeCurrent.Find(p => p.TreeID == _id).Single());
+
+                    foreach (var item in list)
+                    {
+                        var _MemberList = CollarManagementCurrent.Find(m => m.TreeId == item.TreeID).ToList();
+                        if (_MemberList.Count() > 0)
+                        {
+                            MemberList = MemberList.Concat(_MemberList).ToList();
+                        }
+                    }
+
+                    MemberList = MemberList.Where(func1).ToList();
+                    MemberList_ = MemberList.Take(jqgridparam.rows * jqgridparam.page).Skip(jqgridparam.rows * (jqgridparam.page - 1)).ToList();
+                    total = MemberList.Count();
                 }
 
-                int total = 0;
-                Expression<Func<RMC_Collar, bool>> func = ExpressionExtensions.True<RMC_Collar>();
-                //func = f => f.DeleteFlag != 1 &&f.IsSubmit==1;
-                #region 查询条件拼接
-                if (TreeId.ToString() != "" && TreeId != 0)
-                {
-                    func = func.And(f => f.TreeId == TreeId);
-
-                }
-                if (model.CollarNumbering != null && model.CollarNumbering.ToString() != "")
-                {
-                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering));
-
-                }
-                if (model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00")
-                {
-                    func = func.And(f => f.CollarTime >= model.InBeginTime);
-
-                }
-                if (model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00")
-                {
-                    func = func.And(f => f.CollarTime <= model.InEndTime);
-                }
-
-                #endregion
-
-                DataTable ListData, ListData1;
-                ListData = null;
-                //List<RMC_Tree> listtree = TreeCurrent.FindPage<string>(jqgridparam.page
-                //                         , jqgridparam.rows
-                //                         , func1
-                //                         , false
-                //                         , f => f.TreeID.ToString()
-                //                         , out total
-                //                         ).ToList();
-                List<RMC_Collar> listfile = CollarManagementCurrent.FindPage<string>(jqgridparam.page
-                                         , jqgridparam.rows
-                                         , func
-                                         , false
-                                         , f => f.CollarTime.ToString()
-                                         , out total
-                                         ).ToList();
-                List<ProjectDemandModel> projectdemandlist = new List<ProjectDemandModel>();
-                foreach (var item in listfile)
+                foreach (var item in MemberList_)
                 {
                     ProjectDemandModel projectdemand = new ProjectDemandModel();
                     var CollarMember = CollarMemberCurrent.Find(f => f.CollarId == item.CollarId).ToList();
-                    int Number =0;
+                    int Number = 0;
                     int UnitPrice = 0;
                     int CostBudget = 0;
                     int MemberId = 0;
@@ -145,7 +173,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     projectdemand.CollarId = item.CollarId;
                     projectdemand.CollarNumbering = CollarNumbering;
                     projectdemand.MemberName = Member.MemberName;
-                    projectdemand.MemberModel = Member.MemberModel;
                     projectdemand.UnitPrice = UnitPrice.ToString();
                     projectdemand.LeaderNumber = Number;
                     projectdemand.CostBudget = CostBudget.ToString();
@@ -155,43 +182,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     projectdemand.Description = item.Description;
                     projectdemandlist.Add(projectdemand);
                 }
-                if (projectdemandlist.Count() > 0)// && listtree.Count() > 0
-                {
-
-                    //ListData0 = ListToDataTable(listtree);
-                    ListData1 = DataHelper.ListToDataTable(projectdemandlist);
-                    ListData = ListData1.Clone();
-                    object[] obj = new object[ListData.Columns.Count];
-                    ////添加DataTable0的数据
-                    //for (int i = 0; i < ListData0.Rows.Count; i++)
-                    //{
-                    //    ListData0.Rows[i].ItemArray.CopyTo(obj, 0);
-                    //    ListData.Rows.Add(obj);
-                    //}
-                    //添加DataTable1的数据
-                    for (int i = 0; i < ListData1.Rows.Count; i++)
-                    {
-                        ListData1.Rows[i].ItemArray.CopyTo(obj, 0);
-                        ListData.Rows.Add(obj);
-                    }
-
-                }
-                //else if (listtree.Count() > 0)
-                //{
-                //    ListData = ListToDataTable(listtree);
-                //}
-                else if (listfile.Count() > 0)
-                {
-                    ListData = DataHelper.ListToDataTable(listfile);
-                }
-                else
-                {
-                    ListData = null;
-                }
 
                 var JsonData = new
                 {
-                    rows = ListData,
+                    total = total / jqgridparam.rows + 1,
+                    page = jqgridparam.page,
+                    records = total,
+                    costtime = CommonHelper.TimerEnd(watch),
+                    rows = projectdemandlist.OrderByDescending(f => f.CollarTime),
                 };
                 return Content(JsonData.ToJson());
             }
@@ -200,7 +198,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
         }
-
+        //获取树字节子节点(自循环)
+        public IEnumerable<RMC_Tree> GetSonId(int p_id)
+        {
+            List<RMC_Tree> list = TreeCurrent.Find(p => p.ParentID == p_id).ToList();
+            return list.Concat(list.SelectMany(t => GetSonId(t.TreeID)));
+        }
 
     }
 }

@@ -9060,7 +9060,6 @@
     <Content Include="Areas\SteelMember\Views\MemberProduce\PrintPage.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\ProcessForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\ProcessIndex.cshtml" />
-    <Content Include="Areas\SteelMember\Views\MemberProduce\ProcessManagementIndex.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\QRCodeForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\RawMaterialsForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\RawMaterialsIndex.cshtml" />
@@ -9099,6 +9098,9 @@
     <Content Include="Areas\SteelMember\Views\CollarManagement\CollarForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\File\RawMaterialsDosageForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\File\RawMaterialsDosageIndex.cshtml" />
+    <Content Include="Areas\SteelMember\Views\MemberProduce\QueryPage.cshtml" />
+    <Content Include="Areas\SteelMember\Views\MemberProduce\RawMaterialQueryPage.cshtml" />
+    <Content Include="Areas\SteelMember\Views\CollarManagement\QueryPage.cshtml" />
     <None Include="Properties\PublishProfiles\LR-FDMS.pubxml" />
     <Content Include="Views\Home\SkinIndex.cshtml" />
     <Content Include="Views\Login\Default.cshtml" />

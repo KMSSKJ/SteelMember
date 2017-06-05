@@ -20,6 +20,7 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<int> MemberClassId { get; set; }
         public Nullable<int> MemberId { get; set; }
         public string MemberNumbering { get; set; }
+        public string ShipNumbering { get; set; }
         public string MemberModel { get; set; }
         public string MemberName { get; set; }
         public string ShipNumber { get; set; }

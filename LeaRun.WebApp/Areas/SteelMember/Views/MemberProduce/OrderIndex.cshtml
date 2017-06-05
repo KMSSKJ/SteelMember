@@ -30,9 +30,13 @@
                     ConfirmOrder = 1;
                     Productioned = 1;
                     
-                } else {
+                }
+                else if(node.url == "NewOrder") {
                     ConfirmOrder = 0;
                     Productioned = 0;
+                } else {
+                    ConfirmOrder = 2;
+                    Productioned = 2;
                 }
                 GridFolderEvent(TreeId, ConfirmOrder, Productioned);
             },

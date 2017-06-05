@@ -16,6 +16,7 @@ namespace LeaRun.Entity.SteelMember
     {
         public int ProjectWarehouseId { get; set; }
         public Nullable<int> MemberId { get; set; }
+        public string MemberModel { get; set; }
         public Nullable<int> OrderId { get; set; }
         public Nullable<int> DeleteFlag { get; set; }
         public Nullable<int> MemberTreeId { get; set; }

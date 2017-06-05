@@ -11,9 +11,11 @@
     var TreeId = "";//16
     var ItemId = 2;
     var subgrid_table_id="";
+    var HavesChildren;
     function GetTree() {
         var itemtree = {
             onnodeclick: function (node) {
+                HavesChildren = node.hasChildren;
                 TreeId = node.id;
                 TreeName = node.text;
                 GridFolderEvent(TreeId);
@@ -27,7 +29,7 @@
     function GridFolderEvent(TreeID) {
         TreeId = TreeID;
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonProcess")?TreeID=" + TreeId, page: 1
+            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonProcess")?TreeId=" + TreeId, page: 1
         }).trigger('reloadGrid');
     };
 
@@ -37,7 +39,7 @@
     function GetGrid() {
         var SelectRowIndx;
         $("#gridTable").jqGrid({
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonProcess")?TreeID=" + TreeId,
+            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonProcess")?TreeId=" + TreeId,
             datatype: "json",
             height: $(window).height() - 125,
             autowidth: true,
@@ -53,10 +55,11 @@
             rowNum: 30,
             sortname: 'SortCode',
             sortorder: 'Desc',//降序 asc升序
-            pager: "#gridPager",
             viewrecords: true,
             rownumbers: true,
             gridview: true,
+            pager: "#gridPager",
+            rowList: [15, 30, 50, 100, 500, 1000],
             subGrid: true,
             subGridRowExpanded: function (subgrid_id, row_id) {
                  MemberId = GetJqGridValue("#gridTable", row_id, "MemberId");
@@ -108,7 +111,6 @@
                     rowNum: "all"
                 });
             },
-            rowList: [15, 30, 50, 100, 500, 1000],
             ondblClickRow: function (TreeId) {
                 var rowData = $("#gridTable").getRowData(TreeId);  //根据ID拿到一行的数据
                 if (rowData.Icon == '-1') {
@@ -164,10 +166,14 @@
         var MemberId = GetJqGridRowValue("#gridTable", "MemberId");
         var OrderId = GetJqGridRowValue("#gridTable", "OrderId");
         if (IsChecked(MemberId)) {
-            var url = "/SteelMember/File/MemberProcessIndex?MemberID= " + MemberId + "&OrderId=" + OrderId;
-            Dialog(url, "MemberProcessIndex", "构件制程", 900, 435, function (iframe) {
-                top.frames[iframe].AcceptClick();
-            });
+            if (HavesChildren == true) {
+                tipDialog("此节点不可编辑，请选择一个子节点", 3, 'warning');
+            } else {
+                var url = "/SteelMember/File/MemberProcessIndex?MemberID= " + MemberId + "&OrderId=" + OrderId;
+                Dialog(url, "MemberProcessIndex", "构件制程", 900, 435, function (iframe) {
+                    top.frames[iframe].AcceptClick();
+                });
+            }
         }
     }
     //编辑信息(得到实体)
@@ -427,14 +433,6 @@
 
 </script>
 
-@*<div class="tools_bar leftline rightline" style="margin-bottom: 0px; margin: 1px;">
-        <div class="PartialButton">
-            @Html.Partial("_PartialButton")
-        </div>
-    </div>
-    <div class="rightline" style="margin: 1px; margin-top: -1px;">
-        <table id="gridTable"></table>
-    </div>*@
 <div id="layout" class="layout">
     <!--左边-->
     <div class="layoutPanel layout-west">

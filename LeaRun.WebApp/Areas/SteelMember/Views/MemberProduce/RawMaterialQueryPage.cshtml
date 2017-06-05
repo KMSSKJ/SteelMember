@@ -8,11 +8,11 @@
     function GetConditionJson() {
         var JsonData = [];
         $("#grid_condition tbody tr").each(function () {
-            var CollarNumbering = $(this).find('td:eq(0)').find('input').val();
+            var RawMaterialName = $(this).find('td:eq(0)').find('input').val();
             var InBeginTime = $(this).find('td:eq(1)').find('input').val();
             var InEndTime = $(this).find('td:eq(2)').find('input').val();
                 var tdData = {
-                    CollarNumbering: CollarNumbering,
+                    MaterialName: MaterialName,
                     InBeginTime: InBeginTime,
                     InEndTime: InEndTime,
                 }
@@ -30,11 +30,11 @@
 
 <table id="grid_condition" border="0" class="form-find" style="height: 30px;">
     <tr>
-        <th>领用单号：</th>
+        <th>材料名称：</th>
         <td>
-            <input id="CollarNumbering" class="txt" style="width:120px;" />
+            <input id="RawMaterialName" class="txt" style="width:120px;" />
         </td>
-        <th>创建时间：</th>
+        <th>入库时间：</th>
         <td>
             <input id="InBeginTime" type="text" class="txt Wdate" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" style="width:90px;" />
             至
