@@ -16,7 +16,18 @@
             onnodeclick: function (node) {
                 TreeId = node.id;
                 TreeName = node.text;
-                GridFolderEvent(TreeId);
+                if (node.url == "Produceing") {
+                    ConfirmOrder = 1;
+                    Productioned = 0;
+                } else if (node.url == "End") {
+                    ConfirmOrder = 1;
+                    Productioned = 1;
+
+                } else {
+                    ConfirmOrder = 2;
+                    Productioned = 2;
+                }
+                GridFolderEvent(TreeId, ConfirmOrder, Productioned);
             },
             url: "@Url.Content("/SteelMember/MemberProduce/TreeJsonShip")?ItemId=" + ItemId
         };
@@ -27,7 +38,7 @@
     function GridFolderEvent(TreeID) {
         TreeId = TreeID;
         $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonShipManagement")?TreeID=" + TreeId, page: 1
+            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonShipManagement")?TreeId=" + TreeId, page: 1
     }).trigger('reloadGrid');
     };
 
@@ -35,7 +46,7 @@
     function GetGrid() {
         var SelectRowIndx;
         $("#gridTable").jqGrid({
-            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonShipManagement")?TreeID=" + TreeId,
+            url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonShipManagement")?TreeId=" + TreeId,
             datatype: "json",
             height: $(window).height() - 125,
             autowidth: true,
