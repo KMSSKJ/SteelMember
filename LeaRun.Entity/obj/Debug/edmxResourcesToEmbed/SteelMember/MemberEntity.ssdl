@@ -348,7 +348,7 @@
     <Property Name="PurchaseNumbering" Type="nvarchar" MaxLength="30" />
     <Property Name="CreateTime" Type="datetime" />
     <Property Name="CreateMan" Type="nvarchar" MaxLength="20" />
-    <Property Name="Library" Type="nvarchar" MaxLength="20" />
+    <Property Name="ReviewMan" Type="nvarchar" MaxLength="20" />
     <Property Name="Description" Type="nvarchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="RMC_RawMaterialLibrary">

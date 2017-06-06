@@ -130,8 +130,7 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "MemberMaterialId");
         var Prompt = "您确实要删除此文件吗？";
         if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/File/DeleteProjectDemand', { KeyValue: KeyValue }, Prompt);
-                $("#gridTable").trigger("reloadGrid"); //重新载入
+            delConfirm('/SteelMember/File/DeleteMemberMaterial', { KeyValue: KeyValue }, Prompt);
         }
     }
 

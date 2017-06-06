@@ -36,7 +36,7 @@
     function GetGrid() {
         var SelectRowIndx;
         $("#gridTable").jqGrid({
-            url: "@Url.Content("/SteelMember/MemberProduce/GridPurchaseListJson")?TreeID=" + TreeId,
+            url: "@Url.Content("/SteelMember/MemberProduce/GridPurchaseListJson")?TreeId=" + TreeId,
             datatype: "json",
             height: $(window).height() - 154,
             autowidth: true,
@@ -44,8 +44,8 @@
                 { label: '主键', name: "PurchaseId", hidden: true },
                 { label: '采购单编号', name: "PurchaseNumbering", index: "PurchaseNumbering", align: 'center',width: 12 },
                 { label: '制单(采购)人', name: "CreateMan", index: "CreateMan", align: 'center',width: 10 },
-                { label: '采购时间', name: "CreateTime", index: "CreateTime", align: 'center',width: 10 },
-                { label: '库管', name: "Librarian", index: "Librarian", align: 'center', width: 10 },
+                { label: '制单时间', name: "CreateTime", index: "CreateTime", align: 'center',width: 10 },
+                { label: '审核人', name: "ReviewMan", index: "ReviewMan", align: 'center', width: 10 },
                 { label: '备注', name: "Description", index: "Description", align: 'center', width: 10 },
             ],
             rowNum: 30,

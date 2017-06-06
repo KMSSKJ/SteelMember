@@ -22,7 +22,7 @@
     function GetGrid() {
         var index = GetQuery('index');
         $("#gridTable").jqGrid({
-            url: "@Url.Content("~/SteelMember/CollarManagement/TreeGridJsonAnalysisRawMaterial")?TreeID="TreeId,
+            url: "@Url.Content("~/SteelMember/CollarManagement/TreeGridJsonAnalysisRawMaterial")?TreeId="TreeId,
             datatype: "json",
             height: $(window).height() + 170,
             autowidth: true,

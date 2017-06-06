@@ -20,3 +20,4 @@ C:\Users\yangchaoyu\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache
 C:\Users\yangchaoyu\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.csproj.GenerateResource.Cache
 C:\Users\yangchaoyu\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.dll
 C:\Users\yangchaoyu\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.pdb
+C:\Users\yangchaoyu\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.csprojResolveAssemblyReference.cache

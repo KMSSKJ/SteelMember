@@ -250,7 +250,7 @@ function GetWebControls(element) {
                 break;
             default:
                 if (value == "") {
-                    value = "&nbsp;";
+                    value = "";
                 }
                 reVal += '"' + id + '"' + ':' + '"' + $.trim(value) + '",'
                 break;

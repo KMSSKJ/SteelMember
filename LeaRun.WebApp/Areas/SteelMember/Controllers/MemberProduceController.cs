@@ -60,6 +60,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public MemberProcessIBLL MemberProcessCurrent { get; set; }
         [Inject]
         public FactoryWarehouseIBLL FactoryWarehouseCurrent { get; set; }
+        [Inject]
+        public PurchaseIBLL PurchaseCurrent { get; set; }
         public virtual ActionResult Index()
         {
             return View();
@@ -446,7 +448,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// </summary>
         /// <param name="FolderId"></param>
         /// <returns></returns>
-        public ActionResult ConfirmOrder(string KeyValue, RMC_ProcessManagement Entity, RMC_AnalysisRawMaterial AnalysisRawMaterialEntity)
+        public ActionResult ConfirmOrder(string KeyValue, RMC_ProcessManagement Entity /*RMC_AnalysisRawMaterial AnalysisRawMaterialEntity*/)
         {
             try
             {
@@ -457,16 +459,13 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 file.ConfirmMan = currentUser.RealName;
                 OrderManagementCurrent.Modified(file);
 
-                // var demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == file.ProjectDemandId).SingleOrDefault();
-                //  var member = MemberLibraryCurrent.Find(f => f.MemberID == demand.MemberId).SingleOrDefault();
-                AnalysisRawMaterialEntity.TreeId = file.TreeId;
-                // AnalysisRawMaterialEntity.MaterialName = member.MemberName;
-                AnalysisRawMaterialEntity.OrderNumbering = file.OrderNumbering;
-                AnalysisRawMaterialEntity.OrderId = file.OrderId;
-                // AnalysisRawMaterialEntity.UnitId = demand.UnitId;
-                AnalysisRawMaterialEntity.ParentId = 0;
-                AnalysisRawMaterialEntity.RawMaterialId = 0;
-                AnalysisRawMaterialCurrent.Add(AnalysisRawMaterialEntity);
+
+                //AnalysisRawMaterialEntity.TreeId = file.TreeId;
+                //AnalysisRawMaterialEntity.OrderNumbering = file.OrderNumbering;
+                //AnalysisRawMaterialEntity.OrderId = file.OrderId;
+                //AnalysisRawMaterialEntity.ParentId = 0;
+                //AnalysisRawMaterialEntity.RawMaterialId = 0;
+                //AnalysisRawMaterialCurrent.Add(AnalysisRawMaterialEntity);
 
                 List<RMC_OrderMember> CollarMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
                 for (int i = 0; i < CollarMemberList.Count(); i++)
@@ -619,25 +618,25 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             return View();
         }
 
-        /// <summary>
-        /// 【项目信息管理】返回文件夹对象JSON
-        /// </summary>
-        /// <param name="KeyValue">主键值</param>
-        /// <returns></returns>
-        [HttpPost]
-        [ValidateInput(false)]
-        //[LoginAuthorize]
-        public ActionResult SetAnalysisRawMaterialForm(string KeyValue)
-        {
-            RMC_AnalysisRawMaterial entity = new RMC_AnalysisRawMaterial();
-            if (!string.IsNullOrEmpty(KeyValue))
-            {
-                int key_value = Convert.ToInt32(KeyValue);
-                entity = AnalysisRawMaterialCurrent.Find(f => f.AnalysisRawMaterialId == key_value).SingleOrDefault();
-            }
-            return Content(entity.ToJson());
-            //return Json(entity);
-        }
+        ///// <summary>
+        ///// 【项目信息管理】返回文件夹对象JSON
+        ///// </summary>
+        ///// <param name="KeyValue">主键值</param>
+        ///// <returns></returns>
+        //[HttpPost]
+        //[ValidateInput(false)]
+        ////[LoginAuthorize]
+        //public ActionResult SetAnalysisRawMaterialForm(string KeyValue)
+        //{
+        //    RMC_AnalysisRawMaterial entity = new RMC_AnalysisRawMaterial();
+        //    if (!string.IsNullOrEmpty(KeyValue))
+        //    {
+        //        int key_value = Convert.ToInt32(KeyValue);
+        //        entity = AnalysisRawMaterialCurrent.Find(f => f.AnalysisRawMaterialId == key_value).SingleOrDefault();
+        //    }
+        //    return Content(entity.ToJson());
+        //    //return Json(entity);
+        //}
 
         /// <summary>
         /// 提交文件夹表单
@@ -645,81 +644,81 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <param name="entity">实体对象</param>
         /// <param name="KeyValue">主键值</param>
         /// <returns></returns>
-        [HttpPost]
-        [ValidateInput(false)]
-        //[LoginAuthorize]
-        public virtual ActionResult SubmitAnalysisRawMaterialForm(RMC_AnalysisRawMaterial entity, string KeyValue, string OrderNumbering)
-        {
-            try
-            {
-                int IsOk = 0;
-                string Message = OrderNumbering == "" ? "编辑成功。" : "新增成功。";
-                if (!string.IsNullOrEmpty(OrderNumbering))
-                {
+        //[HttpPost]
+        //[ValidateInput(false)]
+        ////[LoginAuthorize]
+        //public virtual ActionResult SubmitAnalysisRawMaterialForm(RMC_AnalysisRawMaterial entity, string KeyValue, string OrderNumbering)
+        //{
+        //    try
+        //    {
+        //        int IsOk = 0;
+        //        string Message = OrderNumbering == "" ? "编辑成功。" : "新增成功。";
+        //        if (!string.IsNullOrEmpty(OrderNumbering))
+        //        {
 
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_AnalysisRawMaterial AnalysisRawMaterial = AnalysisRawMaterialCurrent.Find(t => t.AnalysisRawMaterialId == key_value).SingleOrDefault();
-                    RMC_AnalysisRawMaterial Oldentity = new RMC_AnalysisRawMaterial();
-                    Oldentity.TreeId = AnalysisRawMaterial.TreeId;
-                    Oldentity.ParentId = key_value;
-                    Oldentity.OrderId = 0;
-                    Oldentity.RawMaterialId = entity.RawMaterialId;
-                    var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == entity.RawMaterialId).SingleOrDefault();
-                    Oldentity.UnitId = RawMaterial.UnitId;
-                    Oldentity.MaterialClassId = entity.MaterialClassId;
-                    Oldentity.Number = entity.Number;
-                    Oldentity.MaterialName = entity.MaterialName;
-                    Oldentity.Description = entity.Description;
-                    AnalysisRawMaterialCurrent.Add(Oldentity);
-                    IsOk = 1;
-                    //this.WriteLog(IsOk, entity, null, KeyValue, Message);
-                }
-                else
-                {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    RMC_AnalysisRawMaterial Oldentity = AnalysisRawMaterialCurrent.Find(t => t.AnalysisRawMaterialId == key_value).SingleOrDefault();//获取没更新之前实体对象
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_AnalysisRawMaterial AnalysisRawMaterial = AnalysisRawMaterialCurrent.Find(t => t.AnalysisRawMaterialId == key_value).SingleOrDefault();
+        //            RMC_AnalysisRawMaterial Oldentity = new RMC_AnalysisRawMaterial();
+        //            Oldentity.TreeId = AnalysisRawMaterial.TreeId;
+        //            Oldentity.ParentId = key_value;
+        //            Oldentity.OrderId = 0;
+        //            Oldentity.RawMaterialId = entity.RawMaterialId;
+        //            var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == entity.RawMaterialId).SingleOrDefault();
+        //            Oldentity.UnitId = RawMaterial.UnitId;
+        //            Oldentity.MaterialClassId = entity.MaterialClassId;
+        //            Oldentity.Number = entity.Number;
+        //            Oldentity.MaterialName = entity.MaterialName;
+        //            Oldentity.Description = entity.Description;
+        //            AnalysisRawMaterialCurrent.Add(Oldentity);
+        //            IsOk = 1;
+        //            //this.WriteLog(IsOk, entity, null, KeyValue, Message);
+        //        }
+        //        else
+        //        {
+        //            int key_value = Convert.ToInt32(KeyValue);
+        //            RMC_AnalysisRawMaterial Oldentity = AnalysisRawMaterialCurrent.Find(t => t.AnalysisRawMaterialId == key_value).SingleOrDefault();//获取没更新之前实体对象
 
-                    Oldentity.Number = entity.Number;
-                    Oldentity.RawMaterialId = entity.RawMaterialId;
-                    Oldentity.Description = entity.Description;
-                    AnalysisRawMaterialCurrent.Modified(Oldentity);
-                    IsOk = 1;//更新实体对象
-                    //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
-                }
-                return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-            }
-            catch (Exception ex)
-            {
-                //this.WriteLog(-1, entity, null, KeyValue, "操作失败：" + ex.Message);
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
-        }
+        //            Oldentity.Number = entity.Number;
+        //            Oldentity.RawMaterialId = entity.RawMaterialId;
+        //            Oldentity.Description = entity.Description;
+        //            AnalysisRawMaterialCurrent.Modified(Oldentity);
+        //            IsOk = 1;//更新实体对象
+        //            //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
+        //        }
+        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //this.WriteLog(-1, entity, null, KeyValue, "操作失败：" + ex.Message);
+        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// 删除（销毁）文件
-        /// </summary>
-        /// <param name="FolderId"></param>
-        /// <returns></returns>
-        public ActionResult DeleteAnalysisRawMaterial(string KeyValue)
-        {
-            try
-            {
-                List<int> ids = new List<int>();
-                int key_value = Convert.ToInt32(KeyValue);
-                ids.Add(key_value);
-                AnalysisRawMaterialCurrent.Remove(ids);
-                return Content(new JsonMessage { Success = true, Code = "1", Message = "删除成功。" }.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage
-                {
-                    Success = false,
-                    Code = "-1",
-                    Message = "操作失败：" + ex.Message
-                }.ToString());
-            }
-        }
+        ///// <summary>
+        ///// 删除（销毁）文件
+        ///// </summary>
+        ///// <param name="FolderId"></param>
+        ///// <returns></returns>
+        //public ActionResult DeleteAnalysisRawMaterial(string KeyValue)
+        //{
+        //    try
+        //    {
+        //        List<int> ids = new List<int>();
+        //        int key_value = Convert.ToInt32(KeyValue);
+        //        ids.Add(key_value);
+        //        AnalysisRawMaterialCurrent.Remove(ids);
+        //        return Content(new JsonMessage { Success = true, Code = "1", Message = "删除成功。" }.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(new JsonMessage
+        //        {
+        //            Success = false,
+        //            Code = "-1",
+        //            Message = "操作失败：" + ex.Message
+        //        }.ToString());
+        //    }
+        //}
 
 
         public ActionResult GetRawMaterialName()
@@ -758,7 +757,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             if (KeyValue == "" || KeyValue == null)
             {
                 ViewBag.PurchaseNumbering = "CG" + DateTime.Now.ToString("yyyyMMddhhmmssffff");
-                ViewData["Librarian"] = currentUser.RealName;
+                ViewData["CreateMan"] = currentUser.RealName;
             }
             return View();
         }
@@ -768,6 +767,264 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             return View();
         }
 
+        public ActionResult GridPurchaseListJson(FileViewModel model, string TreeId, JqGridParam jqgridparam)
+        {
+            try
+            {
+                #region 查询条件拼接
+                //if (ParameterJson != null)
+                //{
+                //    if (ParameterJson != "[{\"MemberModel\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\",\"Class\":\"\"}]")
+                //    {
+                //        List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
+                //        for (int i = 0; i < query_member.Count(); i++)
+                //        {
+                //            model.MemberModel = query_member[i].MemberModel;
+                //            model.InBeginTime = query_member[i].InBeginTime;
+                //            model.InEndTime = query_member[i].InEndTime;
+                //            model.Class = query_member[i].Class;
+                //        }
+                //    }
+                //}
+
+                Expression<Func<RMC_Purchase, bool>> func = ExpressionExtensions.True<RMC_Purchase>();
+                func = f => f.PurchaseId > 0;
+                Func<RMC_Purchase, bool> func1 = f => f.PurchaseId != 0;
+
+                //var _a = model.MemberModel != null && model.MemberModel.ToString() != "";
+                //var _b = model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00";
+                //var _c = model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00";
+
+                //if (_a && _b && _c)
+                //{
+                //    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime >= model.InBeginTime && f.ModifyTime <= model.InEndTime;
+                //}
+                //else if (_a)
+                //{
+                //    func = func.And(f => f.MemberModel.Contains(model.MemberModel));
+                //    func1 = f => f.MemberModel.Contains(model.MemberModel);
+                //}
+                //else if (_b)
+                //{
+                //    func = func.And(f => f.ModifyTime >= model.InBeginTime);
+                //    func1 = f => f.ModifyTime >= model.InBeginTime;
+                //}
+                //else if (_c)
+                //{
+                //    func = func.And(f => f.ModifyTime <= model.InEndTime);
+                //    func1 = f => f.ModifyTime <= model.InEndTime;
+                //}
+                //else if (_a && _b)
+                //{
+                //    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime >= model.InBeginTime;
+                //}
+                //else if (_a && _c)
+                //{
+                //    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime <= model.InEndTime;
+                //}
+                //else if (_b && _c)
+                //{
+                //    func1 = f => f.ModifyTime >= model.InBeginTime && f.ModifyTime <= model.InEndTime;
+                //}
+                #endregion
+
+                var MemberList_ = new List<RMC_Purchase>();
+                var ProjectWarehouseModellist = new List<ProjectWarehouseModel>();
+
+                Stopwatch watch = CommonHelper.TimerStart();
+                int total = 0;
+                List<RMC_Purchase> MemberList = new List<RMC_Purchase>();
+                if (TreeId == "" || TreeId == null)
+                {
+                    //func.And(f =>f.ProjectWarehouseId> 0&&f.IsShiped==1);
+                    MemberList = MemberList_ = PurchaseCurrent.FindPage<string>(jqgridparam.page
+                                             , jqgridparam.rows
+                                             , func
+                                             , false
+                                             , f => f.CreateTime.ToString()
+                                             , out total
+                                             ).ToList();
+                }
+                //else
+                //{
+                //    int _id = Convert.ToInt32(TreeId);
+                //    var list = GetSonId(_id).ToList();
+
+                //    list.Add(TreeCurrent.Find(p => p.TreeID == _id).Single());
+
+                //    foreach (var item in list)
+                //    {
+                //        var _MemberList = PurchaseCurrent.Find(m => m.MemberTreeId == item.TreeID && m.IsShiped == 1).ToList();
+                //        if (_MemberList.Count() > 0)
+                //        {
+                //            MemberList = MemberList.Concat(_MemberList).ToList();
+                //        }
+                //    }
+
+                //    MemberList = MemberList.Where(func1).ToList();
+                //    MemberList_ = MemberList.Take(jqgridparam.rows * jqgridparam.page).Skip(jqgridparam.rows * (jqgridparam.page - 1)).ToList();
+                //    total = MemberList.Count();
+                //}
+
+                var JsonData = new
+                {
+                    total = total / jqgridparam.rows + 1,
+                    page = jqgridparam.page,
+                    records = total,
+                    costtime = CommonHelper.TimerEnd(watch),
+                    rows = MemberList_.OrderByDescending(f => f.CreateTime)
+                };
+                return Content(JsonData.ToJson());
+            }
+            catch (Exception ex)
+            {
+                return Content(new JsonMessage
+                {
+                    Success = false,
+                    Code = "-1",
+                    Message = "操作失败：" + ex.Message
+                }.ToString());
+            }
+        }
+
+        public ActionResult TreeGridJsonAnalysisRawMaterial(FileViewModel model, string ParameterJson, string TreeId, JqGridParam jqgridparam)
+        {
+            try
+            {
+                #region 查询条件拼接
+                if (ParameterJson != null)
+                {
+                    if (ParameterJson != "[{\"MemberModel\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\",\"Class\":\"\"}]")
+                    {
+                        List<FileViewModel> query_member = JsonHelper.JonsToList<FileViewModel>(ParameterJson);
+                        for (int i = 0; i < query_member.Count(); i++)
+                        {
+                            model.MemberModel = query_member[i].MemberModel;
+                            model.InBeginTime = query_member[i].InBeginTime;
+                            model.InEndTime = query_member[i].InEndTime;
+                            model.Class = query_member[i].Class;
+                        }
+                    }
+                }
+
+                Expression<Func<RMC_ProjectWarehouse, bool>> func = ExpressionExtensions.True<RMC_ProjectWarehouse>();
+                func = f => f.ProjectWarehouseId > 0 && f.IsShiped == 1;
+                Func<RMC_ProjectWarehouse, bool> func1 = f => f.MemberTreeId != 0;
+
+                var _a = model.MemberModel != null && model.MemberModel.ToString() != "";
+                var _b = model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00";
+                var _c = model.InEndTime != null && model.InEndTime.ToString() != "0001/1/1 0:00:00";
+
+                if (_a && _b && _c)
+                {
+                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime >= model.InBeginTime && f.ModifyTime <= model.InEndTime;
+                }
+                else if (_a)
+                {
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel));
+                    func1 = f => f.MemberModel.Contains(model.MemberModel);
+                }
+                else if (_b)
+                {
+                    func = func.And(f => f.ModifyTime >= model.InBeginTime);
+                    func1 = f => f.ModifyTime >= model.InBeginTime;
+                }
+                else if (_c)
+                {
+                    func = func.And(f => f.ModifyTime <= model.InEndTime);
+                    func1 = f => f.ModifyTime <= model.InEndTime;
+                }
+                else if (_a && _b)
+                {
+                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime >= model.InBeginTime;
+                }
+                else if (_a && _c)
+                {
+                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime <= model.InEndTime;
+                }
+                else if (_b && _c)
+                {
+                    func1 = f => f.ModifyTime >= model.InBeginTime && f.ModifyTime <= model.InEndTime;
+                }
+                #endregion
+
+                var MemberList_ = new List<RMC_ProjectWarehouse>();
+                var ProjectWarehouseModellist = new List<ProjectWarehouseModel>();
+
+                Stopwatch watch = CommonHelper.TimerStart();
+                int total = 0;
+                List<RMC_ProjectWarehouse> MemberList = new List<RMC_ProjectWarehouse>();
+                if (TreeId == "" || TreeId == null)
+                {
+                    //func.And(f =>f.ProjectWarehouseId> 0&&f.IsShiped==1);
+                    MemberList = MemberList_ = ProjectWarehouseCurrent.FindPage<string>(jqgridparam.page
+                                             , jqgridparam.rows
+                                             , func
+                                             , false
+                                             , f => f.ModifyTime.ToString()
+                                             , out total
+                                             ).ToList();
+                }
+                else
+                {
+                    int _id = Convert.ToInt32(TreeId);
+                    var list = GetSonId(_id).ToList();
+
+                    list.Add(TreeCurrent.Find(p => p.TreeID == _id).Single());
+
+                    foreach (var item in list)
+                    {
+                        var _MemberList = ProjectWarehouseCurrent.Find(m => m.MemberTreeId == item.TreeID && m.IsShiped == 1).ToList();
+                        if (_MemberList.Count() > 0)
+                        {
+                            MemberList = MemberList.Concat(_MemberList).ToList();
+                        }
+                    }
+
+                    MemberList = MemberList.Where(func1).ToList();
+                    MemberList_ = MemberList.Take(jqgridparam.rows * jqgridparam.page).Skip(jqgridparam.rows * (jqgridparam.page - 1)).ToList();
+                    total = MemberList.Count();
+                }
+
+                //foreach (var item in MemberList_)
+                //{
+                //    ProjectWarehouseModel ProjectWarehouse = new ProjectWarehouseModel();
+                //    ProjectWarehouse.ProjectWarehouseId = item.ProjectWarehouseId;
+                //    //var projectinfo = ProjectInfoCurrent.Find(f => f.ProjectId == item.ProjectId).SingleOrDefault();
+                //    //projectdemand.ProjectName = projectinfo.ProjectName;
+                //    var memberlibrary = MemberLibraryCurrent.Find(f => f.MemberID == item.MemberId).SingleOrDefault();
+                //    ProjectWarehouse.MemberName = memberlibrary.MemberName;
+                //    ProjectWarehouse.MemberModel = item.MemberModel;
+                //    ProjectWarehouse.MemberNumbering = memberlibrary.MemberNumbering.ToString();
+                //    ProjectWarehouse.ModifyTime = item.ModifyTime;
+                //    ProjectWarehouse.Class = item.Class;
+                //    ProjectWarehouse.Damage = item.Damage;
+                //    ProjectWarehouse.InStock = item.InStock;
+                //    ProjectWarehouse.Leader = item.Leader;
+                //    ProjectWarehouse.Librarian = item.Librarian;
+                //    ProjectWarehouse.Description = item.Description;
+                //    ProjectWarehouseModellist.Add(ProjectWarehouse);
+
+                var JsonData = new
+                {
+                    total = total / jqgridparam.rows + 1,
+                    page = jqgridparam.page,
+                    records = total,
+                    costtime = CommonHelper.TimerEnd(watch),
+                    rows = MemberList_.OrderByDescending(f => f.ModifyTime)
+                };
+                return Content(JsonData.ToJson());
+            }
+            catch (Exception ex)
+            {
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+            }
+        }
+
+        public ActionResult SubmitProduceForm()
+        {
+            return View();
+        }
         #endregion
 
         #region 构件厂原材料库存管理
@@ -1710,7 +1967,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 Expression<Func<RMC_ShipManagement, bool>> func = ExpressionExtensions.True<RMC_ShipManagement>();
                 Expression<Func<RMC_ShipManagement, bool>> func1 = ExpressionExtensions.True<RMC_ShipManagement>();
                 func1 = f => f.IsPackaged == _IsPackaged;
-               // Func<RMC_ShipManagement, bool> func1 = f => f.TreeId != 0;
+                // Func<RMC_ShipManagement, bool> func1 = f => f.TreeId != 0;
 
                 var _a = model.ShipNumbering != null && model.ShipNumbering.ToString() != "";
                 var _b = model.InBeginTime != null && model.InBeginTime.ToString() != "0001/1/1 0:00:00";
@@ -1843,6 +2100,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             return Content(entity.ToJson());
             //return Json(entity);
         }
+
         /// <summary>
         /// 提交文件表单
         /// </summary>

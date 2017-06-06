@@ -47,3 +47,4 @@ C:\Users\yangchaoyu\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\zh-CN\Lea
 C:\Users\yangchaoyu\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\zh-TW\LeaRun.Resource.resources.dll
 C:\Users\yangchaoyu\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\LeaRun.Resource.dll
 C:\Users\yangchaoyu\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\LeaRun.Resource.pdb
+C:\Users\yangchaoyu\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\LeaRun.Resource.csprojResolveAssemblyReference.cache

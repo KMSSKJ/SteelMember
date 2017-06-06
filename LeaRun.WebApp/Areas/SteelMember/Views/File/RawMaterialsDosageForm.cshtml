@@ -10,16 +10,14 @@
         var Data;
         $(function () {
             document.getElementById("MemberId").value = MemberID;
-            LoadMaterialClass();
             InitControl();
-            LoadMaterialName();
-          
-
+            LoadMaterialClass();
         })
         //得到一个对象实体
         function InitControl() {
             if (!!KeyValue) {
-            AjaxJson("/SteelMember/File/SetDataForm", { KeyValue: KeyValue }, function (data) {
+                LoadMaterialName();
+                AjaxJson("/SteelMember/File/SetDataForm", { KeyValue: KeyValue }, function (data) {
                 SetWebControls(data);
                 Data = data;
             });
@@ -58,9 +56,51 @@
                 comboBoxTree(objId, "200px");
                 var itemtree = {
                     onnodeclick: function (item) {
-                        $("#RawMaterialClassId").val(item.id);
-                        $('#RawMaterialClassName').val(item.text);
-                        GetMaterialName(item.id);
+                        if (item.hasChildren == false) {
+                            $("#RawMaterialClassId").val(item.id);
+                            $("#RawMaterialClassName").val(item.text);
+                        $.ajax({
+                            url: '/SteelMember/File/GetMaterialName',
+                            type: 'post',
+                            datatype: 'Json',
+                            data: { MaterialClassId: item.id },
+                            success: function (data) {
+                                if (data != "") {
+                                    var projectname_sel = [];
+                                    //projectname_sel.push('<option value="" selected>请选择</option>')
+                                    for (var i = 0, len = data.length; i < len; i++) {
+                                        var projectname = data[i];
+                                        projectname_sel.push('<option value="' + projectname.RawMaterialId + '">' + projectname.RawMaterialName + '</option>')
+                                    }
+                                    $("#RawMaterialId").html(projectname_sel.join(' '));
+                                    ////编辑时获取值
+                                    //$("#RawMaterialId  option[value='" + data.RawMaterialId + "']").attr("selected", true);
+                                }
+                                else {
+                                    tipDialog("此节点无数据");
+
+                                    var projectname_sel = [];
+                                    $("#RawMaterialId").html(projectname_sel.join(' '));
+
+                                    document.getElementById("RawMaterialClassId").value = "";
+                                    document.getElementById("RawMaterialClassName").value = "";
+                                }
+                            },
+                            error: function () {
+                                return false;
+                            }
+                        });
+
+                             } else {
+                            tipDialog("此节点不能作为类型");
+
+                                var projectname_sel = [];
+                                $("#RawMaterialId").html(projectname_sel.join(' '));
+
+                                document.getElementById("RawMaterialClassId").value = "";
+                                document.getElementById("RawMaterialClassName").value = "";
+                            }
+
                     },
                     url: "@Url.Content("/SteelMember/File/TreeJson")?TreeId=" + ItemId
                 };
@@ -68,33 +108,6 @@
                 //移除Id上级元素
                 $("#comboBoxTree" + objId + "_" + GetQuery('KeyValue').replace(/-/g, '_')).parent('li').remove();
             })
-        };
-
-     
-        //获取获取名称
-        function GetMaterialName(treeid) {
-            $.ajax({
-                url: '/SteelMember/File/GetMaterialName',
-                type: 'post',
-                datatype: 'Json',
-                data: { MaterialClassId: treeid },
-                success: function (data) {
-                    if (data) {
-                        var projectname_sel = [];
-                        // projectname_sel.push('<option value="" selected>请选择</option>')
-                        for (var i = 0, len = data.length; i < len; i++) {
-                            var projectname = data[i];
-                            projectname_sel.push('<option value="' + projectname.RawMaterialId + '">' + projectname.RawMaterialName + '</option>')
-                        }
-                        $("#RawMaterialId").html(projectname_sel.join(' '));
-                        ////编辑时获取值
-                        //$("#RawMaterialId  option[value='" + data.RawMaterialId + "']").attr("selected", true);
-                    }
-                },
-                error: function () {
-                    alert('查询异常');
-                }
-            });
         };
 
         //载入材料名称
@@ -105,7 +118,7 @@
                 datatype: 'Json',
                 data: { MaterialClassId: Data.RawMaterialClassId },
                 success: function (data) {
-                    if (data) {
+                    if (data != "") {
                         var projectname_sel = [];
                         // projectname_sel.push('<option value="" selected>请选择</option>')
                         for (var i = 0, len = data.length; i < len; i++) {
@@ -115,6 +128,8 @@
                         $("#RawMaterialId").html(projectname_sel.join(' '));
                         //编辑时获取值
                         $("#RawMaterialId  option[value='" + Data.RawMaterialId + "']").attr("selected", true);
+                    } else {
+                        return false;
                     }
                 },
                 error: function () {
@@ -127,7 +142,7 @@
 
 </head>
 <form id="form2" style="margin: 25px; margin-left: 40px; margin-right: 40px;">
-    <input id="MemberId"type="hidden" />
+    <input id="MemberId" type="hidden" />
     <div>
         <table class="form">
             <tr>
@@ -141,18 +156,18 @@
             </tr>
             <tr>
                 <th class="formTitle">
-                    材料名称：
+                    材料名称：<font face="宋体" color="red">*</font>
                 </th>
                 <td class="formValue">
-                    <select id="RawMaterialId" name="RawMaterialId"></select>
+                    <select id="RawMaterialId" name="RawMaterialId" datacol="yes" err="材料名称" checkexpession="NotNull" style="width:100%;"></select>
                 </td>
             </tr>
             <tr>
                 <th class="formTitle">
-                   材料用量：
+                    材料用量：<font face="宋体" color="red">*</font>
                 </th>
                 <td class="formValue">
-                    <input id="MaterialNumber" type="text" class="txt" />
+                    <input id="MaterialNumber" type="text" class="txt" datacol="yes" err="材料用量" checkexpession="NotNull" />
                 </td>
             </tr>
             <tr>

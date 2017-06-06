@@ -11,7 +11,7 @@
     var Data = "";
     $(function () {
         GetGrid();
-        GetCollarMan();
+        GetReviewMan();
 
         //AjaxJson("/SteelMember/ProjectOrder/TreeName", { TreeId: TreeId }, function (data) {
         //    //SetWebControls(data);
@@ -21,13 +21,13 @@
 
         if (!!KeyValue) {
             //主表信息
-            AjaxJson("/SteelMember/CollarManagement/SetDataForm", { KeyValue: KeyValue }, function (data) {
+            AjaxJson("/SteelMember/MemberProduce/SetDataForm", { KeyValue: KeyValue }, function (data) {
                 SetWebControls(data);
                 Data = data;
             });
             var rowindex = 1;
             //明细信息
-            AjaxJson("/SteelMember/CollarManagement/GetCollarEntryList", { CollarId: KeyValue }, function (data) {
+            AjaxJson("/SteelMember/MemberProduce/GetCollarEntryList", { CollarId: KeyValue }, function (data) {
                 var JsonData = data.rows;
                 $.each(JsonData, function (i) {
                     var rowData = JsonData[i];
@@ -63,8 +63,8 @@
         }
     })
 
-    //领用人
-    function GetCollarMan() {
+    //审核人
+    function GetReviewMan() {
         $.ajax({
             url: '/SteelMember/File/GetUserName',
             type: 'post',
@@ -78,18 +78,18 @@
                         var projectname = data[i];
                         projectname_sel.push('<option value="' + projectname.RealName + '">' + projectname.RealName + '</option>')
                     }
-                    $("#CollarMan").html(projectname_sel.join(' '));
-                    $('#CollarMan')[0].selectedIndex = 0;//select下拉框的第二个元素为当前选中值
-                    var checkValue = $("#CollarMan").val();  //获取Select选择的Value
-                    $("#CollarMan").change(function () {//code...});   //为Select添加事件，当选择其中一项时触发
-                        var checkValue = $("#CollarMan").val();  //获取Select选择的Value
+                    $("#ReviewMan").html(projectname_sel.join(' '));
+                    $('#ReviewMan')[0].selectedIndex = 0;//select下拉框的第二个元素为当前选中值
+                    var checkValue = $("#ReviewMan").val();  //获取Select选择的Value
+                    $("#ReviewMan").change(function () {//code...});   //为Select添加事件，当选择其中一项时触发
+                        var checkValue = $("#ReviewMan").val();  //获取Select选择的Value
                         //var checkText = $("#MemberId").find("option:selected").text();  //获取Select选择的Text
                         //var checkIndex = $("#MemberId ").get(0).selectedIndex;  //获取Select选择的索引值
                         //var maxIndex = $("#MemberId option:last").attr("index");  //获取Select最大的索引值
                     })
                     if (!!KeyValue) {
                         //编辑时获取值
-                        $("#CollarMan  option[value='" + Data.CollarMan + "']").attr("selected", true);
+                        $("#ReviewMan  option[value='" + Data.ReviewMan + "']").attr("selected", true);
                     }
                 }
             },
@@ -107,7 +107,7 @@
             height: $(window).height() + 200,
             autowidth: true,
             colModel: [
-                { label: '主键', name: "Material", index: "Material",hidden: true }，
+                { label: '主键', name: "RawMaterialId", index: "RawMaterialId",hidden: true },
                 { label: '材料名', name: "MaterialName", index: "MaterialName", align: 'center', width: 6 },
                 { label: '规格', name: "MaterialStandard", index: "MaterialStandard", align: 'center', width: 6 },
                 { label: '数量', name: "Qty", index: "Qty", align: 'center', width: 12 },
@@ -135,7 +135,7 @@
             gridComplete: function () {
                 //合计
                 $(this).footerData("set", {
-                    "MemberNumbering": "合计",
+                    "MaterialName": "合计",
                     "Qty": "<span id='TotalQty'>0</span>",
                     //"Price": "<span id='TotalPrice'>0.00</span>",
                     //"PriceAmount": "<span id='TotalPriceAmount'>0.00</span>",
@@ -186,7 +186,7 @@
                 return false;
             }
             var index = $(this).attr('id').split('➩')[1];
-            var url = "/SteelMember/CollarManagement/ItemList?index=" + index + "&TreeId=" + TreeId;
+            var url = "/SteelMember/MemberProduce/ItemList?index=" + index + "&TreeId=" + TreeId;
             Dialog(url, "ItemList", "选取<" + TreeName + ">构件（点击表格添加）", 900, 440);
         });
         //价格信息文本框点击事件
@@ -290,7 +290,7 @@
         window.setTimeout(function () {
             var postData = GetWebControls("#tb_POOrderFrom");
             postData["POOrderEntryJson"] = GetTableDataJson("#gridTable");
-            AjaxJson("/SteelMember/CollarManagement/SubmitCollarForm?KeyValue=" + KeyValue + "&TreeId=" + TreeId, postData, function (data) {
+            AjaxJson("/SteelMember/MemberProduce/SubmitProduceForm?KeyValue=" + KeyValue + "&TreeId=" + TreeId, postData, function (data) {
                 tipDialog(data.Message, 3, data.Code);
                 top.frames[tabiframeId()].windowload();
                 closeDialog();
@@ -326,22 +326,22 @@
                     采购单编号[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    <input readonly id="PurchaseNumbering" type="text" class="txt" datacol="yes" err="制单编号" checkexpession="NotNull" value="@ViewBag.CollarNumbering" style="width: 95%" />
+                    <input readonly id="PurchaseNumbering" type="text" class="txt" datacol="yes" err="制单编号" checkexpession="NotNull" value="@ViewBag.PurchaseNumbering" style="width: 95%" />
                 </td>
                 <th>
                     制单(采购)人[<font face="宋体" color="red">*</font>]：
                 </th>
                 <td>
-                    <input readonly id="CreateMan" type="text" class="txt" style="width: 95%" />
+                    <input readonly id="CreateMan" type="text" class="txt" style="width: 95%" value="@ViewData["CreateMan"] "/>
                 </td>
 
             </tr>
             <tr>
                 <th>
-                    库管员：
+                    审核人：
                 </th>
                 <td>
-                    <input readonly id="Librarian" type="text" class="txt" style="width: 95%" value="@ViewData["Librarian"] " />
+                    <select id="ReviewMan" datacol="yes" err="审核人" checkexpession="NotNull" style="width: 95%"></select>
                 </td>
                 <th>
                     制单日期[<font face="宋体" color="red">*</font>]：
@@ -354,7 +354,7 @@
             
             <tr>
                 <th>
-                    库管签字：
+                    审核签字：
                 </th>
                 <td><input readonly id="Q" type="text" class="txt" style="width: 95%" /></td>
                 <th>

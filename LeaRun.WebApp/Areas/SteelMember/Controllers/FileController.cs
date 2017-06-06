@@ -49,7 +49,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
         [Inject]
         public ProcessManagementIBLL ProcessManagementCurrent { get; set; }
-
+       
         #region 已注销代码
         ///// <summary>
         ///// 文件在线查看
@@ -883,34 +883,38 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 if (_a && _b && _c)
                 {
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime >= model.InBeginTime && f.UploadTime <= model.InEndTime);
                     func1 = f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime >= model.InBeginTime && f.UploadTime <= model.InEndTime;
                 }
-                else if (_a)
+                else if (_a&&!_b&&!_c)
                 {
                     func = func.And(f => f.MemberModel.Contains(model.MemberModel));
                     func1 = f => f.MemberModel.Contains(model.MemberModel);
                 }
-                else if (_b)
+                else if (_b&&!_a&&!_c)
                 {
                     func = func.And(f => f.UploadTime >= model.InBeginTime);
                     func1 = f => f.UploadTime >= model.InBeginTime;
                 }
-                else if (_c)
+                else if (_c&&!_b&&!_a)
                 {
                     func = func.And(f => f.UploadTime <= model.InEndTime);
                     func1 = f => f.UploadTime <= model.InEndTime;
                 }
-                else if (_a && _b)
+                else if (_a && _b&&!_c)
                 {
+                    func= func.And(f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime >= model.InBeginTime);
                     func1 = f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime >= model.InBeginTime;
                 }
-                else if (_a && _c)
+                else if (_a && _c&&!_b)
                 {
-                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime <= model.InEndTime;
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime <= model.InEndTime);
+                       func1 = f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime <= model.InEndTime;
                 }
-                else if (_b && _c)
+                else if (_b && _c&&!_a)
                 {
-                    func1 = f => f.UploadTime >= model.InBeginTime && f.UploadTime <= model.InEndTime;
+                    func = func.And(f => f.UploadTime >= model.InBeginTime && f.UploadTime <= model.InEndTime);
+                       func1 = f => f.UploadTime >= model.InBeginTime && f.UploadTime <= model.InEndTime;
                 }
                 #endregion
 
@@ -945,7 +949,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         }
                     }
 
-                    MemberList= MemberList.Where(func1).ToList();
+                    MemberList= MemberList.Where(func1).OrderByDescending(f => f.UploadTime).ToList();
                     MemberList_ = MemberList.Take(jqgridparam.rows * jqgridparam.page).Skip(jqgridparam.rows * (jqgridparam.page - 1)).ToList();
                     total = MemberList.Count();
                 }
@@ -955,7 +959,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     page = jqgridparam.page,
                     records = total,
                     costtime = CommonHelper.TimerEnd(watch),
-                    rows = MemberList_.OrderByDescending(f => f.UploadTime),
+                    rows = MemberList_,
                 };
                 return Content(JsonData.ToJson());
             }
@@ -1773,9 +1777,36 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
             int IsOk = -1;
             int key_value = Convert.ToInt32(KeyValue);
+            //删除构件
             List<int> ids = new List<int>();
             ids.Add(key_value);
             IsOk = MemberLibraryCurrent.Remove(ids);
+            //
+
+            //删除构件材料
+            List<int> ids1 = new List<int>();
+            var MemberMaterial = MemberMaterialCurrent.Find(f=>f.MemberId==key_value).ToList();
+            if(MemberMaterial.Count()>0) {
+                foreach (var item in MemberMaterial)
+                {
+                    ids1.Add(Convert.ToInt32(item.MemberId));
+                }
+                IsOk = MemberMaterialCurrent.Remove(ids1);
+            }
+            //
+
+            //删除构件制程
+            List<int> ids2 = new List<int>();
+            var MemberProcess = MemberProcessCurrent.Find(f => f.MemberId == key_value).ToList();
+            if (MemberProcess.Count() > 0)
+            {
+                foreach (var item in MemberProcess)
+                {
+                    ids1.Add(Convert.ToInt32(item.MemberId));
+                }
+                IsOk = MemberProcessCurrent.Remove(ids1);
+            }
+
             return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = "删除成功。" }.ToString());
         }
 
@@ -2020,7 +2051,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         [HttpPost]
         [ValidateInput(false)]
         //[LoginAuthorize]
-        public virtual ActionResult SubmitDataForm(RMC_MemberMaterial entity, string KeyValue, string TreeId)
+        public virtual ContentResult SubmitDataForm(RMC_MemberMaterial entity, string KeyValue, string TreeId)
         {
             try
             {
@@ -2039,14 +2070,24 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
                 else
                 {
-                    MemberMaterialCurrent.Add(entity);
+                    var MemberMaterialList = MemberMaterialCurrent.Find(f => f.MemberId == entity.MemberId).ToList();
+                    var a = MemberMaterialList.Where(f => f.RawMaterialId == entity.RawMaterialId).SingleOrDefault();
+                        if (a==null)
+                        {
+                            MemberMaterialCurrent.Add(entity);
 
-                    var Member = MemberLibraryCurrent.Find(f => f.MemberID == entity.MemberId).SingleOrDefault();
-                    Member.IsProcess = 1;
-                    Member.IsRawMaterial = 1;
-                    MemberLibraryCurrent.Modified(Member);
+                            var Member = MemberLibraryCurrent.Find(f => f.MemberID == entity.MemberId).SingleOrDefault();
+                            Member.IsRawMaterial = 1;
+                            MemberLibraryCurrent.Modified(Member);
 
-                    IsOk = 1;
+                            IsOk = 1;
+
+                        }
+                        else
+                        {
+                            return Content(new JsonMessage { Success = false, Code = "-1", Message = "该数据已存在！" }.ToString());
+                        }
+                   
                     //this.WSectionalSize_r = entity.SectionalSize_r;riteLog(IsOk, entity, null, KeyValue, Message);
                 }
                 return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
@@ -2058,14 +2099,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             }
         }
 
-        public virtual ActionResult DeleteData(RMC_MemberLibrary entity, string KeyValue)
+        public virtual ActionResult DeleteMemberMaterial(RMC_MemberLibrary entity, string KeyValue)
         {
 
             int IsOk = -1;
             int key_value = Convert.ToInt32(KeyValue);
             List<int> ids = new List<int>();
             ids.Add(key_value);
-            IsOk = MemberLibraryCurrent.Remove(ids);
+            IsOk = MemberMaterialCurrent.Remove(ids);
             return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = "删除成功。" }.ToString());
         }
 
@@ -2203,7 +2244,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                         var Member = MemberLibraryCurrent.Find(f => f.MemberID == entity.MemberId).SingleOrDefault();
                         Member.IsProcess = 1;
-                        Member.IsRawMaterial = 1;
                         MemberLibraryCurrent.Modified(Member);
                     }
 
