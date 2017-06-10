@@ -175,6 +175,7 @@
     <Compile Include="Areas\SteelMember\Controllers\ProjectWarehouseController.cs" />
     <Compile Include="Areas\SteelMember\Controllers\TreeController.cs" />
     <Compile Include="Areas\SteelMember\Models\AnalysisRawMaterialModel.cs" />
+    <Compile Include="Areas\SteelMember\Models\ListModel.cs" />
     <Compile Include="Areas\SteelMember\Models\MemberMaterialModel.cs" />
     <Compile Include="Areas\SteelMember\Models\CollarModel.cs" />
     <Compile Include="Areas\SteelMember\Models\OrderModel.cs" />
@@ -8622,6 +8623,7 @@
     <Content Include="Content\Scripts\tree\images\loading.gif" />
     <Content Include="Content\Scripts\tree\tree.css" />
     <Content Include="Content\Scripts\tree\tree.js" />
+    <Content Include="Content\Scripts\uploadify\jquery.uploadify-edit.js" />
     <Content Include="Content\Scripts\uploadify\jquery.uploadify.js" />
     <Content Include="Content\Scripts\uploadify\jquery.uploadify.min.js" />
     <Content Include="Content\Scripts\uploadify\uploadify-cancel.png" />
@@ -9106,6 +9108,13 @@
     <Content Include="Areas\SteelMember\Views\MemberProduce\RawMaterialsPurchaseForm.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\RawMaterialsPurchaseIndex.cshtml" />
     <Content Include="Areas\SteelMember\Views\MemberProduce\ItemList.cshtml" />
+    <Content Include="Areas\SteelMember\Views\File\SubmitImportFile.cshtml" />
+    <Content Include="Areas\SteelMember\Views\File\Partial1.cshtml" />
+    <Content Include="Areas\SteelMember\Views\File\CADDrawingManagement.cshtml" />
+    <Content Include="Areas\SteelMember\Views\File\ModelDrawingManagement.cshtml" />
+    <Content Include="Areas\SteelMember\Views\ProjectManagement\QueryPage.cshtml" />
+    <Content Include="Areas\SteelMember\Views\MemberProduce\OrderQueryPage.cshtml" />
+    <Content Include="Content\Scripts\tsconfig.json" />
     <None Include="Properties\PublishProfiles\LR-FDMS.pubxml" />
     <Content Include="Views\Home\SkinIndex.cshtml" />
     <Content Include="Views\Login\Default.cshtml" />

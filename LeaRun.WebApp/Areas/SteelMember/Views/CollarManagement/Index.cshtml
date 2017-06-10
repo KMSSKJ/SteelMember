@@ -42,7 +42,7 @@
         $("#gridTable").jqGrid({
             url: "@Url.Content("/SteelMember/CollarManagement/GridListJson")?TreeId=" + TreeId,
             datatype: "json",
-            height: $(window).height() - 154,
+            height: $(window).height() - 130,
             autowidth: true,
             colModel: [
                 { label: '主键', name: "CollarId", hidden: true },
@@ -338,5 +338,6 @@
             </div>
         </div>
         <table id="gridTable"></table>
+        <div id="gridPager"></div>
     </div>
 </div>

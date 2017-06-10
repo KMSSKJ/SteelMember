@@ -41,7 +41,7 @@
         $("#gridTable").jqGrid({
             url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonProcess")?TreeId=" + TreeId,
             datatype: "json",
-            height: $(window).height() - 125,
+            height: $(window).height() - 150,
             autowidth: true,
             colModel: [
                     { label: '外键', name: "MemberId", hidden: true },
@@ -143,10 +143,10 @@
         })
 
         columnModelData("#gridTable");
-        //自应高度
-        $(window).resize(function () {
-            $("#gridTable").setGridHeight($(window).height() - 200);
-        });
+        ////自应高度
+        //$(window).resize(function () {
+        //    $("#gridTable").setGridHeight($(window).height() - 200);
+        //});
 
     }
 

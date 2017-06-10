@@ -38,6 +38,7 @@
     }
 
     //加载表格
+    var subgrid_table_id;
     function GetGrid() {
         var SelectRowIndx;
         $("#gridTable").jqGrid({
@@ -116,13 +117,13 @@
             subGrid: true,
             subGridRowExpanded: function (subgrid_id, row_id) {
                 var OrderId = GetJqGridValue("#gridTable", row_id, "OrderId");
-                var subgrid_table_id = subgrid_id + "_t";
+                subgrid_table_id = subgrid_id + "_t";
                 $("#" + subgrid_id).html("<table id='" + subgrid_table_id + "'></table>");
                 $("#" + subgrid_table_id).jqGrid({
                     url: "@Url.Content("~/SteelMember/ProjectOrder/GetOrderEntryList")?OrderId=" + OrderId,
                     datatype: "json",
                     colModel: [
-                        { label: '主键', name: "MemberId", align:' center',width: 200, sortable: false, hidden: true },
+                        { label: '主键', name: "MemberID", align:' center',width: 200, sortable: false, hidden: true },
                         //{ label: '构件编号', name: "MemberNumbering", align:' center',width: 200, sortable: false },
                         { label: '构件名称', name: "MemberName", align:' center',width: 150, sortable: false },
                         { label: '构件型号', name: "MemberModel", align:' center',width: 80, sortable: false, align: 'center' },
@@ -256,13 +257,16 @@
 
     //构件图纸/模型管理
     function btn_drawing() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "MemberId");
-        var Sort = GetJqGridRowValue("#gridTable", "Sort");
-        if (IsChecked(KeyValue)) {
-            var url = '/SteelMember/File/DrawingManagement?KeyValue=' + KeyValue;
-            Dialog(url, "DrawingManagement", "文件管理", 900, 890, function (iframe) {
-                top.frames[iframe].AcceptClick()
-            });
+        if (IsChecked(subgrid_table_id)) {
+            var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "MemberID");
+            //var KeyValue = GetJqGridRowValue("#" + subgrid_table_id, "MemberId");
+            var Sort = GetJqGridRowValue("#gridTable", "Sort");
+            if (IsChecked(KeyValue)) {
+                var url = '/SteelMember/File/DrawingManagement?KeyValue=' + KeyValue;
+                Dialog(url, "DrawingManagement", "文件管理", 900, 890, function (iframe) {
+                    top.frames[iframe].AcceptClick()
+                });
+            }
         }
     }
 
@@ -337,7 +341,7 @@
     //查询
     var QueryParamJson = "";
     function btn_query() {
-        QueryDialog("/SteelMember/MemberSettlement/QueryPage", "QueryPage", "查询", 540, 30, function (iframe) {
+        QueryDialog("/SteelMember/MemberProduce/OrderQueryPage", "QueryPage", "查询", 540, 30, function (iframe) {
             top.frames[iframe].QueryClick(function (JsonData) {
                 QueryParamJson = JsonData;
                 $("#gridTable").jqGrid('setGridParam', {

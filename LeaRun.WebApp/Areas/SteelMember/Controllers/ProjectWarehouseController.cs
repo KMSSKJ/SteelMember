@@ -125,33 +125,37 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 if (_a && _b && _c)
                 {
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime >= model.InBeginTime && f.ModifyTime <= model.InEndTime);
                     func1 = f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime >= model.InBeginTime && f.ModifyTime <= model.InEndTime;
                 }
-                else if (_a)
+                else if (_a && !_b &&! _c)
                 {
                     func = func.And(f => f.MemberModel.Contains(model.MemberModel));
                     func1 = f => f.MemberModel.Contains(model.MemberModel);
                 }
-                else if (_b)
+                else if (_b && !_a && !_c)
                 {
                     func = func.And(f => f.ModifyTime >= model.InBeginTime);
                     func1 = f => f.ModifyTime >= model.InBeginTime;
                 }
-                else if (_c)
+                else if (_c && !_b && !_a)
                 {
                     func = func.And(f => f.ModifyTime <= model.InEndTime);
                     func1 = f => f.ModifyTime <= model.InEndTime;
                 }
-                else if (_a && _b)
+                else if (_a && _b && !_c)
                 {
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime >= model.InBeginTime);
                     func1 = f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime >= model.InBeginTime;
                 }
-                else if (_a && _c)
+                else if (_a && _c && !_b)
                 {
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime <= model.InEndTime);
                     func1 = f => f.MemberModel.Contains(model.MemberModel) && f.ModifyTime <= model.InEndTime;
                 }
-                else if (_b && _c)
+                else if (_b && _c && !_a)
                 {
+                    func = func.And(f => f.ModifyTime >= model.InBeginTime && f.ModifyTime <= model.InEndTime);
                     func1 = f => f.ModifyTime >= model.InBeginTime && f.ModifyTime <= model.InEndTime;
                 }
                 #endregion

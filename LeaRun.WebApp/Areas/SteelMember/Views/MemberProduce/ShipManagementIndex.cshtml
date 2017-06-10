@@ -46,7 +46,7 @@
         $("#gridTable").jqGrid({
             url: "@Url.Content("/SteelMember/MemberProduce/GridListJsonShipManagement")?TreeId=" + TreeId + "&IsPackaged=" + IsPackaged,
             datatype: "json",
-            height: $(window).height() - 125,
+            height: $(window).height() - 140,
             autowidth: true,
             colModel: [
                 { label: '主键', name: 'ShipId', hidden: true },
@@ -57,7 +57,10 @@
                 { label: '发货量', name: 'ShipNumber', index: 'ShipNumber', align:' center',width: 10 },
                     //{ label: '单价', name: 'UnitPrice', index: 'UnitPrice', align:' center',width: 10 },
                     //{ label: '总价', name: 'TotalPrice', index: 'TotalPrice', align:' center',width: 10 },
-                { label: '发货日期', name: 'ShipDate', index: 'ShipDate', align:' center',width: 10 },
+                { label: '发货日期', name: 'ShipDate', index: 'ShipDate', align:' center',width: 10,
+                        formatter: function (cellvalue, options, rowObject) {
+                            return formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
+                        } },
                 { label: '发货人', name: 'ShipMan', index: 'ShipMan', align:' center',width: 10 },
                 {
                         label: '发货状态', name: 'LogisticsStatus', index: 'LogisticsStatus', align:' center',width: 10,

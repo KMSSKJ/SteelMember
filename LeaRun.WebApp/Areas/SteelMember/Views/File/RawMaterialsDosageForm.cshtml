@@ -44,6 +44,7 @@
                 AjaxJson("/SteelMember/File/SubmitDataForm?KeyValue=" + KeyValue, postData, function (data) {//+ '&ItemID=' + ItemID
                     tipDialog(data.Message, 3, data.Code);
                     top.frames["RawMaterialsDosageIndex"].windowload();
+                    top.frames["tabs_iframe_f231bbf7-f1fa-4f99-9991-167548f5243a"].windowload();
                     closeDialog();
                 });
             }, 200);
@@ -147,16 +148,16 @@
         <table class="form">
             <tr>
                 <th class="formTitle">
-                    材料类型：
+                    材料类型：<font face="宋体" color="red">*</font>
                 </th>
                 <td class="formValue">
                     <input id="RawMaterialClassId" name="RawMaterialClassId" type="hidden" />
-                    <input id="RawMaterialClassName" type="text" class="txt icontree" />
+                    <input id="RawMaterialClassName" type="text" class="txt icontree" datacol="yes" err="材料类型" checkexpession="NotNull"/>
                 </td>
             </tr>
             <tr>
                 <th class="formTitle">
-                    材料名称：<font face="宋体" color="red">*</font>
+                    材料名称：
                 </th>
                 <td class="formValue">
                     <select id="RawMaterialId" name="RawMaterialId" datacol="yes" err="材料名称" checkexpession="NotNull" style="width:100%;"></select>
@@ -167,7 +168,7 @@
                     材料用量：<font face="宋体" color="red">*</font>
                 </th>
                 <td class="formValue">
-                    <input id="MaterialNumber" type="text" class="txt" datacol="yes" err="材料用量" checkexpession="NotNull" />
+                    <input id="MaterialNumber" type="text" class="txt" datacol="yes" err="材料用量" checkexpession="Num"/>
                 </td>
             </tr>
             <tr>

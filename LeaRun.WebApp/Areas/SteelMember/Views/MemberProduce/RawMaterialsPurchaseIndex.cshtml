@@ -38,7 +38,7 @@
         $("#gridTable").jqGrid({
             url: "@Url.Content("/SteelMember/MemberProduce/GridPurchaseListJson")?TreeId=" + TreeId,
             datatype: "json",
-            height: $(window).height() - 154,
+            height: $(window).height() - 130,
             autowidth: true,
             colModel: [
                 { label: '主键', name: "PurchaseId", hidden: true },
@@ -133,7 +133,7 @@
         //if (IsChecked(TreeId)) {
             //AddTabMenu("CollarForm", "Url.Content("/SteelMember/CollarManagement/CollarForm")?TreeId=" + TreeId + "&TreeName=" + TreeName, "新增领用单", "page_white_add.png", true, true, true);
         var url = "/SteelMember/MemberProduce/RawMaterialsPurchaseForm?ItemId=" + ItemId + "&motionType=" + ItemId;
-            openDialog(url, "CollarForm", "新增采购单", 1100, 600, function (iframe) {
+        openDialog(url, "RawMaterialsPurchaseForm", "新增采购单", 1100, 600, function (iframe) {
                 top.frames[iframe].AcceptClick();
             });
         // }
@@ -141,13 +141,13 @@
 
     //变更领用信息(得到实体)
     function btn_edit() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "CollarId");
+        var KeyValue = GetJqGridRowValue("#gridTable", "PurchaseId");
         //var IsReview = GetJqGridRowValue("#gridTable", "IsReview");
         var ItemId = 1;
         if (IsChecked(KeyValue)) {
-            //AddTabMenu("CollarForm", "@Url.Content("/SteelMember/CollarManagement/CollarForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId + "&motionType="+ItemID, "变更领用单", "page_white_add.png", true, true, true);
+            //AddTabMenu("CollarForm", "Url.Content("/SteelMember/CollarManagement/CollarForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId + "&motionType="+ItemID, "变更领用单", "page_white_add.png", true, true, true);
             var url = "/SteelMember/MemberProduce/RawMaterialsPurchaseForm?KeyValue= " + KeyValue +"&motionType=" + ItemId;
-                openDialog(url, "CollarForm", "变更采购单", 1100, 600, function (iframe) {
+            openDialog(url, "RawMaterialsPurchaseForm", "变更采购单", 1100, 600, function (iframe) {
                     top.frames[iframe].AcceptClick();
                 });
         }
@@ -159,7 +159,7 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "CollarId");
         var Prompt = "您确实要删除此文件吗？";
         if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/MemberProduce/DeleteProjectCollar', { KeyValue: KeyValue }, Prompt);
+            delConfirm('/SteelMember/MemberProduce/DeleteProjectPurchase', { KeyValue: KeyValue }, Prompt);
             $("#gridTable").trigger("reloadGrid"); //重新载入
         }
 

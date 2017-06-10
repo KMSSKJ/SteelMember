@@ -1,0 +1,62 @@
+﻿<script>
+    var jsonObj2 = {
+        teacher: [
+            { name: "jordan", sex: "m", age: "40" },
+            { name: "bryant", sex: "m", age: "28" },
+            { name: "McGrady", sex: "m", age: "27" }
+        ]
+    };
+
+    //var jsonObj2New = {};
+    //$("#btn").click(function () {
+    //    //invoke the update
+    //    updateData("jordan");
+    //    var persons = jsonObj2.teacher;
+    //    for (var i = 0; i < persons.length; i++) {
+    //        var cur_person = persons[i];
+    //        alert(cur_person.sex);
+    //    }
+
+    //    //invoke the delete
+    //    deleteData("jordan");
+    //    var persons = jsonObj2.teacher;
+    //    for (var i = 0; i < persons.length; i++) {
+    //        var cur_person = persons[i];
+    //        alert(cur_person.sex);
+    //    }
+
+    //    //push
+    //    var temp = { name: "kenny", sex: "m", age: "25" };
+    //    jsonObj2.teacher.push(temp);
+
+    //    var persons = jsonObj2.teacher;
+    //    for (var i = 0; i < persons.length; i++) {
+    //        var cur_person = persons[i];
+    //        alert(cur_person.name);
+    //    }
+
+    //});
+
+    function updateData(name) {
+        var persons = jsonObj2.teacher;
+        //alert(name);
+        for (var i = 0; i < persons.length; i++) {
+            var cur_person = persons[i];
+            if (cur_person.name == name) {
+                persons[i].sex = "f";
+            }
+        }
+    }
+
+    function deleteData(name) {
+        var persons = jsonObj2.teacher;
+        //alert(name);
+        for (var i = 0; i < persons.length; i++) {
+            var cur_person = persons[i];
+            if (cur_person.name == name) {
+                jsonObj2.teacher.splice(i, 1);
+            }
+        }
+    }
+</script>
+<input onclick="deleteData('jordan')" type="button" value="删除" />

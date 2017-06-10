@@ -204,7 +204,7 @@
                 tipDialog("此节点不可编辑，请选择一个子节点", 3, 'warning');
             } else {
                 var url = "/SteelMember/ProjectManagement/Form?TreeID= " + TreeId + "&ItemID=" + ItemID;
-                openDialog(url, "Form", "新增信息", 500, 320, function (iframe) {
+                openDialog(url, "Form", "新增信息", 400, 200, function (iframe) {
                     top.frames[iframe].AcceptClick();
                 });
             }
@@ -219,7 +219,7 @@
         if (IsChecked(KeyValue)) {
             if (IsReview.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
                 var url = "/SteelMember/ProjectManagement/Form?KeyValue= " + KeyValue + "&ItemID=" + ItemID + "&TreeID=" + TreeId ;
-                openDialog(url, "Form", "编辑信息", 500, 500, function (iframe) {
+                openDialog(url, "Form", "编辑信息", 400, 200, function (iframe) {
                     top.frames[iframe].AcceptClick();
                 });
             } else {
@@ -246,21 +246,31 @@
 
     //审核信息
     function btn_review() {
+        var _IsReview = GetJqGridRowValue("#gridTable", "IsReview");
         var KeyValue = GetJqGridRowValue("#gridTable", "ProjectDemandId");
         var Prompt = "您确实要通过审核吗？";
         var IsReview = 1;
         if (IsDelData(KeyValue)) {
-            subConfirm('/SteelMember/ProjectManagement/ReviewProjectDemand', { KeyValue: KeyValue, IsReview: IsReview }, Prompt);
+            if (_IsReview.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checknomark.gif'>" ) {
+                subConfirm('/SteelMember/ProjectManagement/ReviewProjectDemand', { KeyValue: KeyValue, IsReview: IsReview }, Prompt);
+            } else {
+                tipDialog("该信息已审核！",2);
+            }
         }
-        $("#gridTable").trigger("reloadGrid"); //重新载入
     }
     //审核信息
     function btn_not_review() {
+        var _IsReview = GetJqGridRowValue("#gridTable", "IsReview");
         var KeyValue = GetJqGridRowValue("#gridTable", "ProjectDemandId");
-        var Prompt = "您确实要驳回吗？";
+        var Prompt = "您确实审核不通过吗？";
         var IsReview = 2;
         if (IsDelData(KeyValue)) {
-            subConfirm('/SteelMember/ProjectManagement/ReviewProjectDemand', { KeyValue: KeyValue, IsReview: IsReview }, Prompt);
+            if (_IsReview.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkenomark.gif'>") {
+                subConfirm('/SteelMember/ProjectManagement/ReviewProjectDemand', { KeyValue: KeyValue, IsReview: IsReview }, Prompt);
+            } else {
+                tipDialog("该信息已审核！", 2);
+            }
+           
         }
     }
 
@@ -282,7 +292,7 @@
         var Sort = GetJqGridRowValue("#gridTable", "Sort");
         if (IsChecked(KeyValue)) {
             var url = '/SteelMember/File/DrawingManagement?KeyValue=' + KeyValue;
-            Dialog(url, "DrawingManagement", "文件管理", 900, 890, function (iframe) {
+            Dialog(url, "DrawingManagement", "文件管理", 700, 580, function (iframe) {
                 top.frames[iframe].AcceptClick()
             });
         }

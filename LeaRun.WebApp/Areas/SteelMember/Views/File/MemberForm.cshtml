@@ -93,9 +93,6 @@
                         $("#UnitId  option[value='" + Data.UnitId + "']").attr("selected", true);
                     }
                 }
-            },
-            error: function () {
-
             }
         });
     };
@@ -110,7 +107,7 @@
             width: 70,
             fileTypeDesc: '支持格式:jpg/gif/jpeg/png/bmp.',
             fileTypeExts: '*.jpg;*.gif;*.jpeg;*.png;*.bmp',//允许的格式
-            fileSizeLimit: '3MB',
+            fileSizeLimit: '5MB',
 
             onFallback: function () {
                 alert("您未安装FLASH控件，无法上传！请安装FLASH控件后再试。");
@@ -132,7 +129,7 @@
             width: 70,
             fileTypeDesc: '支持格式:jpg/gif/jpeg/png/bmp.',
             fileTypeExts: '*.jpg;*.gif;*.jpeg;*.png;*.bmp',//允许的格式
-            fileSizeLimit: '3MB',
+            fileSizeLimit: '5MB',
 
             onFallback: function () {
                 alert("您未安装FLASH控件，无法上传！请安装FLASH控件后再试。");
@@ -153,7 +150,7 @@
             width: 70,
             fileTypeDesc: '支持格式:jpg/gif/jpeg/png/bmp.',
             fileTypeExts: '*.jpg;*.gif;*.jpeg;*.png;*.bmp',//允许的格式
-            fileSizeLimit: '3MB',
+            fileSizeLimit: '5MB',
 
             onFallback: function () {
                 alert("您未安装FLASH控件，无法上传！请安装FLASH控件后再试。");
@@ -429,7 +426,7 @@
                 单位：
             </th>
             <td class="formValue">
-                <select id="UnitId" name="UnitId" style="width:50%"></select>
+                <select id="UnitId" name="UnitId" style="width:100%"></select>
             </td>
             <th class="formTitle">
                 单价：

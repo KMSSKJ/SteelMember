@@ -1,201 +1,77 @@
 ﻿@{
-    ViewBag.Title = "构件库管理》上传文件表单页面";
-    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    ViewBag.Title = "构件库管理》导入数据页面";
+   // Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
-
-<link href="~/Content/themes/bootstrap/easyui.css" rel="stylesheet" />
-
-<!--上传文件组件start-->
-<link href="~/Content/Scripts/uploadify/uploadify.css" rel="stylesheet" />
-<script src="~/Content/Scripts/uploadify/jquery.uploadify.js"></script>
-<!--上传文件组件end-->
+<script src="~/Content/Scripts/jquery/jquery-1.9.1.min.js"></script>
+<script src="~/Content/Scripts/learunui-framework.js"></script>
 <script type="text/javascript">
-    $(function () {
-        UploadFile();
-    });
     var KeyValue = GetQuery('KeyValue')
-    var postData = GetWebControls("#form1");
-    //var index_uploadify = 1;
-    function UploadFile() {
-        $('#uploadify').uploadify({
-            swf: '/Content/Scripts/uploadify/uploadify.swf',  //FLash文件路径
-            buttonText: "添加文件",
-            height: 24,
-            width: 70,
-            uploader: '/SteelMember/File/SubmitImportFile',      //处理文件上传Action?FolderId=' + GetQuery('FolderId')
-            queueID: 'fileQueue',                        //队列的ID
-            queueSizeLimit: 50,                          //队列最多可上传文件数量，默认为999
-            auto: false,                                 //选择文件后是否自动上传，默认为true
-            multi: true,                                 //是否为多选，默认为true
-            removeCompleted: true,                       //是否完成后移除序列，默认为true
-            fileSizeLimit: 0,                            //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
-            fileTypeDesc: '文件类型',                    //文件描述 '媒体类型'
-            //  fileTypeDesc: '*.jpg;*.png;*.doc;*.txt;*.zip;*.rar;',//文件后缀描述
-            fileTypeExts: '*.*',  //上传的文件后缀过滤器
-            formData: {//向uploader指定的后台传递数据
-                KeyValue: KeyValue,//测试
-                Data:postData
-            },
-            onFallback: function () {
-                alert("您未安装FLASH控件，无法上传！请安装FLASH控件后再试。");
-            },
-            //onQueueComplete: function (event, data) {                 //所有队列完成后事件
-            //    $('#tableshow').datagrid("reload");                     //完成后更新已上传的文件列表
-            //    $.messager.alert("提示", "上传完毕！");                 //提示完成
-            //    $("#uploaddlg").dialog("close");
-            //},
-            //onUploadStart: function (file) {
-            //    $("#uploadify").uploadify("settings", 'formData'); //"settings", 'formData', { 'FileAddition': $('#FileAddition').val(), } 动态传参数
-            //},
-            onUploadSuccess: function (file, data, response) {
-                $('.drag-tip').remove();
-                var DataJson = JSON.parse(data);
-                var html = "";
-                html += '<tr>';
-                if (DataJson.NetworkFile.Icon == "new") {
-                    html += '<td style="width: 16px;"><img src="@Url.Content("../../Content/Images/Icon32/page_white.png")" /></td>';
-                } else {
-                    html += '<td style="width: 16px;"><img src="../../Content/Images/Icon32/file_extension_' + DataJson.NetworkFile.Icon + '.png" /></td>';
+    function UpladFile() {
+        // js 获取文件对象
+        var fileObj = document.getElementById("fileToUpload").files;
+        // 接收上传文件的后台地址
+        var FileController = "/SteelMember/File/SubmitImportFile?KeyValue=" + KeyValue;
+
+        // FormData 对象
+        var form = new FormData();
+        // 可以增加表单数据
+        form.append("author", "hooyes");
+        // 文件对象
+        for (var i = 0; i < fileObj.length; i++)
+            form.append("file" + i, fileObj[i]);
+        $.ajax({
+            url: FileController,
+            type: "post",
+            data: form,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                tipDialog(data, 3);
+                if (data =="操作成功") {
+                    btn_upload();
+                    closeDialog();
                 }
-                html += '<td style="width: 320px;"><div id="divFileName">' + DataJson.NetworkFile.MemberName + '</div></td>';
-                html += '<td style="width: 70px;">' + DataJson.NetworkFile.FileSize + '</td>';
-                if (DataJson.Status > 0) {
-                    html += '<td title="上传成功" style="width: 26px;"><img src="@Url.Content("../../Content/Images/Icon16/accept.png")" /></td>';
-                } else {
-                    html += '<td title=' + DataJson.Status + ' style="width: 26px;"><img src="@Url.Content("../../Content/Images/Icon16/delete.png")" /></td>';
-                }
-                html += '</tr>';
-                $("#grid tbody").prepend(html);
-                top.frames[tabiframeId()].windowload();
             },
-            onUploadError: function (event, queueId, fileObj, errorObj) {
-                alert(errorObj);
-            },
-            //onSelect(file) {
-            //    UploadFileInfo(file);
-            //}
+            error: function (e) {
+                tipDialog(e,3);
+
+            }
+        });
+
+    }
+    //上传图片
+    function btn_upload() {
+        var url = "/SteelMember/File/UpLoadFile";
+        Dialog(url, "UpLoadFile", "批量上传图片", 500, 200, function (iframe) {
+            top.frames[iframe].AcceptClick()
         });
     }
-    ////上传提交
-    //function UploadFileInfo(file) {
-    //    if (!CheckDataValid('#form1')) {
-    //        return false;
-    //    }
-    //    Loading(true, "正在提交数据...");
-    //    window.setTimeout(function () {
-    //        var postData = GetWebControls("#form1");
-    //        AjaxJson("/SteelMember/File/SubmitUploadFile?FolderId=" + GetQuery('KeyValue'), postData, function (data) {
-    //            tipDialog(data.Message, 3, data.Code);
-    //            top.frames[tabiframeId()].windowload();
-    //            closeDialog();
-    //        });
-    //    }, 200);
-    //};
 </script>
 <style>
-    #grid td {
-        text-align: left;
-        border-bottom: 1px solid #ccc;
-        padding: 6px 2px;
+    .uploadify-button {
+        border: 1px solid #459830;
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAAAcCAMAAACgTerKAAAAA3NCSVQICAjb4U/gAAAAVFBMVEVsu1prullquVhpuVZouFVmt1NktlFjtVBhtU5ftExes0pcskhasUZYsERWrkFUrT9SrD1QqztOqjlNqTdLqDVJqDNIpzFGpjBFpS5CpCtDpC1Boyrl/2+uAAAACXBIWXMAAArwAAAK8AFCrDSYAAAAFnRFWHRDcmVhdGlvbiBUaW1lADA0LzEyLzEyiu5yJQAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAABOSURBVEiJvcGHAUAwAADBV6MTJNr+e9ri78BQCCgFVAJqAY2AVkAQ0AnoBQwCRgGTgFnAImAVsAmIAnYBh4BTQBKQBVwCbgGvgEfAJ/gBUt6TqcmCyTYAAAAASUVORK5CYII=");
+        background-position: center top;
+        background-repeat: no-repeat;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        color: #FFF;
+        text-align: center;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+        /*width: 100%;*/
     }
-
-    #divFileName {
-        width: 310px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        -o-text-overflow: ellipsis;
-        overflow: hidden;
-    }
-
-    #grid td img {
-        vertical-align: middle;
-        border: 0px solid #fff;
-    }
-
-    .uploadify-queue {
-        margin-top: 6px;
-    }
-
-    .uploadify-queue-item {
-        width: 468px;
-        padding-top: 8px;
-        padding-bottom: 7px;
-        margin-top: 0px;
-        border-top: none;
-    }
-
-        .uploadify-queue-item .cancel a {
-            display: none;
-        }
 </style>
-<form id="form1" style="margin: 10px">
-    <input id="FileAddition" type="hidden" />
-    <div style="height: 29px;">
-        <div style="float: left;">
-            <input id="uploadify" name="uploadify" type="file" />
-        </div>
-        @*<div style="float: right; line-height: 26px; color: #3083eb; cursor: pointer;">
-                上传需知
-            </div>*@
-    </div>
-    <div>
-        <table id="FileInfo">
-            @*<tr>
-                    <th class="formTitle">
-                        过期时间：
-                    </th>
-                    <td class="formValue">
-                        <input id="OverdueTime" type="text" class="txt Wdate" onfocus="WdatePicker({minDate: '%y-%M-#{%d+1}' })" style="width:160px" />
-                    </td>
-                    <th class="formTitle">是否有效：</th>
-                    <td class="formValue">
-                        <span class="item">
-                            <input type="checkbox" name="checkbox" checked="checked" id="Enabled" />
-                            <label for="Enabled">有效</label>
-                        </span>
-                    </td>
-                </tr>*@
-            <tr>
-                @*<th class="formTitle">
-                        文件描述：
-                    </th>
-                    <td class="formValue">
-                        <textarea id="Description" name="Description" maxlength="500" class="txtArea" style="width:160px"></textarea>
-                    </td>*@
-                <td>
-                    <table>
-                        <tr>
-                            <td><a href="javascript:void(0)" @*class="easyui-linkbutton"*@ id="btnUpload" @*data-options="plain:true,iconCls:'icon-folder_update'"*@ style="float:right" onclick="javascript: $('#uploadify').uploadify('upload', '*')">上传</a></td>
-                            <td><a href="javascript:void(0)" @*class="easyui-linkbutton"*@ id="btnCancelUpload" @*data-options="plain:true,iconCls:'icon-cancel'"*@ style="float:right" onclick="javascript: $('#uploadify').uploadify('cancel', '*')">取消</a></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <th class="formTitle">
-                    Excel模板：
-                </th>
-                <td class="formValue">
-                    <a href="/SteelMember/File/GetExcellTemperature">下载模板.xls</a>
-                </td>
-                <td></td>
-            </tr>
-        </table>
-    </div>
-    @*<div class="border background" style="height: 298px; overflow: auto; overflow-y: hidden">
-        <div class="upload-item">
-            <table id="grid" style="width: 100%; border-collapse: collapse;">
-                <tbody></tbody>
-            </table>
-        </div>
-        <div class="drag-tip" style="text-align: center; padding-top: 100px;">
-                <h1 style="color: #666; font-size: 20px; font-family: Microsoft Yahei; padding-bottom: 2px;">试试将电脑里的文件拖拽到此上传</h1>
-                <p style="color: #666; font-size: 12px;">
-                    （您的浏览器不支持此拖拽功能）
-                </p>
-            </div>*
-    </div>*@
-    <div id="fileQueue" class="fileQueue"></div>
-    <div id="div_files"></div>
+<br />
+<div>
+   导入模板： <a href="/SteelMember/File/GetExcellTemperature">下载模板.xls</a>
+</div>
+<br />
+<form id="form1" name="form1">
+    <table>
+        <tr>
+            <td style="width:400px"><div style="border:1px solid #08dede"><input style="width:100%" type="file" name="fileToUpload" id="fileToUpload" @*multiple="multiple" onchange="onc()"*@ /></div></td>
+            <td><input type="button" class="uploadify-button " onclick="UpladFile()" value="上传" style="margin-left: 20px" /></td>
+        </tr>
+    </table>
 </form>
-

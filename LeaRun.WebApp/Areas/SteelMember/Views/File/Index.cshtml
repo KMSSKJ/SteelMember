@@ -55,7 +55,7 @@
         $("#gridTable").jqGrid({
             url: "@Url.Content("/SteelMember/File/GridListJson")?TreeId=" + TreeId,
             datatype: "json",
-            height: $(window).height() - 154,
+            height: $(window).height() - 150,
             autowidth: true,
             colModel: [
                     { label: '主键', name: "MemberID", hidden: true },
@@ -88,9 +88,9 @@
                              return formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
                          }
                      },
-                    { label: '截面面积/<Br/>cm²', name: "SectionalArea", index: "SectionalArea", align: 'center',width: 6, },
-                    { label: '外表面积/(m²/m)', name: "SurfaceArea", index: "SurfaceArea", align: 'center',width: 6, },
-                    { label: '理论重量/(㎏/m)', name: "TheoreticalWeight", index: "TheoreticalWeight", align: 'center',width: 6, },
+                    { label: '截面面积(cm²)', name: "SectionalArea", index: "SectionalArea", align: 'center',width: 6, },
+                    { label: '外表面积(m²/m)', name: "SurfaceArea", index: "SurfaceArea", align: 'center',width: 6, },
+                    { label: '理论重量(㎏/m)', name: "TheoreticalWeight", index: "TheoreticalWeight", align: 'center',width: 6, },
                     { label: '高度', name: "SectionalSize_h", index: "SectionalSize_h", align: 'center',width: 5 },
                     //{ label: '长边宽度', name: 'SectionalSizeB', index: 'SectionalSizeB', align: 'center',width: 8 },
                     { label: '腿宽度', name: 'SectionalSize_b', index: 'SectionalSize_b', align: 'center',width: 5 },
@@ -186,7 +186,7 @@
         $("#gridTable").jqGrid('setGroupHeaders', {
             useColSpanStyle: true,
             groupHeaders: [
-                { startColumnName: 'SectionalSize_h', numberOfColumns: 3, titleText: '截面尺寸/㎜' },
+                { startColumnName: 'SectionalSize_h', numberOfColumns: 3, titleText: '截面尺寸(㎜)' },
                 { startColumnName: 'IsHaveDrawing', numberOfColumns: 2, titleText: '可视化状态' },
                 //{ startColumnName: 'InertiaRadius_x', numberOfColumns: 5, titleText: '惯性半径/cm' },
                 //{ startColumnName: 'SectionalModulus_x', numberOfColumns: 5, titleText: '截面模数/cm³' },
@@ -210,7 +210,7 @@
             if (CAD_Drawing.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
                 if (Sort == "1") {
                     var url = '/SteelMember/File/CADDrawingManagement?KeyValue=' + KeyValue;
-                    Dialog(url, "DrawingManagement", "构件图纸", 900, 890, function (iframe) {
+                    Dialog(url, "DrawingManagement", "构件图纸", 700, 580, function (iframe) {
                         top.frames[iframe].AcceptClick()
                     });
                 } else {
@@ -230,7 +230,7 @@
             if (Model_Drawing.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
                 if (Sort == "1") {
                     var url = '/SteelMember/File/ModelDrawingManagement?KeyValue=' + KeyValue;
-                    Dialog(url, "DrawingManagement", "三维模型管理", 900, 890, function (iframe) {
+                    Dialog(url, "DrawingManagement", "三维模型管理", 700, 580, function (iframe) {
                         top.frames[iframe].AcceptClick()
                     });
                 } else {
@@ -242,7 +242,6 @@
 
     //按钮刷新表格树
     function btn_reload() {
-        GetTree();
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
     //刷新
@@ -360,24 +359,17 @@
         }
     }
 
-    //上传图标
-    function btn_upload() {
-        var Images = "Images"
-        var url = "/SteelMember/File/UpLoadFile?Images=" + Images;
-        Dialog(url, "UpLoadFile", "上传图标", 500, 600, function (iframe) {
-            top.frames[iframe].AcceptClick()
-            $("#gridTable").trigger("reloadGrid"); //重新载入
-        });
-    }
-
-
     //导入文件
     function btn_import() {
         if (!!TreeId) {
-            var url = "/SteelMember/File/ImportFile?KeyValue=" + TreeId;
-            Dialog(url, "ImportFile", "导入数据", 500, 600, function (iframe) {
-                top.frames[iframe].AcceptClick()
-            });
+            if (HavesChildren == true) {
+                tipDialog("此节点不可编辑，请选择一个子节点", 3, 'warning');
+            } else {
+                var url = "/SteelMember/File/ImportFile?KeyValue=" + TreeId;
+                Dialog(url, "ImportFile", "导入数据", 480, 150, function (iframe) {
+                    top.frames[iframe].AcceptClick()
+                });
+            }
         }
         else {
             tipDialog('请选择文件夹目录。', 4, 'warning');
@@ -435,6 +427,9 @@
         })
     }
 </script>
+<style>
+
+</style>
 <div id="layout" class="layout">
     <!--左边-->
     <div class="layoutPanel layout-west">

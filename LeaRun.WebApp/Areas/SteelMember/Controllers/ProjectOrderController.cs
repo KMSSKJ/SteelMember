@@ -117,7 +117,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             if (KeyValue == "" || KeyValue == null)
             {
                 ViewBag.OrderNumbering = "DD" + DateTime.Now.ToString("yyyyMMddhhmmssffff");
-                ViewData["CreateMan"] = currentUser.RealName;
+                ViewData["CreateMan"] = ManageProvider.Provider.Current().UserName;
             }
             return View();
         }
@@ -204,7 +204,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     Oldentity.Productioned = 0;
                     Oldentity.Priority = entity.Priority;
                     Oldentity.TreeName = entity.TreeName;
-                    Oldentity.CreateMan = currentUser.RealName;
+                    Oldentity.CreateMan = ManageProvider.Provider.Current().UserName;
                     Oldentity.CreateTime = entity.CreateTime;
                     Oldentity.Description = entity.Description;
                     int OrderId = OrderManagementCurrent.Add(Oldentity).OrderId;
@@ -283,33 +283,37 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 if (_a && _b && _c)
                 {
+                    func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime);
                     func1 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime;
                 }
-                else if (_a)
+                else if (_a && !_b &&! _c)
                 {
                     func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering));
                     func1 = f => f.OrderNumbering.Contains(model.OrderNumbering);
                 }
-                else if (_b)
+                else if (_b && !_a && !_c)
                 {
                     func = func.And(f => f.CreateTime >= model.InBeginTime);
                     func1 = f => f.CreateTime >= model.InBeginTime;
                 }
-                else if (_c)
+                else if (_c && !_b && !_a)
                 {
                     func = func.And(f => f.CreateTime <= model.InEndTime);
                     func1 = f => f.CreateTime <= model.InEndTime;
                 }
-                else if (_a && _b)
+                else if (_a && _b&&!_c)
                 {
+                    func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime);
                     func1 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime;
                 }
-                else if (_a && _c)
+                else if (_a && _c&&!_b)
                 {
+                    func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime <= model.InEndTime);
                     func1 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime <= model.InEndTime;
                 }
-                else if (_b && _c)
+                else if (_b && _c&&!_a)
                 {
+                    func = func.And(f => f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime);
                     func1 = f => f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime;
                 }
                 #endregion
@@ -743,7 +747,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 file.ModifiedTime = DateTime.Now;
                 file.IsSubmit = 1;
                 file.SubmitTime = DateTime.Now;
-                file.SubmitMan = currentUser.RealName;
+                file.SubmitMan = ManageProvider.Provider.Current().UserName;
                 OrderManagementCurrent.Modified(file);
 
                 List<RMC_OrderMember> OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();

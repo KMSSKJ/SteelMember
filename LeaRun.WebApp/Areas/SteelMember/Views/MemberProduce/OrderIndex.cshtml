@@ -14,7 +14,7 @@
     //注意 FolderId 默认等于1 这样就可以加载一级目录下的子节点文件夹
     var TreeId = "";//16
     var ItemId = 2;
-    var ConfirmOrder=0, Productioned=0;
+    var ConfirmOrder="", Productioned="";
   
     //ItemId = GetQuery("ItemID"), ProjectName = "", IsPublic = "1";
     function GetTree() {
@@ -23,20 +23,20 @@
                 TreeId = node.id;
                 TreeName = node.text;
                 if (node.url == "ProduceingOrder") {
-                    ConfirmOrder = 1;
-                    Productioned = 0;
+                    ConfirmOrder ="1";
+                    Productioned = "0";
                 } else if (node.url == "EndOrder")
                 {
-                    ConfirmOrder = 1;
-                    Productioned = 1;
+                    ConfirmOrder ="1";
+                    Productioned ="1";
                     
                 }
                 else if(node.url == "NewOrder") {
-                    ConfirmOrder = 0;
-                    Productioned = 0;
+                    ConfirmOrder ="0";
+                    Productioned = "0";
                 } else {
-                    ConfirmOrder = 2;
-                    Productioned = 2;
+                    ConfirmOrder = "2";
+                    Productioned = "2";
                 }
                 GridFolderEvent(TreeId, ConfirmOrder, Productioned);
             },
@@ -264,7 +264,7 @@
     //查询
     var QueryParamJson = "";
     function btn_query() {
-        QueryDialog("/SteelMember/MemberSettlement/QueryPage", "QueryPage", "查询", 540, 30, function (iframe) {
+        QueryDialog("/SteelMember/MemberProduce/OrderQueryPage", "QueryPage", "查询", 540, 30, function (iframe) {
             top.frames[iframe].QueryClick(function (JsonData) {
                 QueryParamJson = JsonData;
                 $("#gridTable").jqGrid('setGridParam', {
