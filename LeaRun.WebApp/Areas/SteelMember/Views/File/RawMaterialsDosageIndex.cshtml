@@ -128,14 +128,34 @@
     //删除信息
     function btn_delete() {
         var KeyValue = GetJqGridRowValue("#gridTable", "MemberMaterialId");
+        var MemberId = GetJqGridRowValue("#gridTable", "MemberId");
         var Prompt = "您确实要删除此文件吗？";
         if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/File/DeleteProjectDemand', { KeyValue: KeyValue }, Prompt);
-                $("#gridTable").trigger("reloadGrid"); //重新载入
+            delConfirm1('/SteelMember/File/DeleteMemberMaterial', { KeyValue: KeyValue, MemberId:MemberId}, Prompt);
         }
     }
 
-    
+    function delConfirm1(url, parm, msg) {
+        confirmDialog("系统提示", msg, function (r) {
+            if (r) {
+                Loading(true, "正在删除数据...");
+                window.setTimeout(function () {
+                    AjaxJson(url, parm, function (data) {
+                        tipDialog(data.Message, 3, data.Code);
+                        if (data.Code > 0) {
+                            windowload();
+                            top.frames[tabiframeId()].windowload();
+
+                           // top.frames["tabs_iframe_f231bbf7-f1fa-4f99-9991-167548f5243a"].windowload();
+                        }
+                    });
+                }, 200);
+            }
+        });
+    }
+
+
+
     //导出文件
     function btn_derive() {
         SetDeriveExcel("#gridTable", "构件需求信息表");

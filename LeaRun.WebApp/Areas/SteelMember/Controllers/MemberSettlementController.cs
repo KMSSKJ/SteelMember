@@ -72,33 +72,37 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 if (_a && _b && _c)
                 {
+                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime);
                     func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime;
                 }
-                else if (_a)
+                else if (_a && !_b &&! _c)
                 {
                     func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering));
                     func1 = f => f.CollarNumbering.Contains(model.CollarNumbering);
                 }
-                else if (_b)
+                else if (_b && !_c && !_a)
                 {
                     func = func.And(f => f.CollarTime >= model.InBeginTime);
                     func1 = f => f.CollarTime >= model.InBeginTime;
                 }
-                else if (_c)
+                else if (_c && !_b && !_a)
                 {
                     func = func.And(f => f.CollarTime <= model.InEndTime);
                     func1 = f => f.CollarTime <= model.InEndTime;
                 }
-                else if (_a && _b)
+                else if (_a && _b && !_c)
                 {
+                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime >= model.InBeginTime);
                     func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime >= model.InBeginTime;
                 }
-                else if (_a && _c)
+                else if (_a && _c && !_b)
                 {
+                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime <= model.InEndTime);
                     func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime <= model.InEndTime;
                 }
-                else if (_b && _c)
+                else if (_b && _c && !_a)
                 {
+                    func = func.And(f => f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime);
                     func1 = f => f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime;
                 }
                 #endregion
@@ -178,7 +182,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     projectdemand.CostBudget = CostBudget.ToString();
                     projectdemand.LeaderTime = item.CollarTime;
                     projectdemand.CreateMan = ProjectDemand.CreateMan;
-                    projectdemand.ReviewMan = currentUser.RealName;
+                    projectdemand.ReviewMan = ManageProvider.Provider.Current().UserName;
                     projectdemand.Description = item.Description;
                     projectdemandlist.Add(projectdemand);
                 }

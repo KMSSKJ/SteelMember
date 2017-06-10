@@ -676,6 +676,11 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         //}
         #endregion
 
+public ActionResult Partial1()
+        {
+            return View();
+        }
+
         /// <summary>
         /// 【控制测量文档管理】返回树JONS
         /// </summary>
@@ -797,9 +802,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //
 
                 //删除构件原材料
-               
+
                 var MemberMaterial = MemberMaterialCurrent.Find(f => f.MemberId == _MemberId).ToList();
-                if (MemberMaterial.Count() > 0) {
+                if (MemberMaterial.Count() > 0)
+                {
                     List<int> ids1 = new List<int>();
                     for (int i = 0; i < MemberMaterial.Count(); i++)
                     {
@@ -883,33 +889,37 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 if (_a && _b && _c)
                 {
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime >= model.InBeginTime && f.UploadTime <= model.InEndTime);
                     func1 = f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime >= model.InBeginTime && f.UploadTime <= model.InEndTime;
                 }
-                else if (_a)
+                else if (_a && !_b && !_c)
                 {
                     func = func.And(f => f.MemberModel.Contains(model.MemberModel));
                     func1 = f => f.MemberModel.Contains(model.MemberModel);
                 }
-                else if (_b)
+                else if (_b && !_a && !_c)
                 {
                     func = func.And(f => f.UploadTime >= model.InBeginTime);
                     func1 = f => f.UploadTime >= model.InBeginTime;
                 }
-                else if (_c)
+                else if (_c && !_b && !_a)
                 {
                     func = func.And(f => f.UploadTime <= model.InEndTime);
                     func1 = f => f.UploadTime <= model.InEndTime;
                 }
-                else if (_a && _b)
+                else if (_a && _b && !_c)
                 {
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime >= model.InBeginTime);
                     func1 = f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime >= model.InBeginTime;
                 }
-                else if (_a && _c)
+                else if (_a && _c && !_b)
                 {
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime <= model.InEndTime);
                     func1 = f => f.MemberModel.Contains(model.MemberModel) && f.UploadTime <= model.InEndTime;
                 }
-                else if (_b && _c)
+                else if (_b && _c && !_a)
                 {
+                    func = func.And(f => f.UploadTime >= model.InBeginTime && f.UploadTime <= model.InEndTime);
                     func1 = f => f.UploadTime >= model.InBeginTime && f.UploadTime <= model.InEndTime;
                 }
                 #endregion
@@ -945,7 +955,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         }
                     }
 
-                    MemberList= MemberList.Where(func1).ToList();
+                    MemberList = MemberList.Where(func1).OrderByDescending(f => f.UploadTime).ToList();
                     MemberList_ = MemberList.Take(jqgridparam.rows * jqgridparam.page).Skip(jqgridparam.rows * (jqgridparam.page - 1)).ToList();
                     total = MemberList.Count();
                 }
@@ -955,7 +965,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     page = jqgridparam.page,
                     records = total,
                     costtime = CommonHelper.TimerEnd(watch),
-                    rows = MemberList_.OrderByDescending(f => f.UploadTime),
+                    rows = MemberList_,
                 };
                 return Content(JsonData.ToJson());
             }
@@ -981,21 +991,37 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             return View();
         }
-        public ActionResult SubmitImportFile(string KeyValue, RMC_MemberLibrary MemberLibrary, HttpPostedFileBase Filedata)
+
+        //public ActionResult SubmitImportFile()
+        //{
+        //    List<string> list = new List<string>();
+
+        //    for (int i = 0; i < 5; i++)
+        //    {
+        //        list.Add(i.ToString());
+        //    }
+
+        //    return View(list);
+        //}
+
+        public ContentResult SubmitImportFile(string KeyValue, RMC_MemberLibrary MemberLibrary)
         {
             try
             {
+                HttpFileCollectionBase Filedatas = Request.Files;
+
                 //HttpPostedFileBase file = Request.Files["FileUpload"];//获取上传的文件  
                 string FileName;
                 string savePath;
-                int IsOk = 1;
-                if (Filedata == null || Filedata.ContentLength <= 0)
+                string Photo = "";
+                //int IsOk = 1;
+                if (Filedatas.Count == 0)
                 {
-                    ViewBag.error = "文件不能为空";
-                    return View();
+                    return Content("文件不能为空");
                 }
                 else
                 {
+                    var Filedata = Request.Files[0];
                     string filename = Path.GetFileName(Filedata.FileName);
                     int filesize = Filedata.ContentLength;//获取上传文件的大小单位为字节byte  
                     string fileEx = System.IO.Path.GetExtension(filename);//获取上传文件的扩展名  
@@ -1006,13 +1032,11 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     FileName = NoFileName + DateTime.Now.ToString("yyyyMMddhhmmssffff") + fileEx;
                     if (!FileType.Contains(fileEx))
                     {
-                        ViewBag.error = "文件类型不对，只能导入xls和xlsx格式的文件";
-                        return View();
+                        return Content("文件类型不对，只能导入xls和xlsx格式的文件");
                     }
                     if (filesize >= Maxsize)
                     {
-                        ViewBag.error = "上传文件超过10M，不能上传";
-                        return View();
+                        return Content("上传的文件不能超过10M");
                     }
                     //string path = AppDomain.CurrentDomain.BaseDirectory + "uploads\\excel\\";
                     string virtualPath = string.Format("~/Resource/Document/NetworkDisk/Excel");
@@ -1058,94 +1082,130 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 myCommand.Fill(myDataSet, "ExcelInfo");
                 // Data.Deleted();
                 DataTable table = myDataSet.Tables["ExcelInfo"].DefaultView.ToTable();
+                if (table.Columns.Count != 37)
+                {
+                    return Content("文件数据格式不正确");
+                }
+                int count = 0;
                 for (int i = 0; i < table.Rows.Count; i++)
                 {
-                    int key_value = Convert.ToInt32(KeyValue);
-                    MemberLibrary.TreeID = key_value;
-                    var tree = TreeCurrent.Find(f => f.TreeID == key_value).SingleOrDefault();
-                    MemberLibrary.MemberName = tree.TreeName;
-                    MemberLibrary.UploadTime = DateTime.Now;
-                    MemberLibrary.Sort = 1;
-                    MemberLibrary.MemberModel = table.Rows[i][0].ToString();
-                    string MemberModel = MemberLibrary.MemberModel;
-                    char[] Number = MemberModel.ToArray();
-                    string MemberNumbering = "";
-                    for (int I = 0; I < Number.Length; I++)
+                    if (table.Rows[i].IsNull(0))
                     {
-                        if (("0123456789").IndexOf(Number[I] + "") != -1)
+                        count++;
+                    }
+                }
+                if (table.Rows.Count == count)
+                {
+                    return Content("文件不包含任何数据");
+                }
+                else
+                {
+                    int _count = 0;
+                    for (int i = 0; i < table.Rows.Count; i++)
+                    {
+                        if (!table.Rows[i].IsNull(0))
                         {
-                            MemberNumbering += Number[I];
+                            string MemberModel = table.Rows[i][0].ToString();
+                            var _MemberLibrary = MemberLibraryCurrent.Find(f => f.MemberModel == MemberModel).SingleOrDefault();
+                            if (_MemberLibrary == null)
+                            {
+                                int key_value = Convert.ToInt32(KeyValue);
+                                MemberLibrary.TreeID = key_value;
+                                var tree = TreeCurrent.Find(f => f.TreeID == key_value).SingleOrDefault();
+                                MemberLibrary.MemberName = tree.TreeName;
+                                MemberLibrary.UploadTime = DateTime.Now;
+                                MemberLibrary.Sort = 1;
+                                MemberLibrary.MemberModel = table.Rows[i][0].ToString();
+                                MemberModel = MemberLibrary.MemberModel;
+                                char[] Number = MemberModel.ToArray();
+                                string MemberNumbering = "";
+                                for (int I = 0; I < Number.Length; I++)
+                                {
+                                    if (("0123456789").IndexOf(Number[I] + "") != -1)
+                                    {
+                                        MemberNumbering += Number[I];
+                                    }
+                                }
+
+                                MemberLibrary.MemberNumbering = (MemberNumbering + "-" + DateTime.Now.ToString("yyyyMMddhhmmssffff")).ToString();
+                                MemberLibrary.SectionalArea = Convert.ToDecimal(table.Rows[i][1]);
+                                MemberLibrary.SurfaceArea = Convert.ToDecimal(table.Rows[i][2]);
+                                MemberLibrary.TheoreticalWeight = table.Rows[i][3].ToString();
+                                MemberLibrary.SectionalSize_h = Convert.ToInt32(table.Rows[i][4]);
+                                MemberLibrary.SectionalSizeB = Convert.ToInt32(table.Rows[i][5]);
+                                MemberLibrary.SectionalSize_b = Convert.ToInt32(table.Rows[i][6]);
+                                MemberLibrary.SectionalSizeD = Convert.ToDecimal(table.Rows[i][7]);
+                                MemberLibrary.SectionalSize_d = Convert.ToInt32(table.Rows[i][8]);
+                                MemberLibrary.SectionalSize_t = Convert.ToDecimal(table.Rows[i][9]);
+                                MemberLibrary.SectionalSize_r = Convert.ToDecimal(table.Rows[i][10]);
+                                MemberLibrary.SectionalSize_r1 = Convert.ToDecimal(table.Rows[i][11]);
+                                MemberLibrary.InertiaDistance_x = Convert.ToDecimal(table.Rows[i][12]);
+                                MemberLibrary.InertiaDistance_y = Convert.ToDecimal(table.Rows[i][13]);
+                                MemberLibrary.InertiaDistance_x0 = Convert.ToDecimal(table.Rows[i][14]);
+                                MemberLibrary.InertiaDistance_y0 = Convert.ToDecimal(table.Rows[i][15]);
+                                MemberLibrary.InertiaDistance_x1 = Convert.ToDecimal(table.Rows[i][16]);
+                                MemberLibrary.InertiaDistance_y1 = Convert.ToDecimal(table.Rows[i][17]);
+                                MemberLibrary.InertiaDistance_u = Convert.ToDecimal(table.Rows[i][18]);
+                                MemberLibrary.InertiaRadius_x = Convert.ToDecimal(table.Rows[i][19]);
+                                MemberLibrary.InertiaRadius_x0 = Convert.ToDecimal(table.Rows[i][20]);
+                                MemberLibrary.InertiaRadius_y = Convert.ToDecimal(table.Rows[i][21]);
+                                MemberLibrary.InertiaRadius_y0 = Convert.ToDecimal(table.Rows[i][22]);
+                                MemberLibrary.InertiaRadius_u = Convert.ToDecimal(table.Rows[i][23]);
+                                MemberLibrary.SectionalModulus_x = Convert.ToDecimal(table.Rows[i][24]);
+                                MemberLibrary.SectionalModulus_y = Convert.ToDecimal(table.Rows[i][25]);
+                                MemberLibrary.SectionalModulus_x0 = Convert.ToDecimal(table.Rows[i][26]);
+                                MemberLibrary.SectionalModulus_y0 = Convert.ToDecimal(table.Rows[i][27]);
+                                MemberLibrary.SectionalModulus_u = Convert.ToDecimal(table.Rows[i][28]);
+                                MemberLibrary.GravityCenterDistance_0 = Convert.ToDecimal(table.Rows[i][29]);
+                                MemberLibrary.GravityCenterDistance_x0 = Convert.ToDecimal(table.Rows[i][30]);
+                                MemberLibrary.GravityCenterDistance_y0 = Convert.ToDecimal(table.Rows[i][31]);
+                                MemberLibrary.MemberUnit = table.Rows[i][32].ToString();
+                                MemberLibrary.UnitPrice = table.Rows[i][33].ToString();
+                                string CAD_Drawing = "1.png";
+                                string Model_Drawing = "1.png";
+                                string Icon = "1.png";
+                                if (table.Rows[i][34].ToString() != "")
+                                {
+                                    CAD_Drawing = table.Rows[i][34].ToString().Trim();
+                                    Photo += CAD_Drawing + "、";
+                                }
+                                if (table.Rows[i][35].ToString() != "")
+                                {
+                                    Model_Drawing = table.Rows[i][35].ToString().Trim();
+                                    Photo += Model_Drawing + "、";
+                                }
+                                if (table.Rows[i][36].ToString() != "")
+                                {
+                                    Icon = table.Rows[i][36].ToString().Trim();
+                                    Photo += Icon + "、";
+                                }
+
+                                MemberLibrary.CAD_Drawing = CAD_Drawing;
+                                MemberLibrary.Model_Drawing = Model_Drawing;
+                                MemberLibrary.Icon = Icon;
+                                MemberLibrary.IsProcess = 0;
+                                MemberLibrary.IsRawMaterial = 0;
+                                MemberLibraryCurrent.Add(MemberLibrary);
+                                // Data.AddData(data);
+                            }
+                            else
+                            {
+                                _count++;
+                            }
                         }
                     }
-
-                    MemberLibrary.MemberNumbering = (MemberNumbering + "-" + DateTime.Now.ToString("yyyyMMddhhmmssffff")).ToString();
-                    MemberLibrary.SectionalArea = Convert.ToDecimal(table.Rows[i][1]);
-                    MemberLibrary.SurfaceArea = Convert.ToDecimal(table.Rows[i][2]);
-                    MemberLibrary.TheoreticalWeight = table.Rows[i][3].ToString();
-                    MemberLibrary.SectionalSize_h = Convert.ToInt32(table.Rows[i][4]);
-                    MemberLibrary.SectionalSizeB = Convert.ToInt32(table.Rows[i][5]);
-                    MemberLibrary.SectionalSize_b = Convert.ToInt32(table.Rows[i][6]);
-                    MemberLibrary.SectionalSizeD = Convert.ToDecimal(table.Rows[i][7]);
-                    MemberLibrary.SectionalSize_d = Convert.ToInt32(table.Rows[i][8]);
-                    MemberLibrary.SectionalSize_t = Convert.ToDecimal(table.Rows[i][9]);
-                    MemberLibrary.SectionalSize_r = Convert.ToDecimal(table.Rows[i][10]);
-                    MemberLibrary.SectionalSize_r1 = Convert.ToDecimal(table.Rows[i][11]);
-                    MemberLibrary.InertiaDistance_x = Convert.ToDecimal(table.Rows[i][12]);
-                    MemberLibrary.InertiaDistance_y = Convert.ToDecimal(table.Rows[i][13]);
-                    MemberLibrary.InertiaDistance_x0 = Convert.ToDecimal(table.Rows[i][14]);
-                    MemberLibrary.InertiaDistance_y0 = Convert.ToDecimal(table.Rows[i][15]);
-                    MemberLibrary.InertiaDistance_x1 = Convert.ToDecimal(table.Rows[i][16]);
-                    MemberLibrary.InertiaDistance_y1 = Convert.ToDecimal(table.Rows[i][17]);
-                    MemberLibrary.InertiaDistance_u = Convert.ToDecimal(table.Rows[i][18]);
-                    MemberLibrary.InertiaRadius_x = Convert.ToDecimal(table.Rows[i][19]);
-                    MemberLibrary.InertiaRadius_x0 = Convert.ToDecimal(table.Rows[i][20]);
-                    MemberLibrary.InertiaRadius_y = Convert.ToDecimal(table.Rows[i][21]);
-                    MemberLibrary.InertiaRadius_y0 = Convert.ToDecimal(table.Rows[i][22]);
-                    MemberLibrary.InertiaRadius_u = Convert.ToDecimal(table.Rows[i][23]);
-                    MemberLibrary.SectionalModulus_x = Convert.ToDecimal(table.Rows[i][24]);
-                    MemberLibrary.SectionalModulus_y = Convert.ToDecimal(table.Rows[i][25]);
-                    MemberLibrary.SectionalModulus_x0 = Convert.ToDecimal(table.Rows[i][26]);
-                    MemberLibrary.SectionalModulus_y0 = Convert.ToDecimal(table.Rows[i][27]);
-                    MemberLibrary.SectionalModulus_u = Convert.ToDecimal(table.Rows[i][28]);
-                    MemberLibrary.GravityCenterDistance_0 = Convert.ToDecimal(table.Rows[i][29]);
-                    MemberLibrary.GravityCenterDistance_x0 = Convert.ToDecimal(table.Rows[i][30]);
-                    MemberLibrary.GravityCenterDistance_y0 = Convert.ToDecimal(table.Rows[i][31]);
-                    MemberLibrary.MemberUnit = table.Rows[i][32].ToString();
-                    MemberLibrary.UnitPrice = table.Rows[i][33].ToString();
-                    string CAD_Drawing = "";
-                    string Model_Drawing = "";
-                    string Icon = "";
-                    if (table.Rows[i][34].ToString() == "")
+                    if (table.Rows.Count - count == _count || (_count == 1 && table.Rows.Count - count == _count))
                     {
-                        CAD_Drawing = "1.png";
+                        return Content("操作失败：要导入的数据已存在");
                     }
-                    if (table.Rows[i][35].ToString() == "")
-                    {
-                        Model_Drawing = "1.png";
-                    }
-                    if (table.Rows[i][36].ToString() == "")
-                    {
-                        Icon = "1.png";
-                    }
-
-                    MemberLibrary.CAD_Drawing = CAD_Drawing;
-                    MemberLibrary.Model_Drawing = Model_Drawing;
-                    MemberLibrary.Icon = Icon;
-                    MemberLibrary.IsProcess = 0;
-                    MemberLibrary.IsRawMaterial = 0;
-                    MemberLibraryCurrent.Add(MemberLibrary);
-                    // Data.AddData(data);
                 }
-                var JsonData = new
-                {
-                    Status = IsOk,
-                    NetworkFile = MemberLibrary,
-                };
-                return Content(JsonData.ToJson());
+                Session["photo"] = Photo;
+                return Content("操作成功");
+                //return View(Photo);
             }
             catch (Exception ex)
             {
-                return Content(ex.Message);
+                return Content("操作失败：" + ex.Message);
             }
         }
         #endregion
@@ -1163,7 +1223,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             //string TableHeader = "构件模板";
             string DataColumn = "型号 | 截面面积/cm²| 外表面积/(m²/m)|理论重量/(㎏/m)|";
             DataColumn += "h|B|b|D|d| t|r|r1|Ix | Ix0 | Ix1 | Iy | Iy0 | Iy1 | Iu | ix |";
-            DataColumn += " iy | ix0 | iy0 | iu | Wx | Wy | Wx0 | Wy0 | Wu | Z0 | X0 | Yu|单价|图纸|模型|图标";
+            DataColumn += " iy | ix0 | iy0 | iu | Wx | Wy | Wx0 | Wy0 | Wu | Z0 | X0 | Yu|单位|单价|图纸|模型|图标";
             DeriveExcel.DataTableToExcel(data, DataColumn.Split('|'), fileName);
         }
 
@@ -1222,15 +1282,18 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <returns></returns>
         public ActionResult UploadFile()
         {
+            ViewData["_photo"] = Session["photo"].ToString();
             return View();
         }
+
+
 
         /// <summary>
         /// 上传文件
         /// </summary>
         /// <param name="paths"></param>
         /// <returns></returns>
-        public ActionResult SubmitUpLoadFile(string KeyValue, string Images, string Icon, string CAD, string Model, string Img, RMC_MemberLibrary file, HttpPostedFileBase Filedata)/*RMC_MemberLibrary File,  */
+        public ActionResult SubmitUpLoadFile(string KeyValue, string Img, RMC_MemberLibrary file, HttpPostedFileBase Filedata)/*RMC_MemberLibrary File,  */
         {
             try
             {
@@ -1258,96 +1321,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 string filename = Filedata.FileName.Substring(0, Filedata.FileName.LastIndexOf('.'));//获取文件名称，去除后缀名
                 oldentity = MemberLibraryCurrent.Find(f => f.MemberID == key_value).SingleOrDefault();
                 oldentity1 = ProjectInfoCurrent.Find(f => f.ProjectId == key_value).SingleOrDefault();
-                if (Images != null)
-                {
-                    virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
-                    fullFileName = virtualPath + "/" + Filedata.FileName;
-
-                    //if (oldentity.Icon == null || oldentity.Icon == "")
-                    //{
-                    //    oldentity.Icon = "1.png";
-                    //}
-                    //string filename1 = oldentity.Icon.Substring(0, oldentity.Icon.LastIndexOf('.'));//获取文件名称，去除后缀名
-                    virtualPath1 = "/Resource/Document/NetworkDisk/System/Member/" + filename;
-                    if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
-                    {
-                        Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
-                    }
-                    //创建文件夹，保存文件
-                    Directory.CreateDirectory(virtualPath);
-                    Filedata.SaveAs(fullFileName);
-                    //oldentity.Icon = Filedata.FileName;
-                    //oldentity.ModifiedTime = DateTime.Now;
-                    //MemberLibraryCurrent.Modified(oldentity);
-                }
-
-                if (Icon != null)
-                {
-                    virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
-                    fullFileName = virtualPath + "/" + Filedata.FileName;
-
-                    if (oldentity.Icon == null || oldentity.Icon == "")
-                    {
-                        oldentity.Icon = "1.png";
-                    }
-                    string filename1 = oldentity.Icon.Substring(0, oldentity.Icon.LastIndexOf('.'));//获取文件名称，去除后缀名
-                    virtualPath1 = "~/Resource/Document/NetworkDisk/System/Member/" + filename1;
-                    if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
-                    {
-                        Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
-                    }
-                    //创建文件夹，保存文件
-                    Directory.CreateDirectory(virtualPath);
-                    Filedata.SaveAs(fullFileName);
-                    oldentity.Icon = Filedata.FileName;
-                    oldentity.ModifiedTime = DateTime.Now;
-                    MemberLibraryCurrent.Modified(oldentity);
-                }
-                else if (CAD != null)
-                {
-                    virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
-                    fullFileName = virtualPath + "/" + Filedata.FileName;
-
-                    if (oldentity.CAD_Drawing == null || oldentity.CAD_Drawing == "")
-                    {
-                        oldentity.CAD_Drawing = "1.png";
-                    }
-                    string filename1 = oldentity.CAD_Drawing.Substring(0, oldentity.CAD_Drawing.LastIndexOf('.'));//获取文件名称，去除后缀名
-                    virtualPath1 = "~/Resource/Document/NetworkDisk/System/Member/" + filename1;
-                    if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
-                    {
-                        Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
-                    }
-                    //创建文件夹，保存文件
-                    Directory.CreateDirectory(virtualPath);
-                    Filedata.SaveAs(fullFileName);
-                    oldentity.CAD_Drawing = Filedata.FileName;
-                    oldentity.ModifiedTime = DateTime.Now;
-                    MemberLibraryCurrent.Modified(oldentity);
-                }
-                else if (Model != null)
-                {
-                    virtualPath = this.Server.MapPath(string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Member", filename));// UserId,
-                    fullFileName = virtualPath + "/" + Filedata.FileName;
-
-                    if (oldentity.Model_Drawing == null || oldentity.Model_Drawing == "")
-                    {
-                        oldentity.Model_Drawing = "1.png";
-                    }
-                    string filename1 = oldentity.Model_Drawing.Substring(0, oldentity.Model_Drawing.LastIndexOf('.'));//获取文件名称，去除后缀名
-                    virtualPath1 = "~/Resource/Document/NetworkDisk/System/Member/" + filename1;
-                    if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
-                    {
-                        Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
-                    }
-                    //创建文件夹，保存文件
-                    Directory.CreateDirectory(virtualPath);
-                    Filedata.SaveAs(fullFileName);
-                    oldentity.Model_Drawing = Filedata.FileName;
-                    oldentity.ModifiedTime = DateTime.Now;
-                    MemberLibraryCurrent.Modified(oldentity);
-                }
-                else if (Img == "Logo")
+                if (Img == "Logo")
                 {
                     //NewPath = string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Project", filename);
                     //virtualPath = this.Server.MapPath(NewPath);// UserId,
@@ -1408,7 +1382,89 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 return Content(ex.Message);
             }
         }
+        [HttpPost]
+        public ContentResult UploadPhoto()
+        {
+            HttpFileCollectionBase fileToUpload = Request.Files;
+            List<string> list = new List<string>();
+            int count = 0;
+            foreach (string file in fileToUpload)
+            {
+                var fileName = fileToUpload[file].FileName.Trim();
+                string suffix = fileName.Substring(fileName.LastIndexOf('.') + 1);
 
+                if (suffix != "jpg" && suffix != "gif" && suffix != "jpeg" && suffix != "png")
+                {
+                    count++;
+                }
+                list.Add(fileName);
+
+            }
+
+            string photo = Session["photo"].ToString();
+
+            string _photo = photo.Substring(0, photo.Length - 1);
+            string[] fileArray = _photo.Split('、');
+            var _list = fileArray.ToList();
+
+            if (_list.Count() != list.Count())
+            {
+                return Content("必须同时选择要上传的所有图片！");
+            }
+            else
+            {
+                if (count > 0)
+                {
+                    return Content("所选的图片格式有误，请重选！");
+                }
+                else
+                {
+                    var diffArr = list.Where(c => !_list.Contains(c)).ToList();
+                    if (diffArr.Count == 0)
+                    {
+                        foreach (string file in fileToUpload)
+                        {
+                            var fileName = fileToUpload[file].FileName.Trim();
+                            string filename1 = fileName.Substring(0, fileName.LastIndexOf('.'));//获取文件名称，去除后缀名
+                            string virtualPath = "/Resource/Document/NetworkDisk/System/Member/" + filename1;
+
+                            string path = Server.MapPath(virtualPath);
+                            if (Directory.Exists(path))
+                            {
+                                Directory.Delete(path, true);//pdf路径
+                            }
+                            //创建文件夹，保存文件
+                            Directory.CreateDirectory(path);
+
+                            fileToUpload[file].SaveAs(path + "/" + fileName);
+                        }
+                        return Content("操作成功！");
+                    }
+                    else
+                    {
+                        return Content("所选的图片名称有误，请重选！");
+                    }
+                }
+            }
+        }
+
+        public bool exists(string[] _list)
+        {
+            string _photo = Session["photo"].ToString();
+
+            _photo = _photo.Substring(0, _photo.Length - 1);
+            string[] FieldInfo = _photo.Split('、');
+
+            var sameArr = FieldInfo.Intersect(_list).ToArray();
+
+            //找出不同的元素(即交集的补集)
+            var diffArr = FieldInfo.Where(c => !_list.Contains(c)).ToArray();
+            //if (_list. == FieldInfo)
+            //{
+            //    return true;
+            //}
+            return true;
+        }
         /// <summary>
         /// 上传用户头像
         /// </summary>
@@ -1433,21 +1489,21 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 string NewPath = string.Format("/Resource/Document/NetworkDisk/System/{0}/{1}", "Member", filename1);
                 long filesize = Filedata.ContentLength;
                 string FileEextension = Path.GetExtension(Filedata.FileName);
-                
+
                 // virtualPath = string.Format("/Content/Images/Avatar/{0}/{1}/{2}{3}", UserId, uploadDate, fileGuid, FileEextension);
-                string fullFileName = this.Server.MapPath(NewPath+"/");
+                string fullFileName = this.Server.MapPath(NewPath + "/");
                 //创建文件夹，保存文件
                 string path = Path.GetDirectoryName(fullFileName);
                 Directory.CreateDirectory(path);
                 if (!System.IO.File.Exists(fullFileName))
                 {
-                    Filedata.SaveAs(fullFileName+ filename);
+                    Filedata.SaveAs(fullFileName + filename);
                 }
-                return Content("../.."+NewPath+"/"+ filename);
+                return Content("../.." + NewPath + "/" + filename);
             }
             catch (Exception ex)
             {
-                return Content(ex.Message);
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
         }
 
@@ -1663,7 +1719,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     string filename1 = System.IO.Path.GetFileName(entity.Model_Drawing);
                     Oldentity.Model_Drawing = filename1;
 
-                    if (entity.Icon== null)
+                    if (entity.Icon == null)
                     {
                         entity.Icon = "1.png";
                     }
@@ -1773,9 +1829,37 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
             int IsOk = -1;
             int key_value = Convert.ToInt32(KeyValue);
+            //删除构件
             List<int> ids = new List<int>();
             ids.Add(key_value);
             IsOk = MemberLibraryCurrent.Remove(ids);
+            //
+
+            //删除构件材料
+            List<int> ids1 = new List<int>();
+            var MemberMaterial = MemberMaterialCurrent.Find(f => f.MemberId == key_value).ToList();
+            if (MemberMaterial.Count() > 0)
+            {
+                foreach (var item in MemberMaterial)
+                {
+                    ids1.Add(Convert.ToInt32(item.MemberId));
+                }
+                IsOk = MemberMaterialCurrent.Remove(ids1);
+            }
+            //
+
+            //删除构件制程
+            List<int> ids2 = new List<int>();
+            var MemberProcess = MemberProcessCurrent.Find(f => f.MemberId == key_value).ToList();
+            if (MemberProcess.Count() > 0)
+            {
+                foreach (var item in MemberProcess)
+                {
+                    ids1.Add(Convert.ToInt32(item.MemberId));
+                }
+                IsOk = MemberProcessCurrent.Remove(ids1);
+            }
+
             return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = "删除成功。" }.ToString());
         }
 
@@ -1943,6 +2027,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             int _KeyValue = Convert.ToInt32(KeyValue);
             try
             {
+                Stopwatch watch = CommonHelper.TimerStart();
                 int total = 0;
                 Expression<Func<RMC_MemberMaterial, bool>> func = ExpressionExtensions.True<RMC_MemberMaterial>();
                 func = f => f.MemberId == _KeyValue;
@@ -1982,7 +2067,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
                 var JsonData = new
                 {
-                    //rows = MemberMaterialCurrent.Find(f => f.MemberId == _KeyValue),
+                    total = total / jqgridparam.rows + 1,
+                    page = jqgridparam.page,
+                    records = total,
+                    costtime = CommonHelper.TimerEnd(watch),
                     rows = EntityModelList,
                 };
                 return Content(JsonData.ToJson());
@@ -2020,7 +2108,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         [HttpPost]
         [ValidateInput(false)]
         //[LoginAuthorize]
-        public virtual ActionResult SubmitDataForm(RMC_MemberMaterial entity, string KeyValue, string TreeId)
+        public virtual ContentResult SubmitDataForm(RMC_MemberMaterial entity, string KeyValue, string TreeId)
         {
             try
             {
@@ -2039,14 +2127,24 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
                 else
                 {
-                    MemberMaterialCurrent.Add(entity);
+                    var MemberMaterialList = MemberMaterialCurrent.Find(f => f.MemberId == entity.MemberId).ToList();
+                    var a = MemberMaterialList.Where(f => f.RawMaterialId == entity.RawMaterialId).SingleOrDefault();
+                    if (a == null)
+                    {
+                        MemberMaterialCurrent.Add(entity);
 
-                    var Member = MemberLibraryCurrent.Find(f => f.MemberID == entity.MemberId).SingleOrDefault();
-                    Member.IsProcess = 1;
-                    Member.IsRawMaterial = 1;
-                    MemberLibraryCurrent.Modified(Member);
+                        var Member = MemberLibraryCurrent.Find(f => f.MemberID == entity.MemberId).SingleOrDefault();
+                        Member.IsRawMaterial = 1;
+                        MemberLibraryCurrent.Modified(Member);
 
-                    IsOk = 1;
+                        IsOk = 1;
+
+                    }
+                    else
+                    {
+                        return Content(new JsonMessage { Success = false, Code = "-1", Message = "该数据已存在！" }.ToString());
+                    }
+
                     //this.WSectionalSize_r = entity.SectionalSize_r;riteLog(IsOk, entity, null, KeyValue, Message);
                 }
                 return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
@@ -2058,14 +2156,23 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             }
         }
 
-        public virtual ActionResult DeleteData(RMC_MemberLibrary entity, string KeyValue)
+        public virtual ActionResult DeleteMemberMaterial(string KeyValue, string MemberId)
         {
 
             int IsOk = -1;
             int key_value = Convert.ToInt32(KeyValue);
             List<int> ids = new List<int>();
             ids.Add(key_value);
-            IsOk = MemberLibraryCurrent.Remove(ids);
+            IsOk = MemberMaterialCurrent.Remove(ids);
+
+            int _MemberId = Convert.ToInt32(MemberId);
+            var MemberMaterial = MemberMaterialCurrent.Find(f => f.MemberId == _MemberId).ToList();
+            if (MemberMaterial.Count() == 0)
+            {
+                var Member = MemberLibraryCurrent.Find(f => f.MemberID == _MemberId).SingleOrDefault();
+                Member.IsRawMaterial = 0;
+                MemberLibraryCurrent.Modified(Member);
+            }
             return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = "删除成功。" }.ToString());
         }
 
@@ -2203,7 +2310,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                         var Member = MemberLibraryCurrent.Find(f => f.MemberID == entity.MemberId).SingleOrDefault();
                         Member.IsProcess = 1;
-                        Member.IsRawMaterial = 1;
                         MemberLibraryCurrent.Modified(Member);
                     }
 

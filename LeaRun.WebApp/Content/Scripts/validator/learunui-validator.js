@@ -24,7 +24,8 @@ function isNotNull(obj) {
 
 //验证数字 num
 function isInteger(obj) {
-    reg = /^[-+]?\d+$/;
+   // reg = /^[-+]?\d+$/; //验证数字
+    reg = /^\+?[1-9]\d*$/;//验证正整数
     if (!reg.test(obj)) {
         return false;
     } else {
@@ -537,7 +538,7 @@ function JudgeValidate(obj) {
                 case "Num":
                     {
                         if (!isInteger(value)) {
-                            Validatemsg = $(this).attr("err") + "必须为数字！\n";
+                            Validatemsg = $(this).attr("err") + "必须为大于0的整数！\n";
                             Validateflag = false;
                             tipCss($(this), Validatemsg); return false;
                         }

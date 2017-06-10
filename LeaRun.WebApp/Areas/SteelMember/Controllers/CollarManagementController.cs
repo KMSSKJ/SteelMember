@@ -63,7 +63,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             if (KeyValue == "" || KeyValue == null)
             {
                 ViewBag.CollarNumbering = "LYD" + DateTime.Now.ToString("yyyyMMddhhmmssffff");
-                ViewData["Librarian"] = currentUser.RealName;
+                ViewData["Librarian"] = ManageProvider.Provider.Current().UserName;
             }
             return View();
         }
@@ -245,67 +245,78 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 if (_a && _b && _c && _d)
                 {
-                    func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.Use.Contains(model.Class) && f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime;
+                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering) && f.Use.Contains(model.Class) && f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime);
+                      func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.Use.Contains(model.Class) && f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime;
                 }
-                else if (_a)
+                else if (_a&&!_b && !_c && !_d)
                 {
                     func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering));
                     func1 = f => f.CollarNumbering.Contains(model.CollarNumbering);
                 }
-                else if (_b)
+                else if (_b && !_a && !_c && !_d)
                 {
                     func = func.And(f => f.CollarTime >= model.InBeginTime);
                     func1 = f => f.CollarTime >= model.InBeginTime;
                 }
-                else if (_c)
+                else if (_c && !_b && !_a && !_d)
                 {
                     func = func.And(f => f.CollarTime <= model.InEndTime);
                     func1 = f => f.CollarTime <= model.InEndTime;
                 }
-                else if (_d)
+                else if (_d && !_b && !_c && !_a)
                 {
                     func = func.And(f => f.Use.Contains(model.Class));
                     func1 = f => f.Use.Contains(model.Class);
                 }
-                else if (_a && _b)
+                else if (_a && _b&& !_c && !_d)
                 {
+                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime >= model.InBeginTime);
                     func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime >= model.InBeginTime;
                 }
-                else if (_a && _c)
+                else if (_a && _c && !_b && !_d)
                 {
+                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime <= model.InEndTime);
                     func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime <= model.InEndTime;
                 }
-                else if (_a && _d)
+                else if (_a && _d && !_b && !_c)
                 {
+                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering) && f.Use.Contains(model.Class));
                     func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.Use.Contains(model.Class);
                 }
-                else if (_b && _c)
+                else if (_b && _c && !_a && !_d)
                 {
+                    func = func.And(f => f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime);
                     func1 = f => f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime;
                 }
-                else if (_b && _d)
+                else if (_b && _d && !_a && !_c)
                 {
+                    func = func.And(f => f.CollarTime >= model.InBeginTime && f.Use.Contains(model.Class));
                     func1 = f => f.CollarTime >= model.InBeginTime && f.Use.Contains(model.Class);
                 }
-                else if (_c && _d)
+                else if (_c && _d && !_b && !_a)
                 {
+                    func = func.And(f => f.CollarTime <= model.InEndTime && f.Use.Contains(model.Class));
                     func1 = f => f.CollarTime <= model.InEndTime && f.Use.Contains(model.Class);
                 }
-                else if (_a && _b && _c)
+                else if (_a && _b && _c && !_d)
                 {
-                    func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime;
+                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime);
+                      func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime >= model.InBeginTime && f.CollarTime <= model.InEndTime;
                 }
-                else if (_a && _b && _d)
+                else if (_a && _b && _d && !_c)
                 {
+                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime >= model.InBeginTime && f.Use.Contains(model.Class));
                     func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime >= model.InBeginTime && f.Use.Contains(model.Class);
                 }
-                else if (_a && _c && _d)
+                else if (_a && _c && _d && !_b)
                 {
+                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime <= model.InEndTime && f.Use.Contains(model.Class));
                     func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime <= model.InEndTime && f.Use.Contains(model.Class);
                 }
-                else if (_b && _c && _d)
+                else if (_b && _c && _d && !_a)
                 {
-                    func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime <= model.InEndTime && f.Use.Contains(model.Class);
+                    func = func.And(f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime <= model.InEndTime && f.Use.Contains(model.Class));
+                      func1 = f => f.CollarNumbering.Contains(model.CollarNumbering) && f.CollarTime <= model.InEndTime && f.Use.Contains(model.Class);
                 }
                 #endregion
 

@@ -133,34 +133,38 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 if (_a && _b && _c)
                 {
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel) && f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime);
                     func1 = f => f.MemberModel.Contains(model.MemberModel) && f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime;
                 }
-                else if (_a)
+                else if (_a&&!_b&&!_c)
                 {
                     func = func.And(f => f.MemberModel.Contains(model.MemberModel));
                     func1 = f => f.MemberModel.Contains(model.MemberModel);
                 }
-                else if (_b)
+                else if (_b&&!_a&&!_c)
                 {
                     func = func.And(f => f.CreateTime >= model.InBeginTime);
                     func1 = f => f.CreateTime >= model.InBeginTime;
                 }
-                else if (_c)
+                else if (_c&&!_a&&!_b)
                 {
                     func = func.And(f => f.CreateTime <= model.InEndTime);
                     func1 = f => f.CreateTime <= model.InEndTime;
                 }
-                else if (_a && _b)
+                else if (_a && _b&&!_c)
                 {
-                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.CreateTime >= model.InBeginTime;
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel) && f.CreateTime >= model.InBeginTime);
+                      func1 = f => f.MemberModel.Contains(model.MemberModel) && f.CreateTime >= model.InBeginTime;
                 }
-                else if (_a && _c)
+                else if (_a && _c&&!_b)
                 {
-                    func1 = f => f.MemberModel.Contains(model.MemberModel) && f.CreateTime <= model.InEndTime;
+                    func = func.And(f => f.MemberModel.Contains(model.MemberModel) && f.CreateTime <= model.InEndTime);
+                      func1 = f => f.MemberModel.Contains(model.MemberModel) && f.CreateTime <= model.InEndTime;
                 }
-                else if (_b && _c)
+                else if (_b && _c&&!_a)
                 {
-                    func1 = f => f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime;
+                    func = func.And(f => f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime);
+                      func1 = f => f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime;
                 }
                 #endregion
 
@@ -320,6 +324,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 var entity = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).SingleOrDefault();
                 var entity1 = MemberLibraryCurrent.Find(f => f.MemberID == entity.MemberId).SingleOrDefault();
                 var entity_tree = TreeCurrent.Find(f => f.TreeID == entity.MemberClassId).SingleOrDefault();
+                projectdemand.TreeName = entity.TreeName;
                 projectdemand.ProjectDemandId = ProjectDemandId;
                 projectdemand.MemberClassId = entity.MemberClassId;
                 projectdemand.MemberClassName = entity_tree.TreeName;
@@ -361,11 +366,13 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     int keyvalue = Convert.ToInt32(KeyValue);
                     RMC_ProjectDemand Oldentity = ProjectManagementCurrent.Find(t => t.ProjectDemandId == keyvalue).SingleOrDefault();//获取没更新之前实体对象
                     Oldentity.MemberId = entity.MemberId;
+                    Oldentity.UnitId = entity.UnitId;
                     Oldentity.MemberClassId = entity.MemberClassId;
                     Oldentity.MemberNumber = entity.MemberNumber;
                     Oldentity.MemberWeight = entity.MemberWeight;
                     Oldentity.MemberCompanyId = entity.MemberCompanyId;
                     Oldentity.Description = entity.Description;
+                    Oldentity.IsReview = 0;
                     ProjectManagementCurrent.Modified(Oldentity);
                     IsOk = 1;//更新实体对象
                     //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
@@ -452,15 +459,41 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// </summary>
         /// <param name="KeyValue"></param>
         /// <returns></returns>
-        public ActionResult GetMemderName(string KeyValue)
+        public ActionResult GetMemderName(string KeyValue,string TreeId)
         {
-            List<RMC_MemberLibrary> Entity = null;
+            var Entitys=new List<RMC_MemberLibrary>();
             if (KeyValue != "")
             {
+                List<string> MemberModel1 = new List<string>();
+                List<string> MemberModel2 = new List<string>();
+
+                int _TreeId = Convert.ToInt32(TreeId);
                 int treeid = Convert.ToInt32(KeyValue);
-                Entity = MemberLibraryCurrent.Find(f => f.TreeID == treeid).ToList();
+                var Entity = MemberLibraryCurrent.Find(f => f.TreeID == treeid).ToList();
+                if (Entity.Count()>0)
+                {
+                    foreach (var item in Entity)
+                    {
+                        MemberModel1.Add(item.MemberModel);
+                    }
+                }
+                 var Entity1 = ProjectManagementCurrent.Find(f=>f.TreeId==_TreeId&&f.MemberClassId== treeid).ToList();
+                if (Entity1.Count()>0)
+                {
+                    foreach (var item1 in Entity1)
+                    {
+                        MemberModel2.Add(item1.MemberModel);
+                    }
+                }
+                var MemberModel3=MemberModel1.Where(c => !MemberModel2.Contains(c)).ToList();
+                foreach (var item in MemberModel3)
+                {
+                    var Model= Entity.Where(f=>f.MemberModel==item).SingleOrDefault();
+                    Entitys.Add(Model);
+                }
+                
             }
-            return Json(Entity);
+            return Json(Entitys);
         }
 
         /// <summary>
@@ -514,7 +547,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 int ProjectDemandId = Convert.ToInt32(KeyValue);
                 var file = ProjectManagementCurrent.Find(f => f.ProjectDemandId == ProjectDemandId).First();
                 file.ModifiedTime = DateTime.Now;
-                file.ReviewMan = currentUser.RealName;
+                file.ReviewMan = ManageProvider.Provider.Current().UserName;
                 file.IsReview = Convert.ToInt32(IsReview);
                 ProjectManagementCurrent.Modified(file);
                 return Content(new JsonMessage { Success = true, Code = "1", Message = Message }.ToString());

@@ -6,9 +6,9 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     @*<title>图片放大缩小向左向右网页特效</title>*@
+    @*<script src="~/Content/Scripts/jqueryPicture/js/jquery.js"></script>*@
     <script src="~/Content/Scripts/jqueryPicture/js/jquery.mousewheel.min.js"></script>
     <script src="~/Content/Scripts/jqueryPicture/js/jquery.iviewer.js"></script>
-
 
     <script type="text/javascript">
         var $ = jQuery;
@@ -16,6 +16,7 @@
             var mole_fileURL = $("#model_file").val();
             var cad_fileURL = $("#cad_file").val();
             GetGrid();
+            document.getElementById("model").style.display = "none";
             document.getElementById("process").style.display="none";
             $("#viewer_cad").iviewer(
                  {
@@ -110,59 +111,19 @@
             });
 
         }
-
-
-
-        ////删除模型图
-        //function btn_delModelDrawing(KeyValue) {
-        //    var Prompt = "您确实要删除此文件吗？";
-        //    var CAD = "";
-        //    var Model = "Model";
-        //    if (IsDelData(KeyValue)) {
-        //        delConfirm('/SteelMember/File/DelDrawing', { KeyValue: KeyValue }, Prompt);
-        //    }
-        //}
-
-        ////删除CAD图纸
-        //function btn_delCADDrawing(KeyValue) {
-        //    var Prompt = "您确实要删除此文件吗？";
-        //    var CAD = "CAD";
-        //    var Model = "";
-        //    if (IsDelData(KeyValue)) {
-        //        delConfirm('/SteelMember/File/DelDrawing', { KeyValue: KeyValue, CAD: CAD }, Prompt);
-        //    }
-        //}
-
-        ////上传模型图
-        //function btn_uploadModelDrawing(KeyValue) {
-        //    var CAD = "";
-        //    var Model = "Model";
-        //    var url = "/SteelMember/File/UpLoadFile?KeyValue=" + KeyValue + "&CAD=" + CAD + "&Model=" + Model;
-        //    Dialog(url, "UpLoadFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
-        //        top.frames[iframe].AcceptClick()
-        //        $("#gridTable").trigger("reloadGrid"); //重新载入
-        //    });
-        //}
-
-        ////上传CAD图纸
-        //function btn_uploadCADDrawing(KeyValue) {
-        //    var CAD = "CAD";
-        //    var Model = "";
-        //    var url = "/SteelMember/File/UpLoadFile?KeyValue=" + KeyValue + "&CAD=" + CAD + "&Model=" + Model;
-        //    Dialog(url, "UpLoadFile", "上传文件到网络硬盘", 500, 600, function (iframe) {
-        //        top.frames[iframe].AcceptClick()
-        //        $("#gridTable").trigger("reloadGrid"); //重新载入
-        //    });
-        //}
-
+        
     </script>
     <link href="~/Content/Scripts/jqueryPicture/css/jquery.iviewer.css" rel="stylesheet" />
     <style>
         .viewer {
-            width: 99%;
-            height: 96%;
+            width: 99.6%;
+            height: 99.6%;
             border: 1px solid black;
             position: relative;
+        }
+        #viewer_model img {
+            margin-left: 220px;
+            margin-top: 220px;
         }
     </style>
 </head>
@@ -188,7 +149,7 @@
     </body>*@
 <body>
     <form id="form1">
-        <div id="message" style="display: none; padding: 1px; padding-bottom: 0px;"></div>
+        @*<div id="message" style="display: none; padding: 1px; padding-bottom: 0px;"></div>*@
         <div class="bd" style="border-bottom: none; margin: 1px;">
             <div class="tipstitle_title settingtable bold bd todayInfoPanelTab rightPanelTitle_normal">
                 <div class="tab_list_top" style="position: absolute">
@@ -200,21 +161,21 @@
         </div>
         <div class="ScrollBar" style="margin: 1px; overflow: hidden;">
             <!--构件图纸-->
-            <div id="cad" class="tabPanel" style="width:760px;height:650px;">
+            <div id="cad" class="tabPanel" style="width:700px;height:540px;">
                 <input type="hidden" id="cad_file" value='@ViewData["CADDrawing"]' />
                 <div id="viewer_cad" class="viewer"></div>
                 @*<input type="button" onclick="btn_uploadCADDrawing(@ViewData["MemberId"])" value="修改/上传" style="margin-left:120px" />
                 <input type="button" onclick="btn_delCADDrawing(@ViewData["MemberId"])" value="删除" style="margin-left:20px" />*@
             </div>
             <!--构件模型-->
-            <div id="model" class="tabPanel" style="display: none;width:760px;height:650px;">
+            <div id="model" class="tabPanel" style="width:700px;height:540px;">
                 <input type="hidden" id="model_file" value='@ViewData["ModelDrawing"]' />
                 <div id="viewer_model" class="viewer"></div>
                 @*<input type="button" onclick="btn_uploadModelDrawing(@ViewData["MemberId"])" value="修改/上传" style="margin-left:120px" />
                 <input type="button" onclick="btn_delModelDrawing(@ViewData["MemberId"])" value="删除" style="margin-left:20px" />*@
             </div>
             <!--构件制程-->
-            <div id="process" style="width:760px;height:650px;">
+            <div id="process" class="tabPanel"  style="width:700px;height:540px;">
                 <table id="gridTable"></table>
                 <div id="gridPager"></div>
             </div>

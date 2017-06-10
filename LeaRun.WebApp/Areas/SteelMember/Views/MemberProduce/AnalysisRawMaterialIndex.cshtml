@@ -12,42 +12,21 @@
     //加载左边树
     //注意 FolderId 默认等于1 这样就可以加载一级目录下的子节点文件夹
     var TreeId = "";//16
-    @*var ItemId=2;
-    //ItemId = GetQuery("ItemID"), ProjectName = "", IsPublic = "1";
-    function GetTree() {
-        var itemtree = {
-            onnodeclick: function (node) {
-                TreeId = node.id;
-                TreeName = node.text;
-                GridFolderEvent(TreeId);
-            },
-            url: "@Url.Content("/SteelMember/MemberProduce/TreeJson")?ItemId=" + ItemId
-    };
-    $("#ItemsTree").treeview(itemtree);
-    };
-
-    //表格文件夹点击事件
-    function GridFolderEvent(TreeId) {
-        TreeId = TreeId;
-        $("#gridTable").jqGrid('setGridParam', {
-            url: "@Url.Content("/SteelMember/MemberProduce/TreeGridJsonAnalysisRawMaterial")?TreeID=" + TreeId, page: 1
-    }).trigger('reloadGrid');
-    }*@
-
+   
     //加载表格
     function GetGrid() {
         var RawMaterialNumber;
         var OrderProcessingNumber;
         var SelectRowIndx;
         $("#gridTable").jqGrid({
-            url: "@Url.Content("/SteelMember/MemberProduce/TreeGridJsonAnalysisRawMaterial")?TreeID=" + TreeId,
+            url: "@Url.Content("/SteelMember/MemberProduce/TreeGridJsonAnalysisRawMaterial")?TreeId=" + TreeId,
             datatype: "json",
 
             treeGrid: true,
             treeGridModel: "nested",
             ExpandColumn: "Code",
 
-            height: $(window).height() - 122,
+            height: $(window).height() - 130,
             autowidth: true,
             colModel: [
                     { label: '主键', name: "RawMaterialId", hidden: true },

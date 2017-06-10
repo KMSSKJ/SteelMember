@@ -348,7 +348,7 @@
     <Property Name="PurchaseNumbering" Type="nvarchar" MaxLength="30" />
     <Property Name="CreateTime" Type="datetime" />
     <Property Name="CreateMan" Type="nvarchar" MaxLength="20" />
-    <Property Name="Library" Type="nvarchar" MaxLength="20" />
+    <Property Name="ReviewMan" Type="nvarchar" MaxLength="20" />
     <Property Name="Description" Type="nvarchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="RMC_RawMaterialLibrary">
@@ -397,6 +397,7 @@
     <Property Name="MemberClassId" Type="int" />
     <Property Name="MemberId" Type="int" />
     <Property Name="MemberNumbering" Type="nvarchar" MaxLength="30" />
+    <Property Name="ShipNumbering" Type="nvarchar" MaxLength="30" />
     <Property Name="MemberModel" Type="nvarchar" MaxLength="10" />
     <Property Name="MemberName" Type="nvarchar" MaxLength="15" />
     <Property Name="ShipNumber" Type="nvarchar" MaxLength="10" />

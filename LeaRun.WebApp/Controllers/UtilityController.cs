@@ -207,7 +207,7 @@ namespace LeaRun.WebApp.Controllers
         public ActionResult GetDeriveExcelColumn()
         {
             string JsonColumn = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonColumn_DeriveExcel"));
-            //JsonColumn = JsonColumn.Replace("\"name\":\"Icon\",\"hidden\":false", "\"name\":\"Icon\",\"hidden\":true");
+            JsonColumn = JsonColumn.Replace("\"Icon\",\"hidden\":false", "\"Icon\",\"hidden\":true");
             return Content(JsonColumn);
         }
         /// <summary>
@@ -224,6 +224,7 @@ namespace LeaRun.WebApp.Controllers
             string JsonData = GZipHelper.Uncompress(CookieHelper.GetCookie("JsonData_DeriveExcel"));
             //<img style=\"width:44px;height:32px;\" src=\"工字钢GB10/工字钢GB10.jpg\" onmouseover=\"showBigImg(event,'工字钢GB10/工字钢GB10.jpg')\" onmouseout=\"leaveBigImg(event)\">
             JsonData = JsonData.Replace("../../Resource/Document/NetworkDisk/System/Member/", "").Replace("style=\\\"width:44px;height:32px;\\\"", "").Replace("onmouseout=\\\"leaveBigImg(event)\\\"", "").Replace("onmouseover=\\\"showBigImg(event,", "");
+            //JsonData = JsonData.Replace("<img src=\....ContentImagescheckokmark.gif\>", "有").Replace("<img src=\....ContentImageschecknomark.gif\>", "无");
             DeriveExcel.JqGridToExcel(JsonColumn, JsonData, ExportField, fileName, TableHeader, TableObject);
 
 

@@ -18,7 +18,7 @@ namespace LeaRun.Entity.SteelMember
         public string PurchaseNumbering { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateMan { get; set; }
-        public string Library { get; set; }
+        public string ReviewMan { get; set; }
         public string Description { get; set; }
     }
 }
