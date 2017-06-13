@@ -117,3 +117,15 @@ D:\Source\Repos\SteelMember\LeaRun.DataAccess\bin\Debug\LeaRun.Cache.pdb
 D:\Source\Repos\SteelMember\LeaRun.DataAccess\obj\Debug\LeaRun.DataAccess.csprojResolveAssemblyReference.cache
 D:\Source\Repos\SteelMember\LeaRun.DataAccess\obj\Debug\LeaRun.DataAccess.dll
 D:\Source\Repos\SteelMember\LeaRun.DataAccess\obj\Debug\LeaRun.DataAccess.pdb
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.DataAccess\bin\Debug\LeaRun.DataAccess.dll
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.DataAccess\bin\Debug\LeaRun.DataAccess.pdb
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.DataAccess\bin\Debug\EntityFramework.dll
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.DataAccess\bin\Debug\LeaRun.Cache.dll
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.DataAccess\bin\Debug\log4net.dll
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.DataAccess\bin\Debug\MySql.Data.dll
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.DataAccess\bin\Debug\Oracle.DataAccess.dll
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.DataAccess\bin\Debug\System.Data.SQLite.dll
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.DataAccess\bin\Debug\LeaRun.Cache.pdb
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.DataAccess\obj\Debug\LeaRun.DataAccess.csprojResolveAssemblyReference.cache
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.DataAccess\obj\Debug\LeaRun.DataAccess.dll
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.DataAccess\obj\Debug\LeaRun.DataAccess.pdb
