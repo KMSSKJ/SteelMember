@@ -378,10 +378,10 @@
     <Property Name="PurchaseId" Type="int" />
     <Property Name="MaterialClassId" Type="int" />
     <Property Name="OrderNumbering" Type="nvarchar" MaxLength="20" />
-    <Property Name="MaterialName" Type="nvarchar" MaxLength="20" />
-    <Property Name="MaterialStandard" Type="nvarchar" MaxLength="20" />
+    <Property Name="RawMaterialName" Type="nvarchar" MaxLength="20" />
+    <Property Name="RawMaterialStandard" Type="nvarchar" MaxLength="20" />
     <Property Name="Qty" Type="int" />
-    <Property Name="UnitId" Type="int" />
+    <Property Name="UnitName" Type="nvarchar" MaxLength="10" />
     <Property Name="UnitPrice" Type="int" />
     <Property Name="MaterialBudget" Type="nvarchar" MaxLength="20" />
     <Property Name="DeleteFlag" Type="int" />

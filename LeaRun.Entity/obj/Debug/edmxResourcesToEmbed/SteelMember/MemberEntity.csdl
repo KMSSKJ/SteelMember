@@ -15,12 +15,12 @@
     <EntitySet Name="RMC_ProjectInfo" EntityType="kskfModel.RMC_ProjectInfo" />
     <EntitySet Name="RMC_ProjectOrder" EntityType="kskfModel.RMC_ProjectOrder" />
     <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
-    <EntitySet Name="RMC_Purchase" EntityType="kskfModel.RMC_Purchase" />
     <EntitySet Name="RMC_RawMaterialLibrary" EntityType="kskfModel.RMC_RawMaterialLibrary" />
-    <EntitySet Name="RMC_RawMaterialPurchase" EntityType="kskfModel.RMC_RawMaterialPurchase" />
     <EntitySet Name="RMC_ShipManagement" EntityType="kskfModel.RMC_ShipManagement" />
     <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
     <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="kskfModel.RMC_AnalysisRawMaterial" />
+    <EntitySet Name="RMC_Purchase" EntityType="kskfModel.RMC_Purchase" />
+    <EntitySet Name="RMC_RawMaterialPurchase" EntityType="kskfModel.RMC_RawMaterialPurchase" />
   </EntityContainer>
   <EntityType Name="RMC_Collar">
     <Key>
@@ -338,17 +338,6 @@
     <Property Name="Leader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>
-  <EntityType Name="RMC_Purchase">
-    <Key>
-      <PropertyRef Name="PurchaseId" />
-    </Key>
-    <Property Name="PurchaseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="PurchaseNumbering" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="CreateTime" Type="DateTime" Precision="3" />
-    <Property Name="CreateMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="ReviewMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-  </EntityType>
   <EntityType Name="RMC_RawMaterialLibrary">
     <Key>
       <PropertyRef Name="RawMaterialId" />
@@ -364,26 +353,6 @@
     <Property Name="UnitPrice" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="UnitName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="WarehousingTime" Type="DateTime" Precision="3" />
-  </EntityType>
-  <EntityType Name="RMC_RawMaterialPurchase">
-    <Key>
-      <PropertyRef Name="RawMaterialPurchaseId" />
-    </Key>
-    <Property Name="RawMaterialPurchaseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="TreeId" Type="Int32" />
-    <Property Name="OrderId" Type="Int32" />
-    <Property Name="RawMaterialId" Type="Int32" />
-    <Property Name="PurchaseId" Type="Int32" />
-    <Property Name="MaterialClassId" Type="Int32" />
-    <Property Name="OrderNumbering" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="MaterialName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="MaterialStandard" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="Qty" Type="Int32" />
-    <Property Name="UnitId" Type="Int32" />
-    <Property Name="UnitPrice" Type="Int32" />
-    <Property Name="MaterialBudget" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="DeleteFlag" Type="Int32" />
-    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="RMC_ShipManagement">
     <Key>
@@ -455,6 +424,37 @@
     <Property Name="MaterialBudget" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="AnalysisMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="AnalysisTime" Type="DateTime" Precision="3" />
+    <Property Name="DeleteFlag" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="RMC_Purchase">
+    <Key>
+      <PropertyRef Name="PurchaseId" />
+    </Key>
+    <Property Name="PurchaseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PurchaseNumbering" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="CreateTime" Type="DateTime" Precision="3" />
+    <Property Name="CreateMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ReviewMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="RMC_RawMaterialPurchase">
+    <Key>
+      <PropertyRef Name="RawMaterialPurchaseId" />
+    </Key>
+    <Property Name="RawMaterialPurchaseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TreeId" Type="Int32" />
+    <Property Name="OrderId" Type="Int32" />
+    <Property Name="RawMaterialId" Type="Int32" />
+    <Property Name="PurchaseId" Type="Int32" />
+    <Property Name="MaterialClassId" Type="Int32" />
+    <Property Name="OrderNumbering" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="RawMaterialName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="RawMaterialStandard" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Qty" Type="Int32" />
+    <Property Name="UnitName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="UnitPrice" Type="Int32" />
+    <Property Name="MaterialBudget" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="DeleteFlag" Type="Int32" />
     <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>

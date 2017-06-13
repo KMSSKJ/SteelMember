@@ -209,7 +209,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         }
 
         #region 构件厂订单管理
-        public  ActionResult OrderIndex()
+        public ActionResult OrderIndex()
         {
             return View();
         }
@@ -248,7 +248,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
 
                 Expression<Func<RMC_ProjectOrder, bool>> func = ExpressionExtensions.True<RMC_ProjectOrder>();
-               // Expression<Func<RMC_ProjectOrder, bool>> func0 = ExpressionExtensions.True<RMC_ProjectOrder>();
+                // Expression<Func<RMC_ProjectOrder, bool>> func0 = ExpressionExtensions.True<RMC_ProjectOrder>();
                 //func = f => f.DeleteFlag != 1 && f.IsSubmit == 1 && f.ConfirmOrder == _ConfirmOrder && f.Productioned == _Productioned;
                 //Func<RMC_ProjectOrder, bool> func = f => f.TreeId != 0;
 
@@ -259,12 +259,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 if (_a && _b && _c)
                 {
                     func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime);
-                   // func0 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime;
+                    // func0 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime;
                 }
-                else if (_a &&!_b &&!_c)
+                else if (_a && !_b && !_c)
                 {
                     func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering));
-                   // func0 = f => f.OrderNumbering.Contains(model.OrderNumbering);
+                    // func0 = f => f.OrderNumbering.Contains(model.OrderNumbering);
                 }
                 else if (_b && !_a && !_c)
                 {
@@ -279,12 +279,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 else if (_a && _b && !_c)
                 {
                     func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime);
-                  //func0 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime;
+                    //func0 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime;
                 }
                 else if (_a && _c && !_b)
                 {
                     func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime <= model.InEndTime);
-                   // func0 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime <= model.InEndTime;
+                    // func0 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime <= model.InEndTime;
                 }
                 else if (_b && _c && !_a)
                 {
@@ -301,7 +301,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 List<RMC_ProjectOrder> ProjectOrderList = new List<RMC_ProjectOrder>();
                 if (TreeId == "" || (ConfirmOrder == "2" && Productioned == "2"))
                 {
-                  func =  func.And(f =>f.IsSubmit == 1 && f.OrderId > 0);
+                    func = func.And(f => f.IsSubmit == 1 && f.OrderId > 0);
 
                     ProjectOrderList = ProjectOrderList_ = OrderManagementCurrent.FindPage<string>(jqgridparam.page
                                              , jqgridparam.rows
@@ -325,15 +325,16 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     //        ProjectOrderList = ProjectOrderList.Concat(_ProjectOrderList).ToList();
                     //    }
                     //}
-                    if(TreeId!=""&&(ParameterJson == null|| ParameterJson == "[{\"OrderNumbering\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]")&& (ConfirmOrder == null && Productioned == null)) { 
-                        func= func.And(f =>f.IsSubmit == 1&& f.OrderId > 0);
+                    if (TreeId != "" && (ParameterJson == null || ParameterJson == "[{\"OrderNumbering\":\"\",\"InBeginTime\":\"\",\"InEndTime\":\"\"}]") && (ConfirmOrder == null && Productioned == null))
+                    {
+                        func = func.And(f => f.IsSubmit == 1 && f.OrderId > 0);
                         //func0 = f => f.DeleteFlag != 1 && f.IsSubmit == 1 && f.ConfirmOrder == _ConfirmOrder && f.Productioned == _Productioned;
                     }
                     else
                     {
                         int _ConfirmOrder = Convert.ToInt32(ConfirmOrder);
                         int _Productioned = Convert.ToInt32(Productioned);
-                        func =  func.And(f => f.IsSubmit == 1 && f.ConfirmOrder ==_ConfirmOrder && f.Productioned == _Productioned);
+                        func = func.And(f => f.IsSubmit == 1 && f.ConfirmOrder == _ConfirmOrder && f.Productioned == _Productioned);
                     }
                     ProjectOrderList = OrderManagementCurrent.FindPage<string>(jqgridparam.page
                                            , jqgridparam.rows
@@ -540,7 +541,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public ActionResult TreeGridJsonAnalysisRawMaterial(JqGridParam jqgridparam, string TreeId)
         {
             Stopwatch watch = CommonHelper.TimerStart();
-          
+
             List<AnalysisRawMaterialModel> AnalysisRawMaterialModellist = new List<AnalysisRawMaterialModel>();
             try
             {
@@ -583,14 +584,15 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                             {
                                                 AnalysisRawMaterialModel.RawMaterialId = Convert.ToInt32(MemberMaterialList[i2].RawMaterialId);
                                                 var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == AnalysisRawMaterialModel.RawMaterialId).SingleOrDefault();
+
                                                 AnalysisRawMaterialModel.RawMaterialName = RawMaterial.RawMaterialName;
                                                 AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
                                                 AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
+                                                AnalysisRawMaterialModel.UnitName = RawMaterial.UnitName;
                                                 AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
                                                 AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
                                                 AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
                                             }
-
 
                                         }
                                         else
@@ -600,9 +602,123 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                             AnalysisRawMaterialModel.RawMaterialName = RawMaterial.RawMaterialName;
                                             AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
                                             AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
+                                            AnalysisRawMaterialModel.UnitName = RawMaterial.UnitName;
                                             AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
                                             AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
                                             AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // int total = AnalysisRawMaterialModellist.Distinct().Count();
+
+                var JsonData = new
+                {
+                    total = AnalysisRawMaterialModellist.Count() / jqgridparam.rows + 1,
+                    page = jqgridparam.page,
+                    records = AnalysisRawMaterialModellist.Count(),
+                    costtime = CommonHelper.TimerEnd(watch),
+                    rows = AnalysisRawMaterialModellist.Distinct(),
+                };
+                return Content(JsonData.ToJson());
+            }
+            catch (Exception ex)
+            {
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+            }
+
+        }
+
+        /// <summary>
+        /// 【工程项目管理】返回文件（夹）列表JSON
+        /// </summary>
+        /// <param name="keywords">文件名搜索条件</param>
+        /// <param name="FolderId">文件夹ID</param>
+        /// <param name="IsPublic">是否公共 1-公共、0-我的</param>
+        /// <returns></returns>         
+        public ActionResult PurchaseRawMaterial(JqGridParam jqgridparam, string TreeId)
+        {
+            Stopwatch watch = CommonHelper.TimerStart();
+
+            List<AnalysisRawMaterialModel> AnalysisRawMaterialModellist = new List<AnalysisRawMaterialModel>();
+            try
+            {
+                List<RMC_ProjectOrder> ProjectOrderList = new List<RMC_ProjectOrder>();
+                List<RMC_OrderMember> CollarMemberList = new List<RMC_OrderMember>();
+                List<RMC_MemberMaterial> MemberMaterialList = new List<RMC_MemberMaterial>();
+                List<RMC_RawMaterialLibrary> RawMaterialLibraryList = new List<RMC_RawMaterialLibrary>();
+
+                ProjectOrderList = OrderManagementCurrent.Find(f => f.OrderId > 0 && f.ConfirmOrder == 1 && f.Productioned == 0).ToList();//所有订单
+                if (ProjectOrderList.Count > 0)
+                {
+                    for (int i0 = 0; i0 < ProjectOrderList.Count; i0++)
+                    {
+                        int OrderId = Convert.ToInt32(ProjectOrderList[i0].OrderId);
+                        CollarMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();//单个订单所需构件
+                        if (CollarMemberList.Count() > 0)
+                        {
+                            for (int i1 = 0; i1 < CollarMemberList.Count(); i1++)
+                            {
+                                int MemberId = Convert.ToInt32(CollarMemberList[i1].MemberId);
+                                MemberMaterialList = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();//单个构件所需原材料
+                                if (MemberMaterialList.Count() > 0)
+                                {
+                                    for (int i2 = 0; i2 < MemberMaterialList.Count(); i2++)
+                                    {
+                                        AnalysisRawMaterialModel AnalysisRawMaterialModel = new AnalysisRawMaterialModel();
+                                        if (AnalysisRawMaterialModellist.Count() != 0)//判断构造函数是否有数据，没有就新增
+                                        {
+                                            var a = AnalysisRawMaterialModellist.Where(w => w.RawMaterialId == MemberMaterialList[i2].RawMaterialId);//筛选构造函数中的数据，
+                                            if (a.Count() != 0)//判断构造函数中是否有相同数据，没有就新增
+                                            {
+                                                foreach (var item in a)
+                                                {
+                                                    item.OrderProcessingNumber += MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
+                                                    AnalysisRawMaterialModel.OrderProcessingNumber = item.OrderProcessingNumber;
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                AnalysisRawMaterialModel.RawMaterialId = Convert.ToInt32(MemberMaterialList[i2].RawMaterialId);
+                                                var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == AnalysisRawMaterialModel.RawMaterialId).SingleOrDefault();
+                                                var Unit = MemberUnitCurrent.Find(f=>f.UnitId== RawMaterial.UnitId).SingleOrDefault();
+                                                AnalysisRawMaterialModel.RawMaterialName = RawMaterial.RawMaterialName;
+                                                AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
+                                                AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
+                                                AnalysisRawMaterialModel.UnitName = Unit.UnitName;
+                                                AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
+                                                AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
+
+                                                var PurchaseNumber = AnalysisRawMaterialModel.RawMaterialNumber - AnalysisRawMaterialModel.OrderProcessingNumber;
+                                                if (Convert.ToInt32(PurchaseNumber) < 0 || (0 < Convert.ToInt32(PurchaseNumber) && Convert.ToInt32(PurchaseNumber) < 100))
+                                                {
+                                                    AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
+                                                }
+
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            AnalysisRawMaterialModel.RawMaterialId = Convert.ToInt32(MemberMaterialList[i2].RawMaterialId);
+                                            var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == AnalysisRawMaterialModel.RawMaterialId).SingleOrDefault();
+                                            var Unit = MemberUnitCurrent.Find(f => f.UnitId == RawMaterial.UnitId).SingleOrDefault();
+                                            AnalysisRawMaterialModel.RawMaterialName = RawMaterial.RawMaterialName;
+                                            AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
+                                            AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
+                                            AnalysisRawMaterialModel.UnitName = Unit.UnitName;
+                                            AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
+                                            AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
+                                            var PurchaseNumber = AnalysisRawMaterialModel.RawMaterialNumber - AnalysisRawMaterialModel.OrderProcessingNumber;
+                                            if (Convert.ToInt32(PurchaseNumber) < 0 || (0 < Convert.ToInt32(PurchaseNumber) && Convert.ToInt32(PurchaseNumber) < 100))
+                                            {
+                                                AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
+                                            }
                                         }
                                     }
                                 }
@@ -915,7 +1031,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             if (KeyValue == "" || KeyValue == null)
             {
-                ViewBag.PurchaseNumbering = "CG" + DateTime.Now.ToString("yyyyMMddhhmmssffff");
+                ViewBag.PurchaseNumbering = "CGD" + DateTime.Now.ToString("yyyyMMddhhmmssffff");
                 ViewData["CreateMan"] = ManageProvider.Provider.Current().UserName;
             }
             return View();
@@ -925,7 +1041,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             return View();
         }
-
 
         public ActionResult GridPurchaseListJson(FileViewModel model, string TreeId, JqGridParam jqgridparam)
         {
@@ -1079,25 +1194,19 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     //int index = 1;
                     foreach (RMC_RawMaterialPurchase poorderentry in POOrderEntryList)
                     {
-                        if (!string.IsNullOrEmpty(poorderentry.MaterialName))
+                        if (!string.IsNullOrEmpty(poorderentry.RawMaterialName))
                         {
                             RMC_RawMaterialPurchase CollarModel = new RMC_RawMaterialPurchase();
                             CollarModel.PurchaseId = _PurchaseId;
                             //CollarModel.ProjectDemandId = Convert.ToInt32(poorderentry.ProjectDemandId);
-                            CollarModel.RawMaterialId = Convert.ToInt32(poorderentry.RawMaterialId);
+                            CollarModel.RawMaterialId = poorderentry.RawMaterialId;
                             CollarModel.Description = poorderentry.Description;
-                            CollarModel.MaterialStandard = poorderentry.MaterialStandard;
-                            CollarModel.MaterialName = poorderentry.MaterialName;
-                            CollarModel.UnitId= poorderentry.UnitId;
+                            CollarModel.RawMaterialStandard = poorderentry.RawMaterialStandard;
+                            CollarModel.RawMaterialName = poorderentry.RawMaterialName;
+                            CollarModel.UnitName= poorderentry.UnitName;
                             //CollarModel.Price = Convert.ToDecimal(poorderentry.Price);
                             //CollarModel.PriceAmount = Convert.ToDecimal(poorderentry.PriceAmount);
-                            CollarModel.Qty = Convert.ToInt32(poorderentry.Qty);
-
-
-                            //var ProjectDemand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == CollarModel.ProjectDemandId).SingleOrDefault();
-                            //ProjectDemand.OrderQuantityed = ProjectDemand.CollarNumbered + Convert.ToInt32(poorderentry.Qty);
-                            //ProjectManagementCurrent.Modified(ProjectDemand);
-
+                            CollarModel.Qty = poorderentry.Qty;
                             RawMaterialPurchaseCurrent.Add(CollarModel);
                             //index++;
                         }
@@ -1116,25 +1225,25 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     int CollarId = PurchaseCurrent.Add(Oldentity).PurchaseId;
 
                     RMC_RawMaterialPurchase CollarModel = new RMC_RawMaterialPurchase();
-                    List<RMC_RawMaterialPurchase> POOrderEntryList = POOrderEntryJson.JonsToList<RMC_RawMaterialPurchase>();
+                    List<RawMaterialLibraryModel> POOrderEntryList = POOrderEntryJson.JonsToList<RawMaterialLibraryModel>();
                     int index = 1;
-                    foreach (RMC_RawMaterialPurchase poorderentry in POOrderEntryList)
+                    foreach (RawMaterialLibraryModel poorderentry in POOrderEntryList)
                     {
-                        if (!string.IsNullOrEmpty(poorderentry.MaterialName))
+                        if (!string.IsNullOrEmpty(poorderentry.RawMaterialName))
                         {
                             //poorderentry.SortCode = index;
                             //poorderentry.Create();
                             CollarModel.PurchaseId = CollarId;
                             //CollarModel.ProjectDemandId = Convert.ToInt32(poorderentry.ProjectDemandId);
-                            CollarModel.RawMaterialId = Convert.ToInt32(poorderentry.RawMaterialId);
+                            CollarModel.RawMaterialId =Convert.ToInt32(poorderentry.RawMaterialId);
                             CollarModel.Description = poorderentry.Description;
-                            CollarModel.MaterialStandard = poorderentry.MaterialStandard;
-                            CollarModel.MaterialName = poorderentry.MaterialName;
-                            CollarModel.UnitId = poorderentry.UnitId;
+                            CollarModel.RawMaterialStandard = poorderentry.RawMaterialStandard;
+                            CollarModel.RawMaterialName = poorderentry.RawMaterialName;
+                            CollarModel.UnitName = poorderentry.UnitName;
                             //CollarModel.Price = Convert.ToDecimal(poorderentry.Price);
                             //CollarModel.PriceAmount = Convert.ToDecimal(poorderentry.PriceAmount);
-                            CollarModel.Qty = Convert.ToInt32(poorderentry.Qty);
-                            
+                            CollarModel.Qty =Convert.ToInt32(poorderentry.Qty);
+
 
                             //var Demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == CollarModel.ProjectDemandId).SingleOrDefault();
                             //Demand.OrderQuantityed = Demand.CollarNumbered + CollarModel.Qty;
@@ -1154,6 +1263,47 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
         }
+
+        public ActionResult ListRawMaterial(string KeyValue, string TreeId, string PurchaseNumber)
+        {
+            var ListRawMaterial = new List<AnalysisRawMaterialModel>();
+
+            if (KeyValue != null)
+            {
+                string[] array = KeyValue.Split(',');
+                string[] array1 = PurchaseNumber.Split(',');
+                if (array != null)
+                {
+                    for (int i = 0; i < array.Length; i++)
+                    {
+
+                        for (int I = i; I < array1.Length;)
+                        {
+                          
+                            var AnalysisRawMaterialModel = new AnalysisRawMaterialModel();
+                            AnalysisRawMaterialModel.RawMaterialId = Convert.ToInt32(array[i]);
+                            var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == AnalysisRawMaterialModel.RawMaterialId).SingleOrDefault();
+                            var Unit = MemberUnitCurrent.Find(f => f.UnitId == RawMaterial.UnitId).SingleOrDefault();
+                            AnalysisRawMaterialModel.RawMaterialName = RawMaterial.RawMaterialName;
+                            AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
+                            AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
+                            AnalysisRawMaterialModel.UnitName = Unit.UnitName;
+                            AnalysisRawMaterialModel.OrderProcessingNumber = Convert.ToInt32(array1[I]);
+                            ListRawMaterial.Add(AnalysisRawMaterialModel);
+                            I = I + array1.Length;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                ListRawMaterial = null;
+            }
+            return Json(ListRawMaterial);
+        }
+
+
+
         #endregion
 
         #region 构件厂原材料库存管理
@@ -1230,12 +1380,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     func = func.And(f => f.RawMaterialName.Contains(model.RawMaterialName) && f.WarehousingTime >= model.InBeginTime && f.WarehousingTime <= model.InEndTime);
                     func1 = f => f.RawMaterialName.Contains(model.RawMaterialName) && f.WarehousingTime >= model.InBeginTime && f.WarehousingTime <= model.InEndTime;
                 }
-                else if (_a&&! _b &&! _c)
+                else if (_a && !_b && !_c)
                 {
                     func = func.And(f => f.RawMaterialName.Contains(model.RawMaterialName));
                     func1 = f => f.RawMaterialName.Contains(model.RawMaterialName);
                 }
-                else if (_b&&!_c && !_a)
+                else if (_b && !_c && !_a)
                 {
                     func = func.And(f => f.WarehousingTime >= model.InBeginTime);
                     func1 = f => f.WarehousingTime >= model.InBeginTime;
@@ -1304,7 +1454,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     RawMaterialLibraryModel RawMaterialLibraryModel = new RawMaterialLibraryModel();
                     var Unit = MemberUnitCurrent.Find(f => f.UnitId == item.UnitId).SingleOrDefault();
                     RawMaterialLibraryModel.UnitName = Unit.UnitName;
-                    RawMaterialLibraryModel.RawMaterialId = item.RawMaterialId;
+                    RawMaterialLibraryModel.RawMaterialId = item.RawMaterialId.ToString();
                     RawMaterialLibraryModel.RawMaterialName = item.RawMaterialName;
                     RawMaterialLibraryModel.RawMaterialNumber = item.RawMaterialNumber;
                     RawMaterialLibraryModel.RawMaterialStandard = item.RawMaterialStandard;
@@ -2111,7 +2261,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     func = func.And(f => f.ShipNumbering.Contains(model.ShipNumbering) && f.ShipDate >= model.InBeginTime && f.ShipDate <= model.InEndTime);
                     func1 = f => f.ShipNumbering.Contains(model.ShipNumbering) && f.ShipDate >= model.InBeginTime && f.ShipDate <= model.InEndTime;
                 }
-                else if (_a && !_b &&!_c)
+                else if (_a && !_b && !_c)
                 {
                     func = func.And(f => f.ShipNumbering.Contains(model.ShipNumbering));
                     func1 = f => f.ShipNumbering.Contains(model.ShipNumbering);
