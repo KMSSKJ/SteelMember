@@ -286,7 +286,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime);
                     func1 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime;
                 }
-                else if (_a && !_b &&! _c)
+                else if (_a && !_b && !_c)
                 {
                     func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering));
                     func1 = f => f.OrderNumbering.Contains(model.OrderNumbering);
@@ -301,17 +301,17 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     func = func.And(f => f.CreateTime <= model.InEndTime);
                     func1 = f => f.CreateTime <= model.InEndTime;
                 }
-                else if (_a && _b&&!_c)
+                else if (_a && _b && !_c)
                 {
                     func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime);
                     func1 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime >= model.InBeginTime;
                 }
-                else if (_a && _c&&!_b)
+                else if (_a && _c && !_b)
                 {
                     func = func.And(f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime <= model.InEndTime);
                     func1 = f => f.OrderNumbering.Contains(model.OrderNumbering) && f.CreateTime <= model.InEndTime;
                 }
-                else if (_b && _c&&!_a)
+                else if (_b && _c && !_a)
                 {
                     func = func.And(f => f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime);
                     func1 = f => f.CreateTime >= model.InBeginTime && f.CreateTime <= model.InEndTime;
@@ -387,14 +387,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 //        projectdemand.Productioned = item.Productioned;
                 //        projectdemandlist.Add(projectdemand);
                 //    }
-               
-                    return Content(JsonData.ToJson());
-                }
-                catch (Exception ex)
-                {
-                    return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-                }
+
+                return Content(JsonData.ToJson());
             }
+            catch (Exception ex)
+            {
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+            }
+        }
         //获取树字节子节点(自循环)
         public IEnumerable<RMC_Tree> GetSonId(int p_id)
         {
@@ -578,7 +578,44 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 return null;
             }
         }
-
+        public ActionResult ListMember(string KeyValue,string TreeId)
+        {
+            var listmember = new List<ProjectDemandModel>();
+            if (KeyValue != null) { 
+            string[] array = KeyValue.Split(',');
+            if (array.Count() > 0)
+            {
+                if (array != null)
+                    foreach (var item in array)
+                    {
+                        int MemberId = Convert.ToInt32(item);
+                        int _TreeId = Convert.ToInt32(TreeId);
+                        var a = ProjectManagementCurrent.Find(f => f.MemberId == MemberId && f.TreeId == _TreeId).SingleOrDefault();
+                        ProjectDemandModel projectdemand = new ProjectDemandModel();
+                        projectdemand.ProjectDemandId = a.ProjectDemandId;
+                        var memberlibrary = MemberLibraryCurrent.Find(f => f.MemberID == a.MemberId).SingleOrDefault();
+                        projectdemand.MemberName = memberlibrary.MemberName;
+                        projectdemand.MemberModel = memberlibrary.MemberModel;
+                        projectdemand.MemberUnit = memberlibrary.MemberUnit;
+                        projectdemand.UnitPrice = memberlibrary.UnitPrice;
+                        projectdemand.MemberId = memberlibrary.MemberID;
+                        projectdemand.MemberNumbering = memberlibrary.MemberNumbering.ToString();
+                        projectdemand.IsReview = a.IsReview;
+                        projectdemand.ReviewMan = a.ReviewMan;
+                        projectdemand.MemberNumber = a.MemberNumber;
+                        projectdemand.OrderQuantityed = a.OrderQuantityed;
+                        projectdemand.Productioned = a.Productioned;
+                        projectdemand.Description = a.Description;
+                        listmember.Add(projectdemand);
+                    }
+            }
+            }
+            else
+            {
+                listmember = null;
+            }
+            return Json(listmember);
+        }
 
         /// <summary>
         /// 表单视图
@@ -775,7 +812,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     {
                         RMC_ShipManagement shipmanagement = new RMC_ShipManagement();
                         shipmanagement.OrderId = OrderId;
-                        shipmanagement.ShipNumbering = "FHD" + file.OrderNumbering.Replace("DD","");
+                        shipmanagement.ShipNumbering = "FHD" + file.OrderNumbering.Replace("DD", "");
                         shipmanagement.MemberId = item.MemberId;
                         shipmanagement.TreeId = file.TreeId;
                         shipmanagement.IsPackaged = 0;

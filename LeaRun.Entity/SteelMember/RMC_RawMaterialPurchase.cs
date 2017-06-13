@@ -21,10 +21,10 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<int> PurchaseId { get; set; }
         public Nullable<int> MaterialClassId { get; set; }
         public string OrderNumbering { get; set; }
-        public string MaterialName { get; set; }
-        public string MaterialStandard { get; set; }
+        public string RawMaterialName { get; set; }
+        public string RawMaterialStandard { get; set; }
         public Nullable<int> Qty { get; set; }
-        public Nullable<int> UnitId { get; set; }
+        public string UnitName { get; set; }
         public Nullable<int> UnitPrice { get; set; }
         public string MaterialBudget { get; set; }
         public Nullable<int> DeleteFlag { get; set; }

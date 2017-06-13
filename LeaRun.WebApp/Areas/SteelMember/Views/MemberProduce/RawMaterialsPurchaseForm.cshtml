@@ -32,13 +32,13 @@
                 $.each(JsonData, function (i) {
                     var rowData = JsonData[i];
                     //给判断集合赋值开始
-                    IsExistItem(rowindex, rowData.MemberID);
+                    IsExistItem(rowindex, rowData.RawMaterialId);
                     //给判断集合赋值结束
                     $("#RawMaterialId➩" + rowindex).val(rowData.RawMaterialId);
                     $("#MaterialName➩" + rowindex).val(rowData.MaterialName);
                     $("#MaterialStandard➩" + rowindex).val(rowData.MaterialStandard);
                     $("#Qty➩" + rowindex).val(rowData.Qty);
-                    $("#MemberUnit➩" + rowindex).val(rowData.MemberUnit);
+                    $("#UnitName➩" + rowindex).val(rowData.UnitName);
                     $("#Description➩" + rowindex).val(rowData.Description);
                     //$("#UnitId➩" + rowindex).val(rowData.UnitId);
                     //$("#Qty➩" + rowindex).val(rowData.Qty);
@@ -107,10 +107,10 @@
             height: $(window).height() + 200,
             autowidth: true,
             colModel: [
-                { label: '材料名', name: "MaterialName", index: "MaterialName", align: 'center', width:150 },
-                { label: '规格', name: "MaterialStandard", index: "MaterialStandard", align: 'center', width:100 },
+                { label: '材料名', name: "RawMaterialName", index: "RawMaterialName", align: 'center', width:150 },
+                { label: '规格', name: "RawMaterialStandard", index: "RawMaterialStandard", align: 'center', width:100 },
                 { label: '数量', name: "Qty", index: "Qty", align: 'center', width: 100 },
-                { label: '单位', name: "MemberUnit", index: "MemberUnit", align: 'center', width:50},
+                { label: '单位', name: "UnitName", index: "UnitName", align: 'center', width:50},
                 { label: '备注', name: "Description", index: "Description", align: ' center', width: 200 },
                 { label: '主键', name: "RawMaterialId", index: "RawMaterialId", hidden: true },
                 //{ label: '构件编号[<font face="宋体">*</font>]', name: "MemberNumbering", align:' center',width: 200, sortable: false },
@@ -155,10 +155,10 @@
         //默认添加30行 空行
         for (var i = 1; i < 31; i++) {
             var rowdata = {
-                MaterialName: '<input id="MaterialName➩' + i + '" class="editable" type="text" style="cursor:pointer" datacol="no" err="构件编号" checkexpession="NotNull" /><input id="MaterialName➩' + i + '" type="hidden" />',
-                MaterialStandard: '<input id="MaterialStandard➩' + i + '" class="editable disabled" type="text" />',
+                RawMaterialName: '<input id="RawMaterialName➩' + i + '" class="editable" type="text" style="cursor:pointer" datacol="no" err="构件编号" checkexpession="NotNull" />',
+                RawMaterialStandard: '<input id="RawMaterialStandard➩' + i + '" class="editable disabled" type="text" />',
                 Qty: '<input id="Qty➩' + i + '" class="editable disabled center" type="text" />',
-                MemberUnit: '<input id="MemberUnit➩' + i + '" class="editable disabled center" type="text" />',
+                UnitName: '<input id="UnitName➩' + i + '" class="editable disabled center" type="text" />',
                 //Qty: '<input id="Qty➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="数量" checkexpession="Double" />',
                 //Price: '<input id="Price➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="单价" checkexpession="Double" />',
                 //PriceAmount: '<input id="PriceAmount➩' + i + '" class="editable decimal center" type="text" datacol="No" err="金额" checkexpession="Double" />',
@@ -167,7 +167,7 @@
                 //CESSAmount: '<input id="CESSAmount➩' + i + '" class="editable decimal disabled center" type="text" />',
                 //PlusPriceAmount: '<input id="PlusPriceAmount➩' + i + '" class="editable decimal center" type="text" datacol="No" err="含税金额" checkexpession="Double" />',
                 Description: '<input id="Description➩' + i + '" class="editable" type="text" />',
-                //MemberID: '<input id="MemberID➩' + i + '" class="editable" type="hidden" />',
+                RawMaterialId: '<input id="RawMaterialId➩' + i + '" class="editable" type="hidden" />',
                 //ProjectDemandId: '<input id="ProjectDemandId➩' + i + '" class="editable" type="hidden" />',
             }
             $('#gridTable').jqGrid('addRowData', i, rowdata);
@@ -279,7 +279,7 @@
     function windowload() {
         $("#gridTable").trigger("reloadGrid"); //重新载入
     }
-
+   
     //保存事件
     function AcceptClick() {
         if (!CheckDataValid('#form1')) {
@@ -290,6 +290,7 @@
             var postData = GetWebControls("#tb_POOrderFrom");
             postData["POOrderEntryJson"] = GetTableDataJson("#gridTable");
             AjaxJson("/SteelMember/MemberProduce/SubmitPurchaseForm?KeyValue=" + KeyValue + "&TreeId=" + TreeId, postData, function (data) {
+                SubmitPurchaseForm
                 tipDialog(data.Message, 3, data.Code);
                 top.frames[tabiframeId()].windowload();
                 closeDialog();
@@ -316,7 +317,7 @@
                 <td align="center" colspan="8">
                     <div style="font-family: 华文楷体; font-size: x-large; height: 60px; line-height: 60px;">
                         原材料采购单&nbsp;
-                        <img src="../../Content/Images/billstatis1.png" style="vertical-align: middle;" />
+                        @*<img src="../../Content/Images/billstatis1.png" style="vertical-align: middle;" />*@
                     </div>
                 </td>
             </tr>
