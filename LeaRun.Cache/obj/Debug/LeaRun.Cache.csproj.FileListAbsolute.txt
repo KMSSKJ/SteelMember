@@ -20,3 +20,9 @@ D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.Properties.Resou
 D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.csproj.GenerateResource.Cache
 D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.dll
 D:\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.pdb
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Cache\bin\Debug\LeaRun.Cache.dll
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Cache\bin\Debug\LeaRun.Cache.pdb
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.Properties.Resources.resources
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.csproj.GenerateResource.Cache
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.dll
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.pdb
