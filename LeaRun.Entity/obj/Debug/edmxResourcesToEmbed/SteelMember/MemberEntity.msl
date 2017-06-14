@@ -442,7 +442,8 @@
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
           <ScalarProperty Name="MaterialBudget" ColumnName="MaterialBudget" />
-          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="PriceAmount" ColumnName="PriceAmount" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
           <ScalarProperty Name="UnitName" ColumnName="UnitName" />
           <ScalarProperty Name="Qty" ColumnName="Qty" />
           <ScalarProperty Name="RawMaterialStandard" ColumnName="RawMaterialStandard" />

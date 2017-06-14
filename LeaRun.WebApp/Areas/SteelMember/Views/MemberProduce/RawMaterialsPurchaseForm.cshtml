@@ -21,13 +21,13 @@
 
         if (!!KeyValue) {
             //主表信息
-            AjaxJson("/SteelMember/MemberProduce/SetDataForm", { KeyValue: KeyValue }, function (data) {
+            AjaxJson("/SteelMember/MemberProduce/SetDataFormPurchase", { KeyValue: KeyValue }, function (data) {
                 SetWebControls(data);
                 Data = data;
             });
             var rowindex = 1;
             //明细信息
-            AjaxJson("/SteelMember/MemberProduce/GetCollarEntryList", { CollarId: KeyValue }, function (data) {
+            AjaxJson("/SteelMember/MemberProduce/GetPurchaseEntryList", { PurchaseId: KeyValue }, function (data) {
                 var JsonData = data.rows;
                 $.each(JsonData, function (i) {
                     var rowData = JsonData[i];
@@ -35,15 +35,14 @@
                     IsExistItem(rowindex, rowData.RawMaterialId);
                     //给判断集合赋值结束
                     $("#RawMaterialId➩" + rowindex).val(rowData.RawMaterialId);
-                    $("#MaterialName➩" + rowindex).val(rowData.MaterialName);
-                    $("#MaterialStandard➩" + rowindex).val(rowData.MaterialStandard);
+                    $("#RawMaterialName➩" + rowindex).val(rowData.RawMaterialName);
+                    $("#RawMaterialStandard➩" + rowindex).val(rowData.RawMaterialStandard);
                     $("#Qty➩" + rowindex).val(rowData.Qty);
                     $("#UnitName➩" + rowindex).val(rowData.UnitName);
+                    $("#Price➩" + rowindex).val(rowData.Price);
+                    $("#PriceAmount➩" + rowindex).val(rowData.PriceAmount);
                     $("#Description➩" + rowindex).val(rowData.Description);
                     //$("#UnitId➩" + rowindex).val(rowData.UnitId);
-                    //$("#Qty➩" + rowindex).val(rowData.Qty);
-                    //$("#Price➩" + rowindex).val(rowData.Price);
-                    //$("#PriceAmount➩" + rowindex).val(rowData.PriceAmount);
                     //$("#PlusPrice➩" + rowindex).val(rowData.PlusPrice);
                     //$("#CESS➩" + rowindex).val(rowData.CESS);
                     //$("#CESSAmount➩" + rowindex).val(rowData.CESSAmount);
@@ -107,24 +106,21 @@
             height: $(window).height() + 200,
             autowidth: true,
             colModel: [
-                { label: '材料名', name: "RawMaterialName", index: "RawMaterialName", align: 'center', width:150 },
-                { label: '规格', name: "RawMaterialStandard", index: "RawMaterialStandard", align: 'center', width:100 },
-                { label: '数量', name: "Qty", index: "Qty", align: 'center', width: 100 },
-                { label: '单位', name: "UnitName", index: "UnitName", align: 'center', width:50},
-                { label: '备注', name: "Description", index: "Description", align: ' center', width: 200 },
-                { label: '主键', name: "RawMaterialId", index: "RawMaterialId", hidden: true },
+                { label: '材料名[<font face="宋体">*</font>]', name: "RawMaterialName", index: "RawMaterialName", align: 'center', width: 150 },
+                { label: '规格', name: "RawMaterialStandard", index: "RawMaterialStandard", align: 'center', width: 100 },
+                { label: '单位', name: "UnitName", index: "UnitName", align: 'center', width: 50 },
+                { label: '数量', name: 'Qty', align: ' center', width: 100, sortable: false, align: 'center' },
+                { label: '单价', name: "Price", index: "Price", align: 'center', width: 50 },
                 //{ label: '构件编号[<font face="宋体">*</font>]', name: "MemberNumbering", align:' center',width: 200, sortable: false },
                 //{ label: '构件名称', name: "MemberName", align:' center',width: 180, sortable: false },
                 //{ label: '构件型号', name: "MemberModel", align:' center',width: 100, sortable: false, align: 'center' },
-                //{ label: '数量[<font face="宋体">*</font>]', name: 'Qty', align:' center',width: 100, sortable: false, align: 'center' },
-                //{ label: '单位', name: "MemberUnit", align:' center',width: 100, sortable: false, align: 'center' },
+                { label: '金额', name: 'PriceAmount', index: "PriceAmount", align: ' center', width: 150, sortable: false },
                 //{ label: '含税单价[<font face="宋体">*</font>]', name: 'PlusPrice', align:' center',width: 70, sortable: false, align: 'center' },
                 //{ label: '税率(%)[<font face="宋体">*</font>]', name: 'CESS', align:' center',width: 70, sortable: false, align: 'center' },
                 //{ label: '税额', name: 'CESSAmount', align:' center',width: 70, sortable: false, align: 'center' },
                 //{ label: '含税金额[<font face="宋体">*</font>]', name: 'PlusPriceAmount', align:' center',width: 70, sortable: false, align: 'center' },
-                //{ label: '说明', name: 'Description', align:' center',width: 400, sortable: false },
-                //{ label: '构件ID', name: 'MemberID', align:' center',width: 1, sortable: false, hidden: true },
-                //{ label: '需求ID', name: 'ProjectDemandId', align:' center',width: 1, sortable: false, hidden: true }
+                { label: '说明', name: 'Description', align:' center',width: 400, sortable: false },
+                { label: '主键', name: "RawMaterialId", index: "RawMaterialId", hidden: true },
             ],
             pager: false,
             rownumbers: true,
@@ -137,7 +133,7 @@
                     "MaterialName": "合计",
                     "Qty": "<span id='TotalQty'>0</span>",
                     //"Price": "<span id='TotalPrice'>0.00</span>",
-                    //"PriceAmount": "<span id='TotalPriceAmount'>0.00</span>",
+                    "PriceAmount": "<span id='TotalPriceAmount'>0.00</span>",
                     //"PlusPrice": "<span id='TotalPlusPrice'>0.00</span>",
                     //"CESSAmount": "<span id='TotalCESSAmount'>0.00</span>",
                     //"PlusPriceAmount": "<span id='TotalPlusPriceAmount'>0.00</span>"
@@ -157,11 +153,11 @@
             var rowdata = {
                 RawMaterialName: '<input id="RawMaterialName➩' + i + '" class="editable" type="text" style="cursor:pointer" datacol="no" err="构件编号" checkexpession="NotNull" />',
                 RawMaterialStandard: '<input id="RawMaterialStandard➩' + i + '" class="editable disabled" type="text" />',
-                Qty: '<input id="Qty➩' + i + '" class="editable disabled center" type="text" />',
                 UnitName: '<input id="UnitName➩' + i + '" class="editable disabled center" type="text" />',
+                Qty: '<input id="Qty➩' + i + '" class="editable  center" type="text" />',
                 //Qty: '<input id="Qty➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="数量" checkexpession="Double" />',
-                //Price: '<input id="Price➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="单价" checkexpession="Double" />',
-                //PriceAmount: '<input id="PriceAmount➩' + i + '" class="editable decimal center" type="text" datacol="No" err="金额" checkexpession="Double" />',
+                Price: '<input id="Price➩' + i + '" class="editable disabled center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="单价" checkexpession="Double" />',
+                PriceAmount: '<input id="PriceAmount➩' + i + '" class="editable decimal center" type="text" datacol="No" err="金额" checkexpession="Double" />',
                 //PlusPrice: '<input id="PlusPrice➩' + i + '" class="editable disabled center" type="text" />',
                 //CESS: '<input id="CESS➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="税率(%)" checkexpession="Double" />',
                 //CESSAmount: '<input id="CESSAmount➩' + i + '" class="editable decimal disabled center" type="text" />',
@@ -224,14 +220,14 @@
     //领用单明细换算+合计
     function Conversion(index) {
         var Qty = $("#Qty➩" + index).val();                                //数量
-        //var Price = $("#Price➩" + index).val();                            //单价
-        //var PriceAmount = $("#PriceAmount➩" + index).val();                //金额
+        var Price = $("#Price➩" + index).val();                            //单价
+        var PriceAmount = $("#PriceAmount➩" + index).val();                //金额
         //var PlusPrice = $("#PlusPrice➩" + index).val();                    //含税单价
         //var CESS = $("#CESS➩" + index).val();                              //税率(%)
         //var CESSAmount = $("#CESSAmount➩" + index).val();                  //税额
         //var PlusPriceAmount = $("#PlusPriceAmount➩" + index).val();        //含税金额
         //数量*单价=金额
-        // $("#PriceAmount➩" + index).val(FormatCurrency(Qty * Price));
+         $("#PriceAmount➩" + index).val(FormatCurrency(Qty * Price));
         ////单价 * (1 + (税率 / 100))=含税单价
         //$("#PlusPrice➩" + index).val(FormatCurrency(Price * (1 + (CESS / 100))));
         ////(含税单价-单价)*数量=税额
@@ -267,8 +263,8 @@
             }
         });
         $("#TotalQty").text(TotalQty);
-        //$("#TotalPrice").text(FormatCurrency(TotalPrice));
-        //$("#TotalPriceAmount").text(FormatCurrency(TotalPriceAmount));
+        $("#TotalPrice").text(FormatCurrency(TotalPrice));
+        $("#TotalPriceAmount").text(FormatCurrency(TotalPriceAmount));
         //$("#TotalPlusPrice").text(FormatCurrency(TotalPlusPrice));
         //$("#TotalCESSAmount").text(FormatCurrency(TotalCESSAmount));
         //$("#TotalPlusPriceAmount").text(FormatCurrency(TotalPlusPriceAmount));
@@ -290,7 +286,6 @@
             var postData = GetWebControls("#tb_POOrderFrom");
             postData["POOrderEntryJson"] = GetTableDataJson("#gridTable");
             AjaxJson("/SteelMember/MemberProduce/SubmitPurchaseForm?KeyValue=" + KeyValue + "&TreeId=" + TreeId, postData, function (data) {
-                SubmitPurchaseForm
                 tipDialog(data.Message, 3, data.Code);
                 top.frames[tabiframeId()].windowload();
                 closeDialog();

@@ -26,6 +26,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Models
         public string RawMaterialStandard { get; set; }
         public Nullable<int> RawMaterialNumber { get; set; }
         public string UnitName { get; set; }
+        public string UnitPrice { get; set; }
         public Nullable<int> OrderProcessingNumber { get; set; }
         public Nullable<int> PurchaseNumber { get; set; }
         public string Description { get; set; }    

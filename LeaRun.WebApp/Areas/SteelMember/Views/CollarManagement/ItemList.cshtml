@@ -20,6 +20,7 @@
 
     //显示物料
     function GetGrid() {
+        var SelectRowIndx;
         var index = GetQuery('index');
         $("#gridTable").jqGrid({
             url: "@Url.Content("~/SteelMember/CollarManagement/GridListJsonCollar")?TreeID=" + GetQuery('TreeId'),
@@ -185,12 +186,12 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "MemberId");
 
         $.ajax({
-            url: "/SteelMember/ProjectOrder/ListMember",
+            url: "/SteelMember/CollarManagement/ListMember",
             type: "post",
             //traditional: true,
             datatype: 'json',
             data: {
-                TreeId: TreeId,
+                //TreeId: TreeId,
                 KeyValue: KeyValue
             },
             success: function (rowData) {
@@ -219,7 +220,7 @@
                         $parentobj.$("#MemberName➩" + index).val(rowData[i].MemberName);
                         $parentobj.$("#MemberModel➩" + index).val(rowData[i].MemberModel);
                         $parentobj.$("#MemberUnit➩" + index).val(rowData[i].MemberUnit);
-                        $parentobj.$("#Qty➩" + index).val(rowData[i].MemberNumber);
+                        $parentobj.$("#Qty➩" + index).val(rowData[i].InStock);
                         //$parentobj.$("#Price➩" + index).val(rowData[i].UnitPrice);
                         //$parentobj.$("#PriceAmount➩" + index).val(Number(rowData[i].UnitPrice) * Number(rowData[i].MemberNumber));
                         $parentobj.$("#gridTable tbody tr:eq(" + index + ")").find('input').attr("datacol", "yes");

@@ -382,7 +382,8 @@
     <Property Name="RawMaterialStandard" Type="nvarchar" MaxLength="20" />
     <Property Name="Qty" Type="int" />
     <Property Name="UnitName" Type="nvarchar" MaxLength="10" />
-    <Property Name="UnitPrice" Type="int" />
+    <Property Name="Price" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="PriceAmount" Type="decimal" Precision="18" Scale="3" />
     <Property Name="MaterialBudget" Type="nvarchar" MaxLength="20" />
     <Property Name="DeleteFlag" Type="int" />
     <Property Name="Description" Type="nvarchar" MaxLength="200" />

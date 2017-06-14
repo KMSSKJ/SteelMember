@@ -9,6 +9,8 @@
     var KeyValue = GetQuery('KeyValue');
     var TreeName = "";
     var Data = "";
+    var JsonData1 = ""; var TableObject = "";
+
     $(function () {
         GetGrid();
         GetReviewMan();
@@ -21,29 +23,30 @@
 
         if (!!KeyValue) {
             //主表信息
-            AjaxJson("/SteelMember/MemberProduce/SetDataForm", { KeyValue: KeyValue }, function (data) {
-                SetWebControls(data);
+            AjaxJson("/SteelMember/MemberProduce/SetDataFormPurchase", { KeyValue: KeyValue }, function (data) {
                 Data = data;
+                SetWebControls(data);
+                loadTable();
             });
             var rowindex = 1;
             //明细信息
-            AjaxJson("/SteelMember/MemberProduce/GetCollarEntryList", { CollarId: KeyValue }, function (data) {
-                var JsonData = data.rows;
-                $.each(JsonData, function (i) {
-                    var rowData = JsonData[i];
+            AjaxJson("/SteelMember/MemberProduce/GetPurchaseEntryList", { PurchaseId: KeyValue }, function (data) {
+                JsonData1 = data.rows;
+                $.each(JsonData1, function (i) {
+                    var rowData = JsonData1[i];
                     //给判断集合赋值开始
                     IsExistItem(rowindex, rowData.RawMaterialId);
                     //给判断集合赋值结束
                     $("#RawMaterialId➩" + rowindex).val(rowData.RawMaterialId);
-                    $("#MaterialName➩" + rowindex).val(rowData.MaterialName);
-                    $("#MaterialStandard➩" + rowindex).val(rowData.MaterialStandard);
-                    $("#Qty➩" + rowindex).val(rowData.Qty);
+                    $("#RawMaterialName➩" + rowindex).val(rowData.RawMaterialName);
+                    $("#RawMaterialStandard➩" + rowindex).val(rowData.RawMaterialStandard);
                     $("#UnitName➩" + rowindex).val(rowData.UnitName);
+                    $("#Price➩" + rowindex).val(rowData.Price);
+                    $("#Qty➩" + rowindex).val(rowData.Qty);
+                    $("#PriceAmount➩" + rowindex).val(rowData.UnitPrice * rowData.Qty);
                     $("#Description➩" + rowindex).val(rowData.Description);
-                    //$("#UnitId➩" + rowindex).val(rowData.UnitId);
                     //$("#Qty➩" + rowindex).val(rowData.Qty);
                     //$("#Price➩" + rowindex).val(rowData.Price);
-                    //$("#PriceAmount➩" + rowindex).val(rowData.PriceAmount);
                     //$("#PlusPrice➩" + rowindex).val(rowData.PlusPrice);
                     //$("#CESS➩" + rowindex).val(rowData.CESS);
                     //$("#CESSAmount➩" + rowindex).val(rowData.CESSAmount);
@@ -99,6 +102,16 @@
         });
     }
 
+    function loadTable() {
+        TableObject = [];
+        $("#tb_POOrderFrom tr").each(function (i) {
+            var RowTitel1 = $(this).find('td:eq(0)').text();
+            var RowValue1 = $(this).find('td:eq(1)').find('input').val();
+            var RowTitel2 = $(this).find('td:eq(2)').text();
+            var RowValue2 = $(this).find('td:eq(3)').find('input').val();
+            TableObject.push(RowTitel1.trim() + RowValue1.trim(), RowTitel2.trim() + RowValue2.trim() + "|");
+        })
+    }
     /*明细begin=======================================*/
     //领用分录
     function GetGrid() {
@@ -109,8 +122,10 @@
             colModel: [
                 { label: '材料名', name: "RawMaterialName", index: "RawMaterialName", align: 'center', width: 150 },
                 { label: '规格', name: "RawMaterialStandard", index: "RawMaterialStandard", align: 'center', width: 100 },
-                { label: '数量', name: "Qty", index: "Qty", align: 'center', width: 100 },
                 { label: '单位', name: "UnitName", index: "UnitName", align: 'center', width: 50 },
+                { label: '数量', name: "Qty", index: "Qty", align: 'center', width: 100 },
+                { label: '单价', name: "Price", index: "UnitPrice", align: 'center', width: 50 },
+                { label: '金额', name: 'PriceAmount', index: "PriceAmount", align: ' center', width: 150, sortable: false },
                 { label: '备注', name: "Description", index: "Description", align: ' center', width: 200 },
                 { label: '主键', name: "RawMaterialId", index: "RawMaterialId", hidden: true },
                 //{ label: '构件编号[<font face="宋体">*</font>]', name: "MemberNumbering", align:' center',width: 200, sortable: false },
@@ -137,7 +152,7 @@
                     "MaterialName": "合计",
                     "Qty": "<span id='TotalQty'>0</span>",
                     //"Price": "<span id='TotalPrice'>0.00</span>",
-                    //"PriceAmount": "<span id='TotalPriceAmount'>0.00</span>",
+                    "PriceAmount": "<span id='TotalPriceAmount'>0.00</span>",
                     //"PlusPrice": "<span id='TotalPlusPrice'>0.00</span>",
                     //"CESSAmount": "<span id='TotalCESSAmount'>0.00</span>",
                     //"PlusPriceAmount": "<span id='TotalPlusPriceAmount'>0.00</span>"
@@ -157,15 +172,14 @@
             var rowdata = {
                 RawMaterialName: '<input id="RawMaterialName➩' + i + '" class="editable" type="text" style="cursor:pointer" datacol="no" err="构件编号" checkexpession="NotNull" />',
                 RawMaterialStandard: '<input id="RawMaterialStandard➩' + i + '" class="editable disabled" type="text" />',
-                Qty: '<input id="Qty➩' + i + '" class="editable disabled center" type="text" />',
                 UnitName: '<input id="UnitName➩' + i + '" class="editable disabled center" type="text" />',
-                //Qty: '<input id="Qty➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="数量" checkexpession="Double" />',
-                //Price: '<input id="Price➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="单价" checkexpession="Double" />',
-                //PriceAmount: '<input id="PriceAmount➩' + i + '" class="editable decimal center" type="text" datacol="No" err="金额" checkexpession="Double" />',
+                Qty: '<input id="Qty➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="数量" checkexpession="Double" />',
+                Price: '<input id="Price➩' + i + '" class="editable disabled center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="单价" checkexpession="Double" />',
                 //PlusPrice: '<input id="PlusPrice➩' + i + '" class="editable disabled center" type="text" />',
                 //CESS: '<input id="CESS➩' + i + '" class="editable decimal center" type="text" onkeyup="Conversion(' + i + ')" datacol="No" err="税率(%)" checkexpession="Double" />',
                 //CESSAmount: '<input id="CESSAmount➩' + i + '" class="editable decimal disabled center" type="text" />',
                 //PlusPriceAmount: '<input id="PlusPriceAmount➩' + i + '" class="editable decimal center" type="text" datacol="No" err="含税金额" checkexpession="Double" />',
+                PriceAmount: '<input id="PriceAmount➩' + i + '" class="editable decimal center" type="text" datacol="No" err="金额" checkexpession="Double" />',
                 Description: '<input id="Description➩' + i + '" class="editable" type="text" />',
                 RawMaterialId: '<input id="RawMaterialId➩' + i + '" class="editable" type="hidden" />',
                 //ProjectDemandId: '<input id="ProjectDemandId➩' + i + '" class="editable" type="hidden" />',
@@ -193,6 +207,7 @@
             $(this).select();
         });
     }
+
     var array = new Array();
     function IsExistItem(index, code) {
         if (!ArrayExists(array, code)) {
@@ -224,14 +239,14 @@
     //领用单明细换算+合计
     function Conversion(index) {
         var Qty = $("#Qty➩" + index).val();                                //数量
-        //var Price = $("#Price➩" + index).val();                            //单价
-        //var PriceAmount = $("#PriceAmount➩" + index).val();                //金额
+        var Price = $("#Price➩" + index).val();                            //单价
+        var PriceAmount = $("#PriceAmount➩" + index).val();                //金额
         //var PlusPrice = $("#PlusPrice➩" + index).val();                    //含税单价
         //var CESS = $("#CESS➩" + index).val();                              //税率(%)
         //var CESSAmount = $("#CESSAmount➩" + index).val();                  //税额
         //var PlusPriceAmount = $("#PlusPriceAmount➩" + index).val();        //含税金额
         //数量*单价=金额
-        // $("#PriceAmount➩" + index).val(FormatCurrency(Qty * Price));
+         $("#PriceAmount➩" + index).val(FormatCurrency(Qty * Price));
         ////单价 * (1 + (税率 / 100))=含税单价
         //$("#PlusPrice➩" + index).val(FormatCurrency(Price * (1 + (CESS / 100))));
         ////(含税单价-单价)*数量=税额
@@ -268,18 +283,16 @@
         });
         $("#TotalQty").text(TotalQty);
         //$("#TotalPrice").text(FormatCurrency(TotalPrice));
-        //$("#TotalPriceAmount").text(FormatCurrency(TotalPriceAmount));
+        $("#TotalPriceAmount").text(FormatCurrency(TotalPriceAmount));
         //$("#TotalPlusPrice").text(FormatCurrency(TotalPlusPrice));
         //$("#TotalCESSAmount").text(FormatCurrency(TotalCESSAmount));
         //$("#TotalPlusPriceAmount").text(FormatCurrency(TotalPlusPriceAmount));
     }
     /*明细end=======================================*/
 
-  
-
     //导出文件
     function btn_derive() {
-        SetDeriveExcel("#gridTable", "构件领用表", "云南公投澄川高速", JsonData1, TableObject.toString());
+        SetDeriveExcel("#gridTable", "原材料采购表", "云南公投澄川高速", JsonData1, TableObject.toString());
         openDialog("/SteelMember/File/DeriveFile", "DeriveFile", "信息导出", 900, 500, function (iframe) {
             top.frames[iframe].AcceptClick();
         })
@@ -318,55 +331,51 @@
             @*<a id="button_Commit_Save" title="保存单据" onclick="SubmitOrderForm()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/disk.png")) 50% 4px no-repeat;">保存</b></span></a>
                 <div class="tools_separator"></div>
                 <a title="关闭当前窗口(Esc)" onclick="ThisCloseTab()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/back.png")) 50% 4px no-repeat;">离开</b></span></a>*@
+            <a id="lr-print" title="导出数据" onclick="btn_derive()" class="tools_btn"><span><b style="background: url(@Url.Content("../../Content/Images/Icon16/excel_exports.png")) 50% 4px no-repeat;">导出</b></span></a>
         </div>
+        <div style="font-family: 华文楷体;text-align:center;font-size: x-large; height: 60px; line-height: 60px;">
+            原材料采购单&nbsp;
+</div>
         <table id="tb_POOrderFrom" class="form-bill">
             <tr>
-                <td align="center" colspan="8">
-                    <div style="font-family: 华文楷体; font-size: x-large; height: 60px; line-height: 60px;">
-                        原材料采购单&nbsp;
-                        @*<img src="../../Content/Images/billstatis1.png" style="vertical-align: middle;" />*@
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th>
+                <td>
                     采购单编号[<font face="宋体" color="red">*</font>]：
-                </th>
+                </td>
                 <td>
                     <input readonly id="PurchaseNumbering" type="text" class="txt" datacol="yes" err="制单编号" checkexpession="NotNull" value="@ViewBag.PurchaseNumbering" style="width: 95%" />
                 </td>
-                <th>
+                <td>
                     制单(采购)人[<font face="宋体" color="red">*</font>]：
-                </th>
+                </td>
                 <td>
-                    <input readonly id="CreateMan" type="text" class="txt" style="width: 95%" value="@ViewData["CreateMan"] " />
+                    <input readonly id="CreateMan" type="text" class="txt" style="width: 95%" value="@ViewBag.CreateMan " />
                 </td>
 
             </tr>
             <tr>
-                <th>
+                <td>
                     审核人：
-                </th>
-                <td>
-                    <select id="ReviewMan" datacol="yes" err="审核人" checkexpession="NotNull" style="width: 95%"></select>
                 </td>
-                <th>
-                    制单日期[<font face="宋体" color="red">*</font>]：
-                </th>
                 <td>
-                    <input id="CreateTime" type="text" class="txt" datacol="yes" err="制单日期" checkexpession="NotNull" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 95%" />
+                    <input id="ReviewMan" type="text" class="txt" datacol="yes" err="审核人" checkexpession="NotNull" style="width: 95%" value="@ViewBag.ReviewMan"/>
+                </td>
+                <td>
+                    制单日期[<font face="宋体" color="red">*</font>]：
+                </td>
+                <td>
+                    <input id="CreateTime" type="text" class="txt" datacol="yes" err="制单日期" checkexpession="NotNull" value="@ViewBag.CreateTime" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 95%" />
                 </td>
 
             </tr>
 
             <tr>
-                <th>
+                <td>
                     审核签字：
-                </th>
-                <td><input readonly id="Q" type="text" class="txt" style="width: 95%" /></td>
-                <th>
+                </td>
+                <td><input readonly id="Q" type="text" class="txt" style="width: 95%" value="" /></td>
+                <td>
                     备注：
-                </th>
+                </td>
                 <td>
                     <input id="Description" type="text" class="txt" style="width:97%" value="@ViewBag.Description" />
                 </td>

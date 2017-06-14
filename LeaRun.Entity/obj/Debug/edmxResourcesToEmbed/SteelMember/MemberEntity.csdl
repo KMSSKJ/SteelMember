@@ -453,7 +453,8 @@
     <Property Name="RawMaterialStandard" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="Qty" Type="Int32" />
     <Property Name="UnitName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="UnitPrice" Type="Int32" />
+    <Property Name="Price" Type="Decimal" Precision="5" Scale="2" />
+    <Property Name="PriceAmount" Type="Decimal" Precision="18" Scale="3" />
     <Property Name="MaterialBudget" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="DeleteFlag" Type="Int32" />
     <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />

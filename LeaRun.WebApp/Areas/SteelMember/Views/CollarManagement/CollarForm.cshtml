@@ -13,12 +13,6 @@
         GetGrid();
         GetCollarMan();
 
-        AjaxJson("/SteelMember/ProjectOrder/TreeName", { TreeId: TreeId }, function (data) {
-            //SetWebControls(data);
-            TreeName = data.TreeName;
-            document.getElementById("Use").value = TreeName;
-        });
-
         if (!!KeyValue) {
             //主表信息
             AjaxJson("/SteelMember/CollarManagement/SetDataForm", { KeyValue: KeyValue }, function (data) {
@@ -60,7 +54,14 @@
                 $("#button_Commit_Save").attr({ "disabled": "disabled" }).attr('onclick', '');
                 $('input,select,textarea').attr({ "disabled": "disabled" });
             }
-        }
+        } else
+        {
+            AjaxJson("/SteelMember/ProjectOrder/TreeName", { TreeId: TreeId }, function (data) {
+                //SetWebControls(data);
+                TreeName = data.TreeName;
+                document.getElementById("Use").value = TreeName;
+            });
+}
     })
 
     //领用人

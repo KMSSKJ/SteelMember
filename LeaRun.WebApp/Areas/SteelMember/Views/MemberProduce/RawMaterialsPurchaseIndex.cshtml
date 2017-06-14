@@ -58,18 +58,19 @@
             footerrow: true,
             subGrid: true,
             subGridRowExpanded: function (subgrid_id, row_id) {
-                var CollarId = GetJqGridValue("#gridTable", row_id, "PurchaseId");
+                var PurchaseId = GetJqGridValue("#gridTable", row_id, "PurchaseId");
                 var subgrid_table_id = subgrid_id + "_t";
                 $("#" + subgrid_id).html("<table id='" + subgrid_table_id + "'></table>");
                 $("#" + subgrid_table_id).jqGrid({
-                    url: "@Url.Content("~/SteelMember/MemberProduce/GetMaterialEntryList")?PurchaseId=" + PurchaseId,
+                    url: "@Url.Content("~/SteelMember/MemberProduce/GetPurchaseEntryList")?PurchaseId=" + PurchaseId,
                     datatype: "json",
                     colModel: [
                         { label: '主键', name: "RawMaterialPurchaseId", hidden: true },
-                        { label: '材料名', name: "MaterialName", index: "MaterialName", align: 'center',width: 6 },
-                        { label: '规格', name: "MaterialStandard", index: "MaterialStandard", align: 'center',width: 6 },
+                        { label: '材料名', name: "RawMaterialName", index: "RawMaterialName", align: 'center', width: 6 },
+                        { label: '单位', name: "UnitName", index: "UnitName", align: 'center', width: 6 },
+                        { label: '单价', name: "Price", index: "Price", align: 'center', width: 12 },
                         { label: '数量', name: "Qty", index: "Qty", align: 'center',width: 12 },
-                        { label: '单位', name: "MemberUnit", index: "MemberUnit", align: 'center',width: 6 },
+                        { label: '金额', name: 'PriceAmount', index: "PriceAmount", align: ' center', width: 15},
                         { label: '备注', name: "Description", index: "Description", align:' center',width: 12 },
                     ],
                     width: "1227",
@@ -139,7 +140,7 @@
         // }
     }
 
-    //变更领用信息(得到实体)
+    //变更信息(得到实体)
     function btn_edit() {
         var KeyValue = GetJqGridRowValue("#gridTable", "PurchaseId");
         //var IsReview = GetJqGridRowValue("#gridTable", "IsReview");
@@ -156,18 +157,16 @@
 
     //删除单据
     function btn_delete() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "CollarId");
-        var Prompt = "您确实要删除此文件吗？";
+        var KeyValue = GetJqGridRowValue("#gridTable", "PurchaseId");
+        var Prompt = "您确实要删除此文件吗？"; 
         if (IsDelData(KeyValue)) {
-            delConfirm('/SteelMember/MemberProduce/DeleteProjectPurchase', { KeyValue: KeyValue }, Prompt);
-            $("#gridTable").trigger("reloadGrid"); //重新载入
+            delConfirm('/SteelMember/MemberProduce/DeleteRawMaterialPurchase', { KeyValue: KeyValue }, Prompt);
         }
-
     }
 
       //详细信息(得到实体)
     function btn_detail() {
-        var KeyValue = GetJqGridRowValue("#gridTable", "CollarId");
+        var KeyValue = GetJqGridRowValue("#gridTable", "PurchaseId");
         var ItemId = 0;
         if (IsChecked(KeyValue)) {
             //AddTabMenu("DetailForm", "@Url.Content("/SteelMember/CollarManagement/DetailForm")?KeyValue= " + KeyValue + "&TreeId=" + TreeId, "领用单详细", "page_white_add.png", true, true, true);

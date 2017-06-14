@@ -568,9 +568,10 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 {
                     for (int i = 0; i < CollarMemberList.Count(); i++)
                     {
-                        ids1.Add(Convert.ToInt32(CollarMemberList[i].CollarMemberId));
+                        int CollarMemberId = Convert.ToInt32(CollarMemberList[i].CollarMemberId);
+                        ids1.Add(CollarMemberId);
 
-                        var OrderMember = CollarMemberCurrent.Find(f => f.CollarMemberId == CollarMemberList[i].CollarMemberId).SingleOrDefault();
+                        var OrderMember = CollarMemberCurrent.Find(f => f.CollarMemberId == CollarMemberId).SingleOrDefault();
                         var Demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == OrderMember.ProjectDemandId).SingleOrDefault();
                         Demand.CollarNumbered = Demand.CollarNumbered - CollarMemberList[i].Qty;
                         ProjectManagementCurrent.Modified(Demand);
@@ -591,6 +592,40 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
         }
 
-
+        public ActionResult ListMember(string KeyValue)
+        {
+            var ProjectWarehouselist = new List<ProjectWarehouseModel>();
+            if (KeyValue != null)
+            {
+                string[] array = KeyValue.Split(',');
+                if (array.Count() > 0)
+                {
+                    foreach (var item in array)
+                    {
+                        int id = Convert.ToInt32(item);
+                        var listfile = ProjectWarehouseCurrent.Find(f=>f.MemberId== id).SingleOrDefault();
+                        ProjectWarehouseModel ProjectWarehouse = new ProjectWarehouseModel();
+                        ProjectWarehouse.ProjectWarehouseId = listfile.ProjectWarehouseId;
+                        ProjectWarehouse.ProjectDemandId = listfile.ProjectDemandId;
+                        ProjectWarehouse.MemberId = listfile.MemberId;
+                        var memberlibrary = MemberLibraryCurrent.Find(f => f.MemberID == listfile.MemberId).SingleOrDefault();
+                        ProjectWarehouse.MemberName = memberlibrary.MemberName;
+                        ProjectWarehouse.MemberModel = memberlibrary.MemberModel;
+                        ProjectWarehouse.MemberNumbering = memberlibrary.MemberNumbering.ToString();
+                        ProjectWarehouse.MemberUnit = memberlibrary.MemberUnit;
+                        ProjectWarehouse.InStock = listfile.InStock;
+                        var ProjectDomend = ProjectManagementCurrent.Find(f => f.ProjectDemandId == listfile.ProjectDemandId).SingleOrDefault();
+                        ProjectWarehouse.CollarNumbered = ProjectDomend.CollarNumbered;
+                        ProjectWarehouse.Description = listfile.Description;
+                        ProjectWarehouselist.Add(ProjectWarehouse);
+                    }
+                }
+            } 
+            else
+            {
+                ProjectWarehouselist = null;
+            }
+            return Json(ProjectWarehouselist);
+        }
     }
 }

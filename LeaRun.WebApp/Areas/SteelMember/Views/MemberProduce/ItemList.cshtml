@@ -47,6 +47,7 @@
                     }
                 },
                 { label: "单位", name: "UnitName", index: "UnitName", align: ' center', width: 10 },
+                { label: "单价", name: "UnitPrice", index: "UnitPrice", align: ' center', width: 10 },
                 {
                     label: '需采购量', name: "PurchaseNumber", index: "PurchaseNumber", align: 'center', width: 15,
                     formatter: function (cellvalue, value, row, index) {
@@ -191,7 +192,9 @@
                     $parentobj.$("#RawMaterialName➩" + rows).val(null);
                     $parentobj.$("#RawMaterialStandard➩" + rows).val(null);
                     $parentobj.$("#UnitName➩" + rows).val(null);
+                    $parentobj.$("#Price➩" + rows).val(null);
                     $parentobj.$("#Qty➩" + rows).val(null);
+                    $parentobj.$("#PriceAmount➩" + rows).val(null);
                     $parentobj.$("#Description➩" + rows).val(null);
                   
                     rows++;
@@ -205,7 +208,9 @@
                         $parentobj.$("#RawMaterialName➩" + index).val(rowData[i].RawMaterialName);
                         $parentobj.$("#RawMaterialStandard➩" + index).val(rowData[i].RawMaterialStandard);
                         $parentobj.$("#UnitName➩" + index).val(rowData[i].UnitName);
+                        $parentobj.$("#Price➩" + index).val(rowData[i].UnitPrice);
                         $parentobj.$("#Qty➩" + index).val(rowData[i].OrderProcessingNumber);
+                        $parentobj.$("#PriceAmount➩" + index).val(Number(rowData[i].OrderProcessingNumber) * Number(rowData[i].UnitPrice));
                         $parentobj.$("#Description➩" + index).val(rowData[i].Description);
                         $parentobj.$("#gridTable tbody tr:eq(" + index + ")").find('input').attr("datacol", "yes");
                         index++;
