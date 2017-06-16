@@ -46,8 +46,8 @@
                         return OrderProcessingNumber;
                     }
                 },
-                { label: "单位", name: "UnitName", index: "UnitName", align: ' center', width: 10 },
-                { label: "单价", name: "UnitPrice", index: "UnitPrice", align: ' center', width: 10 },
+                { label: "单位", name: "UnitName", index: "UnitName", align: 'center', width: 10 },
+                { label: "单价", name: "UnitPrice", index: "UnitPrice", align: 'center', width: 10 },
                 {
                     label: '需采购量', name: "PurchaseNumber", index: "PurchaseNumber", align: 'center', width: 15,
                     formatter: function (cellvalue, value, row, index) {
@@ -201,8 +201,25 @@
                 }
                 if (rowData != null) {
                     var index = 1;
+                    var data1;
                     for (var i = 0; i < rowData.length; i++) {
                         $parentobj.IsExistItem(index, rowData[i].RawMaterialId);
+
+                        $.ajax({
+                            type: 'post',
+                            dataType: "text",
+                            url: "/SteelMember/ProjectOrder/AddRawMateralNumber",
+                            data: {
+                                KeyValue: rowData[i].MemberId
+                            },
+                            cache: false,
+                            async: false,
+                            success: function (data) {
+                                data1 = data;
+                            }
+
+                        });
+
                         //var rowData = $(this).jqGrid('getRowData', RowIndx[i]);
                         $parentobj.$("#RawMaterialId➩" + index).val(rowData[i].RawMaterialId);
                         $parentobj.$("#RawMaterialName➩" + index).val(rowData[i].RawMaterialName);
@@ -210,7 +227,7 @@
                         $parentobj.$("#UnitName➩" + index).val(rowData[i].UnitName);
                         $parentobj.$("#Price➩" + index).val(rowData[i].UnitPrice);
                         $parentobj.$("#Qty➩" + index).val(rowData[i].OrderProcessingNumber);
-                        $parentobj.$("#PriceAmount➩" + index).val(Number(rowData[i].OrderProcessingNumber) * Number(rowData[i].UnitPrice));
+                        $parentobj.$("#PriceAmount➩" + index).val(FormatCurrency(Number(rowData[i].OrderProcessingNumber) * Number(rowData[i].UnitPrice)));
                         $parentobj.$("#Description➩" + index).val(rowData[i].Description);
                         $parentobj.$("#gridTable tbody tr:eq(" + index + ")").find('input').attr("datacol", "yes");
                         index++;

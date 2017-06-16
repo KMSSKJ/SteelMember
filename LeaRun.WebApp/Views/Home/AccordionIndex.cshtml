@@ -185,13 +185,15 @@
         var filename
         var project_system_titel;
         function LoadLogo() {
-            AjaxJson("/SteelMember/ProjectInfo/SetDataForm", { KeyValue: 10 }, function (data) {
+            AjaxJson("/SteelMember/ProjectInfo/SetDataForm", { }, function (data) {
                 Data = data;
+
+                $("p").html(Data.ProjectSystemTitel);
+
                 filename = Data.ProjectLogo;
                 filename = filename.substring(0, filename.lastIndexOf('.'));//获取文件名称，去除后缀名
                 filename = "../../Resource/Document/NetworkDisk/System/Project/"+filename + "/" + Data.ProjectLogo;
-                
-                $("p").html(Data.ProjectSystemTitel);
+
                 document.getElementById("project_logo").src = filename;
             });
         };

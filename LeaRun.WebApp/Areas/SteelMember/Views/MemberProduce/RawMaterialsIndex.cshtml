@@ -139,7 +139,7 @@
                 tipDialog("此节点不可编辑，请选择一个子节点", 3, 'warning');
             } else {
                 var url = "/SteelMember/MemberProduce/RawMaterialsForm?TreeId= " + TreeId;
-                openDialog(url, "RawMaterialsForm", "新增信息", 500, 400, function (iframe) {
+                openDialog(url, "RawMaterialsForm", "新增信息", 400, 200, function (iframe) {
                     top.frames[iframe].AcceptClick();
                 });
             }

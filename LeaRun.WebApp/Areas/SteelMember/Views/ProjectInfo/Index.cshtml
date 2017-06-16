@@ -1,9 +1,10 @@
 ﻿@{
     ViewBag.Title = "项目信息管理";
-    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
 }
+
 <link href="~/Content/Scripts/uploadify/uploadify.css" rel="stylesheet" />
-<script src="~/Content/Scripts/uploadify/jquery.uploadify-edit.js"></script>
+<script src="~/Content/Scripts/uploadify/jquery.uploadify.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         GetTree();
@@ -63,6 +64,7 @@
         } else {
             Img = "Logo"
         }
+        //上传Logo
         $("#Avatar").uploadify({
             uploader: '/SteelMember/File/SubmitUpLoadFile',
             swf: '/Content/Scripts/uploadify/uploadify.swf',
@@ -80,9 +82,13 @@
                 alert("您未安装FLASH控件，无法上传！请安装FLASH控件后再试。");
             },
             onUploadSuccess: function (file, data, response) {
+                document.getElementById("txImg").src = data;
+                parent.window.LoadLogo();
+               // top.frames[tabiframeId()].windowload();
             },
         });
 
+        //上传背景
         $("#Avatar1").uploadify({
             uploader: '/SteelMember/File/SubmitUpLoadFile',
             swf: '/Content/Scripts/uploadify/uploadify.swf',
@@ -100,6 +106,8 @@
                 alert("您未安装FLASH控件，无法上传！请安装FLASH控件后再试。");
             },
             onUploadSuccess: function (file, data, response) {
+                document.getElementById("txImg1").src = data;
+                top.frames["tabs_iframe_Imain"].GetProject();
             },
         });
     }
@@ -133,44 +141,24 @@
             dataType: "json",
             async: false,
             success: function (data) {
+                if (data!=null) {
                 SetWebControls(data);
                 data_id = data.ProjectId;
-                var filename = "", filename1 = "";
-
-                filename = data.ProjectLogo;
-                filename = filename.substring(0, filename.lastIndexOf('.'));//获取文件名称，去除后缀名
-                filename = "../../Resource/Document/NetworkDisk/System/Project/" + filename + "/" + data.ProjectLogo;
-                document.getElementById("txImg").src = filename;
-
-                filename1 = data.ProjectBackground;
+                var filename = data.ProjectLogo, filename1 = data.ProjectBackground;
+              
+                if (filename1!=null){
                 filename1 = filename1.substring(0, filename1.lastIndexOf('.'));//获取文件名称，去除后缀名
                 filename1 = "../../Resource/Document/NetworkDisk/System/Project/" + filename1 + "/" + data.ProjectBackground;
                 document.getElementById("txImg1").src = filename1;
-
-                //document.getElementById("table_project").style.display = "block";
-                //document.getElementById("div_project_photo").style.display = "none";
-                //document.getElementById("div_projcet_logo").style.display = "none";
+                } 
+                if (filename != null) {
+                filename = filename.substring(0, filename.lastIndexOf('.'));//获取文件名称，去除后缀名
+                filename = "../../Resource/Document/NetworkDisk/System/Project/" + filename + "/" + data.ProjectLogo;
+                document.getElementById("txImg").src = filename;
+                }
+                }
             },
         });
-        //AjaxJson("/SteelMember/ProjectInfo/GetItemInfo", { KeyValue: TreeId }, function (data) {
-        //    SetWebControls(data);
-        //    data_id = data.ProjectId;
-        //    var filename = "", filename1 = "";
-
-        //    filename = data.ProjectLogo;
-        //    filename = filename.substring(0, filename.lastIndexOf('.'));//获取文件名称，去除后缀名
-        //    filename = "../../Resource/Document/NetworkDisk/System/Project/" + filename + "/" + data.ProjectLogo;
-        //    document.getElementById("txImg").src = filename;
-
-        //    filename1 = data.ProjectBackground;
-        //    filename1 = filename1.substring(0, filename1.lastIndexOf('.'));//获取文件名称，去除后缀名
-        //    filename1 = "../../Resource/Document/NetworkDisk/System/Project/" + filename1 + "/" + data.ProjectBackground;
-        //    document.getElementById("txImg1").src = filename1;
-
-        //    document.getElementById("table_project").style.display = "block";
-        //    document.getElementById("div_project_photo").style.display = "none";
-        //    document.getElementById("div_projcet_logo").style.display = "none";
-        //});       
     }
 
     //按钮刷新表格树
@@ -188,7 +176,7 @@
         if (IsChecked(TreeId)) {
             if (data_id == "") {
                 var url = "/SteelMember/ProjectInfo/Form?TreeId= " + TreeId;
-                openDialog(url, "Form", "新增信息", 600, 380, function (iframe) {
+                openDialog(url, "Form", "新增信息", 600, 250, function (iframe) {
                     top.frames[iframe].AcceptClick();
                 });
             } else {
@@ -201,7 +189,7 @@
     function btn_edit() {
         if (data_id != "") {
             var url = "/SteelMember/ProjectInfo/Form?KeyValue= " + data_id + "&TreeId=" + TreeId;
-            openDialog(url, "Form", "编辑信息", 600, 380, function (iframe) {
+            openDialog(url, "Form", "编辑信息", 600, 250, function (iframe) {
                 top.frames[iframe].AcceptClick();
             });
         } else {

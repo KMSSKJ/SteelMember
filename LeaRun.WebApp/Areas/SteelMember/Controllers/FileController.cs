@@ -676,7 +676,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         //}
         #endregion
 
-public ActionResult Partial1()
+        public ActionResult Partial1()
         {
             return View();
         }
@@ -1167,17 +1167,27 @@ public ActionResult Partial1()
                                 if (table.Rows[i][34].ToString() != "")
                                 {
                                     CAD_Drawing = table.Rows[i][34].ToString().Trim();
-                                    Photo += CAD_Drawing + "、";
+                                    if (CAD_Drawing != "1.png")
+                                    {
+                                        Photo += CAD_Drawing + "、";
+
+                                    }
                                 }
                                 if (table.Rows[i][35].ToString() != "")
                                 {
                                     Model_Drawing = table.Rows[i][35].ToString().Trim();
-                                    Photo += Model_Drawing + "、";
+                                    if (Model_Drawing!="1.png")
+                                    {
+                                        Photo += Model_Drawing + "、";
+                                    }
                                 }
                                 if (table.Rows[i][36].ToString() != "")
                                 {
                                     Icon = table.Rows[i][36].ToString().Trim();
-                                    Photo += Icon + "、";
+                                    if (Icon!="1.png")
+                                    {
+                                        Photo += Icon + "、";
+                                    }
                                 }
 
                                 MemberLibrary.CAD_Drawing = CAD_Drawing;
@@ -1196,11 +1206,19 @@ public ActionResult Partial1()
                     }
                     if (table.Rows.Count - count == _count || (_count == 1 && table.Rows.Count - count == _count))
                     {
-                        return Content("操作失败：要导入的数据已存在");
+                        return Content("操作失败：要导入的数据在该构件类型或其他构件类型下已存在");
                     }
                 }
                 Session["photo"] = Photo;
-                return Content("操作成功");
+                if (Photo=="")
+                {
+                    return Content("1");
+                }
+                else
+                {
+                    return Content("2");
+                }
+                
                 //return View(Photo);
             }
             catch (Exception ex)
@@ -1323,23 +1341,27 @@ public ActionResult Partial1()
                 oldentity1 = ProjectInfoCurrent.Find(f => f.ProjectId == key_value).SingleOrDefault();
                 if (Img == "Logo")
                 {
-                    //NewPath = string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Project", filename);
-                    //virtualPath = this.Server.MapPath(NewPath);// UserId,
-                    //fullFileName = virtualPath + "/" + Filedata.FileName;
+                    NewPath = string.Format("~/Resource/Document/NetworkDisk/{0}/{1}/{2}", UserId, "Project", filename);
+                    virtualPath = this.Server.MapPath(NewPath);// UserId,
+                    fullFileName = virtualPath + "/" + Filedata.FileName;
 
-                    //if (oldentity1.ProjectLogo == null || oldentity1.ProjectLogo == "")
-                    //{
-                    //    oldentity1.ProjectLogo = "1.png";
-                    //}
-                    //string filename1 = oldentity1.ProjectLogo.Substring(0, oldentity1.ProjectLogo.LastIndexOf('.'));//获取文件名称，去除后缀名
-                    //virtualPath1 = "~/Resource/Document/NetworkDisk/System/Project/" + filename1;
-                    //if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
-                    //{
-                    //    Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
-                    //}
-                    ////创建文件夹，保存文件
-                    //Directory.CreateDirectory(virtualPath);
-                    //Filedata.SaveAs(fullFileName);
+                    if (oldentity1.ProjectLogo == null || oldentity1.ProjectLogo == "")
+                    {
+                        oldentity1.ProjectLogo = "1.png";
+                    }
+                    else
+                    {
+                        string filename1 = oldentity1.ProjectLogo.Substring(0, oldentity1.ProjectLogo.LastIndexOf('.'));//获取文件名称，去除后缀名
+                        virtualPath1 = "~/Resource/Document/NetworkDisk/System/Project/" + filename1;
+                        if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
+                        {
+                            Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
+                        }
+                    }
+
+                    //创建文件夹，保存文件
+                    Directory.CreateDirectory(virtualPath);
+                    Filedata.SaveAs(fullFileName);
                     oldentity1.ProjectLogo = Filedata.FileName;
                     oldentity1.ModifiedTime = DateTime.Now;
                     ProjectInfoCurrent.Modified(oldentity1);
@@ -1354,12 +1376,16 @@ public ActionResult Partial1()
                     {
                         oldentity1.ProjectBackground = "1.png";
                     }
-                    string filename1 = oldentity1.ProjectLogo.Substring(0, oldentity1.ProjectLogo.LastIndexOf('.'));//获取文件名称，去除后缀名
-                    virtualPath1 = "~/Resource/Document/NetworkDisk/System/Project/" + filename1;
-                    if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
+                    else
                     {
-                        Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
+                        string filename1 = oldentity1.ProjectBackground.Substring(0, oldentity1.ProjectBackground.LastIndexOf('.'));//获取文件名称，去除后缀名
+                        virtualPath1 = "~/Resource/Document/NetworkDisk/System/Project/" + filename1;
+                        if (Directory.Exists(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1))
+                        {
+                            Directory.Delete(System.Web.HttpContext.Current.Server.MapPath("~") + virtualPath1, true);//pdf路径
+                        }
                     }
+
                     //创建文件夹，保存文件
                     Directory.CreateDirectory(virtualPath);
                     Filedata.SaveAs(fullFileName);
@@ -1475,7 +1501,7 @@ public ActionResult Partial1()
             try
             {
                 Thread.Sleep(1000);////延迟500毫秒
-                //没有文件上传，直接返回
+                                   //没有文件上传，直接返回
                 if (Filedata == null || string.IsNullOrEmpty(Filedata.FileName) || Filedata.ContentLength == 0)
                 {
                     return HttpNotFound();
@@ -1730,7 +1756,7 @@ public ActionResult Partial1()
                     Oldentity.UnitPrice = entity.UnitPrice;
                     MemberLibraryCurrent.Modified(Oldentity);
                     IsOk = 1;//更新实体对象
-                    //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
+                             //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
                 }
                 else
                 {
@@ -2094,9 +2120,6 @@ public ActionResult Partial1()
         {
             int _KeyValue = Convert.ToInt32(KeyValue);
             RMC_MemberMaterial entity = MemberMaterialCurrent.Find(f => f.MemberMaterialId == _KeyValue).SingleOrDefault();
-            //string JsonData = entity.ToJson();
-            ////自定义
-            //JsonData = JsonData.Insert(1, Sys_FormAttributeBll.Instance.GetBuildForm(KeyValue));
             return Content(entity.ToJson());
         }
         /// <summary>
@@ -2123,7 +2146,7 @@ public ActionResult Partial1()
                     Oldentity.Description = entity.Description;
                     MemberMaterialCurrent.Modified(Oldentity);
                     IsOk = 1;//更新实体对象
-                    //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
+                             //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
                 }
                 else
                 {
@@ -2181,15 +2204,45 @@ public ActionResult Partial1()
         /// </summary>
         /// <param name="MaterialClassId"></param>
         /// <returns></returns>
-        public virtual ActionResult GetMaterialName(string MaterialClassId)
+        public virtual ActionResult GetMaterialName(string MaterialClassId, string MemberId)
         {
-            int _MaterialClassId = Convert.ToInt32(MaterialClassId);
-            List<RMC_RawMaterialLibrary> Entity = RawMaterialCurrent.Find(f => f.TreeId == _MaterialClassId).ToList();
-            //string JsonData = entity.ToJson();
-            ////自定义
-            //JsonData = JsonData.Insert(1, Sys_FormAttributeBll.Instance.GetBuildForm(KeyValue));
-            // return Content(entity.ToJson());
-            return Json(Entity);
+           var Entitys = new List<RMC_RawMaterialLibrary>();
+            if (MaterialClassId != "")
+            {//筛选出还没有添加至该构件的材料
+                List<string> MemberRawMaterial1 = new List<string>();
+                List<string> MemberRawMaterial2 = new List<string>();
+              
+                int TreeId = Convert.ToInt32(MaterialClassId);
+                int _MemberId = Convert.ToInt32(MemberId);
+                var Entity = RawMaterialCurrent.Find(f => f.TreeId == TreeId).ToList();
+                if (Entity.Count() > 0)
+                {
+                    foreach (var item in Entity)
+                    {
+                        MemberRawMaterial1.Add(item.RawMaterialId.ToString());
+                    }
+                }
+                var Entity1 = MemberMaterialCurrent.Find(f => f.MemberId== _MemberId).ToList();
+                if (Entity1.Count() > 0)
+                {
+                    foreach (var item1 in Entity1)
+                    {
+                        MemberRawMaterial2.Add(item1.RawMaterialId.ToString());
+                    }
+                }
+                var MemberRawMaterial3 = MemberRawMaterial1.Where(c => !MemberRawMaterial2.Contains(c)).ToList();
+                foreach (var item in MemberRawMaterial3)
+                {
+                    int _item = Convert.ToInt32(item);
+                    var Model = Entity.Where(f => f.RawMaterialId == _item).SingleOrDefault();
+                    Entitys.Add(Model);
+                }
+                //
+
+            }
+
+
+            return Json(Entitys);
         }
         #endregion
 
@@ -2291,7 +2344,7 @@ public ActionResult Partial1()
                     Oldentity.Description = entity.Description;
                     MemberProcessCurrent.Modified(Oldentity);
                     IsOk = 1;//更新实体对象
-                    //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
+                             //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
                 }
                 else
                 {

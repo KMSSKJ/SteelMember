@@ -20,5 +20,6 @@ namespace LeaRun.Entity.SteelMember
         public Nullable<int> RawMaterialClassId { get; set; }
         public Nullable<int> MaterialNumber { get; set; }
         public string Description { get; set; }
+        public string RawMaterialClassName { get; set; }
     }
 }

@@ -105,6 +105,7 @@
             AjaxJson("/SteelMember/ProjectInfo/SubmitDataForm?KeyValue=" + KeyValue + '&TreeId=' + TreeId, postData, function (data) {//+ '&ItemID=' + ItemID
                 tipDialog(data.Message, 3, data.Code);
                 top.frames[tabiframeId()].windowload();
+                parent.window.LoadLogo();//刷新标题
                 closeDialog();
             });
         }, 200);
@@ -131,7 +132,7 @@
     }
 </script>
 
-<form id="form2" style="margin: 25px; margin-left: 40px; margin-right: 40px;">
+<form id="form2">
 
     <div id="table_project">
         <table class="form">

@@ -33,6 +33,17 @@ function isInteger(obj) {
     }
 }
 
+//验证小数
+function isDecimal (obj) {
+    // reg = /^[-+]?\d+$/; //验证数字
+    reg = /^\+?[0-9].[0-9]\d*$/;//验证正整数
+    if (!reg.test(obj)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 //验证数字 num  或者null,空
 function isIntegerOrNull(obj) {
     var controlObj = $.trim(obj);

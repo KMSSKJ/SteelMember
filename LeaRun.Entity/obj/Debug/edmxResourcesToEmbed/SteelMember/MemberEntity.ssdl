@@ -168,6 +168,7 @@
     <Property Name="RawMaterialClassId" Type="int" />
     <Property Name="MaterialNumber" Type="int" />
     <Property Name="Description" Type="nvarchar" MaxLength="200" />
+    <Property Name="RawMaterialClassName" Type="nvarchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="RMC_MemberProcess">
     <Key>
@@ -387,6 +388,7 @@
     <Property Name="MaterialBudget" Type="nvarchar" MaxLength="20" />
     <Property Name="DeleteFlag" Type="int" />
     <Property Name="Description" Type="nvarchar" MaxLength="200" />
+    <Property Name="IsPurchase" Type="int" />
   </EntityType>
   <EntityType Name="RMC_ShipManagement">
     <Key>

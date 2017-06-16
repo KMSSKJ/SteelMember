@@ -30,5 +30,6 @@ namespace LeaRun.Entity.SteelMember
         public string MaterialBudget { get; set; }
         public Nullable<int> DeleteFlag { get; set; }
         public string Description { get; set; }
+        public Nullable<int> IsPurchase { get; set; }
     }
 }

@@ -633,7 +633,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
         }
 
-     
+
 
         //public ActionResult TreeGridJsonAnalysisRawMaterial(FileViewModel model, string ParameterJson, string TreeId, JqGridParam jqgridparam)
         //{
@@ -782,108 +782,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             return View();
         }
 
-        ///// <summary>
-        ///// 【项目信息管理】返回文件夹对象JSON
-        ///// </summary>
-        ///// <param name="KeyValue">主键值</param>
-        ///// <returns></returns>
-        //[HttpPost]
-        //[ValidateInput(false)]
-        ////[LoginAuthorize]
-        //public ActionResult SetAnalysisRawMaterialForm(string KeyValue)
-        //{
-        //    RMC_AnalysisRawMaterial entity = new RMC_AnalysisRawMaterial();
-        //    if (!string.IsNullOrEmpty(KeyValue))
-        //    {
-        //        int key_value = Convert.ToInt32(KeyValue);
-        //        entity = AnalysisRawMaterialCurrent.Find(f => f.AnalysisRawMaterialId == key_value).SingleOrDefault();
-        //    }
-        //    return Content(entity.ToJson());
-        //    //return Json(entity);
-        //}
-
-        /// <summary>
-        /// 提交文件夹表单
-        /// </summary>
-        /// <param name="entity">实体对象</param>
-        /// <param name="KeyValue">主键值</param>
-        /// <returns></returns>
-        //[HttpPost]
-        //[ValidateInput(false)]
-        ////[LoginAuthorize]
-        //public virtual ActionResult SubmitAnalysisRawMaterialForm(RMC_AnalysisRawMaterial entity, string KeyValue, string OrderNumbering)
-        //{
-        //    try
-        //    {
-        //        int IsOk = 0;
-        //        string Message = OrderNumbering == "" ? "编辑成功。" : "新增成功。";
-        //        if (!string.IsNullOrEmpty(OrderNumbering))
-        //        {
-
-        //            int key_value = Convert.ToInt32(KeyValue);
-        //            RMC_AnalysisRawMaterial AnalysisRawMaterial = AnalysisRawMaterialCurrent.Find(t => t.AnalysisRawMaterialId == key_value).SingleOrDefault();
-        //            RMC_AnalysisRawMaterial Oldentity = new RMC_AnalysisRawMaterial();
-        //            Oldentity.TreeId = AnalysisRawMaterial.TreeId;
-        //            Oldentity.ParentId = key_value;
-        //            Oldentity.OrderId = 0;
-        //            Oldentity.RawMaterialId = entity.RawMaterialId;
-        //            var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == entity.RawMaterialId).SingleOrDefault();
-        //            Oldentity.UnitId = RawMaterial.UnitId;
-        //            Oldentity.MaterialClassId = entity.MaterialClassId;
-        //            Oldentity.Number = entity.Number;
-        //            Oldentity.MaterialName = entity.MaterialName;
-        //            Oldentity.Description = entity.Description;
-        //            AnalysisRawMaterialCurrent.Add(Oldentity);
-        //            IsOk = 1;
-        //            //this.WriteLog(IsOk, entity, null, KeyValue, Message);
-        //        }
-        //        else
-        //        {
-        //            int key_value = Convert.ToInt32(KeyValue);
-        //            RMC_AnalysisRawMaterial Oldentity = AnalysisRawMaterialCurrent.Find(t => t.AnalysisRawMaterialId == key_value).SingleOrDefault();//获取没更新之前实体对象
-
-        //            Oldentity.Number = entity.Number;
-        //            Oldentity.RawMaterialId = entity.RawMaterialId;
-        //            Oldentity.Description = entity.Description;
-        //            AnalysisRawMaterialCurrent.Modified(Oldentity);
-        //            IsOk = 1;//更新实体对象
-        //            //this.WriteLog(IsOk, entity, Oldentity, KeyValue, Message);
-        //        }
-        //        return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = Message }.ToString());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //this.WriteLog(-1, entity, null, KeyValue, "操作失败：" + ex.Message);
-        //        return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-        //    }
-        //}
-
-        ///// <summary>
-        ///// 删除（销毁）文件
-        ///// </summary>
-        ///// <param name="FolderId"></param>
-        ///// <returns></returns>
-        //public ActionResult DeleteAnalysisRawMaterial(string KeyValue)
-        //{
-        //    try
-        //    {
-        //        List<int> ids = new List<int>();
-        //        int key_value = Convert.ToInt32(KeyValue);
-        //        ids.Add(key_value);
-        //        AnalysisRawMaterialCurrent.Remove(ids);
-        //        return Content(new JsonMessage { Success = true, Code = "1", Message = "删除成功。" }.ToString());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Content(new JsonMessage
-        //        {
-        //            Success = false,
-        //            Code = "-1",
-        //            Message = "操作失败：" + ex.Message
-        //        }.ToString());
-        //    }
-        //}
-
 
         public ActionResult GetRawMaterialName()
         {
@@ -985,6 +883,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                             AnalysisRawMaterialModel.UnitPrice = RawMaterial.UnitPrice.ToJson();
                                             AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
                                             AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
+
                                             var PurchaseNumber = AnalysisRawMaterialModel.RawMaterialNumber - AnalysisRawMaterialModel.OrderProcessingNumber;
                                             if (Convert.ToInt32(PurchaseNumber) < 0 || (0 < Convert.ToInt32(PurchaseNumber) && Convert.ToInt32(PurchaseNumber) < 100))
                                             {
@@ -1014,6 +913,158 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             {
                 return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
+
+        }
+
+        public ContentResult AddRawMateralNumber()
+        {
+            return Content("");
+        }
+
+        public ContentResult Add_RawMaterialsNumber()
+        {
+            Stopwatch watch = CommonHelper.TimerStart();
+
+            List<AnalysisRawMaterialModel> AnalysisRawMaterialModellist = new List<AnalysisRawMaterialModel>();
+            try
+            {
+                List<RMC_ProjectOrder> ProjectOrderList = new List<RMC_ProjectOrder>();
+                List<RMC_OrderMember> CollarMemberList = new List<RMC_OrderMember>();
+                List<RMC_MemberMaterial> MemberMaterialList = new List<RMC_MemberMaterial>();
+                List<RMC_RawMaterialLibrary> RawMaterialLibraryList = new List<RMC_RawMaterialLibrary>();
+                int data = 0;
+                int number = 0;
+                int _number = 0;
+                ProjectOrderList = OrderManagementCurrent.Find(f => f.OrderId > 0 && f.ConfirmOrder == 1 && f.Productioned == 0).ToList();//所有订单
+                if (ProjectOrderList.Count > 0)
+                {
+                    for (int i0 = 0; i0 < ProjectOrderList.Count; i0++)
+                    {
+                        int OrderId = Convert.ToInt32(ProjectOrderList[i0].OrderId);
+                        CollarMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();//单个订单所需构件
+                        if (CollarMemberList.Count() > 0)
+                        {
+                            for (int i1 = 0; i1 < CollarMemberList.Count(); i1++)
+                            {
+                                int MemberId = Convert.ToInt32(CollarMemberList[i1].MemberId);
+                                MemberMaterialList = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();//单个构件所需原材料
+                                if (MemberMaterialList.Count() > 0)
+                                {
+                                    for (int i2 = 0; i2 < MemberMaterialList.Count(); i2++)
+                                    {
+                                        AnalysisRawMaterialModel AnalysisRawMaterialModel = new AnalysisRawMaterialModel();
+                                        if (AnalysisRawMaterialModellist.Count() != 0)//判断构造函数是否有数据，没有就新增
+                                        {
+                                            var a = AnalysisRawMaterialModellist.Where(w => w.RawMaterialId == MemberMaterialList[i2].RawMaterialId);//筛选构造函数中的数据，
+                                            if (a.Count() != 0)//判断构造函数中是否有相同数据，没有就新增
+                                            {
+                                                foreach (var item in a)
+                                                {
+                                                    item.OrderProcessingNumber += MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
+                                                    AnalysisRawMaterialModel.OrderProcessingNumber = item.OrderProcessingNumber;
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                AnalysisRawMaterialModel.RawMaterialId = Convert.ToInt32(MemberMaterialList[i2].RawMaterialId);
+                                                var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == AnalysisRawMaterialModel.RawMaterialId).SingleOrDefault();
+                                                var Unit = MemberUnitCurrent.Find(f => f.UnitId == RawMaterial.UnitId).SingleOrDefault();
+                                                AnalysisRawMaterialModel.RawMaterialName = RawMaterial.RawMaterialName;
+                                                AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
+                                                AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
+                                                AnalysisRawMaterialModel.UnitName = Unit.UnitName;
+                                                AnalysisRawMaterialModel.UnitPrice = RawMaterial.UnitPrice.ToJson();
+                                                AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
+                                                AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
+
+                                                var PurchaseNumber = AnalysisRawMaterialModel.RawMaterialNumber - AnalysisRawMaterialModel.OrderProcessingNumber;
+                                                if (Convert.ToInt32(PurchaseNumber) < 0 || (0 < Convert.ToInt32(PurchaseNumber) && Convert.ToInt32(PurchaseNumber) < 100))
+                                                {
+                                                    AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
+                                                    number += -Convert.ToInt32(PurchaseNumber)+100;
+                                                    data++;
+                                                }
+
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            AnalysisRawMaterialModel.RawMaterialId = Convert.ToInt32(MemberMaterialList[i2].RawMaterialId);
+                                            var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == AnalysisRawMaterialModel.RawMaterialId).SingleOrDefault();
+                                            var Unit = MemberUnitCurrent.Find(f => f.UnitId == RawMaterial.UnitId).SingleOrDefault();
+                                            AnalysisRawMaterialModel.RawMaterialName = RawMaterial.RawMaterialName;
+                                            AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
+                                            AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
+                                            AnalysisRawMaterialModel.UnitName = Unit.UnitName;
+                                            AnalysisRawMaterialModel.UnitPrice = RawMaterial.UnitPrice.ToJson();
+                                            AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
+                                            AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
+
+                                            var PurchaseNumber = AnalysisRawMaterialModel.RawMaterialNumber - AnalysisRawMaterialModel.OrderProcessingNumber;
+                                            if (Convert.ToInt32(PurchaseNumber) < 0 || (0 < Convert.ToInt32(PurchaseNumber) && Convert.ToInt32(PurchaseNumber) < 100))
+                                            {
+                                                AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
+                                                number += -(Convert.ToInt32(PurchaseNumber))+100;
+                                                data++;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+
+                if (data>0)
+                {
+                    var RawMaterialPurchase = RawMaterialPurchaseCurrent.Find(f=>f.RawMaterialPurchaseId>0&&f.IsPurchase==0).ToList();
+                    foreach (var item in RawMaterialPurchase)
+                    {
+                        _number += (Convert.ToInt32(item.Qty));
+                    }
+
+                    data = number - _number;
+
+                }
+              
+                return Content(data.ToString());
+            }
+            catch (Exception ex)
+            {
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+            }
+        }
+
+        public ActionResult Warehousing(string KeyValue)
+        {
+            try {
+                int _KeyValue = Convert.ToInt32(KeyValue);
+                //var Purchase = PurchaseCurrent.Find(f=>f.PurchaseId==_KeyValue).SingleOrDefault();
+                var RawMaterialPurchase = RawMaterialPurchaseCurrent.Find(f => f.PurchaseId == _KeyValue).ToList();
+                foreach (var item in RawMaterialPurchase)
+                {
+                    var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == item.RawMaterialId).SingleOrDefault();
+                    if (RawMaterial != null)
+                    {
+                        RawMaterial.RawMaterialNumber += item.Qty;
+                        RawMaterialCurrent.Modified(RawMaterial);
+
+                        var  RawMaterialPurchase1 = RawMaterialPurchase.Where(f => f.RawMaterialPurchaseId == item.RawMaterialPurchaseId).SingleOrDefault();
+                        RawMaterialPurchase1.IsPurchase = 1;
+                        RawMaterialPurchaseCurrent.Modified(RawMaterialPurchase1);
+                    }
+                }
+                return Content(new JsonMessage { Success = true, Code = 1.ToString(), Message = "操作成功" }.ToString());
+            }
+            catch (Exception ex )
+            {
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
+            }
+
 
         }
 
@@ -1213,13 +1264,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                             RMC_RawMaterialPurchase CollarModel = new RMC_RawMaterialPurchase();
                             CollarModel.PurchaseId = _PurchaseId;
                             //CollarModel.ProjectDemandId = Convert.ToInt32(poorderentry.ProjectDemandId);
-                            CollarModel.RawMaterialId =Convert.ToInt32(poorderentry.RawMaterialId);
+                            CollarModel.RawMaterialId = Convert.ToInt32(poorderentry.RawMaterialId);
                             CollarModel.Description = poorderentry.Description;
                             CollarModel.RawMaterialStandard = poorderentry.RawMaterialStandard;
                             CollarModel.RawMaterialName = poorderentry.RawMaterialName;
-                            CollarModel.UnitName= poorderentry.UnitName;
+                            CollarModel.UnitName = poorderentry.UnitName;
                             CollarModel.Price = Convert.ToDecimal(poorderentry.Price);
                             CollarModel.PriceAmount = Convert.ToDecimal(poorderentry.PriceAmount);
+                            CollarModel.IsPurchase = 0;
                             CollarModel.Qty = Convert.ToInt32(poorderentry.Qty);
                             RawMaterialPurchaseCurrent.Add(CollarModel);
                             //index++;
@@ -1249,14 +1301,15 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                             //poorderentry.Create();
                             CollarModel.PurchaseId = CollarId;
                             //CollarModel.ProjectDemandId = Convert.ToInt32(poorderentry.ProjectDemandId);
-                            CollarModel.RawMaterialId =Convert.ToInt32(poorderentry.RawMaterialId);
+                            CollarModel.RawMaterialId = Convert.ToInt32(poorderentry.RawMaterialId);
                             CollarModel.Description = poorderentry.Description;
                             CollarModel.RawMaterialStandard = poorderentry.RawMaterialStandard;
                             CollarModel.RawMaterialName = poorderentry.RawMaterialName;
                             CollarModel.UnitName = poorderentry.UnitName;
                             CollarModel.Price = Convert.ToDecimal(poorderentry.Price);
                             CollarModel.PriceAmount = Convert.ToDecimal(poorderentry.PriceAmount);
-                            CollarModel.Qty =Convert.ToInt32(poorderentry.Qty);
+                            CollarModel.IsPurchase = 0;
+                            CollarModel.Qty = Convert.ToInt32(poorderentry.Qty);
 
                             //var Demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == CollarModel.ProjectDemandId).SingleOrDefault();
                             //Demand.OrderQuantityed = Demand.CollarNumbered + CollarModel.Qty;
@@ -1292,7 +1345,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                         for (int I = i; I < array1.Length;)
                         {
-                          
+
                             var AnalysisRawMaterialModel = new AnalysisRawMaterialModel();
                             AnalysisRawMaterialModel.RawMaterialId = Convert.ToInt32(array[i]);
                             var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == AnalysisRawMaterialModel.RawMaterialId).SingleOrDefault();
@@ -1301,7 +1354,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                             AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
                             AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
                             AnalysisRawMaterialModel.UnitName = Unit.UnitName;
-                            AnalysisRawMaterialModel.UnitPrice= RawMaterial.UnitPrice.ToString();
+                            AnalysisRawMaterialModel.UnitPrice = RawMaterial.UnitPrice.ToString();
                             AnalysisRawMaterialModel.OrderProcessingNumber = Convert.ToInt32(array1[I]);
                             ListRawMaterial.Add(AnalysisRawMaterialModel);
                             I = I + array1.Length;
@@ -1326,7 +1379,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 foreach (var item in listfile)
                 {
                     RawMaterialLibraryModel CollarModel = new RawMaterialLibraryModel();
-                    CollarModel.PurchaseId =Convert.ToInt32(item.PurchaseId);
+                    CollarModel.PurchaseId = Convert.ToInt32(item.PurchaseId);
 
                     CollarModel.RawMaterialStandard = item.RawMaterialStandard;
                     CollarModel.RawMaterialName = item.RawMaterialName;
@@ -1366,8 +1419,9 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 ids.Add(key_value);
                 PurchaseCurrent.Remove(ids);
 
-                var RawMaterialPurchase = RawMaterialPurchaseCurrent.Find(f=>f.PurchaseId== key_value).ToList();
-                if(RawMaterialPurchase.Count()>0) {
+                var RawMaterialPurchase = RawMaterialPurchaseCurrent.Find(f => f.PurchaseId == key_value).ToList();
+                if (RawMaterialPurchase.Count() > 0)
+                {
                     List<int> ids1 = new List<int>();
                     for (int i = 0; i < RawMaterialPurchase.Count(); i++)
                     {
@@ -1542,7 +1596,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     RawMaterialLibraryModel.RawMaterialName = item.RawMaterialName;
                     RawMaterialLibraryModel.RawMaterialNumber = item.RawMaterialNumber;
                     RawMaterialLibraryModel.RawMaterialStandard = item.RawMaterialStandard;
-                    RawMaterialLibraryModel.Price = item.UnitPrice.ToString();
+                    RawMaterialLibraryModel.UnitPrice = item.UnitPrice.ToString();
                     RawMaterialLibraryModel.TreeId = item.TreeId;
                     RawMaterialLibraryModel.Description = item.Description;
                     RawMaterialLibraryModellist.Add(RawMaterialLibraryModel);

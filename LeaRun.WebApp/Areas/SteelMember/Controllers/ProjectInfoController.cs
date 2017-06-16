@@ -222,10 +222,9 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         [HttpPost]
         [ValidateInput(false)]
         //[LoginAuthorize]
-        public ActionResult SetDataForm(string KeyValue)
+        public ActionResult SetDataForm()
         {
-            int ProjectId = Convert.ToInt32(KeyValue);
-            RMC_ProjectInfo entity = ProjectInfoCurrent.Find(f => f.ProjectId == ProjectId).SingleOrDefault();
+            RMC_ProjectInfo entity = ProjectInfoCurrent.Find(f => f.ProjectId>0).SingleOrDefault();
             //string JsonData = entity.ToJson();
             ////自定义D:\SSKJProject\LeaRun.WebApp\Areas\CodeMaticModule\
             //JsonData = JsonData.Insert(1, Sys_FormAttributeBll.Instance.GetBuildForm(KeyValue));
@@ -316,6 +315,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         Oldentity.SupervisionPrincipal = entity.SupervisionPrincipal;
                         Oldentity.SupervisionPrincipalTEL = entity.SupervisionPrincipalTEL;
                         Oldentity.ProjectAddress = entity.ProjectAddress;
+                        Oldentity.Description = entity.Description;
                         ProjectInfoCurrent.Add(Oldentity);
                         IsOk = 1;
                     }

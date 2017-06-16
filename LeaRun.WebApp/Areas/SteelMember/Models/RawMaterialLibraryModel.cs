@@ -16,6 +16,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Models
         public Nullable<int> RawMaterialNumber { get; set; }
         public string RawMaterialStandard { get; set; }
         public string Price { get; set; }
+        public string UnitPrice { get; set; }
         public string PriceAmount { get; set; }
         public string Qty { get; set; }
         public Nullable<int> TreeId { get; set; }

@@ -166,19 +166,38 @@
                         rows++;
                     }
                     if (rowData!=null){
-                    var index = 1;
+                        var index = 1;
+                        var data1;
                     for (var i = 0; i < rowData.length; i++) {
                         $parentobj.IsExistItem(index, rowData[i].MemberId);
                         //var rowData = $(this).jqGrid('getRowData', RowIndx[i]);
+
+                        $.ajax({
+                            type: 'post',
+                            dataType: "text",
+                            url: "/SteelMember/ProjectOrder/AddMemberNumber",
+                            data: {
+                                TreeId: TreeId,
+                                KeyValue: rowData[i].MemberId
+                            },
+                            cache: false,
+                            async: false,
+                            success: function (data) {
+                                data1 = data;
+                            }
+                        
+                        });
+
                         $parentobj.$("#MemberID➩" + index).val(rowData[i].MemberId);
                         $parentobj.$("#MemberNumbering➩" + index).val(rowData[i].MemberNumbering);
                         $parentobj.$("#ProjectDemandId➩" + index).val(rowData[i].ProjectDemandId);
                         $parentobj.$("#MemberName➩" + index).val(rowData[i].MemberName);
                         $parentobj.$("#MemberModel➩" + index).val(rowData[i].MemberModel);
                         $parentobj.$("#MemberUnit➩" + index).val(rowData[i].MemberUnit);
-                        $parentobj.$("#Qty➩" + index).val(rowData[i].MemberNumber);
+                        $parentobj.$("#Qty➩" + index).val(Number(data1));
                         $parentobj.$("#Price➩" + index).val(rowData[i].UnitPrice);
-                        $parentobj.$("#PriceAmount➩" + index).val(Number(rowData[i].UnitPrice) * Number(rowData[i].MemberNumber));
+                        $parentobj.$("#PriceAmount➩" + index).val(FormatCurrency(Number(rowData[i].UnitPrice) * Number(data1)));
+                        $parentobj.$("#MaxNumber➩" + index).val(Number(data1));
                         $parentobj.$("#gridTable tbody tr:eq(" + index + ")").find('input').attr("datacol", "yes");
                         index++;
                         $parentobj.$("#gridTable tbody tr:eq(" + index + ")").find('input').removeAttr('disabled');

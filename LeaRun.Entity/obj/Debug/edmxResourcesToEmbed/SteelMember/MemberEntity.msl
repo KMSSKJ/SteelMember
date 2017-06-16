@@ -140,18 +140,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="RMC_MemberMaterial">
-      <EntityTypeMapping TypeName="kskfModel.RMC_MemberMaterial">
-        <MappingFragment StoreEntitySet="RMC_MemberMaterial">
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="MaterialNumber" ColumnName="MaterialNumber" />
-          <ScalarProperty Name="RawMaterialClassId" ColumnName="RawMaterialClassId" />
-          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-          <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
-          <ScalarProperty Name="MemberMaterialId" ColumnName="MemberMaterialId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="RMC_MemberProcess">
       <EntityTypeMapping TypeName="kskfModel.RMC_MemberProcess">
         <MappingFragment StoreEntitySet="RMC_MemberProcess">
@@ -436,9 +424,23 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="RMC_MemberMaterial">
+      <EntityTypeMapping TypeName="kskfModel.RMC_MemberMaterial">
+        <MappingFragment StoreEntitySet="RMC_MemberMaterial">
+          <ScalarProperty Name="RawMaterialClassName" ColumnName="RawMaterialClassName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="MaterialNumber" ColumnName="MaterialNumber" />
+          <ScalarProperty Name="RawMaterialClassId" ColumnName="RawMaterialClassId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
+          <ScalarProperty Name="MemberMaterialId" ColumnName="MemberMaterialId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="RMC_RawMaterialPurchase">
       <EntityTypeMapping TypeName="kskfModel.RMC_RawMaterialPurchase">
         <MappingFragment StoreEntitySet="RMC_RawMaterialPurchase">
+          <ScalarProperty Name="IsPurchase" ColumnName="IsPurchase" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
           <ScalarProperty Name="MaterialBudget" ColumnName="MaterialBudget" />

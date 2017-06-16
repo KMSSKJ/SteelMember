@@ -6,7 +6,6 @@
     <EntitySet Name="RMC_Company" EntityType="kskfModel.RMC_Company" />
     <EntitySet Name="RMC_FactoryWarehouse" EntityType="kskfModel.RMC_FactoryWarehouse" />
     <EntitySet Name="RMC_MemberLibrary" EntityType="kskfModel.RMC_MemberLibrary" />
-    <EntitySet Name="RMC_MemberMaterial" EntityType="kskfModel.RMC_MemberMaterial" />
     <EntitySet Name="RMC_MemberProcess" EntityType="kskfModel.RMC_MemberProcess" />
     <EntitySet Name="RMC_MemberUnit" EntityType="kskfModel.RMC_MemberUnit" />
     <EntitySet Name="RMC_OrderMember" EntityType="kskfModel.RMC_OrderMember" />
@@ -20,6 +19,7 @@
     <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
     <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="kskfModel.RMC_AnalysisRawMaterial" />
     <EntitySet Name="RMC_Purchase" EntityType="kskfModel.RMC_Purchase" />
+    <EntitySet Name="RMC_MemberMaterial" EntityType="kskfModel.RMC_MemberMaterial" />
     <EntitySet Name="RMC_RawMaterialPurchase" EntityType="kskfModel.RMC_RawMaterialPurchase" />
   </EntityContainer>
   <EntityType Name="RMC_Collar">
@@ -155,17 +155,6 @@
     <Property Name="FullPath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="UploadTime" Type="DateTime" Precision="3" />
     <Property Name="Sort" Type="Int32" />
-  </EntityType>
-  <EntityType Name="RMC_MemberMaterial">
-    <Key>
-      <PropertyRef Name="MemberMaterialId" />
-    </Key>
-    <Property Name="MemberMaterialId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="RawMaterialId" Type="Int32" />
-    <Property Name="MemberId" Type="Int32" />
-    <Property Name="RawMaterialClassId" Type="Int32" />
-    <Property Name="MaterialNumber" Type="Int32" />
-    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="RMC_MemberProcess">
     <Key>
@@ -438,6 +427,18 @@
     <Property Name="ReviewMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>
+  <EntityType Name="RMC_MemberMaterial">
+    <Key>
+      <PropertyRef Name="MemberMaterialId" />
+    </Key>
+    <Property Name="MemberMaterialId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RawMaterialId" Type="Int32" />
+    <Property Name="MemberId" Type="Int32" />
+    <Property Name="RawMaterialClassId" Type="Int32" />
+    <Property Name="MaterialNumber" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="RawMaterialClassName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+  </EntityType>
   <EntityType Name="RMC_RawMaterialPurchase">
     <Key>
       <PropertyRef Name="RawMaterialPurchaseId" />
@@ -458,5 +459,6 @@
     <Property Name="MaterialBudget" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="DeleteFlag" Type="Int32" />
     <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="IsPurchase" Type="Int32" />
   </EntityType>
 </Schema>

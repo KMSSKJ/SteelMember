@@ -104,7 +104,7 @@
         var ItemID = 1
         if (IsChecked(MemberID)) {
             var url = "/SteelMember/File/RawMaterialsDosageForm?MemberID=" + MemberID;
-            openDialog(url, "RawMaterialsDosageForm", "新增信息", 500, 400, function (iframe) {
+            openDialog(url, "RawMaterialsDosageForm", "新增信息", 400, 200, function (iframe) {
                 top.frames[iframe].AcceptClick();
             });
         }
@@ -116,8 +116,8 @@
         var KeyValue = GetJqGridRowValue("#gridTable", "MemberMaterialId");
         var ItemID = 1;
         if (IsChecked(KeyValue)) {
-            var url = "/SteelMember/File/RawMaterialsDosageForm?KeyValue= " + KeyValue;
-                openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
+            var url = "/SteelMember/File/RawMaterialsDosageForm?KeyValue= " + KeyValue + "&&MemberID=" + MemberID;
+                openDialog(url, "Form", "编辑信息", 400, 200, function (iframe) {
                     top.frames[iframe].AcceptClick();
                 });
            

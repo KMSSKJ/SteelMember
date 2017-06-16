@@ -16,22 +16,12 @@
         //得到一个对象实体
         function InitControl() {
             if (!!KeyValue) {
-                LoadMaterialName();
                 AjaxJson("/SteelMember/File/SetDataForm", { KeyValue: KeyValue }, function (data) {
                 SetWebControls(data);
                 Data = data;
+                LoadMaterialName();
             });
-            }// else {
-            //    tipDialog('请选择文件夹!', 3); //,data.Code
-            //}
-            //(!!FolderId){
-            //    tipDialog('请选择文件夹!', 3); //,data.Code
-            //    ////显示顺序
-            //    //AjaxJson("/SysManagement/Module/SortCode", {}, function (Data) {
-            //    //    $("#SortCode").val(Data);
-            //    //})
-            //    $("#ParentID").val(GetQuery('FolderId'));
-            //    //$("#IsPublic").val(GetQuery('IsPublic'));
+            }
         }
         //保存事件
         function AcceptClick() {
@@ -64,7 +54,7 @@
                             url: '/SteelMember/File/GetMaterialName',
                             type: 'post',
                             datatype: 'Json',
-                            data: { MaterialClassId: item.id },
+                            data: { MaterialClassId: item.id, MemberId: MemberID},
                             success: function (data) {
                                 if (data != "") {
                                     var projectname_sel = [];
@@ -117,7 +107,7 @@
                 url: '/SteelMember/File/GetMaterialName',
                 type: 'post',
                 datatype: 'Json',
-                data: { MaterialClassId: Data.RawMaterialClassId },
+                data: { MaterialClassId: Data.RawMaterialClassId }, 
                 success: function (data) {
                     if (data != "") {
                         var projectname_sel = [];
@@ -142,7 +132,7 @@
     </script>
 
 </head>
-<form id="form2" style="margin: 25px; margin-left: 40px; margin-right: 40px;">
+<form id="form2">
     <input id="MemberId" type="hidden" />
     <div>
         <table class="form">

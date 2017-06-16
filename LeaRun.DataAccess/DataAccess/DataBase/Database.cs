@@ -41,17 +41,25 @@ namespace LeaRun.DataAccess
         /// <returns></returns>
         public DbTransaction BeginTrans()
         {
-            if (!this.inTransaction)
+            try
             {
-                dbConnection = DbFactory.CreateDbConnection(DbHelper.ConnectionString);
-                if (dbConnection.State == ConnectionState.Closed)
+                if (!this.inTransaction)
                 {
-                    dbConnection.Open();
+                    dbConnection = DbFactory.CreateDbConnection(DbHelper.ConnectionString);
+                    if (dbConnection.State == ConnectionState.Closed)
+                    {
+                        dbConnection.Open();
+                    }
+                    inTransaction = true;
+                    isOpenTrans = dbConnection.BeginTransaction();
                 }
-                inTransaction = true;
-                isOpenTrans = dbConnection.BeginTransaction();
+                return isOpenTrans;
             }
-            return isOpenTrans;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
         }
         /// <summary>
         /// 提交事务

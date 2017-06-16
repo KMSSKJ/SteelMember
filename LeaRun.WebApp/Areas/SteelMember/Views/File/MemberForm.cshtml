@@ -11,6 +11,8 @@
         LoadMemberUnit();
         UploadFile();
     })
+
+    var Data;
     //得到一个对象实体
     function InitControl() {
         if (!!GetQuery('KeyValue')) {
@@ -20,7 +22,7 @@
                 filename = data.CAD_Drawing;
                 if (filename!="1.png"){
                 filename = filename.substring(0, filename.lastIndexOf('.'));//获取文件名称，去除后缀名
-                filename = "../../Resource/Document/NetworkDisk/System/Project/" + filename + "/" + data.CAD_Drawing;
+                filename = "../../Resource/Document/NetworkDisk/System/Member/" + filename + "/" + data.CAD_Drawing;
                 document.getElementById("_CAD_Drawing").src = filename;
                 document.getElementById("DelAvatar").setAttribute("type", "button");
                 document.getElementById("DelAvatar").value = "删除图片";
@@ -29,7 +31,7 @@
                 filename1 = data.Model_Drawing;
                 if (filename1 != "1.png") {
                     filename1 = filename1.substring(0, filename1.lastIndexOf('.'));//获取文件名称，去除后缀名
-                    filename1 = "../../Resource/Document/NetworkDisk/System/Project/" + filename1 + "/" + data.Model_Drawing;
+                    filename1 = "../../Resource/Document/NetworkDisk/System/Member/" + filename1 + "/" + data.Model_Drawing;
                     document.getElementById("_Model_Drawing").src = filename1;
                     document.getElementById("DelAvatar1").setAttribute("type", "button");
                     document.getElementById("DelAvatar1").value = "删除图片";
@@ -38,12 +40,14 @@
                 filename2 = data.Icon;
                 if (filename2 != "1.png") {
                     filename2 = filename2.substring(0, filename2.lastIndexOf('.'));//获取文件名称，去除后缀名
-                    filename2 = "../../Resource/Document/NetworkDisk/System/Project/" + filename2 + "/" + data.Icon;
+                    filename2 = "../../Resource/Document/NetworkDisk/System/Member/" + filename2 + "/" + data.Icon;
                     document.getElementById("_Icon").src = filename2;
                     document.getElementById("DelAvatar2").setAttribute("type", "button");
                     document.getElementById("DelAvatar2").value = "删除图片";
                 }
+                Data = data;
                 SetWebControls(data);
+                document.getElementById("MemberModel").readOnly = true;
             });
         }
         //else {
@@ -88,7 +92,7 @@
                         projectname_sel.push('<option value="' + projectname.UnitId + '">' + projectname.UnitName + '</option>')
                     }
                     $("#UnitId").html(projectname_sel.join(' '));
-                    if (!!KeyValue) {
+                    if (!!GetQuery('KeyValue')) {
                         //编辑时获取值
                         $("#UnitId  option[value='" + Data.UnitId + "']").attr("selected", true);
                     }

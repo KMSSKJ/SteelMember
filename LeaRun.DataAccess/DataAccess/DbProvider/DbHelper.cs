@@ -256,7 +256,7 @@ namespace LeaRun.DataAccess
                 conn.Close();
                 cmd.Dispose();
                 log.Error(ex.Message);
-                throw;
+                throw ex;
             }
         }
         /// <summary>

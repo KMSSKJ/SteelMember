@@ -126,7 +126,100 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 控制订单构件的数量（新增）
+        /// </summary>
+        /// <returns></returns>
+        public ContentResult AddMemberNumber(string KeyValue,string TreeId)
+        {   int _KeyValue = Convert.ToInt32(KeyValue);
+            int _TreeId = Convert.ToInt32(TreeId);
+            var MemberDemand= ProjectManagementCurrent.Find(f=>f.MemberId== _KeyValue&&f.TreeId== _TreeId).SingleOrDefault();
+            int MemberDemandNumber = 0;
+            int Number=0;
+            var Order = OrderManagementCurrent.Find(f => f.TreeId ==_TreeId).ToList();
+            foreach (var item in Order)
+            {
+                var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == item.OrderId&&f.MemberId== _KeyValue).SingleOrDefault();
+                if (OrderMember != null) {
+                    Number +=Convert.ToInt32(OrderMember.Qty);
+                }
 
+            }
+            MemberDemandNumber = Convert.ToInt32(MemberDemand.MemberNumber) - Number;
+
+            return Content(MemberDemandNumber.ToString());
+        }
+
+        /// <summary>
+        /// 控制订单构件的数量(编辑)
+        /// </summary>
+        /// <returns></returns>
+        public ContentResult EditMemberNumber(string KeyValue,string MemberId)
+        {
+            int _KeyValue = Convert.ToInt32(KeyValue);
+            int _MemberId = Convert.ToInt32(MemberId);
+            int TreeId;
+            var OrderList=new List<RMC_ProjectOrder>();
+            var Order = OrderManagementCurrent.Find(f => f.OrderId == _KeyValue).SingleOrDefault();
+            TreeId = Convert.ToInt32(Order.TreeId);
+            OrderList = OrderManagementCurrent.Find(f => f.TreeId == TreeId).ToList();
+
+            var MemberDemand = ProjectManagementCurrent.Find(f => f.MemberId == _MemberId && f.TreeId == TreeId).SingleOrDefault();
+            int MemberDemandNumber = 0;
+            int Number = 0;
+
+            foreach (var item in OrderList)
+            {
+                var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == item.OrderId && f.MemberId == _MemberId).SingleOrDefault();
+                if (OrderMember != null)
+                {
+                    Number += Convert.ToInt32(OrderMember.Qty);
+                }
+            }
+            MemberDemandNumber = Convert.ToInt32(MemberDemand.MemberNumber) - Number;
+
+            return Content(MemberDemandNumber.ToString());
+        }
+        /// <summary>
+        /// 控制创建订单（新增）
+        /// </summary>
+        /// <returns></returns>
+        public ContentResult Add_MemberNumber(string TreeId)
+        {
+            int _TreeId = Convert.ToInt32(TreeId);
+            int MemberDemandNumber = 0;
+            int Number = 0;
+            //int _Number = 0;
+            //int Toal = 0;
+            var MemberDemand = ProjectManagementCurrent.Find(f => f.TreeId == _TreeId&&f.IsReview==1).ToList();
+            if (MemberDemand.Count()>0)
+            {
+                foreach (var item in MemberDemand)
+                {
+                    MemberDemandNumber += Convert.ToInt32(item.MemberNumber);
+                    //if (item.IsReview == 1)
+                    //{
+                    //    _Number++;
+                    //}
+                }
+            }
+
+            var Order = OrderManagementCurrent.Find(f => f.TreeId == _TreeId).ToList();
+            foreach (var item in Order)
+            {
+                var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == item.OrderId).ToList();
+                foreach (var item1 in OrderMember)
+                {
+                    Number += Convert.ToInt32(item1.Qty);
+                }
+            }
+
+           if (MemberDemandNumber > 0)
+            {
+                MemberDemandNumber = MemberDemandNumber - Number;
+           }
+            return Content(MemberDemandNumber.ToString());
+        }
         [HttpPost]
         [ValidateInput(false)]
         //[LoginAuthorize]
@@ -489,7 +582,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     //var company = CompanyCurrent.Find(f=>f.MemberCompanyId==item.MemberCompanyId).SingleOrDefault();
                     //projectdemand.MemberCompany = company.FullName;
                     projectdemand.Description = item.Description;
-                    projectdemandlist.Add(projectdemand);
+
+                    if (item.MemberNumber- item.OrderQuantityed!=0)
+                    {
+                        projectdemandlist.Add(projectdemand);
+                    }
+                   
                 }
 
                 if (projectdemandlist.Count() > 0)// && listtree.Count() > 0
@@ -712,17 +810,17 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 OrderManagementCurrent.Remove(ids);
 
 
-                List<RMC_OrderMember> CollarMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
-                if (CollarMemberList.Count() > 0)
+                List<RMC_OrderMember> OrderMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();
+                if (OrderMemberList.Count() > 0)
                 {
-                    for (int i = 0; i < CollarMemberList.Count(); i++)
+                    for (int i = 0; i < OrderMemberList.Count(); i++)
                     {
-                        int OrderMemberId = Convert.ToInt32(CollarMemberList[i].OrderMemberId);
+                        int OrderMemberId = Convert.ToInt32(OrderMemberList[i].OrderMemberId);
                         ids1.Add(OrderMemberId);
 
                         var OrderMember = OrderMemberCurrent.Find(f => f.OrderMemberId == OrderMemberId).SingleOrDefault();
                         var Demand = ProjectManagementCurrent.Find(f => f.ProjectDemandId == OrderMember.ProjectDemandId).SingleOrDefault();
-                        Demand.OrderQuantityed = Demand.OrderQuantityed - CollarMemberList[i].Qty;
+                        Demand.OrderQuantityed = Demand.OrderQuantityed - OrderMemberList[i].Qty;
                         ProjectManagementCurrent.Modified(Demand);
                     }
                     OrderMemberCurrent.Remove(ids1);
@@ -751,11 +849,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         {
             try
             {
-                string Message = IsReview == "2" ? "驳回成功。" : "审核成功。";
+                string Message = IsReview == "2" ? "操作成功。" : "审核成功。";
                 int OrderId = Convert.ToInt32(KeyValue);
                 var file = OrderManagementCurrent.Find(f => f.OrderId == OrderId).First();
                 file.ModifiedTime = DateTime.Now;
                 file.IsReview = Convert.ToInt32(IsReview);
+                file.ReviewMan= ManageProvider.Provider.Current().UserName;
                 OrderManagementCurrent.Modified(file);
                 return Content(new JsonMessage { Success = true, Code = "1", Message = Message }.ToString());
             }
@@ -802,8 +901,8 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         projectwarehouse.ModifyTime = DateTime.Now;
                         projectwarehouse.MemberModel = item.MemberModel;
                         projectwarehouse.IsShiped = 0;
-                        var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == OrderId && f.MemberId == item.MemberId).SingleOrDefault();
-                        projectwarehouse.ProjectDemandId = OrderMember.ProjectDemandId;
+                        var OrderMember = OrderMemberCurrent.Find(f => f.OrderId == OrderId && f.MemberId == item.MemberId).ToList();
+                        //projectwarehouse.ProjectDemandId = OrderMember.ProjectDemandId;
                         ProjectWarehouseCurrent.Add(projectwarehouse);
                     }
 
