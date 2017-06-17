@@ -863,7 +863,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                                 AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
 
                                                 var PurchaseNumber = AnalysisRawMaterialModel.RawMaterialNumber - AnalysisRawMaterialModel.OrderProcessingNumber;
-                                                if (Convert.ToInt32(PurchaseNumber) < 100)
+                                                if (Convert.ToInt32(PurchaseNumber) <=100)
                                                 {
                                                     AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
                                                 }
@@ -885,7 +885,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                             AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
 
                                             var PurchaseNumber = AnalysisRawMaterialModel.RawMaterialNumber - AnalysisRawMaterialModel.OrderProcessingNumber;
-                                            if (Convert.ToInt32(PurchaseNumber) < 100)
+                                            if (Convert.ToInt32(PurchaseNumber) <= 100)
                                             {
                                                 AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
                                             }
