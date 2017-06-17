@@ -321,3 +321,4 @@ C:\Users\YCY\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Web.WebPa
 C:\Users\YCY\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.csprojResolveAssemblyReference.cache
 C:\Users\YCY\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.dll
 C:\Users\YCY\Source\Repos\SteelMember\LeaRun.WebApp\obj\Debug\LeaRun.WebApp.pdb
+D:\Source\Repos\SteelMember\LeaRun.WebApp\bin\zh-Hans\System.Web.Mvc.resources.dll

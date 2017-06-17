@@ -7,7 +7,7 @@
         GetTree();
         GetGrid();
     });
-    var TreeId = "0", TreeName = ""; ItemId = "";
+    var TreeId, TreeName = ""; ItemId = "";
     //加载左边树
     function GetTree() {
         var itemtree = {
@@ -70,17 +70,13 @@
         if (IsChecked(TreeId)) {
             var IsItem = 0;
             var ItemId = 0;//即类型ID
-            if (IsChecked(TreeId)) {
                 AjaxJson("/SteelMember/Tree/IsItem", { TreeId: TreeId }, function (Data) {
-                    IsItem = Data.IsItem;
                     ItemId = Data.ItemID;
                 })
-                var url = "/SteelMember/Tree/FolderForm?TreeId=" + TreeId + '&ItemID=' + ItemId + '&IsItem=' + IsItem;
-                openDialog(url, "Form", "新增信息", 500, 400, function (iframe) {
+                var url = "/SteelMember/Tree/FolderForm?TreeId=" + TreeId + '&ItemID=' + ItemId;
+                openDialog(url, "Form", "新增信息", 400, 180, function (iframe) {
                     top.frames[iframe].AcceptClick()
                 });
-                $("#gridTable").trigger("reloadGrid"); //重新载入
-            }
         }
     }
 
@@ -88,7 +84,7 @@
         function btn_edit() {
             if (IsChecked(TreeId)) {
                 var url = "/SteelMember/Tree/FolderForm?KeyValue= " + TreeId;
-                openDialog(url, "Form", "编辑信息", 600, 400, function (iframe) {
+                openDialog(url, "Form", "编辑信息", 400, 180, function (iframe) {
                     top.frames[iframe].AcceptClick();
                 });
             }
@@ -104,12 +100,10 @@
                     ItemId = Data.ItemID;
                 })
                 if (IsItem == 1) {
-                    tipDialog('该节点已是项目', 4, 'warning');
+                    tipDialog('该节点是基础数据不允许删除', 4, 'warning');
                 } else {
-                    var Prompt = "你确定要删除该数据?";
+                    var Prompt = "是否确定";
                     delConfirm('/SteelMember/Tree/DeleteTree', { KeyValue: TreeId }, Prompt);
-
-                    $("#gridTable").trigger("reloadGrid"); //重新载入
                 }
                 //} else {
                 //    alertDialog("请选择目录！", 0);
@@ -122,6 +116,11 @@
             GetTree();
             $("#gridTable").trigger("reloadGrid"); //重新载入
         }
+
+        function windowload() {
+            GetTree();
+        }
+
     
 </script>
 <div id="layout" class="layout">

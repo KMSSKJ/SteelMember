@@ -618,7 +618,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 var JsonData = new
                 {
-                    total = AnalysisRawMaterialModellist.Count() / jqgridparam.rows + 1,
+                    total = AnalysisRawMaterialModellist.Count(),
                     page = jqgridparam.page,
                     records = AnalysisRawMaterialModellist.Count(),
                     costtime = CommonHelper.TimerEnd(watch),
@@ -863,7 +863,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                                 AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
 
                                                 var PurchaseNumber = AnalysisRawMaterialModel.RawMaterialNumber - AnalysisRawMaterialModel.OrderProcessingNumber;
-                                                if (Convert.ToInt32(PurchaseNumber) < 0 || (0 < Convert.ToInt32(PurchaseNumber) && Convert.ToInt32(PurchaseNumber) < 100))
+                                                if (Convert.ToInt32(PurchaseNumber) < 100)
                                                 {
                                                     AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
                                                 }
@@ -885,7 +885,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                                             AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
 
                                             var PurchaseNumber = AnalysisRawMaterialModel.RawMaterialNumber - AnalysisRawMaterialModel.OrderProcessingNumber;
-                                            if (Convert.ToInt32(PurchaseNumber) < 0 || (0 < Convert.ToInt32(PurchaseNumber) && Convert.ToInt32(PurchaseNumber) < 100))
+                                            if (Convert.ToInt32(PurchaseNumber) < 100)
                                             {
                                                 AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
                                             }
@@ -901,7 +901,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 
                 var JsonData = new
                 {
-                    total = AnalysisRawMaterialModellist.Count() / jqgridparam.rows + 1,
+                    total = AnalysisRawMaterialModellist.Count(),
                     page = jqgridparam.page,
                     records = AnalysisRawMaterialModellist.Count(),
                     costtime = CommonHelper.TimerEnd(watch),
@@ -919,124 +919,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         public ContentResult AddRawMateralNumber()
         {
             return Content("");
-        }
-
-        public ContentResult Add_RawMaterialsNumber()
-        {
-            Stopwatch watch = CommonHelper.TimerStart();
-
-            List<AnalysisRawMaterialModel> AnalysisRawMaterialModellist = new List<AnalysisRawMaterialModel>();
-            try
-            {
-                List<RMC_ProjectOrder> ProjectOrderList = new List<RMC_ProjectOrder>();
-                List<RMC_OrderMember> CollarMemberList = new List<RMC_OrderMember>();
-                List<RMC_MemberMaterial> MemberMaterialList = new List<RMC_MemberMaterial>();
-                List<RMC_RawMaterialLibrary> RawMaterialLibraryList = new List<RMC_RawMaterialLibrary>();
-                int data = 0;
-                int number = 0;
-                int _number = 0;
-                ProjectOrderList = OrderManagementCurrent.Find(f => f.OrderId > 0 && f.ConfirmOrder == 1 && f.Productioned == 0).ToList();//所有订单
-                if (ProjectOrderList.Count > 0)
-                {
-                    for (int i0 = 0; i0 < ProjectOrderList.Count; i0++)
-                    {
-                        int OrderId = Convert.ToInt32(ProjectOrderList[i0].OrderId);
-                        CollarMemberList = OrderMemberCurrent.Find(f => f.OrderId == OrderId).ToList();//单个订单所需构件
-                        if (CollarMemberList.Count() > 0)
-                        {
-                            for (int i1 = 0; i1 < CollarMemberList.Count(); i1++)
-                            {
-                                int MemberId = Convert.ToInt32(CollarMemberList[i1].MemberId);
-                                MemberMaterialList = MemberMaterialCurrent.Find(f => f.MemberId == MemberId).ToList();//单个构件所需原材料
-                                if (MemberMaterialList.Count() > 0)
-                                {
-                                    for (int i2 = 0; i2 < MemberMaterialList.Count(); i2++)
-                                    {
-                                        AnalysisRawMaterialModel AnalysisRawMaterialModel = new AnalysisRawMaterialModel();
-                                        if (AnalysisRawMaterialModellist.Count() != 0)//判断构造函数是否有数据，没有就新增
-                                        {
-                                            var a = AnalysisRawMaterialModellist.Where(w => w.RawMaterialId == MemberMaterialList[i2].RawMaterialId);//筛选构造函数中的数据，
-                                            if (a.Count() != 0)//判断构造函数中是否有相同数据，没有就新增
-                                            {
-                                                foreach (var item in a)
-                                                {
-                                                    item.OrderProcessingNumber += MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
-                                                    AnalysisRawMaterialModel.OrderProcessingNumber = item.OrderProcessingNumber;
-                                                }
-
-                                            }
-                                            else
-                                            {
-                                                AnalysisRawMaterialModel.RawMaterialId = Convert.ToInt32(MemberMaterialList[i2].RawMaterialId);
-                                                var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == AnalysisRawMaterialModel.RawMaterialId).SingleOrDefault();
-                                                var Unit = MemberUnitCurrent.Find(f => f.UnitId == RawMaterial.UnitId).SingleOrDefault();
-                                                AnalysisRawMaterialModel.RawMaterialName = RawMaterial.RawMaterialName;
-                                                AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
-                                                AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
-                                                AnalysisRawMaterialModel.UnitName = Unit.UnitName;
-                                                AnalysisRawMaterialModel.UnitPrice = RawMaterial.UnitPrice.ToJson();
-                                                AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
-                                                AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
-
-                                                var PurchaseNumber = AnalysisRawMaterialModel.RawMaterialNumber - AnalysisRawMaterialModel.OrderProcessingNumber;
-                                                if (Convert.ToInt32(PurchaseNumber) < 0 || (0 < Convert.ToInt32(PurchaseNumber) && Convert.ToInt32(PurchaseNumber) < 100))
-                                                {
-                                                    AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
-                                                    number += -Convert.ToInt32(PurchaseNumber)+100;
-                                                    data++;
-                                                }
-
-                                            }
-
-                                        }
-                                        else
-                                        {
-                                            AnalysisRawMaterialModel.RawMaterialId = Convert.ToInt32(MemberMaterialList[i2].RawMaterialId);
-                                            var RawMaterial = RawMaterialCurrent.Find(f => f.RawMaterialId == AnalysisRawMaterialModel.RawMaterialId).SingleOrDefault();
-                                            var Unit = MemberUnitCurrent.Find(f => f.UnitId == RawMaterial.UnitId).SingleOrDefault();
-                                            AnalysisRawMaterialModel.RawMaterialName = RawMaterial.RawMaterialName;
-                                            AnalysisRawMaterialModel.RawMaterialNumber = RawMaterial.RawMaterialNumber;
-                                            AnalysisRawMaterialModel.RawMaterialStandard = RawMaterial.RawMaterialStandard;
-                                            AnalysisRawMaterialModel.UnitName = Unit.UnitName;
-                                            AnalysisRawMaterialModel.UnitPrice = RawMaterial.UnitPrice.ToJson();
-                                            AnalysisRawMaterialModel.OrderProcessingNumber = MemberMaterialList[i2].MaterialNumber * CollarMemberList[i1].Qty;
-                                            AnalysisRawMaterialModel.Description = MemberMaterialList[i2].Description;
-
-                                            var PurchaseNumber = AnalysisRawMaterialModel.RawMaterialNumber - AnalysisRawMaterialModel.OrderProcessingNumber;
-                                            if (Convert.ToInt32(PurchaseNumber) < 0 || (0 < Convert.ToInt32(PurchaseNumber) && Convert.ToInt32(PurchaseNumber) < 100))
-                                            {
-                                                AnalysisRawMaterialModellist.Add(AnalysisRawMaterialModel);
-                                                number += -(Convert.ToInt32(PurchaseNumber))+100;
-                                                data++;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-
-                }
-
-                if (data>0)
-                {
-                    var RawMaterialPurchase = RawMaterialPurchaseCurrent.Find(f=>f.RawMaterialPurchaseId>0&&f.IsPurchase==0).ToList();
-                    foreach (var item in RawMaterialPurchase)
-                    {
-                        _number += (Convert.ToInt32(item.Qty));
-                    }
-
-                    data = number - _number;
-
-                }
-              
-                return Content(data.ToString());
-            }
-            catch (Exception ex)
-            {
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
-            }
         }
 
         public ActionResult Warehousing(string KeyValue)

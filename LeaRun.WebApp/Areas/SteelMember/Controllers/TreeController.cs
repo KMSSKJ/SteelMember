@@ -117,7 +117,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         [HttpPost]
         [ValidateInput(false)]
         //[LoginAuthorize]
-        public virtual ActionResult SubmitFolderForm(RMC_Tree entity, string KeyValue, string TreeId ,string ItemID,string IsItem)
+        public virtual ActionResult SubmitFolderForm(RMC_Tree entity, string KeyValue, string TreeId ,string ItemID)
         {
             try
             {
@@ -143,13 +143,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                         RMC_Tree entitys = new RMC_Tree();
                         entitys.ParentID = treeid;
                         entitys.ItemID = Convert.ToInt32(ItemID);
-                        entitys.IsItem = Convert.ToInt32(IsItem);
+                        entitys.IsItem = 0;
                         entitys.TreeName = entity.TreeName;
                         entitys.UploadTime = DateTime.Now;
                         entitys.ModifiedTime = DateTime.Now;
                         entitys.IsMenu = entity.IsMenu;
                         entitys.OverdueTime = entity.OverdueTime;
-                        entitys.Icon = "-1";
                         entitys.Enabled = 1;
                         entitys.IsReview = 0;
                         TreeCurrent.Add(entitys);

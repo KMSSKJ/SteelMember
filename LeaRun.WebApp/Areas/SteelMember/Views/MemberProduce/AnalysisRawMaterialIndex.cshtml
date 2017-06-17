@@ -55,7 +55,7 @@
                                 var str = PurchaseNumber.toString();
                                 PurchaseNumber = str.replace(/-/, "");
                                 return PurchaseNumber;
-                            } else if (0 < PurchaseNumber & PurchaseNumber<100) {
+                            } else if (0 <= PurchaseNumber & PurchaseNumber<100) {
                                 return "库存量过低，请注意采购";
                             } else {
                                 return "无需采购";

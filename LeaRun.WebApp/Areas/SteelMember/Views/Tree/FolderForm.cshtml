@@ -40,7 +40,7 @@
         Loading(true, "正在提交数据...");
         window.setTimeout(function () {
             var postData = GetWebControls("#form2");
-            AjaxJson("/SteelMember/Tree/SubmitFolderForm?KeyValue=" + KeyValue + '&TreeId=' + TreeId + '&ItemID=' + ItemID+"&IsItem="+IsItem, postData, function (data) {
+            AjaxJson("/SteelMember/Tree/SubmitFolderForm?KeyValue=" + KeyValue + '&TreeId=' + TreeId + '&ItemID=' + ItemID, postData, function (data) {
                 tipDialog(data.Message, 3, data.Code);
                 top.frames[tabiframeId()].windowload();
                 closeDialog();
@@ -73,7 +73,7 @@
                     </select>
                 </td>
             </tr>
-            <tr>
+            @*<tr>
                 <th class="formTitle">
                     过期时间：
                 </th>
@@ -94,7 +94,7 @@
                         <input type="checkbox" name="checkbox" checked="checked" id="IsMenu" />
                         <label for="IsMenu">是</label>
                 </td>
-            </tr>
+            </tr>*@
             <tr>
                 <th class="formTitle">
                     描述信息：

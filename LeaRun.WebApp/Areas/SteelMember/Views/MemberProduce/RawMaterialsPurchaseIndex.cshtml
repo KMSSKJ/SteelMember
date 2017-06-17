@@ -48,6 +48,21 @@
                 { label: '制单(采购)人', name: "CreateMan", index: "CreateMan", align: 'center',width: 10 },
                 { label: '制单时间', name: "CreateTime", index: "CreateTime", align: 'center',width: 10 },
                 { label: '审核人', name: "ReviewMan", index: "ReviewMan", align: 'center', width: 10 },
+                {
+                    label: '入库状态', name: 'IsPurchase', index: 'IsPurchase', align: 'center', width: 5,
+                    formatter: function (cellvalue, value, row, index) {
+                        var IsPurchase = cellvalue;
+                        if (IsPurchase != "" || IsPurchase != null) {
+                            if (IsPurchase != 0) {
+                                return "<img src='../../Content/Images/checkokmark.gif'/>";
+                            } else {
+                                return "<img src='../../Content/Images/checknomark.gif'/>";
+                            }
+                        } else {
+                            return "";
+                        }
+                    }
+                },
                 { label: '备注', name: "Description", index: "Description", align: 'center', width: 10 },
             ],
             rowNum: 30,
@@ -141,21 +156,23 @@
     function btn_add() {
         var ItemId = 1;
         var data3;
-        $.ajax({
-            type: 'post',
-            dataType: "text",
-            url: "/SteelMember/MemberProduce/Add_RawMaterialsNumber",
-            data: {
-                TreeId: TreeId,
-            },
-            cache: false,
-            async: false,
-            success: function (data) {
-                data3 = data;
-            }
-        });
-
-        if (data3 != 0) {
+        var data4 = 0;
+        AjaxJson("/SteelMember/MemberProduce/TreeGridJsonAnalysisRawMaterial", {}, function (data) {
+                var total1 = 0;
+                var total2 = 0;
+               
+                var JsonData = data.rows;
+                $.each(JsonData, function (i) {
+                    var rowData = JsonData[i];
+                    total1 += Number(rowData.RawMaterialNumber);
+                    total2 += Number(rowData.OrderProcessingNumber);
+                    data3 = total1 - total2;
+                    if (data3<100) {
+                        data4++;
+                    }
+                });
+            });
+        if (data4 >0) {
         var url = "/SteelMember/MemberProduce/RawMaterialsPurchaseForm?ItemId=" + ItemId + "&motionType=" + ItemId;
         openDialog(url, "RawMaterialsPurchaseForm", "新增采购单", 1100, 600, function (iframe) {
                 top.frames[iframe].AcceptClick();
@@ -201,12 +218,17 @@
             });
         }
     }
-
+    //入库
     function btn_warehousing() {
         var KeyValue = GetJqGridRowValue("#gridTable", "PurchaseId");
+        var IsPurchase = GetJqGridRowValue("#gridTable", "IsPurchase");
         var Prompt = "是否确定？";
-          if (IsChecked(KeyValue)) {
-              subConfirm('/SteelMember/MemberProduce/Warehousing', { KeyValue: KeyValue }, Prompt);
+        if (IsChecked(KeyValue)) {
+            if (_ConfirmOrder.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checknomark.gif'>") {
+                subConfirm('/SteelMember/MemberProduce/Warehousing', { KeyValue: KeyValue }, Prompt);
+            } else {
+                tipDialog("您要操作已入库",2);
+            }
         }
     }
     ////构件图纸/模型管理
@@ -296,8 +318,8 @@
             top.frames[iframe].SubmitPrint()
         });
     }
-  </script>
-    
+</script>
+
 <div class="tools_bar leftline rightline" style="margin-bottom: 0px; margin: 1px;">
     <div class="PartialButton">
         @Html.Partial("_PartialButton")
