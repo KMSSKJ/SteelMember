@@ -10,6 +10,7 @@
         <EntityTypeShape EntityType="kskfModel.RMC_Company" Width="1.5" PointX="4.75" PointY="0.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_FactoryWarehouse" Width="1.5" PointX="0.75" PointY="4.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_MemberLibrary" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="kskfModel.RMC_MemberMaterial" Width="1.5" PointX="0.75" PointY="7.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_MemberProcess" Width="1.5" PointX="8.75" PointY="0.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_MemberUnit" Width="1.5" PointX="2.75" PointY="8.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_OrderMember" Width="1.5" PointX="8.75" PointY="4.75" />
@@ -17,14 +18,13 @@
         <EntityTypeShape EntityType="kskfModel.RMC_ProjectDemand" Width="1.5" PointX="10.75" PointY="0.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_ProjectInfo" Width="1.5" PointX="10.75" PointY="7.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_ProjectOrder" Width="1.5" PointX="0.75" PointY="11.75" />
-        <EntityTypeShape EntityType="kskfModel.RMC_ProjectWarehouse" Width="2.25" PointX="2.75" PointY="11.75" />
-        <EntityTypeShape EntityType="kskfModel.RMC_RawMaterialLibrary" Width="2" PointX="12.75" PointY="3.75" />
+        <EntityTypeShape EntityType="kskfModel.RMC_ProjectWarehouse" Width="1.5" PointX="2.75" PointY="11.75" />
+        <EntityTypeShape EntityType="kskfModel.RMC_Purchase" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="kskfModel.RMC_RawMaterialLibrary" Width="1.5" PointX="12.75" PointY="3.75" />
+        <EntityTypeShape EntityType="kskfModel.RMC_RawMaterialPurchase" Width="1.5" PointX="4.75" PointY="12.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_ShipManagement" Width="1.5" PointX="12.75" PointY="7.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_Tree" Width="1.5" PointX="6.75" PointY="13.75" />
         <EntityTypeShape EntityType="kskfModel.RMC_AnalysisRawMaterial" Width="1.5" PointX="12.75" PointY="13.75" />
-        <EntityTypeShape EntityType="kskfModel.RMC_Purchase" Width="1.5" PointX="13.375" PointY="0.75" />
-        <EntityTypeShape EntityType="kskfModel.RMC_MemberMaterial" Width="1.5" PointX="15.375" PointY="0.75" />
-        <EntityTypeShape EntityType="kskfModel.RMC_RawMaterialPurchase" Width="1.5" PointX="9.375" PointY="14.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

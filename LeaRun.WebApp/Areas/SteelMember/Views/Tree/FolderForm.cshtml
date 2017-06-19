@@ -6,7 +6,7 @@
     var KeyValue = GetQuery('KeyValue');
     var TreeId = GetQuery('TreeId');
     var ItemID = GetQuery('ItemID');//即类型ID
-    var IsItem = GetQuery('IsItem');//是否是项目信息分类
+    var ItemClassId = GetQuery('ItemClassId');//是否是项目信息分类
     $(function () {
         InitControl();
     })
@@ -40,7 +40,7 @@
         Loading(true, "正在提交数据...");
         window.setTimeout(function () {
             var postData = GetWebControls("#form2");
-            AjaxJson("/SteelMember/Tree/SubmitFolderForm?KeyValue=" + KeyValue + '&TreeId=' + TreeId + '&ItemID=' + ItemID, postData, function (data) {
+            AjaxJson("/SteelMember/Tree/SubmitFolderForm?KeyValue=" + KeyValue + '&TreeId=' + TreeId + '&ItemID=' + ItemID + "&ItemClassId=" + ItemClassId, postData, function (data) {
                 tipDialog(data.Message, 3, data.Code);
                 top.frames[tabiframeId()].windowload();
                 closeDialog();

@@ -68,12 +68,15 @@
     //新增
     function btn_add() {
         if (IsChecked(TreeId)) {
-            var IsItem = 0;
+            var ItemClassId ="";
             var ItemId = 0;//即类型ID
                 AjaxJson("/SteelMember/Tree/IsItem", { TreeId: TreeId }, function (Data) {
                     ItemId = Data.ItemID;
+                    if (Data.ItemClass == 0 || Data.ItemClass==2) {
+                        ItemClassId = 2;
+                    }
                 })
-                var url = "/SteelMember/Tree/FolderForm?TreeId=" + TreeId + '&ItemID=' + ItemId;
+                var url = "/SteelMember/Tree/FolderForm?TreeId=" + TreeId + '&ItemID=' + ItemId + '&ItemClassId=' + ItemClassId;
                 openDialog(url, "Form", "新增信息", 400, 180, function (iframe) {
                     top.frames[iframe].AcceptClick()
                 });

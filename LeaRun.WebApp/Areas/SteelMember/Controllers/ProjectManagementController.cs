@@ -72,6 +72,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             list1 = TreeCurrent.Find(t => t.DeleteFlag != 1 && t.ItemClass == 0).ToList();
             list2 = TreeCurrent.Find(t => t.ItemID == itemid && t.DeleteFlag != 1 && t.ItemClass == 2).ToList();
             list = list1.Concat(list2).Distinct().ToList();
+            //list = list1;
 
             List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
             foreach (RMC_Tree item in list)

@@ -6,7 +6,7 @@
     <edmx:StorageModels>
     <Schema Namespace="kskfModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--生成过程中发现错误:
-警告 6002: 表/视图“kskf.dbo.RMC_AnalysisRawMaterial”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“kskf_new.dbo.RMC_AnalysisRawMaterial”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="RMC_AnalysisRawMaterial">
           <Key>
             <PropertyRef Name="AnalysisRawMaterialId" />
@@ -498,6 +498,7 @@
           <EntitySet Name="RMC_Company" EntityType="kskfModel.RMC_Company" />
           <EntitySet Name="RMC_FactoryWarehouse" EntityType="kskfModel.RMC_FactoryWarehouse" />
           <EntitySet Name="RMC_MemberLibrary" EntityType="kskfModel.RMC_MemberLibrary" />
+          <EntitySet Name="RMC_MemberMaterial" EntityType="kskfModel.RMC_MemberMaterial" />
           <EntitySet Name="RMC_MemberProcess" EntityType="kskfModel.RMC_MemberProcess" />
           <EntitySet Name="RMC_MemberUnit" EntityType="kskfModel.RMC_MemberUnit" />
           <EntitySet Name="RMC_OrderMember" EntityType="kskfModel.RMC_OrderMember" />
@@ -506,13 +507,12 @@
           <EntitySet Name="RMC_ProjectInfo" EntityType="kskfModel.RMC_ProjectInfo" />
           <EntitySet Name="RMC_ProjectOrder" EntityType="kskfModel.RMC_ProjectOrder" />
           <EntitySet Name="RMC_ProjectWarehouse" EntityType="kskfModel.RMC_ProjectWarehouse" />
+          <EntitySet Name="RMC_Purchase" EntityType="kskfModel.RMC_Purchase" />
           <EntitySet Name="RMC_RawMaterialLibrary" EntityType="kskfModel.RMC_RawMaterialLibrary" />
+          <EntitySet Name="RMC_RawMaterialPurchase" EntityType="kskfModel.RMC_RawMaterialPurchase" />
           <EntitySet Name="RMC_ShipManagement" EntityType="kskfModel.RMC_ShipManagement" />
           <EntitySet Name="RMC_Tree" EntityType="kskfModel.RMC_Tree" />
           <EntitySet Name="RMC_AnalysisRawMaterial" EntityType="kskfModel.RMC_AnalysisRawMaterial" />
-          <EntitySet Name="RMC_Purchase" EntityType="kskfModel.RMC_Purchase" />
-          <EntitySet Name="RMC_MemberMaterial" EntityType="kskfModel.RMC_MemberMaterial" />
-          <EntitySet Name="RMC_RawMaterialPurchase" EntityType="kskfModel.RMC_RawMaterialPurchase" />
         </EntityContainer>
         <EntityType Name="RMC_Collar">
           <Key>
@@ -647,6 +647,18 @@
           <Property Name="FullPath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UploadTime" Type="DateTime" Precision="3" />
           <Property Name="Sort" Type="Int32" />
+        </EntityType>
+        <EntityType Name="RMC_MemberMaterial">
+          <Key>
+            <PropertyRef Name="MemberMaterialId" />
+          </Key>
+          <Property Name="MemberMaterialId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RawMaterialId" Type="Int32" />
+          <Property Name="MemberId" Type="Int32" />
+          <Property Name="RawMaterialClassId" Type="Int32" />
+          <Property Name="MaterialNumber" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RawMaterialClassName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="RMC_MemberProcess">
           <Key>
@@ -819,6 +831,17 @@
           <Property Name="Leader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="RMC_Purchase">
+          <Key>
+            <PropertyRef Name="PurchaseId" />
+          </Key>
+          <Property Name="PurchaseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseNumbering" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ReviewMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="RMC_RawMaterialLibrary">
           <Key>
             <PropertyRef Name="RawMaterialId" />
@@ -834,6 +857,28 @@
           <Property Name="UnitPrice" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="UnitName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="WarehousingTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="RMC_RawMaterialPurchase">
+          <Key>
+            <PropertyRef Name="RawMaterialPurchaseId" />
+          </Key>
+          <Property Name="RawMaterialPurchaseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TreeId" Type="Int32" />
+          <Property Name="OrderId" Type="Int32" />
+          <Property Name="RawMaterialId" Type="Int32" />
+          <Property Name="PurchaseId" Type="Int32" />
+          <Property Name="MaterialClassId" Type="Int32" />
+          <Property Name="OrderNumbering" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="RawMaterialName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="RawMaterialStandard" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="UnitName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="PriceAmount" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="MaterialBudget" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IsPurchase" Type="Int32" />
         </EntityType>
         <EntityType Name="RMC_ShipManagement">
           <Key>
@@ -907,51 +952,6 @@
           <Property Name="AnalysisTime" Type="DateTime" Precision="3" />
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="RMC_Purchase">
-          <Key>
-            <PropertyRef Name="PurchaseId" />
-          </Key>
-          <Property Name="PurchaseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PurchaseNumbering" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="ReviewMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="RMC_MemberMaterial">
-          <Key>
-            <PropertyRef Name="MemberMaterialId" />
-          </Key>
-          <Property Name="MemberMaterialId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RawMaterialId" Type="Int32" />
-          <Property Name="MemberId" Type="Int32" />
-          <Property Name="RawMaterialClassId" Type="Int32" />
-          <Property Name="MaterialNumber" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="RawMaterialClassName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="RMC_RawMaterialPurchase">
-          <Key>
-            <PropertyRef Name="RawMaterialPurchaseId" />
-          </Key>
-          <Property Name="RawMaterialPurchaseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TreeId" Type="Int32" />
-          <Property Name="OrderId" Type="Int32" />
-          <Property Name="RawMaterialId" Type="Int32" />
-          <Property Name="PurchaseId" Type="Int32" />
-          <Property Name="MaterialClassId" Type="Int32" />
-          <Property Name="OrderNumbering" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="RawMaterialName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="RawMaterialStandard" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Qty" Type="Int32" />
-          <Property Name="UnitName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Price" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="PriceAmount" Type="Decimal" Precision="18" Scale="3" />
-          <Property Name="MaterialBudget" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="DeleteFlag" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="IsPurchase" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1095,6 +1095,19 @@
                 <ScalarProperty Name="MemberName" ColumnName="MemberName" />
                 <ScalarProperty Name="TreeID" ColumnName="TreeID" />
                 <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMC_MemberMaterial">
+            <EntityTypeMapping TypeName="kskfModel.RMC_MemberMaterial">
+              <MappingFragment StoreEntitySet="RMC_MemberMaterial">
+                <ScalarProperty Name="RawMaterialClassName" ColumnName="RawMaterialClassName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MaterialNumber" ColumnName="MaterialNumber" />
+                <ScalarProperty Name="RawMaterialClassId" ColumnName="RawMaterialClassId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
+                <ScalarProperty Name="MemberMaterialId" ColumnName="MemberMaterialId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1277,6 +1290,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="RMC_Purchase">
+            <EntityTypeMapping TypeName="kskfModel.RMC_Purchase">
+              <MappingFragment StoreEntitySet="RMC_Purchase">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ReviewMan" ColumnName="ReviewMan" />
+                <ScalarProperty Name="CreateMan" ColumnName="CreateMan" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="PurchaseNumbering" ColumnName="PurchaseNumbering" />
+                <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="RMC_RawMaterialLibrary">
             <EntityTypeMapping TypeName="kskfModel.RMC_RawMaterialLibrary">
               <MappingFragment StoreEntitySet="RMC_RawMaterialLibrary">
@@ -1291,6 +1316,29 @@
                 <ScalarProperty Name="RawMaterialName" ColumnName="RawMaterialName" />
                 <ScalarProperty Name="TreeId" ColumnName="TreeId" />
                 <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMC_RawMaterialPurchase">
+            <EntityTypeMapping TypeName="kskfModel.RMC_RawMaterialPurchase">
+              <MappingFragment StoreEntitySet="RMC_RawMaterialPurchase">
+                <ScalarProperty Name="IsPurchase" ColumnName="IsPurchase" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="MaterialBudget" ColumnName="MaterialBudget" />
+                <ScalarProperty Name="PriceAmount" ColumnName="PriceAmount" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="UnitName" ColumnName="UnitName" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="RawMaterialStandard" ColumnName="RawMaterialStandard" />
+                <ScalarProperty Name="RawMaterialName" ColumnName="RawMaterialName" />
+                <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
+                <ScalarProperty Name="MaterialClassId" ColumnName="MaterialClassId" />
+                <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
+                <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+                <ScalarProperty Name="RawMaterialPurchaseId" ColumnName="RawMaterialPurchaseId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1367,54 +1415,6 @@
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="TreeId" ColumnName="TreeId" />
                 <ScalarProperty Name="AnalysisRawMaterialId" ColumnName="AnalysisRawMaterialId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RMC_Purchase">
-            <EntityTypeMapping TypeName="kskfModel.RMC_Purchase">
-              <MappingFragment StoreEntitySet="RMC_Purchase">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ReviewMan" ColumnName="ReviewMan" />
-                <ScalarProperty Name="CreateMan" ColumnName="CreateMan" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="PurchaseNumbering" ColumnName="PurchaseNumbering" />
-                <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RMC_MemberMaterial">
-            <EntityTypeMapping TypeName="kskfModel.RMC_MemberMaterial">
-              <MappingFragment StoreEntitySet="RMC_MemberMaterial">
-                <ScalarProperty Name="RawMaterialClassName" ColumnName="RawMaterialClassName" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MaterialNumber" ColumnName="MaterialNumber" />
-                <ScalarProperty Name="RawMaterialClassId" ColumnName="RawMaterialClassId" />
-                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-                <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
-                <ScalarProperty Name="MemberMaterialId" ColumnName="MemberMaterialId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RMC_RawMaterialPurchase">
-            <EntityTypeMapping TypeName="kskfModel.RMC_RawMaterialPurchase">
-              <MappingFragment StoreEntitySet="RMC_RawMaterialPurchase">
-                <ScalarProperty Name="IsPurchase" ColumnName="IsPurchase" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="MaterialBudget" ColumnName="MaterialBudget" />
-                <ScalarProperty Name="PriceAmount" ColumnName="PriceAmount" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="UnitName" ColumnName="UnitName" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="RawMaterialStandard" ColumnName="RawMaterialStandard" />
-                <ScalarProperty Name="RawMaterialName" ColumnName="RawMaterialName" />
-                <ScalarProperty Name="OrderNumbering" ColumnName="OrderNumbering" />
-                <ScalarProperty Name="MaterialClassId" ColumnName="MaterialClassId" />
-                <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
-                <ScalarProperty Name="RawMaterialId" ColumnName="RawMaterialId" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
-                <ScalarProperty Name="RawMaterialPurchaseId" ColumnName="RawMaterialPurchaseId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

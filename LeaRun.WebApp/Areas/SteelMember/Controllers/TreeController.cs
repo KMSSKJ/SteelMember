@@ -13,7 +13,7 @@ using LeaRun.Entity;
 
 namespace LeaRun.WebApp.Areas.SteelMember.Controllers
 {
-    public class TreeController: BaseController
+    public class TreeController : BaseController
     {
         // GET: DocManagement/Tree
         public Base_ModuleBll Sys_modulebll = new Base_ModuleBll();
@@ -28,11 +28,12 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <returns></returns>
         //[ManagerPermission(PermissionMode.Enforce)]
 
-        public virtual ActionResult IsItem(string TreeId) {
+        public virtual ActionResult IsItem(string TreeId)
+        {
             int treeid = Convert.ToInt32(TreeId);
             var entitytree = TreeCurrent.Find(f => f.TreeID == treeid).SingleOrDefault();
             return Json(entitytree);
-            }
+        }
         public virtual ActionResult FolderForm()
         {
             return View();
@@ -49,7 +50,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         /// <returns></returns>
         public ActionResult TreeJson()
         {
-            List<RMC_Tree> list =TreeCurrent.Find(f=>f.TreeID>0).ToList();
+            List<RMC_Tree> list = TreeCurrent.Find(f => f.TreeID > 0).ToList();
             List<TreeJsonEntity> TreeList = new List<TreeJsonEntity>();
             foreach (RMC_Tree item in list)
             {
@@ -81,14 +82,14 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         [HttpPost]
         public ActionResult SetFormControl(string KeyValue)
         {
-            int _KeyValue =Convert.ToInt32(KeyValue);
-           RMC_Tree entity = TreeCurrent.Find(f => f.TreeID==_KeyValue).SingleOrDefault();
+            int _KeyValue = Convert.ToInt32(KeyValue);
+            RMC_Tree entity = TreeCurrent.Find(f => f.TreeID == _KeyValue).SingleOrDefault();
             string JsonData = entity.ToJson();
-      
+
             JsonData = JsonData.Insert(1, "\"ParentName\":\"" + TreeCurrent.Find(f => f.TreeID == entity.ParentID).SingleOrDefault().TreeName + "\",");
             return Content(JsonData);
         }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+
 
 
         /// <summary>
@@ -117,7 +118,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
         [HttpPost]
         [ValidateInput(false)]
         //[LoginAuthorize]
-        public virtual ActionResult SubmitFolderForm(RMC_Tree entity, string KeyValue, string TreeId ,string ItemID)
+        public virtual ActionResult SubmitFolderForm(RMC_Tree entity, string KeyValue, string TreeId, string ItemID, string ItemClassId)
         {
             try
             {
@@ -139,21 +140,27 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 }
                 else
                 {
-                        int treeid = Convert.ToInt32(TreeId);
-                        RMC_Tree entitys = new RMC_Tree();
-                        entitys.ParentID = treeid;
-                        entitys.ItemID = Convert.ToInt32(ItemID);
-                        entitys.IsItem = 0;
-                        entitys.TreeName = entity.TreeName;
-                        entitys.UploadTime = DateTime.Now;
-                        entitys.ModifiedTime = DateTime.Now;
-                        entitys.IsMenu = entity.IsMenu;
-                        entitys.OverdueTime = entity.OverdueTime;
-                        entitys.Enabled = 1;
-                        entitys.IsReview = 0;
-                        TreeCurrent.Add(entitys);
-                        IsOk = 1;
-                    
+                    int treeid = Convert.ToInt32(TreeId);
+                    RMC_Tree entitys = new RMC_Tree();
+                    entitys.ParentID = treeid;
+                    entitys.ItemID = Convert.ToInt32(ItemID);
+                    entitys.IsItem = 0;
+                    if (ItemClassId == "2")
+                    {
+                        entitys.ItemClass = Convert.ToInt32(ItemClassId);
+                         
+                    }
+
+                    entitys.TreeName = entity.TreeName;
+                    entitys.UploadTime = DateTime.Now;
+                    entitys.ModifiedTime = DateTime.Now;
+                    entitys.IsMenu = entity.IsMenu;
+                    entitys.OverdueTime = entity.OverdueTime;
+                    entitys.Enabled = 1;
+                    entitys.IsReview = 0;
+                    TreeCurrent.Add(entitys);
+                    IsOk = 1;
+
                 }
                 return Content(new JsonMessage { Success = true, Code = IsOk.ToString(), Message = message }.ToString());
             }
@@ -163,7 +170,7 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                 return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
         }
-       
+
         /// <summary>
         /// 销毁文件树
         /// </summary>
@@ -175,17 +182,38 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
             try
             {
                 List<int> ids = new List<int>();
+                List<int> ids1 = new List<int>();
                 int TreeId = Convert.ToInt32(KeyValue);
-                ids.Add(TreeId);
-                Ok = TreeCurrent.Remove(ids);           
+
+                var list = GetSonId(TreeId).ToList();
+                list.Add(TreeCurrent.Find(p => p.TreeID == TreeId).Single());
+
+                if (list.Count>0)
+                {
+                    foreach (var item in list)
+                    {
+                        ids.Add(item.TreeID);
+
+                    }
+                }
+
+                Ok = TreeCurrent.Remove(ids);
                 return Content(new JsonMessage { Success = true, Code = Ok.ToString(), Message = "删除成功。" }.ToString());
             }
             catch (Exception ex)
             {
-                return Content(new JsonMessage {Success = false,Code = "-1", Message = "操作失败：" + ex.Message}.ToString());
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = "操作失败：" + ex.Message }.ToString());
             }
         }
-       
+
+        //获取树字节子节点(自循环)
+        public IEnumerable<RMC_Tree> GetSonId(int p_id)
+        {
+            List<RMC_Tree> list = TreeCurrent.Find(p => p.ParentID == p_id).ToList();
+            return list.Concat(list.SelectMany(t => GetSonId(t.TreeID)));
+        }
+
+
         /// <summary>
         /// 标记删除文件树
         /// </summary>

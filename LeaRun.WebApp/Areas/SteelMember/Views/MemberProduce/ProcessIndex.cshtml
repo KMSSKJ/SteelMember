@@ -343,18 +343,18 @@
             var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
             var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
             var strObj = GetJqGridRowValue("#" + subgrid_table_id, "ProcessName");
-            var subString = "工厂质检";
+            var subString = "监理质检";
             if (IsChecked(KeyValue)) {
                 if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
                     if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") != "<img src='../../Content/Images/checkokmark.gif'>") {
                        // subConfirm('/SteelMember/MemberProduce/NumberForm', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
                         if (strObj.indexOf(subString) > 0) {
+                            alertDialog("请点击监理检测项按钮", 0);
+                        } else {
                             var url = "/SteelMember/MemberProduce/NumberForm?KeyValue= " + KeyValue + "&MemberId=" + MemberId + "&OrderId=" + OrderId + "&IsQqualified=" + IsQqualified;
                             openDialog(url, "NumberForm", "信息填报", 360, 260, function (iframe) {
                                 top.frames[iframe].AcceptClick();
                             }); 
-                        } else {
-                            alertDialog("请点击监理检测项按钮", 0);
                         }
                     } else {
                         alertDialog("不能重复提交", 0);
@@ -375,18 +375,18 @@
             var IsProcessStatus = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessStatus");
             var IsProcessTask = GetJqGridRowValue("#" + subgrid_table_id, "IsProcessTask");
             var strObj = GetJqGridRowValue("#" + subgrid_table_id, "ProcessName");
-            var subString = "工厂质检";
+            var subString = "监理质检";
             if (IsChecked(KeyValue)) {
                 if (IsProcessTask.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checkokmark.gif'>") {
                     if (IsProcessStatus.replace(/"/, "'").replace(/"/, "'") == "<img src='../../Content/Images/checknomark.gif'>") {
                        // subConfirm('/SteelMember/MemberProduce/NumberForm', { KeyValue: KeyValue, IsQqualified: IsQqualified }, Prompt);
                         if (strObj.indexOf(subString) > 0) {
+                            alertDialog("请点击监理检测项按钮", 0);
+                        } else {
                             var url = "/SteelMember/MemberProduce/NumberForm?KeyValue= " + KeyValue + "&MemberId=" + MemberId + "&OrderId=" + OrderId + "&IsQqualified=" + IsQqualified;
                             openDialog(url, "NumberForm", "信息填报", 360, 260, function (iframe) {
                                 top.frames[iframe].AcceptClick();
                             });
-                        } else {
-                            alertDialog("请点击监理检测项按钮", 0);
                         }
                     } else {
                         alertDialog("不能重复提交", 0);

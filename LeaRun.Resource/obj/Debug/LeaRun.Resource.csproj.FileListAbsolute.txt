@@ -59,4 +59,3 @@ C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\zh-CN\LeaRun.Res
 C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\zh-TW\LeaRun.Resource.resources.dll
 C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\LeaRun.Resource.dll
 C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\LeaRun.Resource.pdb
-D:\Source\Repos\SteelMember\LeaRun.Resource\obj\Debug\LeaRun.Resource.csprojResolveAssemblyReference.cache

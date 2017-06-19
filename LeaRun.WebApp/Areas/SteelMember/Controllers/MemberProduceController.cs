@@ -1735,7 +1735,6 @@ namespace LeaRun.WebApp.Areas.SteelMember.Controllers
                     ProcessManagement.ProcessRequirements = _MemberProcess.ProcessRequirements;
                     ProcessManagement.SortCode = _MemberProcess.SortCode;
                     ProcessManagement.ProcessMan = _MemberProcess.ProcessMan;
-                    ProcessManagement.ProcessManImge = _MemberProcess.ProcessManImge;
                     ProcessManagement.ProcessNumbered = Proceess[i].ProcessNumbered;
                     ProcessManagement.UnqualifiedNumber = Proceess[i].UnqualifiedNumber;
                     ProcessManagement.Description = Proceess[i].Description;
