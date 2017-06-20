@@ -26,3 +26,4 @@ C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.Proper
 C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.csproj.GenerateResource.Cache
 C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.dll
 C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.pdb
+C:\Users\YCY\Source\Repos\SteelMember\LeaRun.Cache\obj\Debug\LeaRun.Cache.csprojResolveAssemblyReference.cache
